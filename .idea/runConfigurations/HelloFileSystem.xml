@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="HelloFileSystem" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="de.skymatic.fusepanama.examples.HelloFileSystem" />
+    <module name="bindings" />
+    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="de.skymatic.fusepanama.examples.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
