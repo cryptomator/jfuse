@@ -1,4 +1,0 @@
-[submodule "libfuse"]
-	path = libfuse
-	url = https://github.com/libfuse/libfuse.git
-	branch = fuse-2_9_bugfix

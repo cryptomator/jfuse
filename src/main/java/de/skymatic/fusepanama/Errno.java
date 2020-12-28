@@ -5,17 +5,19 @@ package de.skymatic.fusepanama;
  * <a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/asm-generic/errno.h">errno.h (linux)</a>
  * and <a href="https://github.com/apple/darwin-xnu/blob/master/bsd/sys/errno.h">errno.h (darwin)</a>
  */
-public interface Errno {
+public final class Errno {
+
+	private Errno() {}
 	
-	boolean IS_MAC = System.getProperty("os.name").toLowerCase().contains("mac");
+	private static boolean IS_MAC = System.getProperty("os.name").toLowerCase().contains("mac");
 
 	/**
 	 * No such file or directory
 	 */
-	int ENOENT = 2;
+	public static int ENOENT = 2;
 
 	/**
 	 * Invalid system call number
 	 */
-	int ENOSYS = IS_MAC ? 78 : 38;
+	public static int ENOSYS = IS_MAC ? 78 : 38;
 }

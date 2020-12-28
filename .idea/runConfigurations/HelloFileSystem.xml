@@ -1,14 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HelloFileSystem" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="ALTERNATIVE_JRE_PATH" value="17" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="de.skymatic.fusepanama.examples.HelloFileSystem" />
-    <module name="bindings" />
-    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug" />
-    <extension name="coverage">
-      <pattern>
-        <option name="PATTERN" value="de.skymatic.fusepanama.examples.*" />
-        <option name="ENABLED" value="true" />
-      </pattern>
-    </extension>
+    <module name="fuse-panama" />
+    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug -Dforeign.restricted=permit --add-modules jdk.incubator.foreign" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

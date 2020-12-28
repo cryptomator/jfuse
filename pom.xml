@@ -5,33 +5,21 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.skymatic</groupId>
 	<artifactId>fuse-panama</artifactId>
-	<packaging>pom</packaging>
 	<version>0.1.0-SNAPSHOT</version>
-	
-	<profiles>
-		<profile>
-			<id>generate-libfuse</id>
-			<activation>
-				<file>
-					<missing>ffi/fuse.jar</missing>
-				</file>
-			</activation>
-			<modules>
-				<module>ffi</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>default</id>
-			<activation>
-				<file>
-					<exists>ffi/fuse.jar</exists>
-				</file>
-			</activation>
-			<modules>
-				<module>bindings</module>
-			</modules>
-		</profile>
-	</profiles>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.29</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.29</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -40,12 +28,92 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<release>14</release>
+					<release>16</release>
 					<encoding>UTF-8</encoding>
 					<showWarnings>true</showWarnings>
+					<compilerArgs>
+						<arg>--add-modules</arg>
+						<arg>jdk.incubator.foreign</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>update-macfuse</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<version>3.0.0-M3</version>
+						<executions>
+							<execution>
+								<id>check-preconditions</id>
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+								<configuration>
+									<rules>
+										<requireOS>
+											<family>mac</family>
+											<message>This build configuration requires macOS.</message>
+										</requireOS>
+										<requireFilesExist>
+											<files>
+												<file>/usr/local/include/fuse/fuse.h</file>
+											</files>
+											<message>macFUSE header files not found</message>
+										</requireFilesExist>
+										<requireFilesExist>
+											<files>
+												<file>/Applications/Xcode.app</file>
+											</files>
+											<message>XCode not found</message>
+										</requireFilesExist>
+									</rules>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.6.0</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<executable>${java.home}/bin/jextract</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>--source</argument>
+										<argument>-l</argument>
+										<argument>fuse</argument> <!-- will be resolved to libosxfuse.dylib at runtime -->
+										<argument>-d</argument>
+										<argument>${project.build.sourceDirectory}</argument>
+										<argument>-t</argument>
+										<argument>de.skymatic.fusepanama.macfuse</argument>
+										<argument>-I</argument>
+										<argument>/usr/local/include</argument>
+										<argument>-I</argument>
+										<argument>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/</argument>
+										<argument>-C-D_FILE_OFFSET_BITS=64</argument>
+										<argument>-C-DFUSE_USE_VERSION=29</argument>
+										<argument>/usr/local/include/fuse/fuse.h</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

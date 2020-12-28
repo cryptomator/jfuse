@@ -1,20 +1,10 @@
 package de.skymatic.fusepanama;
 
-import java.foreign.memory.Callback;
-import java.foreign.memory.LayoutType;
-import java.foreign.memory.Pointer;
+import de.skymatic.fusepanama.macfuse.fuse_h;
 
-import com.github.libfuse.fuse_common_h;
-import com.github.libfuse.fuse_h;
-import usr.include.sys._types._timespec_h;
-import usr.include.sys.fcntl_h;
-import usr.include.sys.stat_h;
-import usr.include.sys.statvfs_h;
-import usr.include.utime_h;
+import java.nio.ByteBuffer;
 
 public interface FuseOperations {
-	
-	long SIZEOF_FUSE_OPERATIONS = LayoutType.ofStruct(fuse_h.fuse_operations.class).bytesSize();
 
 	/**
 	 * Get file attributes.
@@ -23,7 +13,10 @@ public interface FuseOperations {
 	 * ignored.	 The 'st_ino' field is ignored except if the 'use_ino'
 	 * mount option is given.
 	 */
-	int getattr(Pointer<Byte> path, Pointer<stat_h.stat> buf);
+	@NotImplemented
+	default int getattr(String path, Stat stat) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Read the target of a symbolic link
@@ -34,12 +27,19 @@ public interface FuseOperations {
 	 * buffer, it should be truncated.	The return value should be 0
 	 * for success.
 	 */
-	int readlink(Pointer<Byte> path, Pointer<Byte> buf, long len);
+	@NotImplemented
+	default int readlink(String path, ByteBuffer buf, long len) {
+		return Errno.ENOSYS;
+	}
 
-	/**
-	 * @deprecated use {@link #readdir(Pointer, Pointer, Callback, long, Pointer) readdir()} instead
-	 */
-	int getdir(Pointer<Byte> path, Pointer<fuse_h.fuse_dirhandle> fuse_dirhandlePointer, Callback<fuse_h.FI2> fi2Callback);
+//	/**
+//	 * @deprecated use {@link #readdir(String, Pointer, Callback, long, Pointer)} instead
+//	 */
+//	@Deprecated
+//	@NotImplemented
+//	default int getdir(String path, Pointer<fuse_h.fuse_dirhandle> fuse_dirhandlePointer, Callback<fuse_h.FI2> fi2Callback) {
+//		return Errno.ENOSYS;
+//	}
 
 	/**
 	 * Create a file node
@@ -48,7 +48,10 @@ public interface FuseOperations {
 	 * nodes.  If the filesystem defines a create() method, then for
 	 * regular files that will be called instead.
 	 */
-	int mknod(Pointer<Byte> path, short mode, int rdev);
+	@NotImplemented
+	default int mknod(String path, short mode, int rdev) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Create a directory
@@ -57,54 +60,85 @@ public interface FuseOperations {
 	 * bits set, i.e. S_ISDIR(mode) can be false.  To obtain the
 	 * correct directory type bits use  mode|S_IFDIR
 	 */
-	int mkdir(Pointer<Byte> path, short mode);
+	@NotImplemented
+	default int mkdir(String path, short mode) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Remove a file
 	 */
-	int unlink(Pointer<Byte> path);
+	@NotImplemented
+	default int unlink(String path) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Remove a directory
 	 */
-	int rmdir(Pointer<Byte> path);
+	@NotImplemented
+	default int rmdir(String path) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Create a symbolic link
 	 */
-	int symlink(Pointer<Byte> linkname, Pointer<Byte> target);
+	@NotImplemented
+	default int symlink(String linkname, String target) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Rename a file
 	 */
-	int rename(Pointer<Byte> oldpath, Pointer<Byte> newpath);
+	@NotImplemented
+	default int rename(String oldpath, String newpath) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Create a hard link to a file
 	 */
-	int link(Pointer<Byte> linkname, Pointer<Byte> target);
+	@NotImplemented
+	default int link(String linkname, String target) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Change the permission bits of a file
 	 */
-	int chmod(Pointer<Byte> path, short mode);
+	@NotImplemented
+	default int chmod(String path, short mode) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Change the owner and group of a file
 	 */
-	int chown(Pointer<Byte> path, int uid, int gid);
+	@NotImplemented
+	default int chown(String path, int uid, int gid) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Change the size of a file
 	 */
-	int truncate(Pointer<Byte> path, long size);
+	@NotImplemented
+	default int truncate(String path, long size) {
+		return Errno.ENOSYS;
+	}
 
-	/**
-	 * Change the access and/or modification times of a file
-	 *
-	 * @deprecated use {@link #utimens(Pointer, Pointer) utimens()} instead.
-	 */
-	int utime(Pointer<Byte> path, Pointer<utime_h.utimbuf> utimbufPointer);
+//	/**
+//	 * Change the access and/or modification times of a file
+//	 *
+//	 * @deprecated use {@link #utimens(String, TimeSpec) utimens()} instead.
+//	 */
+//	@Deprecated
+//	@NotImplemented
+//	default int utime(String path, Pointer<utime_h.utimbuf> utimbufPointer) {
+//		return Errno.ENOSYS;
+//	}
 
 	/**
 	 * File open operation
@@ -124,7 +158,10 @@ public interface FuseOperations {
 	 * <p>
 	 * Changed in version 2.2
 	 */
-	int open(Pointer<Byte> path, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int open(String path, FileInfo fi) {
+		return 0;
+	}
 
 	/**
 	 * Read data from an open file
@@ -138,7 +175,10 @@ public interface FuseOperations {
 	 * <p>
 	 * Changed in version 2.2
 	 */
-	int read(Pointer<Byte> path, Pointer<Byte> buf, long size, long offset, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int read(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Write data to an open file
@@ -149,17 +189,23 @@ public interface FuseOperations {
 	 * <p>
 	 * Changed in version 2.2
 	 */
-	int write(Pointer<Byte> path, Pointer<Byte> buf, long size, long offset, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int write(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
+		return Errno.ENOSYS;
+	}
 
-	/**
-	 * Get file system statistics
-	 * <p>
-	 * The 'f_frsize', 'f_favail', 'f_fsid' and 'f_flag' fields are ignored
-	 * <p>
-	 * Replaced 'struct statfs' parameter with 'struct statvfs' in
-	 * version 2.5
-	 */
-	int statfs(Pointer<Byte> path, Pointer<statvfs_h.statvfs> buf);
+//	/**
+//	 * Get file system statistics
+//	 * <p>
+//	 * The 'f_frsize', 'f_favail', 'f_fsid' and 'f_flag' fields are ignored
+//	 * <p>
+//	 * Replaced 'struct statfs' parameter with 'struct statvfs' in
+//	 * version 2.5
+//	 */
+//	@NotImplemented
+//	default int statfs(String path, Pointer<statvfs_h.statvfs> buf) {
+//		return 0;
+//	}
 
 	/**
 	 * Possibly flush cached data
@@ -185,7 +231,10 @@ public interface FuseOperations {
 	 * <p>
 	 * Changed in version 2.2
 	 */
-	int flush(Pointer<Byte> path, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int flush(String path, FileInfo fi) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Release an open file
@@ -202,7 +251,10 @@ public interface FuseOperations {
 	 * <p>
 	 * Changed in version 2.2
 	 */
-	int release(Pointer<Byte> path, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int release(String path, FileInfo fi) {
+		return 0;
+	}
 
 	/**
 	 * Synchronize file contents
@@ -212,27 +264,42 @@ public interface FuseOperations {
 	 * <p>
 	 * Changed in version 2.2
 	 */
-	int fsync(Pointer<Byte> path, int datasync, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int fsync(String path, int datasync, FileInfo fi) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Set extended attributes
 	 */
-	int setxattr(Pointer<Byte> path, Pointer<Byte> name, Pointer<Byte> value, long size, int flags);
+	@NotImplemented
+	default int setxattr(String path, String name, ByteBuffer value, long size, int flags) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Get extended attributes
 	 */
-	int getxattr(Pointer<Byte> path, Pointer<Byte> name, Pointer<Byte> value, long size);
+	@NotImplemented
+	default int getxattr(String path, String name, ByteBuffer value, long size) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * List extended attributes
 	 */
-	int listxattr(Pointer<Byte> path, Pointer<Byte> list, long size);
+	@NotImplemented
+	default int listxattr(String path, ByteBuffer list, long size) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Remove extended attributes
 	 */
-	int removexattr(Pointer<Byte> path, Pointer<Byte> name);
+	@NotImplemented
+	default int removexattr(String path, String name) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Open directory
@@ -245,13 +312,16 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.3
 	 */
-	int opendir(Pointer<Byte> path, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int opendir(String path, FileInfo fi) {
+		return 0;
+	}
 
 	/**
 	 * Read directory
 	 * <p>
-	 * This supersedes the old getdir() interface.  New applications
-	 * should use this.
+	 * This supersedes the old getdir interface.
+	 * New applications should use this.
 	 * <p>
 	 * The filesystem may choose between two modes of operation:
 	 * <p>
@@ -269,14 +339,20 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.3
 	 */
-	int readdir(Pointer<Byte> path, Pointer<?> buf, Callback<fuse_h.FI1> filler, long offset, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int readdir(String path, DirFiller filler, long offset, FileInfo fi) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Release directory
 	 * <p>
 	 * Introduced in version 2.3
 	 */
-	int releasedir(Pointer<Byte> path, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int releasedir(String path, FileInfo fi) {
+		return 0;
+	}
 
 	/**
 	 * Synchronize directory contents
@@ -286,28 +362,37 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.3
 	 */
-	int fsyncdir(Pointer<Byte> path, int datasync, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int fsyncdir(String path, int datasync, FileInfo fi) {
+		return Errno.ENOSYS;
+	}
 
-	/**
-	 * Initialize filesystem
-	 * <p>
-	 * The return value will passed in the private_data field of
-	 * fuse_context to all file operations and as a parameter to the
-	 * destroy() method.
-	 * <p>
-	 * Introduced in version 2.3
-	 * Changed in version 2.6
-	 */
-	Pointer<Void> init(Pointer<fuse_common_h.fuse_conn_info> conn);
+//	/**
+//	 * Initialize filesystem
+//	 * <p>
+//	 * The return value will passed in the private_data field of
+//	 * fuse_context to all file operations and as a parameter to the
+//	 * destroy() method.
+//	 * <p>
+//	 * Introduced in version 2.3
+//	 * Changed in version 2.6
+//	 */
+//	@NotImplemented
+//	default Pointer<Void> init(Pointer<fuse_common_h.fuse_conn_info> conn) {
+//		return conn;
+//	}
 
-	/**
-	 * Clean up filesystem
-	 * <p>
-	 * Called on filesystem exit.
-	 * <p>
-	 * Introduced in version 2.3
-	 */
-	void destroy(Pointer<?> pointer);
+//	/**
+//	 * Clean up filesystem
+//	 * <p>
+//	 * Called on filesystem exit.
+//	 * <p>
+//	 * Introduced in version 2.3
+//	 */
+//	@NotImplemented
+//	default void destroy(Pointer<?> pointer) {
+//		// no-op
+//	}
 
 	/**
 	 * Check file access permissions
@@ -320,7 +405,10 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.5
 	 */
-	int access(Pointer<Byte> path, int mask);
+	@NotImplemented
+	default int access(String path, int mask) {
+		return 0;
+	}
 
 	/**
 	 * Create and open a file
@@ -334,7 +422,10 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.5
 	 */
-	int create(Pointer<Byte> path, short mode, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int create(String path, short mode, FileInfo fi) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Change the size of an open file
@@ -348,7 +439,10 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.5
 	 */
-	int ftruncate(Pointer<Byte> path, long size, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int ftruncate(String path, long size, FileInfo fi) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Get attributes from an open file
@@ -362,41 +456,47 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.5
 	 */
-	int fgetattr(Pointer<Byte> path, Pointer<stat_h.stat> buf, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int fgetattr(String path, Stat stat, FileInfo fi) {
+		return Errno.ENOSYS;
+	}
 
-	/**
-	 * Perform POSIX file locking operation
-	 * <p>
-	 * The cmd argument will be either F_GETLK, F_SETLK or F_SETLKW.
-	 * <p>
-	 * For the meaning of fields in 'struct flock' see the man page
-	 * for fcntl(2).  The l_whence field will always be set to
-	 * SEEK_SET.
-	 * <p>
-	 * For checking lock ownership, the 'fuse_file_info->owner'
-	 * argument must be used.
-	 * <p>
-	 * For F_GETLK operation, the library will first check currently
-	 * held locks, and if a conflicting lock is found it will return
-	 * information without calling this method.	 This ensures, that
-	 * for local locks the l_pid field is correctly filled in.	The
-	 * results may not be accurate in case of race conditions and in
-	 * the presence of hard links, but it's unlikely that an
-	 * application would rely on accurate GETLK results in these
-	 * cases.  If a conflicting lock is not found, this method will be
-	 * called, and the filesystem may fill out l_pid by a meaningful
-	 * value, or it may leave this field zero.
-	 * <p>
-	 * For F_SETLK and F_SETLKW the l_pid field will be set to the pid
-	 * of the process performing the locking operation.
-	 * <p>
-	 * Note: if this method is not implemented, the kernel will still
-	 * allow file locking to work locally.  Hence it is only
-	 * interesting for network filesystems and similar.
-	 * <p>
-	 * Introduced in version 2.6
-	 */
-	int lock(Pointer<Byte> path, Pointer<fuse_common_h.fuse_file_info> fi, int cmd, Pointer<fcntl_h.flock> lock);
+//	/**
+//	 * Perform POSIX file locking operation
+//	 * <p>
+//	 * The cmd argument will be either F_GETLK, F_SETLK or F_SETLKW.
+//	 * <p>
+//	 * For the meaning of fields in 'struct flock' see the man page
+//	 * for fcntl(2).  The l_whence field will always be set to
+//	 * SEEK_SET.
+//	 * <p>
+//	 * For checking lock ownership, the 'fuse_file_info->owner'
+//	 * argument must be used.
+//	 * <p>
+//	 * For F_GETLK operation, the library will first check currently
+//	 * held locks, and if a conflicting lock is found it will return
+//	 * information without calling this method.	 This ensures, that
+//	 * for local locks the l_pid field is correctly filled in.	The
+//	 * results may not be accurate in case of race conditions and in
+//	 * the presence of hard links, but it's unlikely that an
+//	 * application would rely on accurate GETLK results in these
+//	 * cases.  If a conflicting lock is not found, this method will be
+//	 * called, and the filesystem may fill out l_pid by a meaningful
+//	 * value, or it may leave this field zero.
+//	 * <p>
+//	 * For F_SETLK and F_SETLKW the l_pid field will be set to the pid
+//	 * of the process performing the locking operation.
+//	 * <p>
+//	 * Note: if this method is not implemented, the kernel will still
+//	 * allow file locking to work locally.  Hence it is only
+//	 * interesting for network filesystems and similar.
+//	 * <p>
+//	 * Introduced in version 2.6
+//	 */
+//	@NotImplemented
+//	default int lock(String path, FileInfo fi, int cmd, Pointer<fcntl_h.flock> lock) {
+//		return Errno.ENOSYS;
+//	}
 
 	/**
 	 * Change the access and modification times of a file with
@@ -409,17 +509,23 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.6
 	 */
-	int utimens(Pointer<Byte> path, Pointer<_timespec_h.timespec> tv);
+	@NotImplemented
+	default int utimens(String path, TimeSpec tv) {
+		return Errno.ENOSYS;
+	}
 
-	/**
-	 * Map block index within file to block index within device
-	 * <p>
-	 * Note: This makes sense only for block device backed filesystems
-	 * mounted with the 'blkdev' option
-	 * <p>
-	 * Introduced in version 2.6
-	 */
-	int bmap(Pointer<Byte> path, long blocksize, Pointer<Long> idx);
+//	/**
+//	 * Map block index within file to block index within device
+//	 * <p>
+//	 * Note: This makes sense only for block device backed filesystems
+//	 * mounted with the 'blkdev' option
+//	 * <p>
+//	 * Introduced in version 2.6
+//	 */
+//	@NotImplemented
+//	default int bmap(String path, long blocksize, Pointer<Long> idx) {
+//		return Errno.ENOSYS;
+//	}
 
 	/**
 	 * Ioctl
@@ -436,56 +542,68 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.8
 	 */
-	int ioctl(Pointer<Byte> path, int cmd, Pointer<?> arg, Pointer<fuse_common_h.fuse_file_info> fi, int flags, Pointer<?> data);
+	@NotImplemented
+	default int ioctl(String path, int cmd, ByteBuffer arg, FileInfo fi, int flags, ByteBuffer data) {
+		return Errno.ENOSYS;
+	}
 
-	/**
-	 * Poll for IO readiness events
-	 * <p>
-	 * Note: If ph is non-NULL, the client should notify
-	 * when IO readiness events occur by calling
-	 * fuse_notify_poll() with the specified ph.
-	 * <p>
-	 * Regardless of the number of times poll with a non-NULL ph
-	 * is received, single notification is enough to clear all.
-	 * Notifying more times incurs overhead but doesn't harm
-	 * correctness.
-	 * <p>
-	 * The callee is responsible for destroying ph with
-	 * fuse_pollhandle_destroy() when no longer in use.
-	 * <p>
-	 * Introduced in version 2.8
-	 */
-	int poll(Pointer<Byte> path, Pointer<fuse_common_h.fuse_file_info> fi, Pointer<fuse_common_h.fuse_pollhandle> ph, Pointer<Integer> reventsp);
+//	/**
+//	 * Poll for IO readiness events
+//	 * <p>
+//	 * Note: If ph is non-NULL, the client should notify
+//	 * when IO readiness events occur by calling
+//	 * fuse_notify_poll() with the specified ph.
+//	 * <p>
+//	 * Regardless of the number of times poll with a non-NULL ph
+//	 * is received, single notification is enough to clear all.
+//	 * Notifying more times incurs overhead but doesn't harm
+//	 * correctness.
+//	 * <p>
+//	 * The callee is responsible for destroying ph with
+//	 * fuse_pollhandle_destroy() when no longer in use.
+//	 * <p>
+//	 * Introduced in version 2.8
+//	 */
+//	@NotImplemented
+//	default int poll(String path, FileInfo fi, Pointer<fuse_common_h.fuse_pollhandle> ph, Pointer<Integer> reventsp) {
+//		return Errno.ENOSYS;
+//	}
 
-	/**
-	 * Write contents of buffer to an open file
-	 * <p>
-	 * Similar to the write() method, but data is supplied in a
-	 * generic buffer.  Use fuse_buf_copy() to transfer data to
-	 * the destination.
-	 * <p>
-	 * Introduced in version 2.9
-	 */
-	int writeBuf(Pointer<Byte> path, Pointer<fuse_common_h.fuse_bufvec> buf, long offset, Pointer<fuse_common_h.fuse_file_info> fi);
+//	/**
+//	 * Write contents of buffer to an open file
+//	 * <p>
+//	 * Similar to the write() method, but data is supplied in a
+//	 * generic buffer.  Use fuse_buf_copy() to transfer data to
+//	 * the destination.
+//	 * <p>
+//	 * Introduced in version 2.9
+//	 */
+//	@NotImplemented
+//	default int writeBuf(String path, Pointer<fuse_common_h.fuse_bufvec> buf, long offset, FileInfo fi) {
+//		return Errno.ENOSYS;
+//	}
 
-	/**
-	 * Store data from an open file in a buffer
-	 * <p>
-	 * Similar to the read() method, but data is stored and
-	 * returned in a generic buffer.
-	 * <p>
-	 * No actual copying of data has to take place, the source
-	 * file descriptor may simply be stored in the buffer for
-	 * later data transfer.
-	 * <p>
-	 * The buffer must be allocated dynamically and stored at the
-	 * location pointed to by bufp.  If the buffer contains memory
-	 * regions, they too must be allocated using malloc().  The
-	 * allocated memory will be freed by the caller.
-	 * <p>
-	 * Introduced in version 2.9
-	 */
-	int readBuf(Pointer<Byte> path, Pointer<? extends Pointer<fuse_common_h.fuse_bufvec>> bufp, long size, long offset, Pointer<fuse_common_h.fuse_file_info> fi);
+//	/**
+//	 * Store data from an open file in a buffer
+//	 * <p>
+//	 * Similar to the read() method, but data is stored and
+//	 * returned in a generic buffer.
+//	 * <p>
+//	 * No actual copying of data has to take place, the source
+//	 * file descriptor may simply be stored in the buffer for
+//	 * later data transfer.
+//	 * <p>
+//	 * The buffer must be allocated dynamically and stored at the
+//	 * location pointed to by bufp.  If the buffer contains memory
+//	 * regions, they too must be allocated using malloc().  The
+//	 * allocated memory will be freed by the caller.
+//	 * <p>
+//	 * Introduced in version 2.9
+//	 */
+//	@NotImplemented
+//	default int readBuf(String path, Pointer<? extends Pointer<fuse_common_h.fuse_bufvec>> bufp, long size, long offset, FileInfo fi) {
+//		return Errno.ENOSYS;
+//	}
 
 	/**
 	 * Perform BSD file locking operation
@@ -507,7 +625,10 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.9
 	 */
-	int flock(Pointer<Byte> path, Pointer<fuse_common_h.fuse_file_info> fi, int op);
+	@NotImplemented
+	default int flock(String path, FileInfo fi, int op) {
+		return Errno.ENOSYS;
+	}
 
 	/**
 	 * Allocates space for an open file
@@ -519,5 +640,8 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.9.1
 	 */
-	int fallocate(Pointer<Byte> path, int mode, long offset, long length, Pointer<fuse_common_h.fuse_file_info> fi);
+	@NotImplemented
+	default int fallocate(String path, int mode, long offset, long length, FileInfo fi) {
+		return Errno.ENOSYS;
+	}
 }
