@@ -75,7 +75,7 @@ public class Fuse implements AutoCloseable {
 			var args = flags.stream().map(s -> CLinker.toCString(s, scope)).toArray(Addressable[]::new);
 			var argc = args.length;
 			var argv = scope.allocateArray(MemoryLayouts.ADDRESS, args);
-			return fuse_h.fuse_main_real(argc, argv, fuseOperations, fuse_h.fuse_operations.sizeof(), null);
+			return fuse_h.fuse_main_real(argc, argv, fuseOperations, fuse_h.fuse_operations.sizeof(), MemoryAddress.NULL);
 		}
 	}
 

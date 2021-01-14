@@ -1,7 +1,5 @@
 package de.skymatic.fusepanama;
 
-import de.skymatic.fusepanama.macfuse.fuse_h;
-
 import java.nio.ByteBuffer;
 
 public interface FuseOperations {

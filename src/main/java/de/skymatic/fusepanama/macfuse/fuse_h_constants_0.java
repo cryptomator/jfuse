@@ -14,465 +14,9 @@ class fuse_h_constants_0 {
         "fuse",
     });
 
-    static final int __WORDSIZE() { return (int)64L; }
-
-    static final int __DARWIN_ONLY_64_BIT_INO_T() { return (int)0L; }
-
-    static final int __DARWIN_ONLY_UNIX_CONFORMANCE() { return (int)1L; }
-
-    static final int __DARWIN_ONLY_VERS_1050() { return (int)0L; }
-
-    static final int __DARWIN_UNIX03() { return (int)1L; }
-
-    static final int __DARWIN_64_BIT_INO_T() { return (int)1L; }
-
-    static final int __DARWIN_VERS_1050() { return (int)1L; }
-
-    static final int __DARWIN_NON_CANCELABLE() { return (int)0L; }
-
-    static final int __STDC_WANT_LIB_EXT1__() { return (int)1L; }
-
-    static final int __DARWIN_NO_LONG_LONG() { return (int)0L; }
-
-    static final int _DARWIN_FEATURE_64_BIT_INODE() { return (int)1L; }
-
-    static final int _DARWIN_FEATURE_ONLY_UNIX_CONFORMANCE() { return (int)1L; }
-
-    static final int _DARWIN_FEATURE_UNIX_CONFORMANCE() { return (int)3L; }
-
-    static final int __PTHREAD_SIZE__() { return (int)8176L; }
-
-    static final int __PTHREAD_ATTR_SIZE__() { return (int)56L; }
-
-    static final int __PTHREAD_MUTEXATTR_SIZE__() { return (int)8L; }
-
-    static final int __PTHREAD_MUTEX_SIZE__() { return (int)56L; }
-
-    static final int __PTHREAD_CONDATTR_SIZE__() { return (int)8L; }
-
-    static final int __PTHREAD_COND_SIZE__() { return (int)40L; }
-
-    static final int __PTHREAD_ONCE_SIZE__() { return (int)8L; }
-
-    static final int __PTHREAD_RWLOCK_SIZE__() { return (int)192L; }
-
-    static final int __PTHREAD_RWLOCKATTR_SIZE__() { return (int)16L; }
-
-    static final int INT8_MAX() { return (int)127L; }
-
-    static final int INT16_MAX() { return (int)32767L; }
-
-    static final int INT32_MAX() { return (int)2147483647L; }
-
-    static final int UINT8_MAX() { return (int)255L; }
-
-    static final int UINT16_MAX() { return (int)65535L; }
-
-    static final int _QUAD_HIGHWORD() { return (int)1L; }
-
-    static final int _QUAD_LOWWORD() { return (int)0L; }
-
-    static final int __DARWIN_LITTLE_ENDIAN() { return (int)1234L; }
-
-    static final int __DARWIN_BIG_ENDIAN() { return (int)4321L; }
-
-    static final int __DARWIN_PDP_ENDIAN() { return (int)3412L; }
-
-    static final int __API_TO_BE_DEPRECATED() { return (int)100000L; }
-
-    static final int __MAC_10_0() { return (int)1000L; }
-
-    static final int __MAC_10_1() { return (int)1010L; }
-
-    static final int __MAC_10_2() { return (int)1020L; }
-
-    static final int __MAC_10_3() { return (int)1030L; }
-
-    static final int __MAC_10_4() { return (int)1040L; }
-
-    static final int __MAC_10_5() { return (int)1050L; }
-
-    static final int __MAC_10_6() { return (int)1060L; }
-
-    static final int __MAC_10_7() { return (int)1070L; }
-
-    static final int __MAC_10_8() { return (int)1080L; }
-
-    static final int __MAC_10_9() { return (int)1090L; }
-
-    static final int __MAC_10_10() { return (int)101000L; }
-
-    static final int __MAC_10_10_2() { return (int)101002L; }
-
-    static final int __MAC_10_10_3() { return (int)101003L; }
-
-    static final int __MAC_10_11() { return (int)101100L; }
-
-    static final int __MAC_10_11_2() { return (int)101102L; }
-
-    static final int __MAC_10_11_3() { return (int)101103L; }
-
-    static final int __MAC_10_11_4() { return (int)101104L; }
-
-    static final int __MAC_10_12() { return (int)101200L; }
-
-    static final int __MAC_10_12_1() { return (int)101201L; }
-
-    static final int __MAC_10_12_2() { return (int)101202L; }
-
-    static final int __MAC_10_12_4() { return (int)101204L; }
-
-    static final int __MAC_10_13() { return (int)101300L; }
-
-    static final int __MAC_10_13_1() { return (int)101301L; }
-
-    static final int __MAC_10_13_2() { return (int)101302L; }
-
-    static final int __MAC_10_13_4() { return (int)101304L; }
-
-    static final int __MAC_10_14() { return (int)101400L; }
-
-    static final int __MAC_10_14_1() { return (int)101401L; }
-
-    static final int __MAC_10_14_4() { return (int)101404L; }
-
-    static final int __MAC_10_14_6() { return (int)101406L; }
-
-    static final int __MAC_10_15() { return (int)101500L; }
-
-    static final int __MAC_10_15_1() { return (int)101501L; }
-
-    static final int __MAC_10_15_4() { return (int)101504L; }
-
-    static final int __MAC_10_16() { return (int)101600L; }
-
-    static final int __MAC_11_0() { return (int)110000L; }
-
-    static final int __MAC_11_1() { return (int)110100L; }
-
-    static final int __IPHONE_2_0() { return (int)20000L; }
-
-    static final int __IPHONE_2_1() { return (int)20100L; }
-
-    static final int __IPHONE_2_2() { return (int)20200L; }
-
-    static final int __IPHONE_3_0() { return (int)30000L; }
-
-    static final int __IPHONE_3_1() { return (int)30100L; }
-
-    static final int __IPHONE_3_2() { return (int)30200L; }
-
-    static final int __IPHONE_4_0() { return (int)40000L; }
-
-    static final int __IPHONE_4_1() { return (int)40100L; }
-
-    static final int __IPHONE_4_2() { return (int)40200L; }
-
-    static final int __IPHONE_4_3() { return (int)40300L; }
-
-    static final int __IPHONE_5_0() { return (int)50000L; }
-
-    static final int __IPHONE_5_1() { return (int)50100L; }
-
-    static final int __IPHONE_6_0() { return (int)60000L; }
-
-    static final int __IPHONE_6_1() { return (int)60100L; }
-
-    static final int __IPHONE_7_0() { return (int)70000L; }
-
-    static final int __IPHONE_7_1() { return (int)70100L; }
-
-    static final int __IPHONE_8_0() { return (int)80000L; }
-
-    static final int __IPHONE_8_1() { return (int)80100L; }
-
-    static final int __IPHONE_8_2() { return (int)80200L; }
-
-    static final int __IPHONE_8_3() { return (int)80300L; }
-
-    static final int __IPHONE_8_4() { return (int)80400L; }
-
-    static final int __IPHONE_9_0() { return (int)90000L; }
-
-    static final int __IPHONE_9_1() { return (int)90100L; }
-
-    static final int __IPHONE_9_2() { return (int)90200L; }
-
-    static final int __IPHONE_9_3() { return (int)90300L; }
-
-    static final int __IPHONE_10_0() { return (int)100000L; }
-
-    static final int __IPHONE_10_1() { return (int)100100L; }
-
-    static final int __IPHONE_10_2() { return (int)100200L; }
-
-    static final int __IPHONE_10_3() { return (int)100300L; }
-
-    static final int __IPHONE_11_0() { return (int)110000L; }
-
-    static final int __IPHONE_11_1() { return (int)110100L; }
-
-    static final int __IPHONE_11_2() { return (int)110200L; }
-
-    static final int __IPHONE_11_3() { return (int)110300L; }
-
-    static final int __IPHONE_11_4() { return (int)110400L; }
-
-    static final int __IPHONE_12_0() { return (int)120000L; }
-
-    static final int __IPHONE_12_1() { return (int)120100L; }
-
-    static final int __IPHONE_12_2() { return (int)120200L; }
-
-    static final int __IPHONE_12_3() { return (int)120300L; }
-
-    static final int __IPHONE_12_4() { return (int)120400L; }
-
-    static final int __IPHONE_13_0() { return (int)130000L; }
-
-    static final int __IPHONE_13_1() { return (int)130100L; }
-
-    static final int __IPHONE_13_2() { return (int)130200L; }
-
-    static final int __IPHONE_13_3() { return (int)130300L; }
-
-    static final int __IPHONE_13_4() { return (int)130400L; }
-
-    static final int __IPHONE_13_5() { return (int)130500L; }
-
-    static final int __IPHONE_13_6() { return (int)130600L; }
-
-    static final int __IPHONE_13_7() { return (int)130700L; }
-
-    static final int __IPHONE_14_0() { return (int)140000L; }
-
-    static final int __IPHONE_14_1() { return (int)140100L; }
-
-    static final int __IPHONE_14_2() { return (int)140200L; }
-
-    static final int __IPHONE_14_3() { return (int)140300L; }
-
-    static final int __TVOS_9_0() { return (int)90000L; }
-
-    static final int __TVOS_9_1() { return (int)90100L; }
-
-    static final int __TVOS_9_2() { return (int)90200L; }
-
-    static final int __TVOS_10_0() { return (int)100000L; }
-
-    static final int __TVOS_10_0_1() { return (int)100001L; }
-
-    static final int __TVOS_10_1() { return (int)100100L; }
-
-    static final int __TVOS_10_2() { return (int)100200L; }
-
-    static final int __TVOS_11_0() { return (int)110000L; }
-
-    static final int __TVOS_11_1() { return (int)110100L; }
-
-    static final int __TVOS_11_2() { return (int)110200L; }
-
-    static final int __TVOS_11_3() { return (int)110300L; }
-
-    static final int __TVOS_11_4() { return (int)110400L; }
-
-    static final int __TVOS_12_0() { return (int)120000L; }
-
-    static final int __TVOS_12_1() { return (int)120100L; }
-
-    static final int __TVOS_12_2() { return (int)120200L; }
-
-    static final int __TVOS_12_3() { return (int)120300L; }
-
-    static final int __TVOS_12_4() { return (int)120400L; }
-
-    static final int __TVOS_13_0() { return (int)130000L; }
-
-    static final int __TVOS_13_2() { return (int)130200L; }
-
-    static final int __TVOS_13_3() { return (int)130300L; }
-
-    static final int __TVOS_13_4() { return (int)130400L; }
-
-    static final int __TVOS_14_0() { return (int)140000L; }
-
-    static final int __TVOS_14_1() { return (int)140100L; }
-
-    static final int __TVOS_14_2() { return (int)140200L; }
-
-    static final int __TVOS_14_3() { return (int)140300L; }
-
-    static final int __WATCHOS_1_0() { return (int)10000L; }
-
-    static final int __WATCHOS_2_0() { return (int)20000L; }
-
-    static final int __WATCHOS_2_1() { return (int)20100L; }
-
-    static final int __WATCHOS_2_2() { return (int)20200L; }
-
-    static final int __WATCHOS_3_0() { return (int)30000L; }
-
-    static final int __WATCHOS_3_1() { return (int)30100L; }
-
-    static final int __WATCHOS_3_1_1() { return (int)30101L; }
-
-    static final int __WATCHOS_3_2() { return (int)30200L; }
-
-    static final int __WATCHOS_4_0() { return (int)40000L; }
-
-    static final int __WATCHOS_4_1() { return (int)40100L; }
-
-    static final int __WATCHOS_4_2() { return (int)40200L; }
-
-    static final int __WATCHOS_4_3() { return (int)40300L; }
-
-    static final int __WATCHOS_5_0() { return (int)50000L; }
-
-    static final int __WATCHOS_5_1() { return (int)50100L; }
-
-    static final int __WATCHOS_5_2() { return (int)50200L; }
-
-    static final int __WATCHOS_5_3() { return (int)50300L; }
-
-    static final int __WATCHOS_6_0() { return (int)60000L; }
-
-    static final int __WATCHOS_6_1() { return (int)60100L; }
-
-    static final int __WATCHOS_6_2() { return (int)60200L; }
-
-    static final int __WATCHOS_7_0() { return (int)70000L; }
-
-    static final int __WATCHOS_7_1() { return (int)70100L; }
-
-    static final int __WATCHOS_7_2() { return (int)70200L; }
-
-    static final int MAC_OS_X_VERSION_10_0() { return (int)1000L; }
-
-    static final int MAC_OS_X_VERSION_10_1() { return (int)1010L; }
-
-    static final int MAC_OS_X_VERSION_10_2() { return (int)1020L; }
-
-    static final int MAC_OS_X_VERSION_10_3() { return (int)1030L; }
-
-    static final int MAC_OS_X_VERSION_10_4() { return (int)1040L; }
-
-    static final int MAC_OS_X_VERSION_10_5() { return (int)1050L; }
-
-    static final int MAC_OS_X_VERSION_10_6() { return (int)1060L; }
-
-    static final int MAC_OS_X_VERSION_10_7() { return (int)1070L; }
-
-    static final int MAC_OS_X_VERSION_10_8() { return (int)1080L; }
-
-    static final int MAC_OS_X_VERSION_10_9() { return (int)1090L; }
-
-    static final int MAC_OS_X_VERSION_10_10() { return (int)101000L; }
-
-    static final int MAC_OS_X_VERSION_10_10_2() { return (int)101002L; }
-
-    static final int MAC_OS_X_VERSION_10_10_3() { return (int)101003L; }
-
-    static final int MAC_OS_X_VERSION_10_11() { return (int)101100L; }
-
-    static final int MAC_OS_X_VERSION_10_11_2() { return (int)101102L; }
-
-    static final int MAC_OS_X_VERSION_10_11_3() { return (int)101103L; }
-
-    static final int MAC_OS_X_VERSION_10_11_4() { return (int)101104L; }
-
-    static final int MAC_OS_X_VERSION_10_12() { return (int)101200L; }
-
-    static final int MAC_OS_X_VERSION_10_12_1() { return (int)101201L; }
-
-    static final int MAC_OS_X_VERSION_10_12_2() { return (int)101202L; }
-
-    static final int MAC_OS_X_VERSION_10_12_4() { return (int)101204L; }
-
-    static final int MAC_OS_X_VERSION_10_13() { return (int)101300L; }
-
-    static final int MAC_OS_X_VERSION_10_13_1() { return (int)101301L; }
-
-    static final int MAC_OS_X_VERSION_10_13_2() { return (int)101302L; }
-
-    static final int MAC_OS_X_VERSION_10_13_4() { return (int)101304L; }
-
-    static final int MAC_OS_X_VERSION_10_14() { return (int)101400L; }
-
-    static final int MAC_OS_X_VERSION_10_14_1() { return (int)101401L; }
-
-    static final int MAC_OS_X_VERSION_10_14_4() { return (int)101404L; }
-
-    static final int MAC_OS_X_VERSION_10_14_6() { return (int)101406L; }
-
-    static final int MAC_OS_X_VERSION_10_15() { return (int)101500L; }
-
-    static final int MAC_OS_X_VERSION_10_15_1() { return (int)101501L; }
-
-    static final int MAC_OS_X_VERSION_10_16() { return (int)101600L; }
-
-    static final int MAC_OS_VERSION_11_0() { return (int)110000L; }
-
-    static final int __DRIVERKIT_19_0() { return (int)190000L; }
-
-    static final int __DRIVERKIT_20_0() { return (int)200000L; }
-
-    static final int __ENABLE_LEGACY_MAC_AVAILABILITY() { return (int)1L; }
-
-    static final int __DARWIN_FD_SETSIZE() { return (int)1024L; }
-
-    static final int __DARWIN_NBBY() { return (int)8L; }
-
     static final int FUSE_MAJOR_VERSION() { return (int)2L; }
 
     static final int FUSE_MINOR_VERSION() { return (int)9L; }
-
-    static final int S_IFMT() { return (int)61440L; }
-
-    static final int S_IFIFO() { return (int)4096L; }
-
-    static final int S_IFCHR() { return (int)8192L; }
-
-    static final int S_IFDIR() { return (int)16384L; }
-
-    static final int S_IFBLK() { return (int)24576L; }
-
-    static final int S_IFREG() { return (int)32768L; }
-
-    static final int S_IFLNK() { return (int)40960L; }
-
-    static final int S_IFSOCK() { return (int)49152L; }
-
-    static final int S_IFWHT() { return (int)57344L; }
-
-    static final int S_IRWXU() { return (int)448L; }
-
-    static final int S_IRUSR() { return (int)256L; }
-
-    static final int S_IWUSR() { return (int)128L; }
-
-    static final int S_IXUSR() { return (int)64L; }
-
-    static final int S_IRWXG() { return (int)56L; }
-
-    static final int S_IRGRP() { return (int)32L; }
-
-    static final int S_IWGRP() { return (int)16L; }
-
-    static final int S_IXGRP() { return (int)8L; }
-
-    static final int S_IRWXO() { return (int)7L; }
-
-    static final int S_IROTH() { return (int)4L; }
-
-    static final int S_IWOTH() { return (int)2L; }
-
-    static final int S_IXOTH() { return (int)1L; }
-
-    static final int S_ISUID() { return (int)2048L; }
-
-    static final int S_ISGID() { return (int)1024L; }
-
-    static final int S_ISVTX() { return (int)512L; }
 
     static final int S_BLKSIZE() { return (int)512L; }
 
@@ -526,1490 +70,3040 @@ class fuse_h_constants_0 {
 
     static final int FUSE_IOCTL_MAX_IOV() { return (int)256L; }
 
-    static final int O_RDONLY() { return (int)0L; }
+    static final MemoryLayout timespec$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_LONG.withName("tv_sec"),
+        C_LONG.withName("tv_nsec")
+    ).withName("timespec");
+    static final jdk.incubator.foreign.MemoryLayout timespec$struct$LAYOUT() { return timespec$struct$LAYOUT_; }
+
+    static final MemoryLayout timespec$tv_sec$LAYOUT_ = C_LONG;
+    static final jdk.incubator.foreign.MemoryLayout timespec$tv_sec$LAYOUT() { return timespec$tv_sec$LAYOUT_; }
+
+    static final VarHandle timespec$tv_sec$VH_ = timespec$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("tv_sec"));
+    static final java.lang.invoke.VarHandle timespec$tv_sec$VH() { return timespec$tv_sec$VH_; }
+
+    static final MemoryLayout timespec$tv_nsec$LAYOUT_ = C_LONG;
+    static final jdk.incubator.foreign.MemoryLayout timespec$tv_nsec$LAYOUT() { return timespec$tv_nsec$LAYOUT_; }
+
+    static final VarHandle timespec$tv_nsec$VH_ = timespec$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("tv_nsec"));
+    static final java.lang.invoke.VarHandle timespec$tv_nsec$VH() { return timespec$tv_nsec$VH_; }
+
+    static final MemoryLayout ostat$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_SHORT.withName("st_dev"),
+        MemoryLayout.ofPaddingBits(48),
+        C_LONG_LONG.withName("st_ino"),
+        C_SHORT.withName("st_mode"),
+        C_SHORT.withName("st_nlink"),
+        C_SHORT.withName("st_uid"),
+        C_SHORT.withName("st_gid"),
+        C_SHORT.withName("st_rdev"),
+        MemoryLayout.ofPaddingBits(16),
+        C_INT.withName("st_size"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("st_atimespec"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("st_mtimespec"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("st_ctimespec"),
+        C_INT.withName("st_blksize"),
+        C_INT.withName("st_blocks"),
+        C_INT.withName("st_flags"),
+        C_INT.withName("st_gen")
+    ).withName("ostat");
+    static final jdk.incubator.foreign.MemoryLayout ostat$struct$LAYOUT() { return ostat$struct$LAYOUT_; }
+
+    static final MemoryLayout ostat$st_dev$LAYOUT_ = C_SHORT;
+    static final jdk.incubator.foreign.MemoryLayout ostat$st_dev$LAYOUT() { return ostat$st_dev$LAYOUT_; }
+
+    static final VarHandle ostat$st_dev$VH_ = ostat$struct$LAYOUT_.varHandle(short.class, MemoryLayout.PathElement.groupElement("st_dev"));
+    static final java.lang.invoke.VarHandle ostat$st_dev$VH() { return ostat$st_dev$VH_; }
+
+    static final MemoryLayout ostat$st_ino$LAYOUT_ = C_LONG_LONG;
+    static final jdk.incubator.foreign.MemoryLayout ostat$st_ino$LAYOUT() { return ostat$st_ino$LAYOUT_; }
+
+    static final VarHandle ostat$st_ino$VH_ = ostat$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("st_ino"));
+    static final java.lang.invoke.VarHandle ostat$st_ino$VH() { return ostat$st_ino$VH_; }
+
+    static final MemoryLayout ostat$st_mode$LAYOUT_ = C_SHORT;
+    static final jdk.incubator.foreign.MemoryLayout ostat$st_mode$LAYOUT() { return ostat$st_mode$LAYOUT_; }
+
+    static final VarHandle ostat$st_mode$VH_ = ostat$struct$LAYOUT_.varHandle(short.class, MemoryLayout.PathElement.groupElement("st_mode"));
+    static final java.lang.invoke.VarHandle ostat$st_mode$VH() { return ostat$st_mode$VH_; }
+
+    static final MemoryLayout ostat$st_nlink$LAYOUT_ = C_SHORT;
+    static final jdk.incubator.foreign.MemoryLayout ostat$st_nlink$LAYOUT() { return ostat$st_nlink$LAYOUT_; }
+
+    static final VarHandle ostat$st_nlink$VH_ = ostat$struct$LAYOUT_.varHandle(short.class, MemoryLayout.PathElement.groupElement("st_nlink"));
+    static final java.lang.invoke.VarHandle ostat$st_nlink$VH() { return ostat$st_nlink$VH_; }
+
+    static final MemoryLayout ostat$st_uid$LAYOUT_ = C_SHORT;
+    static final jdk.incubator.foreign.MemoryLayout ostat$st_uid$LAYOUT() { return ostat$st_uid$LAYOUT_; }
+
+    static final VarHandle ostat$st_uid$VH_ = ostat$struct$LAYOUT_.varHandle(short.class, MemoryLayout.PathElement.groupElement("st_uid"));
+    static final java.lang.invoke.VarHandle ostat$st_uid$VH() { return ostat$st_uid$VH_; }
+
+    static final MemoryLayout ostat$st_gid$LAYOUT_ = C_SHORT;
+    static final jdk.incubator.foreign.MemoryLayout ostat$st_gid$LAYOUT() { return ostat$st_gid$LAYOUT_; }
+
+    static final VarHandle ostat$st_gid$VH_ = ostat$struct$LAYOUT_.varHandle(short.class, MemoryLayout.PathElement.groupElement("st_gid"));
+    static final java.lang.invoke.VarHandle ostat$st_gid$VH() { return ostat$st_gid$VH_; }
+
+    static final MemoryLayout ostat$st_rdev$LAYOUT_ = C_SHORT;
+    static final jdk.incubator.foreign.MemoryLayout ostat$st_rdev$LAYOUT() { return ostat$st_rdev$LAYOUT_; }
+
+    static final VarHandle ostat$st_rdev$VH_ = ostat$struct$LAYOUT_.varHandle(short.class, MemoryLayout.PathElement.groupElement("st_rdev"));
+    static final java.lang.invoke.VarHandle ostat$st_rdev$VH() { return ostat$st_rdev$VH_; }
+
+    static final MemoryLayout ostat$st_size$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout ostat$st_size$LAYOUT() { return ostat$st_size$LAYOUT_; }
+
+    static final VarHandle ostat$st_size$VH_ = ostat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_size"));
+    static final java.lang.invoke.VarHandle ostat$st_size$VH() { return ostat$st_size$VH_; }
+
+    static final MemoryLayout ostat$st_blksize$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout ostat$st_blksize$LAYOUT() { return ostat$st_blksize$LAYOUT_; }
+
+    static final VarHandle ostat$st_blksize$VH_ = ostat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_blksize"));
+    static final java.lang.invoke.VarHandle ostat$st_blksize$VH() { return ostat$st_blksize$VH_; }
 
-    static final int O_WRONLY() { return (int)1L; }
+    static final MemoryLayout ostat$st_blocks$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout ostat$st_blocks$LAYOUT() { return ostat$st_blocks$LAYOUT_; }
 
-    static final int O_RDWR() { return (int)2L; }
+    static final VarHandle ostat$st_blocks$VH_ = ostat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_blocks"));
+    static final java.lang.invoke.VarHandle ostat$st_blocks$VH() { return ostat$st_blocks$VH_; }
 
-    static final int O_ACCMODE() { return (int)3L; }
+    static final MemoryLayout ostat$st_flags$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout ostat$st_flags$LAYOUT() { return ostat$st_flags$LAYOUT_; }
 
-    static final int FREAD() { return (int)1L; }
+    static final VarHandle ostat$st_flags$VH_ = ostat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_flags"));
+    static final java.lang.invoke.VarHandle ostat$st_flags$VH() { return ostat$st_flags$VH_; }
 
-    static final int FWRITE() { return (int)2L; }
+    static final MemoryLayout ostat$st_gen$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout ostat$st_gen$LAYOUT() { return ostat$st_gen$LAYOUT_; }
 
-    static final int O_NONBLOCK() { return (int)4L; }
+    static final VarHandle ostat$st_gen$VH_ = ostat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_gen"));
+    static final java.lang.invoke.VarHandle ostat$st_gen$VH() { return ostat$st_gen$VH_; }
 
-    static final int O_APPEND() { return (int)8L; }
-
-    static final int O_SYNC() { return (int)128L; }
-
-    static final int O_SHLOCK() { return (int)16L; }
-
-    static final int O_EXLOCK() { return (int)32L; }
-
-    static final int O_ASYNC() { return (int)64L; }
-
-    static final int O_NOFOLLOW() { return (int)256L; }
-
-    static final int O_CREAT() { return (int)512L; }
-
-    static final int O_TRUNC() { return (int)1024L; }
-
-    static final int O_EXCL() { return (int)2048L; }
-
-    static final int O_EVTONLY() { return (int)32768L; }
-
-    static final int O_NOCTTY() { return (int)131072L; }
-
-    static final int O_DIRECTORY() { return (int)1048576L; }
-
-    static final int O_SYMLINK() { return (int)2097152L; }
-
-    static final int O_DSYNC() { return (int)4194304L; }
-
-    static final int O_CLOEXEC() { return (int)16777216L; }
-
-    static final int O_NOFOLLOW_ANY() { return (int)536870912L; }
-
-    static final int AT_EACCESS() { return (int)16L; }
-
-    static final int AT_SYMLINK_NOFOLLOW() { return (int)32L; }
-
-    static final int AT_SYMLINK_FOLLOW() { return (int)64L; }
-
-    static final int AT_REMOVEDIR() { return (int)128L; }
-
-    static final int AT_REALDEV() { return (int)512L; }
-
-    static final int AT_FDONLY() { return (int)1024L; }
-
-    static final int O_DP_GETRAWENCRYPTED() { return (int)1L; }
-
-    static final int O_DP_GETRAWUNENCRYPTED() { return (int)2L; }
-
-    static final int CPF_OVERWRITE() { return (int)1L; }
-
-    static final int CPF_IGNORE_MODE() { return (int)2L; }
-
-    static final int F_DUPFD() { return (int)0L; }
-
-    static final int F_GETFD() { return (int)1L; }
-
-    static final int F_SETFD() { return (int)2L; }
-
-    static final int F_GETFL() { return (int)3L; }
-
-    static final int F_SETFL() { return (int)4L; }
-
-    static final int F_GETOWN() { return (int)5L; }
-
-    static final int F_SETOWN() { return (int)6L; }
-
-    static final int F_GETLK() { return (int)7L; }
-
-    static final int F_SETLK() { return (int)8L; }
-
-    static final int F_SETLKW() { return (int)9L; }
-
-    static final int F_SETLKWTIMEOUT() { return (int)10L; }
-
-    static final int F_FLUSH_DATA() { return (int)40L; }
-
-    static final int F_CHKCLEAN() { return (int)41L; }
-
-    static final int F_PREALLOCATE() { return (int)42L; }
-
-    static final int F_SETSIZE() { return (int)43L; }
-
-    static final int F_RDADVISE() { return (int)44L; }
-
-    static final int F_RDAHEAD() { return (int)45L; }
-
-    static final int F_NOCACHE() { return (int)48L; }
-
-    static final int F_LOG2PHYS() { return (int)49L; }
-
-    static final int F_GETPATH() { return (int)50L; }
-
-    static final int F_FULLFSYNC() { return (int)51L; }
-
-    static final int F_PATHPKG_CHECK() { return (int)52L; }
-
-    static final int F_FREEZE_FS() { return (int)53L; }
-
-    static final int F_THAW_FS() { return (int)54L; }
-
-    static final int F_GLOBAL_NOCACHE() { return (int)55L; }
-
-    static final int F_ADDSIGS() { return (int)59L; }
-
-    static final int F_ADDFILESIGS() { return (int)61L; }
-
-    static final int F_NODIRECT() { return (int)62L; }
-
-    static final int F_GETPROTECTIONCLASS() { return (int)63L; }
-
-    static final int F_SETPROTECTIONCLASS() { return (int)64L; }
-
-    static final int F_LOG2PHYS_EXT() { return (int)65L; }
-
-    static final int F_GETLKPID() { return (int)66L; }
-
-    static final int F_SETBACKINGSTORE() { return (int)70L; }
-
-    static final int F_GETPATH_MTMINFO() { return (int)71L; }
-
-    static final int F_GETCODEDIR() { return (int)72L; }
-
-    static final int F_SETNOSIGPIPE() { return (int)73L; }
-
-    static final int F_GETNOSIGPIPE() { return (int)74L; }
-
-    static final int F_TRANSCODEKEY() { return (int)75L; }
-
-    static final int F_SINGLE_WRITER() { return (int)76L; }
-
-    static final int F_GETPROTECTIONLEVEL() { return (int)77L; }
-
-    static final int F_FINDSIGS() { return (int)78L; }
-
-    static final int F_ADDFILESIGS_FOR_DYLD_SIM() { return (int)83L; }
-
-    static final int F_BARRIERFSYNC() { return (int)85L; }
-
-    static final int F_ADDFILESIGS_RETURN() { return (int)97L; }
-
-    static final int F_CHECK_LV() { return (int)98L; }
-
-    static final int F_PUNCHHOLE() { return (int)99L; }
-
-    static final int F_TRIM_ACTIVE_FILE() { return (int)100L; }
-
-    static final int F_SPECULATIVE_READ() { return (int)101L; }
-
-    static final int F_GETPATH_NOFIRMLINK() { return (int)102L; }
-
-    static final int F_ADDFILESIGS_INFO() { return (int)103L; }
-
-    static final int F_ADDFILESUPPL() { return (int)104L; }
-
-    static final int F_GETSIGSINFO() { return (int)105L; }
-
-    static final int FCNTL_FS_SPECIFIC_BASE() { return (int)65536L; }
-
-    static final int F_DUPFD_CLOEXEC() { return (int)67L; }
-
-    static final int FD_CLOEXEC() { return (int)1L; }
-
-    static final int F_RDLCK() { return (int)1L; }
-
-    static final int F_UNLCK() { return (int)2L; }
-
-    static final int F_WRLCK() { return (int)3L; }
-
-    static final int SEEK_SET() { return (int)0L; }
-
-    static final int SEEK_CUR() { return (int)1L; }
-
-    static final int SEEK_END() { return (int)2L; }
-
-    static final int SEEK_HOLE() { return (int)3L; }
-
-    static final int SEEK_DATA() { return (int)4L; }
-
-    static final int F_ALLOCATECONTIG() { return (int)2L; }
-
-    static final int F_ALLOCATEALL() { return (int)4L; }
-
-    static final int F_PEOFPOSMODE() { return (int)3L; }
-
-    static final int F_VOLPOSMODE() { return (int)4L; }
-
-    static final int USER_FSIGNATURES_CDHASH_LEN() { return (int)20L; }
-
-    static final int GETSIGSINFO_PLATFORM_BINARY() { return (int)1L; }
-
-    static final int LOCK_SH() { return (int)1L; }
-
-    static final int LOCK_EX() { return (int)2L; }
-
-    static final int LOCK_NB() { return (int)4L; }
-
-    static final int LOCK_UN() { return (int)8L; }
-
-    static final int O_ALERT() { return (int)536870912L; }
-
-    static final int _FORTIFY_SOURCE() { return (int)2L; }
-
-    static final int CLOCKS_PER_SEC() { return (int)1000000L; }
-
-    static final int TIME_UTC() { return (int)1L; }
-
-    static final int ST_RDONLY() { return (int)1L; }
-
-    static final int ST_NOSUID() { return (int)2L; }
-
-    static final int BSD() { return (int)199506L; }
-
-    static final int BSD4_3() { return (int)1L; }
-
-    static final int BSD4_4() { return (int)1L; }
-
-    static final int NeXTBSD() { return (int)1995064L; }
-
-    static final int NeXTBSD4_0() { return (int)0L; }
-
-    static final int CHILD_MAX() { return (int)266L; }
-
-    static final int LINK_MAX() { return (int)32767L; }
-
-    static final int MAX_CANON() { return (int)1024L; }
-
-    static final int MAX_INPUT() { return (int)1024L; }
-
-    static final int NAME_MAX() { return (int)255L; }
-
-    static final int NGROUPS_MAX() { return (int)16L; }
-
-    static final int OPEN_MAX() { return (int)10240L; }
-
-    static final int PATH_MAX() { return (int)1024L; }
-
-    static final int PIPE_BUF() { return (int)512L; }
-
-    static final int BC_BASE_MAX() { return (int)99L; }
-
-    static final int BC_DIM_MAX() { return (int)2048L; }
-
-    static final int BC_SCALE_MAX() { return (int)99L; }
-
-    static final int BC_STRING_MAX() { return (int)1000L; }
-
-    static final int CHARCLASS_NAME_MAX() { return (int)14L; }
-
-    static final int COLL_WEIGHTS_MAX() { return (int)2L; }
-
-    static final int EQUIV_CLASS_MAX() { return (int)2L; }
-
-    static final int EXPR_NEST_MAX() { return (int)32L; }
-
-    static final int LINE_MAX() { return (int)2048L; }
-
-    static final int RE_DUP_MAX() { return (int)255L; }
-
-    static final int NZERO() { return (int)20L; }
-
-    static final int MAXCOMLEN() { return (int)16L; }
-
-    static final int MAXINTERP() { return (int)64L; }
-
-    static final int MAXLOGNAME() { return (int)255L; }
-
-    static final int NOFILE() { return (int)256L; }
-
-    static final int NOGROUP() { return (int)65535L; }
-
-    static final int MAXHOSTNAMELEN() { return (int)256L; }
-
-    static final int MAXDOMNAMELEN() { return (int)256L; }
-
-    static final int NBPG() { return (int)4096L; }
-
-    static final int PGSHIFT() { return (int)12L; }
-
-    static final int DEV_BSIZE() { return (int)512L; }
-
-    static final int DEV_BSHIFT() { return (int)9L; }
-
-    static final int BLKDEV_IOSIZE() { return (int)2048L; }
-
-    static final int CLSIZE() { return (int)1L; }
-
-    static final int CLSIZELOG2() { return (int)0L; }
-
-    static final int MSIZESHIFT() { return (int)8L; }
-
-    static final int MCLSHIFT() { return (int)11L; }
-
-    static final int MBIGCLSHIFT() { return (int)12L; }
-
-    static final int M16KCLSHIFT() { return (int)14L; }
-
-    static final int __DARWIN_CLK_TCK() { return (int)100L; }
-
-    static final int CHAR_BIT() { return (int)8L; }
-
-    static final int MB_LEN_MAX() { return (int)6L; }
-
-    static final int SCHAR_MAX() { return (int)127L; }
-
-    static final int UCHAR_MAX() { return (int)255L; }
-
-    static final int CHAR_MAX() { return (int)127L; }
-
-    static final int USHRT_MAX() { return (int)65535L; }
-
-    static final int SHRT_MAX() { return (int)32767L; }
-
-    static final int INT_MAX() { return (int)2147483647L; }
-
-    static final int LONG_BIT() { return (int)64L; }
-
-    static final int WORD_BIT() { return (int)32L; }
-
-    static final int _POSIX_ARG_MAX() { return (int)4096L; }
-
-    static final int _POSIX_CHILD_MAX() { return (int)25L; }
-
-    static final int _POSIX_LINK_MAX() { return (int)8L; }
-
-    static final int _POSIX_MAX_CANON() { return (int)255L; }
-
-    static final int _POSIX_MAX_INPUT() { return (int)255L; }
-
-    static final int _POSIX_NAME_MAX() { return (int)14L; }
-
-    static final int _POSIX_NGROUPS_MAX() { return (int)8L; }
-
-    static final int _POSIX_OPEN_MAX() { return (int)20L; }
-
-    static final int _POSIX_PATH_MAX() { return (int)256L; }
-
-    static final int _POSIX_PIPE_BUF() { return (int)512L; }
-
-    static final int _POSIX_SSIZE_MAX() { return (int)32767L; }
-
-    static final int _POSIX_STREAM_MAX() { return (int)8L; }
-
-    static final int _POSIX_TZNAME_MAX() { return (int)6L; }
-
-    static final int _POSIX2_BC_BASE_MAX() { return (int)99L; }
-
-    static final int _POSIX2_BC_DIM_MAX() { return (int)2048L; }
-
-    static final int _POSIX2_BC_SCALE_MAX() { return (int)99L; }
-
-    static final int _POSIX2_BC_STRING_MAX() { return (int)1000L; }
-
-    static final int _POSIX2_EQUIV_CLASS_MAX() { return (int)2L; }
-
-    static final int _POSIX2_EXPR_NEST_MAX() { return (int)32L; }
-
-    static final int _POSIX2_LINE_MAX() { return (int)2048L; }
-
-    static final int _POSIX2_RE_DUP_MAX() { return (int)255L; }
-
-    static final int _POSIX_AIO_LISTIO_MAX() { return (int)2L; }
-
-    static final int _POSIX_AIO_MAX() { return (int)1L; }
-
-    static final int _POSIX_DELAYTIMER_MAX() { return (int)32L; }
-
-    static final int _POSIX_MQ_OPEN_MAX() { return (int)8L; }
-
-    static final int _POSIX_MQ_PRIO_MAX() { return (int)32L; }
-
-    static final int _POSIX_RTSIG_MAX() { return (int)8L; }
-
-    static final int _POSIX_SEM_NSEMS_MAX() { return (int)256L; }
-
-    static final int _POSIX_SEM_VALUE_MAX() { return (int)32767L; }
-
-    static final int _POSIX_SIGQUEUE_MAX() { return (int)32L; }
-
-    static final int _POSIX_TIMER_MAX() { return (int)32L; }
-
-    static final int _POSIX_CLOCKRES_MIN() { return (int)20000000L; }
-
-    static final int _POSIX_THREAD_DESTRUCTOR_ITERATIONS() { return (int)4L; }
-
-    static final int _POSIX_THREAD_KEYS_MAX() { return (int)128L; }
-
-    static final int _POSIX_THREAD_THREADS_MAX() { return (int)64L; }
-
-    static final int PTHREAD_DESTRUCTOR_ITERATIONS() { return (int)4L; }
-
-    static final int PTHREAD_KEYS_MAX() { return (int)512L; }
-
-    static final int PTHREAD_STACK_MIN() { return (int)8192L; }
-
-    static final int _POSIX_HOST_NAME_MAX() { return (int)255L; }
-
-    static final int _POSIX_LOGIN_NAME_MAX() { return (int)9L; }
-
-    static final int _POSIX_SS_REPL_MAX() { return (int)4L; }
-
-    static final int _POSIX_SYMLINK_MAX() { return (int)255L; }
-
-    static final int _POSIX_SYMLOOP_MAX() { return (int)8L; }
-
-    static final int _POSIX_TRACE_EVENT_NAME_MAX() { return (int)30L; }
-
-    static final int _POSIX_TRACE_NAME_MAX() { return (int)8L; }
-
-    static final int _POSIX_TRACE_SYS_MAX() { return (int)8L; }
-
-    static final int _POSIX_TRACE_USER_EVENT_MAX() { return (int)32L; }
-
-    static final int _POSIX_TTY_NAME_MAX() { return (int)9L; }
-
-    static final int _POSIX2_CHARCLASS_NAME_MAX() { return (int)14L; }
-
-    static final int _POSIX2_COLL_WEIGHTS_MAX() { return (int)2L; }
-
-    static final int PASS_MAX() { return (int)128L; }
-
-    static final int NL_ARGMAX() { return (int)9L; }
-
-    static final int NL_LANGMAX() { return (int)14L; }
-
-    static final int NL_MSGMAX() { return (int)32767L; }
-
-    static final int NL_NMAX() { return (int)1L; }
-
-    static final int NL_SETMAX() { return (int)255L; }
-
-    static final int NL_TEXTMAX() { return (int)2048L; }
-
-    static final int _XOPEN_IOV_MAX() { return (int)16L; }
-
-    static final int IOV_MAX() { return (int)1024L; }
-
-    static final int _XOPEN_NAME_MAX() { return (int)255L; }
-
-    static final int _XOPEN_PATH_MAX() { return (int)1024L; }
-
-    static final int __DARWIN_NSIG() { return (int)32L; }
-
-    static final int _I386_SIGNAL_H_() { return (int)1L; }
-
-    static final int SIGHUP() { return (int)1L; }
-
-    static final int SIGINT() { return (int)2L; }
-
-    static final int SIGQUIT() { return (int)3L; }
-
-    static final int SIGILL() { return (int)4L; }
-
-    static final int SIGTRAP() { return (int)5L; }
-
-    static final int SIGABRT() { return (int)6L; }
-
-    static final int SIGEMT() { return (int)7L; }
-
-    static final int SIGFPE() { return (int)8L; }
-
-    static final int SIGKILL() { return (int)9L; }
-
-    static final int SIGBUS() { return (int)10L; }
-
-    static final int SIGSEGV() { return (int)11L; }
-
-    static final int SIGSYS() { return (int)12L; }
-
-    static final int SIGPIPE() { return (int)13L; }
-
-    static final int SIGALRM() { return (int)14L; }
-
-    static final int SIGTERM() { return (int)15L; }
-
-    static final int SIGURG() { return (int)16L; }
-
-    static final int SIGSTOP() { return (int)17L; }
-
-    static final int SIGTSTP() { return (int)18L; }
-
-    static final int SIGCONT() { return (int)19L; }
-
-    static final int SIGCHLD() { return (int)20L; }
-
-    static final int SIGTTIN() { return (int)21L; }
-
-    static final int SIGTTOU() { return (int)22L; }
-
-    static final int SIGIO() { return (int)23L; }
-
-    static final int SIGXCPU() { return (int)24L; }
-
-    static final int SIGXFSZ() { return (int)25L; }
-
-    static final int SIGVTALRM() { return (int)26L; }
-
-    static final int SIGPROF() { return (int)27L; }
-
-    static final int SIGWINCH() { return (int)28L; }
-
-    static final int SIGINFO() { return (int)29L; }
-
-    static final int SIGUSR1() { return (int)30L; }
-
-    static final int SIGUSR2() { return (int)31L; }
-
-    static final int FP_PREC_24B() { return (int)0L; }
-
-    static final int FP_PREC_53B() { return (int)2L; }
-
-    static final int FP_PREC_64B() { return (int)3L; }
-
-    static final int FP_RND_NEAR() { return (int)0L; }
-
-    static final int FP_RND_DOWN() { return (int)1L; }
-
-    static final int FP_RND_UP() { return (int)2L; }
-
-    static final int FP_CHOP() { return (int)3L; }
-
-    static final int FP_STATE_BYTES() { return (int)512L; }
-
-    static final int _X86_INSTRUCTION_STATE_CACHELINE_SIZE() { return (int)64L; }
-
-    static final int __LASTBRANCH_MAX() { return (int)32L; }
-
-    static final int SIGEV_NONE() { return (int)0L; }
-
-    static final int SIGEV_SIGNAL() { return (int)1L; }
-
-    static final int SIGEV_THREAD() { return (int)3L; }
-
-    static final int ILL_NOOP() { return (int)0L; }
-
-    static final int ILL_ILLOPC() { return (int)1L; }
-
-    static final int ILL_ILLTRP() { return (int)2L; }
-
-    static final int ILL_PRVOPC() { return (int)3L; }
-
-    static final int ILL_ILLOPN() { return (int)4L; }
-
-    static final int ILL_ILLADR() { return (int)5L; }
-
-    static final int ILL_PRVREG() { return (int)6L; }
-
-    static final int ILL_COPROC() { return (int)7L; }
-
-    static final int ILL_BADSTK() { return (int)8L; }
-
-    static final int FPE_NOOP() { return (int)0L; }
-
-    static final int FPE_FLTDIV() { return (int)1L; }
-
-    static final int FPE_FLTOVF() { return (int)2L; }
-
-    static final int FPE_FLTUND() { return (int)3L; }
-
-    static final int FPE_FLTRES() { return (int)4L; }
-
-    static final int FPE_FLTINV() { return (int)5L; }
-
-    static final int FPE_FLTSUB() { return (int)6L; }
-
-    static final int FPE_INTDIV() { return (int)7L; }
-
-    static final int FPE_INTOVF() { return (int)8L; }
-
-    static final int SEGV_NOOP() { return (int)0L; }
-
-    static final int SEGV_MAPERR() { return (int)1L; }
-
-    static final int SEGV_ACCERR() { return (int)2L; }
-
-    static final int BUS_NOOP() { return (int)0L; }
-
-    static final int BUS_ADRALN() { return (int)1L; }
-
-    static final int BUS_ADRERR() { return (int)2L; }
-
-    static final int BUS_OBJERR() { return (int)3L; }
-
-    static final int TRAP_BRKPT() { return (int)1L; }
-
-    static final int TRAP_TRACE() { return (int)2L; }
-
-    static final int CLD_NOOP() { return (int)0L; }
-
-    static final int CLD_EXITED() { return (int)1L; }
-
-    static final int CLD_KILLED() { return (int)2L; }
-
-    static final int CLD_DUMPED() { return (int)3L; }
-
-    static final int CLD_TRAPPED() { return (int)4L; }
-
-    static final int CLD_STOPPED() { return (int)5L; }
-
-    static final int CLD_CONTINUED() { return (int)6L; }
-
-    static final int POLL_IN() { return (int)1L; }
-
-    static final int POLL_OUT() { return (int)2L; }
-
-    static final int POLL_MSG() { return (int)3L; }
-
-    static final int POLL_ERR() { return (int)4L; }
-
-    static final int POLL_PRI() { return (int)5L; }
-
-    static final int POLL_HUP() { return (int)6L; }
-
-    static final int SA_ONSTACK() { return (int)1L; }
-
-    static final int SA_RESTART() { return (int)2L; }
-
-    static final int SA_RESETHAND() { return (int)4L; }
-
-    static final int SA_NOCLDSTOP() { return (int)8L; }
-
-    static final int SA_NODEFER() { return (int)16L; }
-
-    static final int SA_NOCLDWAIT() { return (int)32L; }
-
-    static final int SA_SIGINFO() { return (int)64L; }
-
-    static final int SA_USERTRAMP() { return (int)256L; }
-
-    static final int SA_64REGSET() { return (int)512L; }
-
-    static final int SIG_BLOCK() { return (int)1L; }
-
-    static final int SIG_UNBLOCK() { return (int)2L; }
-
-    static final int SIG_SETMASK() { return (int)3L; }
-
-    static final int SI_USER() { return (int)65537L; }
-
-    static final int SI_QUEUE() { return (int)65538L; }
-
-    static final int SI_TIMER() { return (int)65539L; }
-
-    static final int SI_ASYNCIO() { return (int)65540L; }
-
-    static final int SI_MESGQ() { return (int)65541L; }
-
-    static final int SS_ONSTACK() { return (int)1L; }
-
-    static final int SS_DISABLE() { return (int)4L; }
-
-    static final int MINSIGSTKSZ() { return (int)32768L; }
-
-    static final int SIGSTKSZ() { return (int)131072L; }
-
-    static final int PSWP() { return (int)0L; }
-
-    static final int PVM() { return (int)4L; }
-
-    static final int PINOD() { return (int)8L; }
-
-    static final int PRIBIO() { return (int)16L; }
-
-    static final int PVFS() { return (int)20L; }
-
-    static final int PZERO() { return (int)22L; }
-
-    static final int PSOCK() { return (int)24L; }
-
-    static final int PWAIT() { return (int)32L; }
-
-    static final int PLOCK() { return (int)36L; }
-
-    static final int PPAUSE() { return (int)40L; }
-
-    static final int PUSER() { return (int)50L; }
-
-    static final int MAXPRI() { return (int)127L; }
-
-    static final int PRIMASK() { return (int)255L; }
-
-    static final int PCATCH() { return (int)256L; }
-
-    static final int PTTYBLOCK() { return (int)512L; }
-
-    static final int PDROP() { return (int)1024L; }
-
-    static final int PSPIN() { return (int)2048L; }
-
-    static final int CMASK() { return (int)18L; }
-
-    static final int CBLOCK() { return (int)64L; }
-
-    static final int MAXFRAG() { return (int)8L; }
-
-    static final int MAXSYMLINKS() { return (int)32L; }
-
-    static final int FSHIFT() { return (int)11L; }
-
-    static final int MAX_AUDIT_RECORDS() { return (int)20L; }
-
-    static final int AUDIT_HARD_LIMIT_FREE_BLOCKS() { return (int)4L; }
-
-    static final int AUDIT_TRIGGER_MIN() { return (int)1L; }
-
-    static final int AUDIT_TRIGGER_LOW_SPACE() { return (int)1L; }
-
-    static final int AUDIT_TRIGGER_ROTATE_KERNEL() { return (int)2L; }
-
-    static final int AUDIT_TRIGGER_READ_FILE() { return (int)3L; }
-
-    static final int AUDIT_TRIGGER_CLOSE_AND_DIE() { return (int)4L; }
-
-    static final int AUDIT_TRIGGER_NO_SPACE() { return (int)5L; }
-
-    static final int AUDIT_TRIGGER_ROTATE_USER() { return (int)6L; }
-
-    static final int AUDIT_TRIGGER_INITIALIZE() { return (int)7L; }
-
-    static final int AUDIT_TRIGGER_EXPIRE_TRAILS() { return (int)8L; }
-
-    static final int AUDIT_TRIGGER_MAX() { return (int)8L; }
-
-    static final int AU_DEFAUDITSID() { return (int)0L; }
-
-    static final int AUC_UNSET() { return (int)0L; }
-
-    static final int AUC_AUDITING() { return (int)1L; }
-
-    static final int AUC_NOAUDIT() { return (int)2L; }
-
-    static final int A_OLDGETPOLICY() { return (int)2L; }
-
-    static final int A_OLDSETPOLICY() { return (int)3L; }
-
-    static final int A_GETKMASK() { return (int)4L; }
-
-    static final int A_SETKMASK() { return (int)5L; }
-
-    static final int A_OLDGETQCTRL() { return (int)6L; }
-
-    static final int A_OLDSETQCTRL() { return (int)7L; }
-
-    static final int A_GETCWD() { return (int)8L; }
-
-    static final int A_GETCAR() { return (int)9L; }
-
-    static final int A_GETSTAT() { return (int)12L; }
-
-    static final int A_SETSTAT() { return (int)13L; }
-
-    static final int A_SETUMASK() { return (int)14L; }
-
-    static final int A_SETSMASK() { return (int)15L; }
-
-    static final int A_OLDGETCOND() { return (int)20L; }
-
-    static final int A_OLDSETCOND() { return (int)21L; }
-
-    static final int A_GETCLASS() { return (int)22L; }
-
-    static final int A_SETCLASS() { return (int)23L; }
-
-    static final int A_GETPINFO() { return (int)24L; }
-
-    static final int A_SETPMASK() { return (int)25L; }
-
-    static final int A_SETFSIZE() { return (int)26L; }
-
-    static final int A_GETFSIZE() { return (int)27L; }
-
-    static final int A_GETPINFO_ADDR() { return (int)28L; }
-
-    static final int A_GETKAUDIT() { return (int)29L; }
-
-    static final int A_SETKAUDIT() { return (int)30L; }
-
-    static final int A_SENDTRIGGER() { return (int)31L; }
-
-    static final int A_GETSINFO_ADDR() { return (int)32L; }
-
-    static final int A_GETPOLICY() { return (int)33L; }
-
-    static final int A_SETPOLICY() { return (int)34L; }
-
-    static final int A_GETQCTRL() { return (int)35L; }
-
-    static final int A_SETQCTRL() { return (int)36L; }
-
-    static final int A_GETCOND() { return (int)37L; }
-
-    static final int A_SETCOND() { return (int)38L; }
-
-    static final int A_GETSFLAGS() { return (int)39L; }
-
-    static final int A_SETSFLAGS() { return (int)40L; }
-
-    static final int A_GETCTLMODE() { return (int)41L; }
-
-    static final int A_SETCTLMODE() { return (int)42L; }
-
-    static final int A_GETEXPAFTER() { return (int)43L; }
-
-    static final int A_SETEXPAFTER() { return (int)44L; }
-
-    static final int AUDIT_CNT() { return (int)1L; }
-
-    static final int AUDIT_AHLT() { return (int)2L; }
-
-    static final int AUDIT_ARGV() { return (int)4L; }
-
-    static final int AUDIT_ARGE() { return (int)8L; }
-
-    static final int AUDIT_SEQ() { return (int)16L; }
-
-    static final int AUDIT_WINDATA() { return (int)32L; }
-
-    static final int AUDIT_USER() { return (int)64L; }
-
-    static final int AUDIT_GROUP() { return (int)128L; }
-
-    static final int AUDIT_TRAIL() { return (int)256L; }
-
-    static final int AUDIT_PATH() { return (int)512L; }
-
-    static final int AUDIT_SCNT() { return (int)1024L; }
-
-    static final int AUDIT_PUBLIC() { return (int)2048L; }
-
-    static final int AUDIT_ZONENAME() { return (int)4096L; }
-
-    static final int AUDIT_PERZONE() { return (int)8192L; }
-
-    static final int AQ_HIWATER() { return (int)100L; }
-
-    static final int AQ_MAXHIGH() { return (int)10000L; }
-
-    static final int AQ_LOWATER() { return (int)10L; }
-
-    static final int AQ_MAXBUFSZ() { return (int)1048576L; }
-
-    static final int AU_FS_MINFREE() { return (int)20L; }
-
-    static final int AU_IPv4() { return (int)4L; }
-
-    static final int AU_IPv6() { return (int)16L; }
-
-    static final int AU_CLASS_MASK_RESERVED() { return (int)268435456L; }
-
-    static final int TRUE() { return (int)1L; }
-
-    static final int FALSE() { return (int)0L; }
-
-    static final int MACH_PORT_NULL() { return (int)0L; }
-
-    static final int MACH_PORT_TYPE_SPREQUEST() { return (int)1073741824L; }
-
-    static final int MACH_PORT_TYPE_SPREQUEST_DELAYED() { return (int)536870912L; }
-
-    static final int MACH_PORT_SRIGHTS_NONE() { return (int)0L; }
-
-    static final int MACH_PORT_SRIGHTS_PRESENT() { return (int)1L; }
-
-    static final int MACH_PORT_STATUS_FLAG_TEMPOWNER() { return (int)1L; }
-
-    static final int MACH_PORT_STATUS_FLAG_GUARDED() { return (int)2L; }
-
-    static final int MACH_PORT_STATUS_FLAG_STRICT_GUARD() { return (int)4L; }
-
-    static final int MACH_PORT_STATUS_FLAG_IMP_DONATION() { return (int)8L; }
-
-    static final int MACH_PORT_STATUS_FLAG_REVIVE() { return (int)16L; }
-
-    static final int MACH_PORT_STATUS_FLAG_TASKPTR() { return (int)32L; }
-
-    static final int MACH_PORT_STATUS_FLAG_GUARD_IMMOVABLE_RECEIVE() { return (int)64L; }
-
-    static final int MACH_PORT_STATUS_FLAG_NO_GRANT() { return (int)128L; }
-
-    static final int MACH_PORT_LIMITS_INFO() { return (int)1L; }
-
-    static final int MACH_PORT_RECEIVE_STATUS() { return (int)2L; }
-
-    static final int MACH_PORT_DNREQUESTS_SIZE() { return (int)3L; }
-
-    static final int MACH_PORT_TEMPOWNER() { return (int)4L; }
-
-    static final int MACH_PORT_IMPORTANCE_RECEIVER() { return (int)5L; }
-
-    static final int MACH_PORT_DENAP_RECEIVER() { return (int)6L; }
-
-    static final int MACH_PORT_INFO_EXT() { return (int)7L; }
-
-    static final int MACH_PORT_DNREQUESTS_SIZE_COUNT() { return (int)1L; }
-
-    static final int MPO_CONTEXT_AS_GUARD() { return (int)1L; }
-
-    static final int MPO_QLIMIT() { return (int)2L; }
-
-    static final int MPO_TEMPOWNER() { return (int)4L; }
-
-    static final int MPO_IMPORTANCE_RECEIVER() { return (int)8L; }
-
-    static final int MPO_INSERT_SEND_RIGHT() { return (int)16L; }
-
-    static final int MPO_STRICT() { return (int)32L; }
-
-    static final int MPO_DENAP_RECEIVER() { return (int)64L; }
-
-    static final int MPO_IMMOVABLE_RECEIVE() { return (int)128L; }
-
-    static final int MPO_FILTER_MSG() { return (int)256L; }
-
-    static final int MPO_TG_BLOCK_TRACKING() { return (int)512L; }
-
-    static final int GUARD_TYPE_MACH_PORT() { return (int)1L; }
-
-    static final int MPG_STRICT() { return (int)1L; }
-
-    static final int MPG_IMMOVABLE_RECEIVE() { return (int)2L; }
-
-    static final int CRF_NOMEMBERD() { return (int)1L; }
-
-    static final int CRF_MAC_ENFORCE() { return (int)2L; }
-
-    static final int XUCRED_VERSION() { return (int)0L; }
-
-    static final int ITIMER_REAL() { return (int)0L; }
-
-    static final int ITIMER_VIRTUAL() { return (int)1L; }
-
-    static final int ITIMER_PROF() { return (int)2L; }
-
-    static final int DST_NONE() { return (int)0L; }
-
-    static final int DST_USA() { return (int)1L; }
-
-    static final int DST_AUST() { return (int)2L; }
-
-    static final int DST_WET() { return (int)3L; }
-
-    static final int DST_MET() { return (int)4L; }
-
-    static final int DST_EET() { return (int)5L; }
-
-    static final int DST_CAN() { return (int)6L; }
-
-    static final int FSOPT_NOFOLLOW() { return (int)1L; }
-
-    static final int FSOPT_NOINMEMUPDATE() { return (int)2L; }
-
-    static final int FSOPT_REPORT_FULLSIZE() { return (int)4L; }
-
-    static final int FSOPT_PACK_INVAL_ATTRS() { return (int)8L; }
-
-    static final int FSOPT_ATTR_CMN_EXTENDED() { return (int)32L; }
-
-    static final int FSOPT_RETURN_REALDEV() { return (int)512L; }
-
-    static final int SEARCHFS_MAX_SEARCHPARMS() { return (int)4096L; }
-
-    static final int ATTR_BIT_MAP_COUNT() { return (int)5L; }
-
-    static final int VOL_CAPABILITIES_FORMAT() { return (int)0L; }
-
-    static final int VOL_CAPABILITIES_INTERFACES() { return (int)1L; }
-
-    static final int VOL_CAPABILITIES_RESERVED1() { return (int)2L; }
-
-    static final int VOL_CAPABILITIES_RESERVED2() { return (int)3L; }
-
-    static final int ATTR_MAX_BUFFER() { return (int)8192L; }
-
-    static final int VOL_CAP_FMT_PERSISTENTOBJECTIDS() { return (int)1L; }
-
-    static final int VOL_CAP_FMT_SYMBOLICLINKS() { return (int)2L; }
-
-    static final int VOL_CAP_FMT_HARDLINKS() { return (int)4L; }
-
-    static final int VOL_CAP_FMT_JOURNAL() { return (int)8L; }
-
-    static final int VOL_CAP_FMT_JOURNAL_ACTIVE() { return (int)16L; }
-
-    static final int VOL_CAP_FMT_NO_ROOT_TIMES() { return (int)32L; }
-
-    static final int VOL_CAP_FMT_SPARSE_FILES() { return (int)64L; }
-
-    static final int VOL_CAP_FMT_ZERO_RUNS() { return (int)128L; }
-
-    static final int VOL_CAP_FMT_CASE_SENSITIVE() { return (int)256L; }
-
-    static final int VOL_CAP_FMT_CASE_PRESERVING() { return (int)512L; }
-
-    static final int VOL_CAP_FMT_FAST_STATFS() { return (int)1024L; }
-
-    static final int VOL_CAP_FMT_2TB_FILESIZE() { return (int)2048L; }
-
-    static final int VOL_CAP_FMT_OPENDENYMODES() { return (int)4096L; }
-
-    static final int VOL_CAP_FMT_HIDDEN_FILES() { return (int)8192L; }
-
-    static final int VOL_CAP_FMT_PATH_FROM_ID() { return (int)16384L; }
-
-    static final int VOL_CAP_FMT_NO_VOLUME_SIZES() { return (int)32768L; }
-
-    static final int VOL_CAP_FMT_DECMPFS_COMPRESSION() { return (int)65536L; }
-
-    static final int VOL_CAP_FMT_64BIT_OBJECT_IDS() { return (int)131072L; }
-
-    static final int VOL_CAP_FMT_DIR_HARDLINKS() { return (int)262144L; }
-
-    static final int VOL_CAP_FMT_DOCUMENT_ID() { return (int)524288L; }
-
-    static final int VOL_CAP_FMT_WRITE_GENERATION_COUNT() { return (int)1048576L; }
-
-    static final int VOL_CAP_FMT_NO_IMMUTABLE_FILES() { return (int)2097152L; }
-
-    static final int VOL_CAP_FMT_NO_PERMISSIONS() { return (int)4194304L; }
-
-    static final int VOL_CAP_FMT_SHARED_SPACE() { return (int)8388608L; }
-
-    static final int VOL_CAP_FMT_VOL_GROUPS() { return (int)16777216L; }
-
-    static final int VOL_CAP_FMT_SEALED() { return (int)33554432L; }
-
-    static final int VOL_CAP_INT_SEARCHFS() { return (int)1L; }
-
-    static final int VOL_CAP_INT_ATTRLIST() { return (int)2L; }
-
-    static final int VOL_CAP_INT_NFSEXPORT() { return (int)4L; }
-
-    static final int VOL_CAP_INT_READDIRATTR() { return (int)8L; }
-
-    static final int VOL_CAP_INT_EXCHANGEDATA() { return (int)16L; }
-
-    static final int VOL_CAP_INT_COPYFILE() { return (int)32L; }
-
-    static final int VOL_CAP_INT_ALLOCATE() { return (int)64L; }
-
-    static final int VOL_CAP_INT_VOL_RENAME() { return (int)128L; }
-
-    static final int VOL_CAP_INT_ADVLOCK() { return (int)256L; }
-
-    static final int VOL_CAP_INT_FLOCK() { return (int)512L; }
-
-    static final int VOL_CAP_INT_EXTENDED_SECURITY() { return (int)1024L; }
-
-    static final int VOL_CAP_INT_USERACCESS() { return (int)2048L; }
-
-    static final int VOL_CAP_INT_MANLOCK() { return (int)4096L; }
-
-    static final int VOL_CAP_INT_NAMEDSTREAMS() { return (int)8192L; }
-
-    static final int VOL_CAP_INT_EXTENDED_ATTR() { return (int)16384L; }
-
-    static final int VOL_CAP_INT_CLONE() { return (int)65536L; }
-
-    static final int VOL_CAP_INT_SNAPSHOT() { return (int)131072L; }
-
-    static final int VOL_CAP_INT_RENAME_SWAP() { return (int)262144L; }
-
-    static final int VOL_CAP_INT_RENAME_EXCL() { return (int)524288L; }
-
-    static final int VOL_CAP_INT_RENAME_OPENFAIL() { return (int)1048576L; }
-
-    static final int ATTR_CMN_NAME() { return (int)1L; }
-
-    static final int ATTR_CMN_DEVID() { return (int)2L; }
-
-    static final int ATTR_CMN_FSID() { return (int)4L; }
-
-    static final int ATTR_CMN_OBJTYPE() { return (int)8L; }
-
-    static final int ATTR_CMN_OBJTAG() { return (int)16L; }
-
-    static final int ATTR_CMN_OBJID() { return (int)32L; }
-
-    static final int ATTR_CMN_OBJPERMANENTID() { return (int)64L; }
-
-    static final int ATTR_CMN_PAROBJID() { return (int)128L; }
-
-    static final int ATTR_CMN_SCRIPT() { return (int)256L; }
-
-    static final int ATTR_CMN_CRTIME() { return (int)512L; }
-
-    static final int ATTR_CMN_MODTIME() { return (int)1024L; }
-
-    static final int ATTR_CMN_CHGTIME() { return (int)2048L; }
-
-    static final int ATTR_CMN_ACCTIME() { return (int)4096L; }
-
-    static final int ATTR_CMN_BKUPTIME() { return (int)8192L; }
-
-    static final int ATTR_CMN_FNDRINFO() { return (int)16384L; }
-
-    static final int ATTR_CMN_OWNERID() { return (int)32768L; }
-
-    static final int ATTR_CMN_GRPID() { return (int)65536L; }
-
-    static final int ATTR_CMN_ACCESSMASK() { return (int)131072L; }
-
-    static final int ATTR_CMN_FLAGS() { return (int)262144L; }
-
-    static final int ATTR_CMN_GEN_COUNT() { return (int)524288L; }
-
-    static final int ATTR_CMN_DOCUMENT_ID() { return (int)1048576L; }
-
-    static final int ATTR_CMN_USERACCESS() { return (int)2097152L; }
-
-    static final int ATTR_CMN_EXTENDED_SECURITY() { return (int)4194304L; }
-
-    static final int ATTR_CMN_UUID() { return (int)8388608L; }
-
-    static final int ATTR_CMN_GRPUUID() { return (int)16777216L; }
-
-    static final int ATTR_CMN_FILEID() { return (int)33554432L; }
-
-    static final int ATTR_CMN_PARENTID() { return (int)67108864L; }
-
-    static final int ATTR_CMN_FULLPATH() { return (int)134217728L; }
-
-    static final int ATTR_CMN_ADDEDTIME() { return (int)268435456L; }
-
-    static final int ATTR_CMN_ERROR() { return (int)536870912L; }
-
-    static final int ATTR_CMN_DATA_PROTECT_FLAGS() { return (int)1073741824L; }
-
-    static final int ATTR_CMN_SETMASK() { return (int)1372061440L; }
-
-    static final int ATTR_CMN_VOLSETMASK() { return (int)26368L; }
-
-    static final int ATTR_VOL_FSTYPE() { return (int)1L; }
-
-    static final int ATTR_VOL_SIGNATURE() { return (int)2L; }
-
-    static final int ATTR_VOL_SIZE() { return (int)4L; }
-
-    static final int ATTR_VOL_SPACEFREE() { return (int)8L; }
-
-    static final int ATTR_VOL_SPACEAVAIL() { return (int)16L; }
-
-    static final int ATTR_VOL_MINALLOCATION() { return (int)32L; }
-
-    static final int ATTR_VOL_ALLOCATIONCLUMP() { return (int)64L; }
-
-    static final int ATTR_VOL_IOBLOCKSIZE() { return (int)128L; }
-
-    static final int ATTR_VOL_OBJCOUNT() { return (int)256L; }
-
-    static final int ATTR_VOL_FILECOUNT() { return (int)512L; }
-
-    static final int ATTR_VOL_DIRCOUNT() { return (int)1024L; }
-
-    static final int ATTR_VOL_MAXOBJCOUNT() { return (int)2048L; }
-
-    static final int ATTR_VOL_MOUNTPOINT() { return (int)4096L; }
-
-    static final int ATTR_VOL_NAME() { return (int)8192L; }
-
-    static final int ATTR_VOL_MOUNTFLAGS() { return (int)16384L; }
-
-    static final int ATTR_VOL_MOUNTEDDEVICE() { return (int)32768L; }
-
-    static final int ATTR_VOL_ENCODINGSUSED() { return (int)65536L; }
-
-    static final int ATTR_VOL_CAPABILITIES() { return (int)131072L; }
-
-    static final int ATTR_VOL_UUID() { return (int)262144L; }
-
-    static final int ATTR_VOL_QUOTA_SIZE() { return (int)268435456L; }
-
-    static final int ATTR_VOL_RESERVED_SIZE() { return (int)536870912L; }
-
-    static final int ATTR_VOL_ATTRIBUTES() { return (int)1073741824L; }
-
-    static final int ATTR_DIR_LINKCOUNT() { return (int)1L; }
-
-    static final int ATTR_DIR_ENTRYCOUNT() { return (int)2L; }
-
-    static final int ATTR_DIR_MOUNTSTATUS() { return (int)4L; }
-
-    static final int ATTR_DIR_ALLOCSIZE() { return (int)8L; }
-
-    static final int ATTR_DIR_IOBLOCKSIZE() { return (int)16L; }
-
-    static final int ATTR_DIR_DATALENGTH() { return (int)32L; }
-
-    static final int DIR_MNTSTATUS_MNTPOINT() { return (int)1L; }
-
-    static final int DIR_MNTSTATUS_TRIGGER() { return (int)2L; }
-
-    static final int ATTR_DIR_VALIDMASK() { return (int)63L; }
-
-    static final int ATTR_DIR_SETMASK() { return (int)0L; }
-
-    static final int ATTR_FILE_LINKCOUNT() { return (int)1L; }
-
-    static final int ATTR_FILE_TOTALSIZE() { return (int)2L; }
-
-    static final int ATTR_FILE_ALLOCSIZE() { return (int)4L; }
-
-    static final int ATTR_FILE_IOBLOCKSIZE() { return (int)8L; }
-
-    static final int ATTR_FILE_DEVTYPE() { return (int)32L; }
-
-    static final int ATTR_FILE_FORKCOUNT() { return (int)128L; }
-
-    static final int ATTR_FILE_FORKLIST() { return (int)256L; }
-
-    static final int ATTR_FILE_DATALENGTH() { return (int)512L; }
-
-    static final int ATTR_FILE_DATAALLOCSIZE() { return (int)1024L; }
-
-    static final int ATTR_FILE_RSRCLENGTH() { return (int)4096L; }
-
-    static final int ATTR_FILE_RSRCALLOCSIZE() { return (int)8192L; }
-
-    static final int ATTR_FILE_VALIDMASK() { return (int)14335L; }
-
-    static final int ATTR_FILE_SETMASK() { return (int)32L; }
-
-    static final int ATTR_CMNEXT_RELPATH() { return (int)4L; }
-
-    static final int ATTR_CMNEXT_PRIVATESIZE() { return (int)8L; }
-
-    static final int ATTR_CMNEXT_LINKID() { return (int)16L; }
-
-    static final int ATTR_CMNEXT_NOFIRMLINKPATH() { return (int)32L; }
-
-    static final int ATTR_CMNEXT_REALDEVID() { return (int)64L; }
-
-    static final int ATTR_CMNEXT_REALFSID() { return (int)128L; }
-
-    static final int ATTR_CMNEXT_CLONEID() { return (int)256L; }
-
-    static final int ATTR_CMNEXT_EXT_FLAGS() { return (int)512L; }
-
-    static final int ATTR_CMNEXT_RECURSIVE_GENCOUNT() { return (int)1024L; }
-
-    static final int ATTR_CMNEXT_VALIDMASK() { return (int)2044L; }
-
-    static final int ATTR_CMNEXT_SETMASK() { return (int)0L; }
-
-    static final int ATTR_FORK_TOTALSIZE() { return (int)1L; }
-
-    static final int ATTR_FORK_ALLOCSIZE() { return (int)2L; }
-
-    static final int ATTR_FORK_VALIDMASK() { return (int)3L; }
-
-    static final int ATTR_FORK_SETMASK() { return (int)0L; }
-
-    static final int ATTR_CMN_NAMEDATTRCOUNT() { return (int)524288L; }
-
-    static final int ATTR_CMN_NAMEDATTRLIST() { return (int)1048576L; }
-
-    static final int ATTR_FILE_CLUMPSIZE() { return (int)16L; }
-
-    static final int ATTR_FILE_FILETYPE() { return (int)64L; }
-
-    static final int ATTR_FILE_DATAEXTENTS() { return (int)2048L; }
-
-    static final int ATTR_FILE_RSRCEXTENTS() { return (int)16384L; }
-
-    static final int SRCHFS_START() { return (int)1L; }
-
-    static final int SRCHFS_MATCHPARTIALNAMES() { return (int)2L; }
-
-    static final int SRCHFS_MATCHDIRS() { return (int)4L; }
-
-    static final int SRCHFS_MATCHFILES() { return (int)8L; }
-
-    static final int SRCHFS_SKIPLINKS() { return (int)16L; }
-
-    static final int SRCHFS_SKIPINVISIBLE() { return (int)32L; }
-
-    static final int SRCHFS_SKIPPACKAGES() { return (int)64L; }
-
-    static final int SRCHFS_SKIPINAPPROPRIATE() { return (int)128L; }
-
-    static final int MFSNAMELEN() { return (int)15L; }
-
-    static final int MFSTYPENAMELEN() { return (int)16L; }
-
-    static final int MNT_EXT_ROOT_DATA_VOL() { return (int)1L; }
-
-    static final int MNT_RDONLY() { return (int)1L; }
-
-    static final int MNT_SYNCHRONOUS() { return (int)2L; }
-
-    static final int MNT_NOEXEC() { return (int)4L; }
-
-    static final int MNT_NOSUID() { return (int)8L; }
-
-    static final int MNT_NODEV() { return (int)16L; }
-
-    static final int MNT_UNION() { return (int)32L; }
-
-    static final int MNT_ASYNC() { return (int)64L; }
-
-    static final int MNT_CPROTECT() { return (int)128L; }
-
-    static final int MNT_EXPORTED() { return (int)256L; }
-
-    static final int MNT_REMOVABLE() { return (int)512L; }
-
-    static final int MNT_QUARANTINE() { return (int)1024L; }
-
-    static final int MNT_LOCAL() { return (int)4096L; }
-
-    static final int MNT_QUOTA() { return (int)8192L; }
-
-    static final int MNT_ROOTFS() { return (int)16384L; }
-
-    static final int MNT_DOVOLFS() { return (int)32768L; }
-
-    static final int MNT_DONTBROWSE() { return (int)1048576L; }
-
-    static final int MNT_IGNORE_OWNERSHIP() { return (int)2097152L; }
-
-    static final int MNT_AUTOMOUNTED() { return (int)4194304L; }
-
-    static final int MNT_JOURNALED() { return (int)8388608L; }
-
-    static final int MNT_NOUSERXATTR() { return (int)16777216L; }
-
-    static final int MNT_DEFWRITE() { return (int)33554432L; }
-
-    static final int MNT_MULTILABEL() { return (int)67108864L; }
-
-    static final int MNT_NOATIME() { return (int)268435456L; }
-
-    static final int MNT_SNAPSHOT() { return (int)1073741824L; }
-
-    static final int MNT_UPDATE() { return (int)65536L; }
-
-    static final int MNT_NOBLOCK() { return (int)131072L; }
-
-    static final int MNT_RELOAD() { return (int)262144L; }
-
-    static final int MNT_FORCE() { return (int)524288L; }
-
-    static final int VFS_GENERIC() { return (int)0L; }
-
-    static final int VFS_NUMMNTOPS() { return (int)1L; }
-
-    static final int VFS_MAXTYPENUM() { return (int)1L; }
-
-    static final int VFS_CONF() { return (int)2L; }
-
-    static final int MNT_WAIT() { return (int)1L; }
-
-    static final int MNT_NOWAIT() { return (int)2L; }
-
-    static final int MNT_DWAIT() { return (int)4L; }
-
-    static final int VFS_CTL_VERS1() { return (int)1L; }
-
-    static final int VFS_CTL_OSTATFS() { return (int)65537L; }
-
-    static final int VFS_CTL_UMOUNT() { return (int)65538L; }
-
-    static final int VFS_CTL_QUERY() { return (int)65539L; }
-
-    static final int VFS_CTL_NEWADDR() { return (int)65540L; }
-
-    static final int VFS_CTL_TIMEO() { return (int)65541L; }
-
-    static final int VFS_CTL_NOLOCKS() { return (int)65542L; }
-
-    static final int VFS_CTL_SADDR() { return (int)65543L; }
-
-    static final int VFS_CTL_DISC() { return (int)65544L; }
-
-    static final int VFS_CTL_SERVERINFO() { return (int)65545L; }
-
-    static final int VFS_CTL_NSTATUS() { return (int)65546L; }
-
-    static final int VFS_CTL_STATFS64() { return (int)65547L; }
-
-    static final int VQ_NOTRESP() { return (int)1L; }
-
-    static final int VQ_NEEDAUTH() { return (int)2L; }
-
-    static final int VQ_LOWDISK() { return (int)4L; }
-
-    static final int VQ_MOUNT() { return (int)8L; }
-
-    static final int VQ_UNMOUNT() { return (int)16L; }
-
-    static final int VQ_DEAD() { return (int)32L; }
-
-    static final int VQ_ASSIST() { return (int)64L; }
-
-    static final int VQ_NOTRESPLOCK() { return (int)128L; }
-
-    static final int VQ_UPDATE() { return (int)256L; }
-
-    static final int VQ_VERYLOWDISK() { return (int)512L; }
-
-    static final int VQ_SYNCEVENT() { return (int)1024L; }
-
-    static final int VQ_SERVEREVENT() { return (int)2048L; }
-
-    static final int VQ_QUOTA() { return (int)4096L; }
-
-    static final int VQ_NEARLOWDISK() { return (int)8192L; }
-
-    static final int VQ_DESIRED_DISK() { return (int)16384L; }
-
-    static final int VQ_FREE_SPACE_CHANGE() { return (int)32768L; }
-
-    static final int VQ_FLAG10000() { return (int)65536L; }
-
-    static final int NFSV4_MAX_FH_SIZE() { return (int)128L; }
-
-    static final int NFSV3_MAX_FH_SIZE() { return (int)64L; }
-
-    static final int NFSV2_MAX_FH_SIZE() { return (int)32L; }
-
-    static final MemoryLayout fuse_opt$struct$LAYOUT_ = MemoryLayout.ofStruct(
-        C_POINTER.withName("templ"),
-        C_LONG.withName("offset"),
-        C_INT.withName("value"),
-        MemoryLayout.ofPaddingBits(32)
-    ).withName("fuse_opt");
-    static final jdk.incubator.foreign.MemoryLayout fuse_opt$struct$LAYOUT() { return fuse_opt$struct$LAYOUT_; }
-
-    static final MemoryLayout fuse_opt$templ$LAYOUT_ = C_POINTER;
-    static final jdk.incubator.foreign.MemoryLayout fuse_opt$templ$LAYOUT() { return fuse_opt$templ$LAYOUT_; }
-
-    static final VarHandle fuse_opt$templ$VH_ = MemoryHandles.asAddressVarHandle(fuse_opt$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("templ")));
-    static final java.lang.invoke.VarHandle fuse_opt$templ$VH() { return fuse_opt$templ$VH_; }
-
-    static final MemoryLayout fuse_opt$offset$LAYOUT_ = C_LONG;
-    static final jdk.incubator.foreign.MemoryLayout fuse_opt$offset$LAYOUT() { return fuse_opt$offset$LAYOUT_; }
-
-    static final VarHandle fuse_opt$offset$VH_ = fuse_opt$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("offset"));
-    static final java.lang.invoke.VarHandle fuse_opt$offset$VH() { return fuse_opt$offset$VH_; }
-
-    static final MemoryLayout fuse_opt$value$LAYOUT_ = C_INT;
-    static final jdk.incubator.foreign.MemoryLayout fuse_opt$value$LAYOUT() { return fuse_opt$value$LAYOUT_; }
-
-    static final VarHandle fuse_opt$value$VH_ = fuse_opt$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("value"));
-    static final java.lang.invoke.VarHandle fuse_opt$value$VH() { return fuse_opt$value$VH_; }
-
-    static final MemoryLayout fuse_args$struct$LAYOUT_ = MemoryLayout.ofStruct(
-        C_INT.withName("argc"),
+    static final MemoryLayout stat$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_INT.withName("st_dev"),
+        C_SHORT.withName("st_mode"),
+        C_SHORT.withName("st_nlink"),
+        C_LONG_LONG.withName("st_ino"),
+        C_INT.withName("st_uid"),
+        C_INT.withName("st_gid"),
+        C_INT.withName("st_rdev"),
         MemoryLayout.ofPaddingBits(32),
-        C_POINTER.withName("argv"),
-        C_INT.withName("allocated"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("st_atimespec"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("st_mtimespec"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("st_ctimespec"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("st_birthtimespec"),
+        C_LONG_LONG.withName("st_size"),
+        C_LONG_LONG.withName("st_blocks"),
+        C_INT.withName("st_blksize"),
+        C_INT.withName("st_flags"),
+        C_INT.withName("st_gen"),
+        C_INT.withName("st_lspare"),
+        MemoryLayout.ofSequence(2, C_LONG_LONG).withName("st_qspare")
+    ).withName("stat");
+    static final jdk.incubator.foreign.MemoryLayout stat$struct$LAYOUT() { return stat$struct$LAYOUT_; }
+
+    static final MemoryLayout stat$st_dev$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_dev$LAYOUT() { return stat$st_dev$LAYOUT_; }
+
+    static final VarHandle stat$st_dev$VH_ = stat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_dev"));
+    static final java.lang.invoke.VarHandle stat$st_dev$VH() { return stat$st_dev$VH_; }
+
+    static final MemoryLayout stat$st_mode$LAYOUT_ = C_SHORT;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_mode$LAYOUT() { return stat$st_mode$LAYOUT_; }
+
+    static final VarHandle stat$st_mode$VH_ = stat$struct$LAYOUT_.varHandle(short.class, MemoryLayout.PathElement.groupElement("st_mode"));
+    static final java.lang.invoke.VarHandle stat$st_mode$VH() { return stat$st_mode$VH_; }
+
+    static final MemoryLayout stat$st_nlink$LAYOUT_ = C_SHORT;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_nlink$LAYOUT() { return stat$st_nlink$LAYOUT_; }
+
+    static final VarHandle stat$st_nlink$VH_ = stat$struct$LAYOUT_.varHandle(short.class, MemoryLayout.PathElement.groupElement("st_nlink"));
+    static final java.lang.invoke.VarHandle stat$st_nlink$VH() { return stat$st_nlink$VH_; }
+
+    static final MemoryLayout stat$st_ino$LAYOUT_ = C_LONG_LONG;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_ino$LAYOUT() { return stat$st_ino$LAYOUT_; }
+
+    static final VarHandle stat$st_ino$VH_ = stat$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("st_ino"));
+    static final java.lang.invoke.VarHandle stat$st_ino$VH() { return stat$st_ino$VH_; }
+
+    static final MemoryLayout stat$st_uid$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_uid$LAYOUT() { return stat$st_uid$LAYOUT_; }
+
+    static final VarHandle stat$st_uid$VH_ = stat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_uid"));
+    static final java.lang.invoke.VarHandle stat$st_uid$VH() { return stat$st_uid$VH_; }
+
+    static final MemoryLayout stat$st_gid$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_gid$LAYOUT() { return stat$st_gid$LAYOUT_; }
+
+    static final VarHandle stat$st_gid$VH_ = stat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_gid"));
+    static final java.lang.invoke.VarHandle stat$st_gid$VH() { return stat$st_gid$VH_; }
+
+    static final MemoryLayout stat$st_rdev$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_rdev$LAYOUT() { return stat$st_rdev$LAYOUT_; }
+
+    static final VarHandle stat$st_rdev$VH_ = stat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_rdev"));
+    static final java.lang.invoke.VarHandle stat$st_rdev$VH() { return stat$st_rdev$VH_; }
+
+    static final MemoryLayout stat$st_size$LAYOUT_ = C_LONG_LONG;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_size$LAYOUT() { return stat$st_size$LAYOUT_; }
+
+    static final VarHandle stat$st_size$VH_ = stat$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("st_size"));
+    static final java.lang.invoke.VarHandle stat$st_size$VH() { return stat$st_size$VH_; }
+
+    static final MemoryLayout stat$st_blocks$LAYOUT_ = C_LONG_LONG;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_blocks$LAYOUT() { return stat$st_blocks$LAYOUT_; }
+
+    static final VarHandle stat$st_blocks$VH_ = stat$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("st_blocks"));
+    static final java.lang.invoke.VarHandle stat$st_blocks$VH() { return stat$st_blocks$VH_; }
+
+    static final MemoryLayout stat$st_blksize$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_blksize$LAYOUT() { return stat$st_blksize$LAYOUT_; }
+
+    static final VarHandle stat$st_blksize$VH_ = stat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_blksize"));
+    static final java.lang.invoke.VarHandle stat$st_blksize$VH() { return stat$st_blksize$VH_; }
+
+    static final MemoryLayout stat$st_flags$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_flags$LAYOUT() { return stat$st_flags$LAYOUT_; }
+
+    static final VarHandle stat$st_flags$VH_ = stat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_flags"));
+    static final java.lang.invoke.VarHandle stat$st_flags$VH() { return stat$st_flags$VH_; }
+
+    static final MemoryLayout stat$st_gen$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_gen$LAYOUT() { return stat$st_gen$LAYOUT_; }
+
+    static final VarHandle stat$st_gen$VH_ = stat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_gen"));
+    static final java.lang.invoke.VarHandle stat$st_gen$VH() { return stat$st_gen$VH_; }
+
+    static final MemoryLayout stat$st_lspare$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat$st_lspare$LAYOUT() { return stat$st_lspare$LAYOUT_; }
+
+    static final VarHandle stat$st_lspare$VH_ = stat$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_lspare"));
+    static final java.lang.invoke.VarHandle stat$st_lspare$VH() { return stat$st_lspare$VH_; }
+
+    static final MemoryLayout stat64$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_INT.withName("st_dev"),
+        C_SHORT.withName("st_mode"),
+        C_SHORT.withName("st_nlink"),
+        C_LONG_LONG.withName("st_ino"),
+        C_INT.withName("st_uid"),
+        C_INT.withName("st_gid"),
+        C_INT.withName("st_rdev"),
+        MemoryLayout.ofPaddingBits(32),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("st_atimespec"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("st_mtimespec"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("st_ctimespec"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("st_birthtimespec"),
+        C_LONG_LONG.withName("st_size"),
+        C_LONG_LONG.withName("st_blocks"),
+        C_INT.withName("st_blksize"),
+        C_INT.withName("st_flags"),
+        C_INT.withName("st_gen"),
+        C_INT.withName("st_lspare"),
+        MemoryLayout.ofSequence(2, C_LONG_LONG).withName("st_qspare")
+    ).withName("stat64");
+    static final jdk.incubator.foreign.MemoryLayout stat64$struct$LAYOUT() { return stat64$struct$LAYOUT_; }
+
+    static final MemoryLayout stat64$st_dev$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_dev$LAYOUT() { return stat64$st_dev$LAYOUT_; }
+
+    static final VarHandle stat64$st_dev$VH_ = stat64$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_dev"));
+    static final java.lang.invoke.VarHandle stat64$st_dev$VH() { return stat64$st_dev$VH_; }
+
+    static final MemoryLayout stat64$st_mode$LAYOUT_ = C_SHORT;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_mode$LAYOUT() { return stat64$st_mode$LAYOUT_; }
+
+    static final VarHandle stat64$st_mode$VH_ = stat64$struct$LAYOUT_.varHandle(short.class, MemoryLayout.PathElement.groupElement("st_mode"));
+    static final java.lang.invoke.VarHandle stat64$st_mode$VH() { return stat64$st_mode$VH_; }
+
+    static final MemoryLayout stat64$st_nlink$LAYOUT_ = C_SHORT;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_nlink$LAYOUT() { return stat64$st_nlink$LAYOUT_; }
+
+    static final VarHandle stat64$st_nlink$VH_ = stat64$struct$LAYOUT_.varHandle(short.class, MemoryLayout.PathElement.groupElement("st_nlink"));
+    static final java.lang.invoke.VarHandle stat64$st_nlink$VH() { return stat64$st_nlink$VH_; }
+
+    static final MemoryLayout stat64$st_ino$LAYOUT_ = C_LONG_LONG;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_ino$LAYOUT() { return stat64$st_ino$LAYOUT_; }
+
+    static final VarHandle stat64$st_ino$VH_ = stat64$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("st_ino"));
+    static final java.lang.invoke.VarHandle stat64$st_ino$VH() { return stat64$st_ino$VH_; }
+
+    static final MemoryLayout stat64$st_uid$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_uid$LAYOUT() { return stat64$st_uid$LAYOUT_; }
+
+    static final VarHandle stat64$st_uid$VH_ = stat64$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_uid"));
+    static final java.lang.invoke.VarHandle stat64$st_uid$VH() { return stat64$st_uid$VH_; }
+
+    static final MemoryLayout stat64$st_gid$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_gid$LAYOUT() { return stat64$st_gid$LAYOUT_; }
+
+    static final VarHandle stat64$st_gid$VH_ = stat64$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_gid"));
+    static final java.lang.invoke.VarHandle stat64$st_gid$VH() { return stat64$st_gid$VH_; }
+
+    static final MemoryLayout stat64$st_rdev$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_rdev$LAYOUT() { return stat64$st_rdev$LAYOUT_; }
+
+    static final VarHandle stat64$st_rdev$VH_ = stat64$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_rdev"));
+    static final java.lang.invoke.VarHandle stat64$st_rdev$VH() { return stat64$st_rdev$VH_; }
+
+    static final MemoryLayout stat64$st_size$LAYOUT_ = C_LONG_LONG;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_size$LAYOUT() { return stat64$st_size$LAYOUT_; }
+
+    static final VarHandle stat64$st_size$VH_ = stat64$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("st_size"));
+    static final java.lang.invoke.VarHandle stat64$st_size$VH() { return stat64$st_size$VH_; }
+
+    static final MemoryLayout stat64$st_blocks$LAYOUT_ = C_LONG_LONG;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_blocks$LAYOUT() { return stat64$st_blocks$LAYOUT_; }
+
+    static final VarHandle stat64$st_blocks$VH_ = stat64$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("st_blocks"));
+    static final java.lang.invoke.VarHandle stat64$st_blocks$VH() { return stat64$st_blocks$VH_; }
+
+    static final MemoryLayout stat64$st_blksize$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_blksize$LAYOUT() { return stat64$st_blksize$LAYOUT_; }
+
+    static final VarHandle stat64$st_blksize$VH_ = stat64$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_blksize"));
+    static final java.lang.invoke.VarHandle stat64$st_blksize$VH() { return stat64$st_blksize$VH_; }
+
+    static final MemoryLayout stat64$st_flags$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_flags$LAYOUT() { return stat64$st_flags$LAYOUT_; }
+
+    static final VarHandle stat64$st_flags$VH_ = stat64$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_flags"));
+    static final java.lang.invoke.VarHandle stat64$st_flags$VH() { return stat64$st_flags$VH_; }
+
+    static final MemoryLayout stat64$st_gen$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_gen$LAYOUT() { return stat64$st_gen$LAYOUT_; }
+
+    static final VarHandle stat64$st_gen$VH_ = stat64$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_gen"));
+    static final java.lang.invoke.VarHandle stat64$st_gen$VH() { return stat64$st_gen$VH_; }
+
+    static final MemoryLayout stat64$st_lspare$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout stat64$st_lspare$LAYOUT() { return stat64$st_lspare$LAYOUT_; }
+
+    static final VarHandle stat64$st_lspare$VH_ = stat64$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_lspare"));
+    static final java.lang.invoke.VarHandle stat64$st_lspare$VH() { return stat64$st_lspare$VH_; }
+
+    static final FunctionDescriptor chmod$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_SHORT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor chmod$FUNC() { return chmod$FUNC_; }
+
+    static final MethodHandle chmod$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "chmod",
+        "(Ljdk/incubator/foreign/MemoryAddress;S)I",
+        chmod$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle chmod$MH() { return chmod$MH_; }
+
+    static final FunctionDescriptor fchmod$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_SHORT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fchmod$FUNC() { return fchmod$FUNC_; }
+
+    static final MethodHandle fchmod$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fchmod",
+        "(IS)I",
+        fchmod$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fchmod$MH() { return fchmod$MH_; }
+
+    static final FunctionDescriptor fstat$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fstat$FUNC() { return fstat$FUNC_; }
+
+    static final MethodHandle fstat$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fstat",
+        "(ILjdk/incubator/foreign/MemoryAddress;)I",
+        fstat$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fstat$MH() { return fstat$MH_; }
+
+    static final FunctionDescriptor lstat$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor lstat$FUNC() { return lstat$FUNC_; }
+
+    static final MethodHandle lstat$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "lstat",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        lstat$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle lstat$MH() { return lstat$MH_; }
+
+    static final FunctionDescriptor mkdir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_SHORT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor mkdir$FUNC() { return mkdir$FUNC_; }
+
+    static final MethodHandle mkdir$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "mkdir",
+        "(Ljdk/incubator/foreign/MemoryAddress;S)I",
+        mkdir$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle mkdir$MH() { return mkdir$MH_; }
+
+    static final FunctionDescriptor mkfifo$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_SHORT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor mkfifo$FUNC() { return mkfifo$FUNC_; }
+
+    static final MethodHandle mkfifo$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "mkfifo",
+        "(Ljdk/incubator/foreign/MemoryAddress;S)I",
+        mkfifo$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle mkfifo$MH() { return mkfifo$MH_; }
+
+    static final FunctionDescriptor stat$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor stat$FUNC() { return stat$FUNC_; }
+
+    static final MethodHandle stat$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "stat",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        stat$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle stat$MH() { return stat$MH_; }
+
+    static final FunctionDescriptor mknod$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_SHORT,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor mknod$FUNC() { return mknod$FUNC_; }
+
+    static final MethodHandle mknod$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "mknod",
+        "(Ljdk/incubator/foreign/MemoryAddress;SI)I",
+        mknod$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle mknod$MH() { return mknod$MH_; }
+
+    static final FunctionDescriptor umask$FUNC_ = FunctionDescriptor.of(C_SHORT,
+        C_SHORT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor umask$FUNC() { return umask$FUNC_; }
+
+    static final MethodHandle umask$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "umask",
+        "(S)S",
+        umask$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle umask$MH() { return umask$MH_; }
+
+    static final FunctionDescriptor fchmodat$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_POINTER,
+        C_SHORT,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fchmodat$FUNC() { return fchmodat$FUNC_; }
+
+    static final MethodHandle fchmodat$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fchmodat",
+        "(ILjdk/incubator/foreign/MemoryAddress;SI)I",
+        fchmodat$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fchmodat$MH() { return fchmodat$MH_; }
+
+    static final FunctionDescriptor fstatat$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fstatat$FUNC() { return fstatat$FUNC_; }
+
+    static final MethodHandle fstatat$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fstatat",
+        "(ILjdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;I)I",
+        fstatat$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fstatat$MH() { return fstatat$MH_; }
+
+    static final FunctionDescriptor mkdirat$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_POINTER,
+        C_SHORT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor mkdirat$FUNC() { return mkdirat$FUNC_; }
+
+    static final MethodHandle mkdirat$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "mkdirat",
+        "(ILjdk/incubator/foreign/MemoryAddress;S)I",
+        mkdirat$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle mkdirat$MH() { return mkdirat$MH_; }
+
+    static final FunctionDescriptor futimens$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor futimens$FUNC() { return futimens$FUNC_; }
+
+    static final MethodHandle futimens$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "futimens",
+        "(ILjdk/incubator/foreign/MemoryAddress;)I",
+        futimens$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle futimens$MH() { return futimens$MH_; }
+
+    static final FunctionDescriptor utimensat$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor utimensat$FUNC() { return utimensat$FUNC_; }
+
+    static final MethodHandle utimensat$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "utimensat",
+        "(ILjdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;I)I",
+        utimensat$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle utimensat$MH() { return utimensat$MH_; }
+
+    static final FunctionDescriptor chflags$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor chflags$FUNC() { return chflags$FUNC_; }
+
+    static final MethodHandle chflags$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "chflags",
+        "(Ljdk/incubator/foreign/MemoryAddress;I)I",
+        chflags$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle chflags$MH() { return chflags$MH_; }
+
+    static final FunctionDescriptor chmodx_np$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor chmodx_np$FUNC() { return chmodx_np$FUNC_; }
+
+    static final MethodHandle chmodx_np$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "chmodx_np",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        chmodx_np$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle chmodx_np$MH() { return chmodx_np$MH_; }
+
+    static final FunctionDescriptor fchflags$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fchflags$FUNC() { return fchflags$FUNC_; }
+
+    static final MethodHandle fchflags$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fchflags",
+        "(II)I",
+        fchflags$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fchflags$MH() { return fchflags$MH_; }
+
+    static final FunctionDescriptor fchmodx_np$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fchmodx_np$FUNC() { return fchmodx_np$FUNC_; }
+
+    static final MethodHandle fchmodx_np$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fchmodx_np",
+        "(ILjdk/incubator/foreign/MemoryAddress;)I",
+        fchmodx_np$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fchmodx_np$MH() { return fchmodx_np$MH_; }
+
+    static final FunctionDescriptor fstatx_np$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fstatx_np$FUNC() { return fstatx_np$FUNC_; }
+
+    static final MethodHandle fstatx_np$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fstatx_np",
+        "(ILjdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fstatx_np$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fstatx_np$MH() { return fstatx_np$MH_; }
+
+    static final FunctionDescriptor lchflags$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor lchflags$FUNC() { return lchflags$FUNC_; }
+
+    static final MethodHandle lchflags$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "lchflags",
+        "(Ljdk/incubator/foreign/MemoryAddress;I)I",
+        lchflags$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle lchflags$MH() { return lchflags$MH_; }
+
+    static final FunctionDescriptor lchmod$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_SHORT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor lchmod$FUNC() { return lchmod$FUNC_; }
+
+    static final MethodHandle lchmod$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "lchmod",
+        "(Ljdk/incubator/foreign/MemoryAddress;S)I",
+        lchmod$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle lchmod$MH() { return lchmod$MH_; }
+
+    static final FunctionDescriptor lstatx_np$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor lstatx_np$FUNC() { return lstatx_np$FUNC_; }
+
+    static final MethodHandle lstatx_np$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "lstatx_np",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        lstatx_np$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle lstatx_np$MH() { return lstatx_np$MH_; }
+
+    static final FunctionDescriptor mkdirx_np$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor mkdirx_np$FUNC() { return mkdirx_np$FUNC_; }
+
+    static final MethodHandle mkdirx_np$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "mkdirx_np",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        mkdirx_np$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle mkdirx_np$MH() { return mkdirx_np$MH_; }
+
+    static final FunctionDescriptor mkfifox_np$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor mkfifox_np$FUNC() { return mkfifox_np$FUNC_; }
+
+    static final MethodHandle mkfifox_np$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "mkfifox_np",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        mkfifox_np$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle mkfifox_np$MH() { return mkfifox_np$MH_; }
+
+    static final FunctionDescriptor statx_np$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor statx_np$FUNC() { return statx_np$FUNC_; }
+
+    static final MethodHandle statx_np$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "statx_np",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        statx_np$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle statx_np$MH() { return statx_np$MH_; }
+
+    static final FunctionDescriptor umaskx_np$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor umaskx_np$FUNC() { return umaskx_np$FUNC_; }
+
+    static final MethodHandle umaskx_np$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "umaskx_np",
+        "(Ljdk/incubator/foreign/MemoryAddress;)I",
+        umaskx_np$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle umaskx_np$MH() { return umaskx_np$MH_; }
+
+    static final FunctionDescriptor fstatx64_np$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fstatx64_np$FUNC() { return fstatx64_np$FUNC_; }
+
+    static final MethodHandle fstatx64_np$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fstatx64_np",
+        "(ILjdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fstatx64_np$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fstatx64_np$MH() { return fstatx64_np$MH_; }
+
+    static final FunctionDescriptor lstatx64_np$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor lstatx64_np$FUNC() { return lstatx64_np$FUNC_; }
+
+    static final MethodHandle lstatx64_np$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "lstatx64_np",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        lstatx64_np$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle lstatx64_np$MH() { return lstatx64_np$MH_; }
+
+    static final FunctionDescriptor statx64_np$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor statx64_np$FUNC() { return statx64_np$FUNC_; }
+
+    static final MethodHandle statx64_np$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "statx64_np",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        statx64_np$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle statx64_np$MH() { return statx64_np$MH_; }
+
+    static final FunctionDescriptor fstat64$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fstat64$FUNC() { return fstat64$FUNC_; }
+
+    static final MethodHandle fstat64$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fstat64",
+        "(ILjdk/incubator/foreign/MemoryAddress;)I",
+        fstat64$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fstat64$MH() { return fstat64$MH_; }
+
+    static final FunctionDescriptor lstat64$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor lstat64$FUNC() { return lstat64$FUNC_; }
+
+    static final MethodHandle lstat64$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "lstat64",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        lstat64$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle lstat64$MH() { return lstat64$MH_; }
+
+    static final FunctionDescriptor stat64$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor stat64$FUNC() { return stat64$FUNC_; }
+
+    static final MethodHandle stat64$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "stat64",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        stat64$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle stat64$MH() { return stat64$MH_; }
+
+    static final MemoryLayout setattr_x$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_INT.withName("valid"),
+        C_SHORT.withName("mode"),
+        MemoryLayout.ofPaddingBits(16),
+        C_INT.withName("uid"),
+        C_INT.withName("gid"),
+        C_LONG_LONG.withName("size"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("acctime"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("modtime"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("crtime"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("chgtime"),
+        MemoryLayout.ofStruct(
+            C_LONG.withName("tv_sec"),
+            C_LONG.withName("tv_nsec")
+        ).withName("bkuptime"),
+        C_INT.withName("flags"),
         MemoryLayout.ofPaddingBits(32)
-    ).withName("fuse_args");
-    static final jdk.incubator.foreign.MemoryLayout fuse_args$struct$LAYOUT() { return fuse_args$struct$LAYOUT_; }
+    ).withName("setattr_x");
+    static final jdk.incubator.foreign.MemoryLayout setattr_x$struct$LAYOUT() { return setattr_x$struct$LAYOUT_; }
 
-    static final MemoryLayout fuse_args$argc$LAYOUT_ = C_INT;
-    static final jdk.incubator.foreign.MemoryLayout fuse_args$argc$LAYOUT() { return fuse_args$argc$LAYOUT_; }
+    static final MemoryLayout setattr_x$valid$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout setattr_x$valid$LAYOUT() { return setattr_x$valid$LAYOUT_; }
 
-    static final VarHandle fuse_args$argc$VH_ = fuse_args$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("argc"));
-    static final java.lang.invoke.VarHandle fuse_args$argc$VH() { return fuse_args$argc$VH_; }
+    static final VarHandle setattr_x$valid$VH_ = setattr_x$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("valid"));
+    static final java.lang.invoke.VarHandle setattr_x$valid$VH() { return setattr_x$valid$VH_; }
 
-    static final MemoryLayout fuse_args$argv$LAYOUT_ = C_POINTER;
-    static final jdk.incubator.foreign.MemoryLayout fuse_args$argv$LAYOUT() { return fuse_args$argv$LAYOUT_; }
+    static final MemoryLayout setattr_x$mode$LAYOUT_ = C_SHORT;
+    static final jdk.incubator.foreign.MemoryLayout setattr_x$mode$LAYOUT() { return setattr_x$mode$LAYOUT_; }
 
-    static final VarHandle fuse_args$argv$VH_ = MemoryHandles.asAddressVarHandle(fuse_args$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("argv")));
-    static final java.lang.invoke.VarHandle fuse_args$argv$VH() { return fuse_args$argv$VH_; }
+    static final VarHandle setattr_x$mode$VH_ = setattr_x$struct$LAYOUT_.varHandle(short.class, MemoryLayout.PathElement.groupElement("mode"));
+    static final java.lang.invoke.VarHandle setattr_x$mode$VH() { return setattr_x$mode$VH_; }
 
-    static final MemoryLayout fuse_args$allocated$LAYOUT_ = C_INT;
-    static final jdk.incubator.foreign.MemoryLayout fuse_args$allocated$LAYOUT() { return fuse_args$allocated$LAYOUT_; }
+    static final MemoryLayout setattr_x$uid$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout setattr_x$uid$LAYOUT() { return setattr_x$uid$LAYOUT_; }
 
-    static final VarHandle fuse_args$allocated$VH_ = fuse_args$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("allocated"));
-    static final java.lang.invoke.VarHandle fuse_args$allocated$VH() { return fuse_args$allocated$VH_; }
+    static final VarHandle setattr_x$uid$VH_ = setattr_x$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("uid"));
+    static final java.lang.invoke.VarHandle setattr_x$uid$VH() { return setattr_x$uid$VH_; }
+
+    static final MemoryLayout setattr_x$gid$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout setattr_x$gid$LAYOUT() { return setattr_x$gid$LAYOUT_; }
+
+    static final VarHandle setattr_x$gid$VH_ = setattr_x$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("gid"));
+    static final java.lang.invoke.VarHandle setattr_x$gid$VH() { return setattr_x$gid$VH_; }
+
+    static final MemoryLayout setattr_x$size$LAYOUT_ = C_LONG_LONG;
+    static final jdk.incubator.foreign.MemoryLayout setattr_x$size$LAYOUT() { return setattr_x$size$LAYOUT_; }
+
+    static final VarHandle setattr_x$size$VH_ = setattr_x$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("size"));
+    static final java.lang.invoke.VarHandle setattr_x$size$VH() { return setattr_x$size$VH_; }
+
+    static final MemoryLayout setattr_x$flags$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout setattr_x$flags$LAYOUT() { return setattr_x$flags$LAYOUT_; }
+
+    static final VarHandle setattr_x$flags$VH_ = setattr_x$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("flags"));
+    static final java.lang.invoke.VarHandle setattr_x$flags$VH() { return setattr_x$flags$VH_; }
+
+    static final MemoryLayout fuse_file_info$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_INT.withName("flags"),
+        MemoryLayout.ofPaddingBits(32),
+        C_LONG.withName("fh_old"),
+        C_INT.withName("writepage"),
+        C_INT,
+        C_LONG_LONG.withName("fh"),
+        C_LONG_LONG.withName("lock_owner")
+    ).withName("fuse_file_info");
+    static final jdk.incubator.foreign.MemoryLayout fuse_file_info$struct$LAYOUT() { return fuse_file_info$struct$LAYOUT_; }
+
+    static final MemoryLayout fuse_file_info$flags$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_file_info$flags$LAYOUT() { return fuse_file_info$flags$LAYOUT_; }
+
+    static final VarHandle fuse_file_info$flags$VH_ = fuse_file_info$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("flags"));
+    static final java.lang.invoke.VarHandle fuse_file_info$flags$VH() { return fuse_file_info$flags$VH_; }
+
+    static final MemoryLayout fuse_file_info$fh_old$LAYOUT_ = C_LONG;
+    static final jdk.incubator.foreign.MemoryLayout fuse_file_info$fh_old$LAYOUT() { return fuse_file_info$fh_old$LAYOUT_; }
+
+    static final VarHandle fuse_file_info$fh_old$VH_ = fuse_file_info$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("fh_old"));
+    static final java.lang.invoke.VarHandle fuse_file_info$fh_old$VH() { return fuse_file_info$fh_old$VH_; }
+
+    static final MemoryLayout fuse_file_info$writepage$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_file_info$writepage$LAYOUT() { return fuse_file_info$writepage$LAYOUT_; }
+
+    static final VarHandle fuse_file_info$writepage$VH_ = fuse_file_info$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("writepage"));
+    static final java.lang.invoke.VarHandle fuse_file_info$writepage$VH() { return fuse_file_info$writepage$VH_; }
+
+    static final MemoryLayout fuse_file_info$fh$LAYOUT_ = C_LONG_LONG;
+    static final jdk.incubator.foreign.MemoryLayout fuse_file_info$fh$LAYOUT() { return fuse_file_info$fh$LAYOUT_; }
+
+    static final VarHandle fuse_file_info$fh$VH_ = fuse_file_info$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("fh"));
+    static final java.lang.invoke.VarHandle fuse_file_info$fh$VH() { return fuse_file_info$fh$VH_; }
+
+    static final MemoryLayout fuse_file_info$lock_owner$LAYOUT_ = C_LONG_LONG;
+    static final jdk.incubator.foreign.MemoryLayout fuse_file_info$lock_owner$LAYOUT() { return fuse_file_info$lock_owner$LAYOUT_; }
+
+    static final VarHandle fuse_file_info$lock_owner$VH_ = fuse_file_info$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("lock_owner"));
+    static final java.lang.invoke.VarHandle fuse_file_info$lock_owner$VH() { return fuse_file_info$lock_owner$VH_; }
+
+    static final MemoryLayout fuse_conn_info$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_INT.withName("proto_major"),
+        C_INT.withName("proto_minor"),
+        C_INT.withName("async_read"),
+        C_INT.withName("max_write"),
+        C_INT.withName("max_readahead"),
+        MemoryLayout.ofStruct(
+            C_INT
+        ).withName("enable"),
+        C_INT.withName("capable"),
+        C_INT.withName("want"),
+        C_INT.withName("max_background"),
+        C_INT.withName("congestion_threshold"),
+        MemoryLayout.ofSequence(22, C_INT).withName("reserved")
+    ).withName("fuse_conn_info");
+    static final jdk.incubator.foreign.MemoryLayout fuse_conn_info$struct$LAYOUT() { return fuse_conn_info$struct$LAYOUT_; }
+
+    static final MemoryLayout fuse_conn_info$proto_major$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_conn_info$proto_major$LAYOUT() { return fuse_conn_info$proto_major$LAYOUT_; }
+
+    static final VarHandle fuse_conn_info$proto_major$VH_ = fuse_conn_info$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("proto_major"));
+    static final java.lang.invoke.VarHandle fuse_conn_info$proto_major$VH() { return fuse_conn_info$proto_major$VH_; }
+
+    static final MemoryLayout fuse_conn_info$proto_minor$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_conn_info$proto_minor$LAYOUT() { return fuse_conn_info$proto_minor$LAYOUT_; }
+
+    static final VarHandle fuse_conn_info$proto_minor$VH_ = fuse_conn_info$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("proto_minor"));
+    static final java.lang.invoke.VarHandle fuse_conn_info$proto_minor$VH() { return fuse_conn_info$proto_minor$VH_; }
+
+    static final MemoryLayout fuse_conn_info$async_read$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_conn_info$async_read$LAYOUT() { return fuse_conn_info$async_read$LAYOUT_; }
+
+    static final VarHandle fuse_conn_info$async_read$VH_ = fuse_conn_info$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("async_read"));
+    static final java.lang.invoke.VarHandle fuse_conn_info$async_read$VH() { return fuse_conn_info$async_read$VH_; }
+
+    static final MemoryLayout fuse_conn_info$max_write$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_conn_info$max_write$LAYOUT() { return fuse_conn_info$max_write$LAYOUT_; }
+
+    static final VarHandle fuse_conn_info$max_write$VH_ = fuse_conn_info$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("max_write"));
+    static final java.lang.invoke.VarHandle fuse_conn_info$max_write$VH() { return fuse_conn_info$max_write$VH_; }
+
+    static final MemoryLayout fuse_conn_info$max_readahead$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_conn_info$max_readahead$LAYOUT() { return fuse_conn_info$max_readahead$LAYOUT_; }
+
+    static final VarHandle fuse_conn_info$max_readahead$VH_ = fuse_conn_info$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("max_readahead"));
+    static final java.lang.invoke.VarHandle fuse_conn_info$max_readahead$VH() { return fuse_conn_info$max_readahead$VH_; }
+
+    static final MemoryLayout fuse_conn_info$enable$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_INT
+    );
+    static final jdk.incubator.foreign.MemoryLayout fuse_conn_info$enable$struct$LAYOUT() { return fuse_conn_info$enable$struct$LAYOUT_; }
+
+    static final MemoryLayout fuse_conn_info$capable$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_conn_info$capable$LAYOUT() { return fuse_conn_info$capable$LAYOUT_; }
+
+    static final VarHandle fuse_conn_info$capable$VH_ = fuse_conn_info$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("capable"));
+    static final java.lang.invoke.VarHandle fuse_conn_info$capable$VH() { return fuse_conn_info$capable$VH_; }
+
+    static final MemoryLayout fuse_conn_info$want$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_conn_info$want$LAYOUT() { return fuse_conn_info$want$LAYOUT_; }
+
+    static final VarHandle fuse_conn_info$want$VH_ = fuse_conn_info$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("want"));
+    static final java.lang.invoke.VarHandle fuse_conn_info$want$VH() { return fuse_conn_info$want$VH_; }
+
+    static final MemoryLayout fuse_conn_info$max_background$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_conn_info$max_background$LAYOUT() { return fuse_conn_info$max_background$LAYOUT_; }
+
+    static final VarHandle fuse_conn_info$max_background$VH_ = fuse_conn_info$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("max_background"));
+    static final java.lang.invoke.VarHandle fuse_conn_info$max_background$VH() { return fuse_conn_info$max_background$VH_; }
+
+    static final MemoryLayout fuse_conn_info$congestion_threshold$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_conn_info$congestion_threshold$LAYOUT() { return fuse_conn_info$congestion_threshold$LAYOUT_; }
+
+    static final VarHandle fuse_conn_info$congestion_threshold$VH_ = fuse_conn_info$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("congestion_threshold"));
+    static final java.lang.invoke.VarHandle fuse_conn_info$congestion_threshold$VH() { return fuse_conn_info$congestion_threshold$VH_; }
+
+    static final FunctionDescriptor fuse_mount$FUNC_ = FunctionDescriptor.of(C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_mount$FUNC() { return fuse_mount$FUNC_; }
+
+    static final MethodHandle fuse_mount$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_mount",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)Ljdk/incubator/foreign/MemoryAddress;",
+        fuse_mount$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_mount$MH() { return fuse_mount$MH_; }
+
+    static final FunctionDescriptor fuse_unmount$FUNC_ = FunctionDescriptor.ofVoid(
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_unmount$FUNC() { return fuse_unmount$FUNC_; }
+
+    static final MethodHandle fuse_unmount$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_unmount",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)V",
+        fuse_unmount$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_unmount$MH() { return fuse_unmount$MH_; }
+
+    static final FunctionDescriptor fuse_parse_cmdline$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_parse_cmdline$FUNC() { return fuse_parse_cmdline$FUNC_; }
+
+    static final MethodHandle fuse_parse_cmdline$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_parse_cmdline",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_parse_cmdline$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_parse_cmdline$MH() { return fuse_parse_cmdline$MH_; }
+
+    static final FunctionDescriptor fuse_daemonize$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_daemonize$FUNC() { return fuse_daemonize$FUNC_; }
+
+    static final MethodHandle fuse_daemonize$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_daemonize",
+        "(I)I",
+        fuse_daemonize$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_daemonize$MH() { return fuse_daemonize$MH_; }
+
+    static final FunctionDescriptor fuse_version$FUNC_ = FunctionDescriptor.of(C_INT);
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_version$FUNC() { return fuse_version$FUNC_; }
+
+    static final MethodHandle fuse_version$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_version",
+        "()I",
+        fuse_version$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_version$MH() { return fuse_version$MH_; }
+
+    static final FunctionDescriptor fuse_pollhandle_destroy$FUNC_ = FunctionDescriptor.ofVoid(
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_pollhandle_destroy$FUNC() { return fuse_pollhandle_destroy$FUNC_; }
+
+    static final MethodHandle fuse_pollhandle_destroy$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_pollhandle_destroy",
+        "(Ljdk/incubator/foreign/MemoryAddress;)V",
+        fuse_pollhandle_destroy$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_pollhandle_destroy$MH() { return fuse_pollhandle_destroy$MH_; }
+
+    static final int FUSE_BUF_IS_FD() { return (int)2L; }
+
+    static final int FUSE_BUF_FD_SEEK() { return (int)4L; }
+
+    static final int FUSE_BUF_FD_RETRY() { return (int)8L; }
+
+    static final int FUSE_BUF_NO_SPLICE() { return (int)2L; }
+
+    static final int FUSE_BUF_FORCE_SPLICE() { return (int)4L; }
+
+    static final int FUSE_BUF_SPLICE_MOVE() { return (int)8L; }
+
+    static final int FUSE_BUF_SPLICE_NONBLOCK() { return (int)16L; }
+
+    static final MemoryLayout fuse_buf$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_LONG.withName("size"),
+        C_INT.withName("flags"),
+        MemoryLayout.ofPaddingBits(32),
+        C_POINTER.withName("mem"),
+        C_INT.withName("fd"),
+        MemoryLayout.ofPaddingBits(32),
+        C_LONG_LONG.withName("pos")
+    ).withName("fuse_buf");
+    static final jdk.incubator.foreign.MemoryLayout fuse_buf$struct$LAYOUT() { return fuse_buf$struct$LAYOUT_; }
+
+    static final MemoryLayout fuse_buf$size$LAYOUT_ = C_LONG;
+    static final jdk.incubator.foreign.MemoryLayout fuse_buf$size$LAYOUT() { return fuse_buf$size$LAYOUT_; }
+
+    static final VarHandle fuse_buf$size$VH_ = fuse_buf$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("size"));
+    static final java.lang.invoke.VarHandle fuse_buf$size$VH() { return fuse_buf$size$VH_; }
+
+    static final MemoryLayout fuse_buf$flags$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_buf$flags$LAYOUT() { return fuse_buf$flags$LAYOUT_; }
+
+    static final VarHandle fuse_buf$flags$VH_ = fuse_buf$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("flags"));
+    static final java.lang.invoke.VarHandle fuse_buf$flags$VH() { return fuse_buf$flags$VH_; }
+
+    static final MemoryLayout fuse_buf$mem$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_buf$mem$LAYOUT() { return fuse_buf$mem$LAYOUT_; }
+
+    static final VarHandle fuse_buf$mem$VH_ = MemoryHandles.asAddressVarHandle(fuse_buf$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("mem")));
+    static final java.lang.invoke.VarHandle fuse_buf$mem$VH() { return fuse_buf$mem$VH_; }
+
+    static final MemoryLayout fuse_buf$fd$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_buf$fd$LAYOUT() { return fuse_buf$fd$LAYOUT_; }
+
+    static final VarHandle fuse_buf$fd$VH_ = fuse_buf$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("fd"));
+    static final java.lang.invoke.VarHandle fuse_buf$fd$VH() { return fuse_buf$fd$VH_; }
+
+    static final MemoryLayout fuse_buf$pos$LAYOUT_ = C_LONG_LONG;
+    static final jdk.incubator.foreign.MemoryLayout fuse_buf$pos$LAYOUT() { return fuse_buf$pos$LAYOUT_; }
+
+    static final VarHandle fuse_buf$pos$VH_ = fuse_buf$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("pos"));
+    static final java.lang.invoke.VarHandle fuse_buf$pos$VH() { return fuse_buf$pos$VH_; }
+
+    static final MemoryLayout fuse_bufvec$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_LONG.withName("count"),
+        C_LONG.withName("idx"),
+        C_LONG.withName("off"),
+        MemoryLayout.ofSequence(1, MemoryLayout.ofStruct(
+            C_LONG.withName("size"),
+            C_INT.withName("flags"),
+            MemoryLayout.ofPaddingBits(32),
+            C_POINTER.withName("mem"),
+            C_INT.withName("fd"),
+            MemoryLayout.ofPaddingBits(32),
+            C_LONG_LONG.withName("pos")
+        ).withName("fuse_buf")).withName("buf")
+    ).withName("fuse_bufvec");
+    static final jdk.incubator.foreign.MemoryLayout fuse_bufvec$struct$LAYOUT() { return fuse_bufvec$struct$LAYOUT_; }
+
+    static final MemoryLayout fuse_bufvec$count$LAYOUT_ = C_LONG;
+    static final jdk.incubator.foreign.MemoryLayout fuse_bufvec$count$LAYOUT() { return fuse_bufvec$count$LAYOUT_; }
+
+    static final VarHandle fuse_bufvec$count$VH_ = fuse_bufvec$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("count"));
+    static final java.lang.invoke.VarHandle fuse_bufvec$count$VH() { return fuse_bufvec$count$VH_; }
+
+    static final MemoryLayout fuse_bufvec$idx$LAYOUT_ = C_LONG;
+    static final jdk.incubator.foreign.MemoryLayout fuse_bufvec$idx$LAYOUT() { return fuse_bufvec$idx$LAYOUT_; }
+
+    static final VarHandle fuse_bufvec$idx$VH_ = fuse_bufvec$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("idx"));
+    static final java.lang.invoke.VarHandle fuse_bufvec$idx$VH() { return fuse_bufvec$idx$VH_; }
+
+    static final MemoryLayout fuse_bufvec$off$LAYOUT_ = C_LONG;
+    static final jdk.incubator.foreign.MemoryLayout fuse_bufvec$off$LAYOUT() { return fuse_bufvec$off$LAYOUT_; }
+
+    static final VarHandle fuse_bufvec$off$VH_ = fuse_bufvec$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("off"));
+    static final java.lang.invoke.VarHandle fuse_bufvec$off$VH() { return fuse_bufvec$off$VH_; }
+
+    static final FunctionDescriptor fuse_buf_size$FUNC_ = FunctionDescriptor.of(C_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_buf_size$FUNC() { return fuse_buf_size$FUNC_; }
+
+    static final MethodHandle fuse_buf_size$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_buf_size",
+        "(Ljdk/incubator/foreign/MemoryAddress;)J",
+        fuse_buf_size$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_buf_size$MH() { return fuse_buf_size$MH_; }
+
+    static final FunctionDescriptor fuse_buf_copy$FUNC_ = FunctionDescriptor.of(C_LONG,
+        C_POINTER,
+        C_POINTER,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_buf_copy$FUNC() { return fuse_buf_copy$FUNC_; }
+
+    static final MethodHandle fuse_buf_copy$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_buf_copy",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;I)J",
+        fuse_buf_copy$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_buf_copy$MH() { return fuse_buf_copy$MH_; }
+
+    static final FunctionDescriptor fuse_set_signal_handlers$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_set_signal_handlers$FUNC() { return fuse_set_signal_handlers$FUNC_; }
+
+    static final MethodHandle fuse_set_signal_handlers$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_set_signal_handlers",
+        "(Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_set_signal_handlers$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_set_signal_handlers$MH() { return fuse_set_signal_handlers$MH_; }
+
+    static final FunctionDescriptor fuse_remove_signal_handlers$FUNC_ = FunctionDescriptor.ofVoid(
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_remove_signal_handlers$FUNC() { return fuse_remove_signal_handlers$FUNC_; }
+
+    static final MethodHandle fuse_remove_signal_handlers$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_remove_signal_handlers",
+        "(Ljdk/incubator/foreign/MemoryAddress;)V",
+        fuse_remove_signal_handlers$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_remove_signal_handlers$MH() { return fuse_remove_signal_handlers$MH_; }
+
+    static final MemoryLayout fuse_operations$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_POINTER.withName("getattr"),
+        C_POINTER.withName("readlink"),
+        C_POINTER.withName("getdir"),
+        C_POINTER.withName("mknod"),
+        C_POINTER.withName("mkdir"),
+        C_POINTER.withName("unlink"),
+        C_POINTER.withName("rmdir"),
+        C_POINTER.withName("symlink"),
+        C_POINTER.withName("rename"),
+        C_POINTER.withName("link"),
+        C_POINTER.withName("chmod"),
+        C_POINTER.withName("chown"),
+        C_POINTER.withName("truncate"),
+        C_POINTER.withName("utime"),
+        C_POINTER.withName("open"),
+        C_POINTER.withName("read"),
+        C_POINTER.withName("write"),
+        C_POINTER.withName("statfs"),
+        C_POINTER.withName("flush"),
+        C_POINTER.withName("release"),
+        C_POINTER.withName("fsync"),
+        C_POINTER.withName("setxattr"),
+        C_POINTER.withName("getxattr"),
+        C_POINTER.withName("listxattr"),
+        C_POINTER.withName("removexattr"),
+        C_POINTER.withName("opendir"),
+        C_POINTER.withName("readdir"),
+        C_POINTER.withName("releasedir"),
+        C_POINTER.withName("fsyncdir"),
+        C_POINTER.withName("init"),
+        C_POINTER.withName("destroy"),
+        C_POINTER.withName("access"),
+        C_POINTER.withName("create"),
+        C_POINTER.withName("ftruncate"),
+        C_POINTER.withName("fgetattr"),
+        C_POINTER.withName("lock"),
+        C_POINTER.withName("utimens"),
+        C_POINTER.withName("bmap"),
+        C_LONG_LONG,
+        C_POINTER.withName("ioctl"),
+        C_POINTER.withName("poll"),
+        C_POINTER.withName("write_buf"),
+        C_POINTER.withName("read_buf"),
+        C_POINTER.withName("flock"),
+        C_POINTER.withName("fallocate"),
+        C_POINTER.withName("reserved00"),
+        C_POINTER.withName("reserved01"),
+        C_POINTER.withName("renamex"),
+        C_POINTER.withName("statfs_x"),
+        C_POINTER.withName("setvolname"),
+        C_POINTER.withName("exchange"),
+        C_POINTER.withName("getxtimes"),
+        C_POINTER.withName("setbkuptime"),
+        C_POINTER.withName("setchgtime"),
+        C_POINTER.withName("setcrtime"),
+        C_POINTER.withName("chflags"),
+        C_POINTER.withName("setattr_x"),
+        C_POINTER.withName("fsetattr_x")
+    ).withName("fuse_operations");
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$struct$LAYOUT() { return fuse_operations$struct$LAYOUT_; }
+
+    static final FunctionDescriptor getattr$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor getattr$FUNC() { return getattr$FUNC_; }
+
+    static final MemoryLayout fuse_operations$getattr$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$getattr$LAYOUT() { return fuse_operations$getattr$LAYOUT_; }
+
+    static final VarHandle fuse_operations$getattr$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("getattr")));
+    static final java.lang.invoke.VarHandle fuse_operations$getattr$VH() { return fuse_operations$getattr$VH_; }
+
+    static final FunctionDescriptor readlink$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_LONG
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor readlink$FUNC() { return readlink$FUNC_; }
+
+    static final MemoryLayout fuse_operations$readlink$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$readlink$LAYOUT() { return fuse_operations$readlink$LAYOUT_; }
+
+    static final VarHandle fuse_operations$readlink$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("readlink")));
+    static final java.lang.invoke.VarHandle fuse_operations$readlink$VH() { return fuse_operations$readlink$VH_; }
+
+    static final FunctionDescriptor getdir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor getdir$FUNC() { return getdir$FUNC_; }
+
+    static final MemoryLayout fuse_operations$getdir$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$getdir$LAYOUT() { return fuse_operations$getdir$LAYOUT_; }
+
+    static final VarHandle fuse_operations$getdir$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("getdir")));
+    static final java.lang.invoke.VarHandle fuse_operations$getdir$VH() { return fuse_operations$getdir$VH_; }
+
+    static final MemoryLayout fuse_operations$mknod$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$mknod$LAYOUT() { return fuse_operations$mknod$LAYOUT_; }
+
+    static final VarHandle fuse_operations$mknod$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("mknod")));
+    static final java.lang.invoke.VarHandle fuse_operations$mknod$VH() { return fuse_operations$mknod$VH_; }
+
+    static final MemoryLayout fuse_operations$mkdir$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$mkdir$LAYOUT() { return fuse_operations$mkdir$LAYOUT_; }
+
+    static final VarHandle fuse_operations$mkdir$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("mkdir")));
+    static final java.lang.invoke.VarHandle fuse_operations$mkdir$VH() { return fuse_operations$mkdir$VH_; }
+
+    static final FunctionDescriptor unlink$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor unlink$FUNC() { return unlink$FUNC_; }
+
+    static final MemoryLayout fuse_operations$unlink$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$unlink$LAYOUT() { return fuse_operations$unlink$LAYOUT_; }
+
+    static final VarHandle fuse_operations$unlink$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("unlink")));
+    static final java.lang.invoke.VarHandle fuse_operations$unlink$VH() { return fuse_operations$unlink$VH_; }
+
+    static final FunctionDescriptor rmdir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor rmdir$FUNC() { return rmdir$FUNC_; }
+
+    static final MemoryLayout fuse_operations$rmdir$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$rmdir$LAYOUT() { return fuse_operations$rmdir$LAYOUT_; }
+
+    static final VarHandle fuse_operations$rmdir$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("rmdir")));
+    static final java.lang.invoke.VarHandle fuse_operations$rmdir$VH() { return fuse_operations$rmdir$VH_; }
+
+    static final FunctionDescriptor symlink$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor symlink$FUNC() { return symlink$FUNC_; }
+
+    static final MemoryLayout fuse_operations$symlink$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$symlink$LAYOUT() { return fuse_operations$symlink$LAYOUT_; }
+
+    static final VarHandle fuse_operations$symlink$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("symlink")));
+    static final java.lang.invoke.VarHandle fuse_operations$symlink$VH() { return fuse_operations$symlink$VH_; }
+
+    static final FunctionDescriptor rename$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor rename$FUNC() { return rename$FUNC_; }
+
+    static final MemoryLayout fuse_operations$rename$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$rename$LAYOUT() { return fuse_operations$rename$LAYOUT_; }
+
+    static final VarHandle fuse_operations$rename$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("rename")));
+    static final java.lang.invoke.VarHandle fuse_operations$rename$VH() { return fuse_operations$rename$VH_; }
+
+    static final FunctionDescriptor link$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor link$FUNC() { return link$FUNC_; }
+
+    static final MemoryLayout fuse_operations$link$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$link$LAYOUT() { return fuse_operations$link$LAYOUT_; }
+
+    static final VarHandle fuse_operations$link$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("link")));
+    static final java.lang.invoke.VarHandle fuse_operations$link$VH() { return fuse_operations$link$VH_; }
+
+    static final MemoryLayout fuse_operations$chmod$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$chmod$LAYOUT() { return fuse_operations$chmod$LAYOUT_; }
+
+    static final VarHandle fuse_operations$chmod$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("chmod")));
+    static final java.lang.invoke.VarHandle fuse_operations$chmod$VH() { return fuse_operations$chmod$VH_; }
+
+    static final FunctionDescriptor chown$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_INT,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor chown$FUNC() { return chown$FUNC_; }
+
+    static final MemoryLayout fuse_operations$chown$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$chown$LAYOUT() { return fuse_operations$chown$LAYOUT_; }
+
+    static final VarHandle fuse_operations$chown$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("chown")));
+    static final java.lang.invoke.VarHandle fuse_operations$chown$VH() { return fuse_operations$chown$VH_; }
+
+    static final FunctionDescriptor truncate$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_LONG_LONG
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor truncate$FUNC() { return truncate$FUNC_; }
+
+    static final MemoryLayout fuse_operations$truncate$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$truncate$LAYOUT() { return fuse_operations$truncate$LAYOUT_; }
+
+    static final VarHandle fuse_operations$truncate$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("truncate")));
+    static final java.lang.invoke.VarHandle fuse_operations$truncate$VH() { return fuse_operations$truncate$VH_; }
+
+    static final FunctionDescriptor utime$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor utime$FUNC() { return utime$FUNC_; }
+
+    static final MemoryLayout fuse_operations$utime$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$utime$LAYOUT() { return fuse_operations$utime$LAYOUT_; }
+
+    static final VarHandle fuse_operations$utime$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("utime")));
+    static final java.lang.invoke.VarHandle fuse_operations$utime$VH() { return fuse_operations$utime$VH_; }
+
+    static final FunctionDescriptor open$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor open$FUNC() { return open$FUNC_; }
+
+    static final MemoryLayout fuse_operations$open$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$open$LAYOUT() { return fuse_operations$open$LAYOUT_; }
+
+    static final VarHandle fuse_operations$open$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("open")));
+    static final java.lang.invoke.VarHandle fuse_operations$open$VH() { return fuse_operations$open$VH_; }
+
+    static final FunctionDescriptor read$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor read$FUNC() { return read$FUNC_; }
+
+    static final MemoryLayout fuse_operations$read$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$read$LAYOUT() { return fuse_operations$read$LAYOUT_; }
+
+    static final VarHandle fuse_operations$read$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("read")));
+    static final java.lang.invoke.VarHandle fuse_operations$read$VH() { return fuse_operations$read$VH_; }
+
+    static final FunctionDescriptor write$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor write$FUNC() { return write$FUNC_; }
+
+    static final MemoryLayout fuse_operations$write$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$write$LAYOUT() { return fuse_operations$write$LAYOUT_; }
+
+    static final VarHandle fuse_operations$write$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("write")));
+    static final java.lang.invoke.VarHandle fuse_operations$write$VH() { return fuse_operations$write$VH_; }
+
+    static final FunctionDescriptor statfs$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor statfs$FUNC() { return statfs$FUNC_; }
+
+    static final MemoryLayout fuse_operations$statfs$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$statfs$LAYOUT() { return fuse_operations$statfs$LAYOUT_; }
+
+    static final VarHandle fuse_operations$statfs$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("statfs")));
+    static final java.lang.invoke.VarHandle fuse_operations$statfs$VH() { return fuse_operations$statfs$VH_; }
+
+    static final FunctionDescriptor flush$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor flush$FUNC() { return flush$FUNC_; }
+
+    static final MemoryLayout fuse_operations$flush$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$flush$LAYOUT() { return fuse_operations$flush$LAYOUT_; }
+
+    static final VarHandle fuse_operations$flush$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("flush")));
+    static final java.lang.invoke.VarHandle fuse_operations$flush$VH() { return fuse_operations$flush$VH_; }
+
+    static final FunctionDescriptor release$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor release$FUNC() { return release$FUNC_; }
+
+    static final MemoryLayout fuse_operations$release$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$release$LAYOUT() { return fuse_operations$release$LAYOUT_; }
+
+    static final VarHandle fuse_operations$release$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("release")));
+    static final java.lang.invoke.VarHandle fuse_operations$release$VH() { return fuse_operations$release$VH_; }
+
+    static final FunctionDescriptor fsync$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fsync$FUNC() { return fsync$FUNC_; }
+
+    static final MemoryLayout fuse_operations$fsync$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$fsync$LAYOUT() { return fuse_operations$fsync$LAYOUT_; }
+
+    static final VarHandle fuse_operations$fsync$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("fsync")));
+    static final java.lang.invoke.VarHandle fuse_operations$fsync$VH() { return fuse_operations$fsync$VH_; }
+
+    static final FunctionDescriptor setxattr$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_INT,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor setxattr$FUNC() { return setxattr$FUNC_; }
+
+    static final MemoryLayout fuse_operations$setxattr$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$setxattr$LAYOUT() { return fuse_operations$setxattr$LAYOUT_; }
+
+    static final VarHandle fuse_operations$setxattr$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("setxattr")));
+    static final java.lang.invoke.VarHandle fuse_operations$setxattr$VH() { return fuse_operations$setxattr$VH_; }
+
+    static final FunctionDescriptor getxattr$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor getxattr$FUNC() { return getxattr$FUNC_; }
+
+    static final MemoryLayout fuse_operations$getxattr$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$getxattr$LAYOUT() { return fuse_operations$getxattr$LAYOUT_; }
+
+    static final VarHandle fuse_operations$getxattr$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("getxattr")));
+    static final java.lang.invoke.VarHandle fuse_operations$getxattr$VH() { return fuse_operations$getxattr$VH_; }
+
+    static final FunctionDescriptor listxattr$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_LONG
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor listxattr$FUNC() { return listxattr$FUNC_; }
+
+    static final MemoryLayout fuse_operations$listxattr$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$listxattr$LAYOUT() { return fuse_operations$listxattr$LAYOUT_; }
+
+    static final VarHandle fuse_operations$listxattr$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("listxattr")));
+    static final java.lang.invoke.VarHandle fuse_operations$listxattr$VH() { return fuse_operations$listxattr$VH_; }
+
+    static final FunctionDescriptor removexattr$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor removexattr$FUNC() { return removexattr$FUNC_; }
+
+    static final MemoryLayout fuse_operations$removexattr$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$removexattr$LAYOUT() { return fuse_operations$removexattr$LAYOUT_; }
+
+    static final VarHandle fuse_operations$removexattr$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("removexattr")));
+    static final java.lang.invoke.VarHandle fuse_operations$removexattr$VH() { return fuse_operations$removexattr$VH_; }
+
+    static final FunctionDescriptor opendir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor opendir$FUNC() { return opendir$FUNC_; }
+
+    static final MemoryLayout fuse_operations$opendir$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$opendir$LAYOUT() { return fuse_operations$opendir$LAYOUT_; }
+
+    static final VarHandle fuse_operations$opendir$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("opendir")));
+    static final java.lang.invoke.VarHandle fuse_operations$opendir$VH() { return fuse_operations$opendir$VH_; }
+
+    static final FunctionDescriptor readdir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor readdir$FUNC() { return readdir$FUNC_; }
+
+    static final MemoryLayout fuse_operations$readdir$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$readdir$LAYOUT() { return fuse_operations$readdir$LAYOUT_; }
+
+    static final VarHandle fuse_operations$readdir$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("readdir")));
+    static final java.lang.invoke.VarHandle fuse_operations$readdir$VH() { return fuse_operations$readdir$VH_; }
+
+    static final FunctionDescriptor releasedir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor releasedir$FUNC() { return releasedir$FUNC_; }
+
+    static final MemoryLayout fuse_operations$releasedir$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$releasedir$LAYOUT() { return fuse_operations$releasedir$LAYOUT_; }
+
+    static final VarHandle fuse_operations$releasedir$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("releasedir")));
+    static final java.lang.invoke.VarHandle fuse_operations$releasedir$VH() { return fuse_operations$releasedir$VH_; }
+
+    static final FunctionDescriptor fsyncdir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fsyncdir$FUNC() { return fsyncdir$FUNC_; }
+
+    static final MemoryLayout fuse_operations$fsyncdir$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$fsyncdir$LAYOUT() { return fuse_operations$fsyncdir$LAYOUT_; }
+
+    static final VarHandle fuse_operations$fsyncdir$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("fsyncdir")));
+    static final java.lang.invoke.VarHandle fuse_operations$fsyncdir$VH() { return fuse_operations$fsyncdir$VH_; }
+
+    static final FunctionDescriptor init$FUNC_ = FunctionDescriptor.of(C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor init$FUNC() { return init$FUNC_; }
+
+    static final MemoryLayout fuse_operations$init$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$init$LAYOUT() { return fuse_operations$init$LAYOUT_; }
+
+    static final VarHandle fuse_operations$init$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("init")));
+    static final java.lang.invoke.VarHandle fuse_operations$init$VH() { return fuse_operations$init$VH_; }
+
+    static final FunctionDescriptor destroy$FUNC_ = FunctionDescriptor.ofVoid(
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor destroy$FUNC() { return destroy$FUNC_; }
+
+    static final MemoryLayout fuse_operations$destroy$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$destroy$LAYOUT() { return fuse_operations$destroy$LAYOUT_; }
+
+    static final VarHandle fuse_operations$destroy$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("destroy")));
+    static final java.lang.invoke.VarHandle fuse_operations$destroy$VH() { return fuse_operations$destroy$VH_; }
+
+    static final FunctionDescriptor access$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor access$FUNC() { return access$FUNC_; }
+
+    static final MemoryLayout fuse_operations$access$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$access$LAYOUT() { return fuse_operations$access$LAYOUT_; }
+
+    static final VarHandle fuse_operations$access$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("access")));
+    static final java.lang.invoke.VarHandle fuse_operations$access$VH() { return fuse_operations$access$VH_; }
+
+    static final FunctionDescriptor create$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_SHORT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor create$FUNC() { return create$FUNC_; }
+
+    static final MemoryLayout fuse_operations$create$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$create$LAYOUT() { return fuse_operations$create$LAYOUT_; }
+
+    static final VarHandle fuse_operations$create$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("create")));
+    static final java.lang.invoke.VarHandle fuse_operations$create$VH() { return fuse_operations$create$VH_; }
+
+    static final FunctionDescriptor ftruncate$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor ftruncate$FUNC() { return ftruncate$FUNC_; }
+
+    static final MemoryLayout fuse_operations$ftruncate$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$ftruncate$LAYOUT() { return fuse_operations$ftruncate$LAYOUT_; }
+
+    static final VarHandle fuse_operations$ftruncate$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("ftruncate")));
+    static final java.lang.invoke.VarHandle fuse_operations$ftruncate$VH() { return fuse_operations$ftruncate$VH_; }
+
+    static final FunctionDescriptor fgetattr$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fgetattr$FUNC() { return fgetattr$FUNC_; }
+
+    static final MemoryLayout fuse_operations$fgetattr$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$fgetattr$LAYOUT() { return fuse_operations$fgetattr$LAYOUT_; }
+
+    static final VarHandle fuse_operations$fgetattr$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("fgetattr")));
+    static final java.lang.invoke.VarHandle fuse_operations$fgetattr$VH() { return fuse_operations$fgetattr$VH_; }
+
+    static final FunctionDescriptor lock$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor lock$FUNC() { return lock$FUNC_; }
+
+    static final MemoryLayout fuse_operations$lock$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$lock$LAYOUT() { return fuse_operations$lock$LAYOUT_; }
+
+    static final VarHandle fuse_operations$lock$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("lock")));
+    static final java.lang.invoke.VarHandle fuse_operations$lock$VH() { return fuse_operations$lock$VH_; }
+
+    static final FunctionDescriptor utimens$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor utimens$FUNC() { return utimens$FUNC_; }
+
+    static final MemoryLayout fuse_operations$utimens$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$utimens$LAYOUT() { return fuse_operations$utimens$LAYOUT_; }
+
+    static final VarHandle fuse_operations$utimens$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("utimens")));
+    static final java.lang.invoke.VarHandle fuse_operations$utimens$VH() { return fuse_operations$utimens$VH_; }
+
+    static final FunctionDescriptor bmap$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor bmap$FUNC() { return bmap$FUNC_; }
+
+    static final MemoryLayout fuse_operations$bmap$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$bmap$LAYOUT() { return fuse_operations$bmap$LAYOUT_; }
+
+    static final VarHandle fuse_operations$bmap$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("bmap")));
+    static final java.lang.invoke.VarHandle fuse_operations$bmap$VH() { return fuse_operations$bmap$VH_; }
+
+    static final FunctionDescriptor ioctl$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor ioctl$FUNC() { return ioctl$FUNC_; }
+
+    static final MemoryLayout fuse_operations$ioctl$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$ioctl$LAYOUT() { return fuse_operations$ioctl$LAYOUT_; }
+
+    static final VarHandle fuse_operations$ioctl$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("ioctl")));
+    static final java.lang.invoke.VarHandle fuse_operations$ioctl$VH() { return fuse_operations$ioctl$VH_; }
+
+    static final FunctionDescriptor poll$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor poll$FUNC() { return poll$FUNC_; }
+
+    static final MemoryLayout fuse_operations$poll$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$poll$LAYOUT() { return fuse_operations$poll$LAYOUT_; }
+
+    static final VarHandle fuse_operations$poll$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("poll")));
+    static final java.lang.invoke.VarHandle fuse_operations$poll$VH() { return fuse_operations$poll$VH_; }
+
+    static final FunctionDescriptor write_buf$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor write_buf$FUNC() { return write_buf$FUNC_; }
+
+    static final MemoryLayout fuse_operations$write_buf$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$write_buf$LAYOUT() { return fuse_operations$write_buf$LAYOUT_; }
+
+    static final VarHandle fuse_operations$write_buf$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("write_buf")));
+    static final java.lang.invoke.VarHandle fuse_operations$write_buf$VH() { return fuse_operations$write_buf$VH_; }
+
+    static final FunctionDescriptor read_buf$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor read_buf$FUNC() { return read_buf$FUNC_; }
+
+    static final MemoryLayout fuse_operations$read_buf$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$read_buf$LAYOUT() { return fuse_operations$read_buf$LAYOUT_; }
+
+    static final VarHandle fuse_operations$read_buf$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("read_buf")));
+    static final java.lang.invoke.VarHandle fuse_operations$read_buf$VH() { return fuse_operations$read_buf$VH_; }
+
+    static final FunctionDescriptor flock$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor flock$FUNC() { return flock$FUNC_; }
+
+    static final MemoryLayout fuse_operations$flock$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$flock$LAYOUT() { return fuse_operations$flock$LAYOUT_; }
+
+    static final VarHandle fuse_operations$flock$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("flock")));
+    static final java.lang.invoke.VarHandle fuse_operations$flock$VH() { return fuse_operations$flock$VH_; }
+
+    static final FunctionDescriptor fallocate$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_INT,
+        C_LONG_LONG,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fallocate$FUNC() { return fallocate$FUNC_; }
+
+    static final MemoryLayout fuse_operations$fallocate$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$fallocate$LAYOUT() { return fuse_operations$fallocate$LAYOUT_; }
+
+    static final VarHandle fuse_operations$fallocate$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("fallocate")));
+    static final java.lang.invoke.VarHandle fuse_operations$fallocate$VH() { return fuse_operations$fallocate$VH_; }
+
+    static final FunctionDescriptor reserved00$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor reserved00$FUNC() { return reserved00$FUNC_; }
+
+    static final MemoryLayout fuse_operations$reserved00$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$reserved00$LAYOUT() { return fuse_operations$reserved00$LAYOUT_; }
+
+    static final VarHandle fuse_operations$reserved00$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("reserved00")));
+    static final java.lang.invoke.VarHandle fuse_operations$reserved00$VH() { return fuse_operations$reserved00$VH_; }
+
+    static final FunctionDescriptor reserved01$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor reserved01$FUNC() { return reserved01$FUNC_; }
+
+    static final MemoryLayout fuse_operations$reserved01$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$reserved01$LAYOUT() { return fuse_operations$reserved01$LAYOUT_; }
+
+    static final VarHandle fuse_operations$reserved01$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("reserved01")));
+    static final java.lang.invoke.VarHandle fuse_operations$reserved01$VH() { return fuse_operations$reserved01$VH_; }
+
+    static final FunctionDescriptor renamex$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor renamex$FUNC() { return renamex$FUNC_; }
+
+    static final MemoryLayout fuse_operations$renamex$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$renamex$LAYOUT() { return fuse_operations$renamex$LAYOUT_; }
+
+    static final VarHandle fuse_operations$renamex$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("renamex")));
+    static final java.lang.invoke.VarHandle fuse_operations$renamex$VH() { return fuse_operations$renamex$VH_; }
+
+    static final FunctionDescriptor statfs_x$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor statfs_x$FUNC() { return statfs_x$FUNC_; }
+
+    static final MemoryLayout fuse_operations$statfs_x$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$statfs_x$LAYOUT() { return fuse_operations$statfs_x$LAYOUT_; }
+
+    static final VarHandle fuse_operations$statfs_x$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("statfs_x")));
+    static final java.lang.invoke.VarHandle fuse_operations$statfs_x$VH() { return fuse_operations$statfs_x$VH_; }
+
+    static final FunctionDescriptor setvolname$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor setvolname$FUNC() { return setvolname$FUNC_; }
+
+    static final MemoryLayout fuse_operations$setvolname$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$setvolname$LAYOUT() { return fuse_operations$setvolname$LAYOUT_; }
+
+    static final VarHandle fuse_operations$setvolname$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("setvolname")));
+    static final java.lang.invoke.VarHandle fuse_operations$setvolname$VH() { return fuse_operations$setvolname$VH_; }
+
+    static final FunctionDescriptor exchange$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_LONG
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor exchange$FUNC() { return exchange$FUNC_; }
+
+    static final MemoryLayout fuse_operations$exchange$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$exchange$LAYOUT() { return fuse_operations$exchange$LAYOUT_; }
+
+    static final VarHandle fuse_operations$exchange$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("exchange")));
+    static final java.lang.invoke.VarHandle fuse_operations$exchange$VH() { return fuse_operations$exchange$VH_; }
+
+    static final FunctionDescriptor getxtimes$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor getxtimes$FUNC() { return getxtimes$FUNC_; }
+
+    static final MemoryLayout fuse_operations$getxtimes$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$getxtimes$LAYOUT() { return fuse_operations$getxtimes$LAYOUT_; }
+
+    static final VarHandle fuse_operations$getxtimes$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("getxtimes")));
+    static final java.lang.invoke.VarHandle fuse_operations$getxtimes$VH() { return fuse_operations$getxtimes$VH_; }
+
+    static final FunctionDescriptor setbkuptime$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor setbkuptime$FUNC() { return setbkuptime$FUNC_; }
+
+    static final MemoryLayout fuse_operations$setbkuptime$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$setbkuptime$LAYOUT() { return fuse_operations$setbkuptime$LAYOUT_; }
+
+    static final VarHandle fuse_operations$setbkuptime$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("setbkuptime")));
+    static final java.lang.invoke.VarHandle fuse_operations$setbkuptime$VH() { return fuse_operations$setbkuptime$VH_; }
+
+    static final FunctionDescriptor setchgtime$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor setchgtime$FUNC() { return setchgtime$FUNC_; }
+
+    static final MemoryLayout fuse_operations$setchgtime$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$setchgtime$LAYOUT() { return fuse_operations$setchgtime$LAYOUT_; }
+
+    static final VarHandle fuse_operations$setchgtime$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("setchgtime")));
+    static final java.lang.invoke.VarHandle fuse_operations$setchgtime$VH() { return fuse_operations$setchgtime$VH_; }
+
+    static final FunctionDescriptor setcrtime$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor setcrtime$FUNC() { return setcrtime$FUNC_; }
+
+    static final MemoryLayout fuse_operations$setcrtime$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$setcrtime$LAYOUT() { return fuse_operations$setcrtime$LAYOUT_; }
+
+    static final VarHandle fuse_operations$setcrtime$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("setcrtime")));
+    static final java.lang.invoke.VarHandle fuse_operations$setcrtime$VH() { return fuse_operations$setcrtime$VH_; }
+
+    static final MemoryLayout fuse_operations$chflags$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$chflags$LAYOUT() { return fuse_operations$chflags$LAYOUT_; }
+
+    static final VarHandle fuse_operations$chflags$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("chflags")));
+    static final java.lang.invoke.VarHandle fuse_operations$chflags$VH() { return fuse_operations$chflags$VH_; }
+
+    static final FunctionDescriptor setattr_x$0$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor setattr_x$0$FUNC() { return setattr_x$0$FUNC_; }
+
+    static final MemoryLayout fuse_operations$setattr_x$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$setattr_x$LAYOUT() { return fuse_operations$setattr_x$LAYOUT_; }
+
+    static final VarHandle fuse_operations$setattr_x$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("setattr_x")));
+    static final java.lang.invoke.VarHandle fuse_operations$setattr_x$VH() { return fuse_operations$setattr_x$VH_; }
+
+    static final FunctionDescriptor fsetattr_x$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fsetattr_x$FUNC() { return fsetattr_x$FUNC_; }
+
+    static final MemoryLayout fuse_operations$fsetattr_x$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_operations$fsetattr_x$LAYOUT() { return fuse_operations$fsetattr_x$LAYOUT_; }
+
+    static final VarHandle fuse_operations$fsetattr_x$VH_ = MemoryHandles.asAddressVarHandle(fuse_operations$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("fsetattr_x")));
+    static final java.lang.invoke.VarHandle fuse_operations$fsetattr_x$VH() { return fuse_operations$fsetattr_x$VH_; }
+
+    static final MemoryLayout fuse_context$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_POINTER.withName("fuse"),
+        C_INT.withName("uid"),
+        C_INT.withName("gid"),
+        C_INT.withName("pid"),
+        MemoryLayout.ofPaddingBits(32),
+        C_POINTER.withName("private_data"),
+        C_SHORT.withName("umask"),
+        MemoryLayout.ofPaddingBits(48)
+    ).withName("fuse_context");
+    static final jdk.incubator.foreign.MemoryLayout fuse_context$struct$LAYOUT() { return fuse_context$struct$LAYOUT_; }
+
+    static final MemoryLayout fuse_context$fuse$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_context$fuse$LAYOUT() { return fuse_context$fuse$LAYOUT_; }
+
+    static final VarHandle fuse_context$fuse$VH_ = MemoryHandles.asAddressVarHandle(fuse_context$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("fuse")));
+    static final java.lang.invoke.VarHandle fuse_context$fuse$VH() { return fuse_context$fuse$VH_; }
+
+    static final MemoryLayout fuse_context$uid$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_context$uid$LAYOUT() { return fuse_context$uid$LAYOUT_; }
+
+    static final VarHandle fuse_context$uid$VH_ = fuse_context$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("uid"));
+    static final java.lang.invoke.VarHandle fuse_context$uid$VH() { return fuse_context$uid$VH_; }
+
+    static final MemoryLayout fuse_context$gid$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_context$gid$LAYOUT() { return fuse_context$gid$LAYOUT_; }
+
+    static final VarHandle fuse_context$gid$VH_ = fuse_context$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("gid"));
+    static final java.lang.invoke.VarHandle fuse_context$gid$VH() { return fuse_context$gid$VH_; }
+
+    static final MemoryLayout fuse_context$pid$LAYOUT_ = C_INT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_context$pid$LAYOUT() { return fuse_context$pid$LAYOUT_; }
+
+    static final VarHandle fuse_context$pid$VH_ = fuse_context$struct$LAYOUT_.varHandle(int.class, MemoryLayout.PathElement.groupElement("pid"));
+    static final java.lang.invoke.VarHandle fuse_context$pid$VH() { return fuse_context$pid$VH_; }
+
+    static final MemoryLayout fuse_context$private_data$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_context$private_data$LAYOUT() { return fuse_context$private_data$LAYOUT_; }
+
+    static final VarHandle fuse_context$private_data$VH_ = MemoryHandles.asAddressVarHandle(fuse_context$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("private_data")));
+    static final java.lang.invoke.VarHandle fuse_context$private_data$VH() { return fuse_context$private_data$VH_; }
+
+    static final MemoryLayout fuse_context$umask$LAYOUT_ = C_SHORT;
+    static final jdk.incubator.foreign.MemoryLayout fuse_context$umask$LAYOUT() { return fuse_context$umask$LAYOUT_; }
+
+    static final VarHandle fuse_context$umask$VH_ = fuse_context$struct$LAYOUT_.varHandle(short.class, MemoryLayout.PathElement.groupElement("umask"));
+    static final java.lang.invoke.VarHandle fuse_context$umask$VH() { return fuse_context$umask$VH_; }
+
+    static final FunctionDescriptor fuse_new$FUNC_ = FunctionDescriptor.of(C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_new$FUNC() { return fuse_new$FUNC_; }
+
+    static final MethodHandle fuse_new$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_new",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JLjdk/incubator/foreign/MemoryAddress;)Ljdk/incubator/foreign/MemoryAddress;",
+        fuse_new$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_new$MH() { return fuse_new$MH_; }
+
+    static final FunctionDescriptor fuse_destroy$FUNC_ = FunctionDescriptor.ofVoid(
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_destroy$FUNC() { return fuse_destroy$FUNC_; }
+
+    static final MethodHandle fuse_destroy$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_destroy",
+        "(Ljdk/incubator/foreign/MemoryAddress;)V",
+        fuse_destroy$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_destroy$MH() { return fuse_destroy$MH_; }
+
+    static final FunctionDescriptor fuse_loop$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_loop$FUNC() { return fuse_loop$FUNC_; }
+
+    static final MethodHandle fuse_loop$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_loop",
+        "(Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_loop$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_loop$MH() { return fuse_loop$MH_; }
+
+    static final FunctionDescriptor fuse_exit$FUNC_ = FunctionDescriptor.ofVoid(
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_exit$FUNC() { return fuse_exit$FUNC_; }
+
+    static final MethodHandle fuse_exit$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_exit",
+        "(Ljdk/incubator/foreign/MemoryAddress;)V",
+        fuse_exit$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_exit$MH() { return fuse_exit$MH_; }
+
+    static final FunctionDescriptor fuse_loop_mt$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_loop_mt$FUNC() { return fuse_loop_mt$FUNC_; }
+
+    static final MethodHandle fuse_loop_mt$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_loop_mt",
+        "(Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_loop_mt$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_loop_mt$MH() { return fuse_loop_mt$MH_; }
+
+    static final FunctionDescriptor fuse_get_context$FUNC_ = FunctionDescriptor.of(C_POINTER);
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_get_context$FUNC() { return fuse_get_context$FUNC_; }
+
+    static final MethodHandle fuse_get_context$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_get_context",
+        "()Ljdk/incubator/foreign/MemoryAddress;",
+        fuse_get_context$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_get_context$MH() { return fuse_get_context$MH_; }
+
+    static final FunctionDescriptor fuse_getgroups$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_getgroups$FUNC() { return fuse_getgroups$FUNC_; }
+
+    static final MethodHandle fuse_getgroups$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_getgroups",
+        "(ILjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_getgroups$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_getgroups$MH() { return fuse_getgroups$MH_; }
+
+    static final FunctionDescriptor fuse_interrupted$FUNC_ = FunctionDescriptor.of(C_INT);
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_interrupted$FUNC() { return fuse_interrupted$FUNC_; }
+
+    static final MethodHandle fuse_interrupted$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_interrupted",
+        "()I",
+        fuse_interrupted$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_interrupted$MH() { return fuse_interrupted$MH_; }
+
+    static final FunctionDescriptor fuse_invalidate_path$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_invalidate_path$FUNC() { return fuse_invalidate_path$FUNC_; }
+
+    static final MethodHandle fuse_invalidate_path$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_invalidate_path",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_invalidate_path$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_invalidate_path$MH() { return fuse_invalidate_path$MH_; }
+
+    static final FunctionDescriptor fuse_invalidate$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_invalidate$FUNC() { return fuse_invalidate$FUNC_; }
+
+    static final MethodHandle fuse_invalidate$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_invalidate",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_invalidate$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_invalidate$MH() { return fuse_invalidate$MH_; }
+
+    static final FunctionDescriptor fuse_is_lib_option$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_is_lib_option$FUNC() { return fuse_is_lib_option$FUNC_; }
+
+    static final MethodHandle fuse_is_lib_option$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_is_lib_option",
+        "(Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_is_lib_option$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_is_lib_option$MH() { return fuse_is_lib_option$MH_; }
+
+    static final FunctionDescriptor fuse_main_real$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_main_real$FUNC() { return fuse_main_real$FUNC_; }
+
+    static final MethodHandle fuse_main_real$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_main_real",
+        "(ILjdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JLjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_main_real$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_main_real$MH() { return fuse_main_real$MH_; }
+
+    static final FunctionDescriptor fuse_start_cleanup_thread$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_start_cleanup_thread$FUNC() { return fuse_start_cleanup_thread$FUNC_; }
+
+    static final MethodHandle fuse_start_cleanup_thread$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_start_cleanup_thread",
+        "(Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_start_cleanup_thread$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_start_cleanup_thread$MH() { return fuse_start_cleanup_thread$MH_; }
+
+    static final FunctionDescriptor fuse_stop_cleanup_thread$FUNC_ = FunctionDescriptor.ofVoid(
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_stop_cleanup_thread$FUNC() { return fuse_stop_cleanup_thread$FUNC_; }
+
+    static final MethodHandle fuse_stop_cleanup_thread$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_stop_cleanup_thread",
+        "(Ljdk/incubator/foreign/MemoryAddress;)V",
+        fuse_stop_cleanup_thread$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_stop_cleanup_thread$MH() { return fuse_stop_cleanup_thread$MH_; }
+
+    static final FunctionDescriptor fuse_clean_cache$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_clean_cache$FUNC() { return fuse_clean_cache$FUNC_; }
+
+    static final MethodHandle fuse_clean_cache$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_clean_cache",
+        "(Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_clean_cache$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_clean_cache$MH() { return fuse_clean_cache$MH_; }
+
+    static final FunctionDescriptor fuse_fs_setattr_x$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_setattr_x$FUNC() { return fuse_fs_setattr_x$FUNC_; }
+
+    static final MethodHandle fuse_fs_setattr_x$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_setattr_x",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_setattr_x$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_setattr_x$MH() { return fuse_fs_setattr_x$MH_; }
+
+    static final FunctionDescriptor fuse_fs_fsetattr_x$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_fsetattr_x$FUNC() { return fuse_fs_fsetattr_x$FUNC_; }
+
+    static final MethodHandle fuse_fs_fsetattr_x$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_fsetattr_x",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_fsetattr_x$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_fsetattr_x$MH() { return fuse_fs_fsetattr_x$MH_; }
+
+    static final FunctionDescriptor fuse_fs_getattr$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_getattr$FUNC() { return fuse_fs_getattr$FUNC_; }
+
+    static final MethodHandle fuse_fs_getattr$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_getattr",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_getattr$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_getattr$MH() { return fuse_fs_getattr$MH_; }
+
+    static final FunctionDescriptor fuse_fs_fgetattr$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_fgetattr$FUNC() { return fuse_fs_fgetattr$FUNC_; }
+
+    static final MethodHandle fuse_fs_fgetattr$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_fgetattr",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_fgetattr$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_fgetattr$MH() { return fuse_fs_fgetattr$MH_; }
+
+    static final FunctionDescriptor fuse_fs_rename$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_rename$FUNC() { return fuse_fs_rename$FUNC_; }
+
+    static final MethodHandle fuse_fs_rename$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_rename",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_rename$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_rename$MH() { return fuse_fs_rename$MH_; }
+
+    static final FunctionDescriptor fuse_fs_renamex$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_renamex$FUNC() { return fuse_fs_renamex$FUNC_; }
+
+    static final MethodHandle fuse_fs_renamex$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_renamex",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;I)I",
+        fuse_fs_renamex$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_renamex$MH() { return fuse_fs_renamex$MH_; }
+
+    static final FunctionDescriptor fuse_fs_setvolname$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_setvolname$FUNC() { return fuse_fs_setvolname$FUNC_; }
+
+    static final MethodHandle fuse_fs_setvolname$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_setvolname",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_setvolname$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_setvolname$MH() { return fuse_fs_setvolname$MH_; }
+
+    static final FunctionDescriptor fuse_fs_exchange$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_exchange$FUNC() { return fuse_fs_exchange$FUNC_; }
+
+    static final MethodHandle fuse_fs_exchange$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_exchange",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;J)I",
+        fuse_fs_exchange$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_exchange$MH() { return fuse_fs_exchange$MH_; }
+
+    static final FunctionDescriptor fuse_fs_unlink$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_unlink$FUNC() { return fuse_fs_unlink$FUNC_; }
+
+    static final MethodHandle fuse_fs_unlink$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_unlink",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_unlink$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_unlink$MH() { return fuse_fs_unlink$MH_; }
+
+    static final FunctionDescriptor fuse_fs_rmdir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_rmdir$FUNC() { return fuse_fs_rmdir$FUNC_; }
+
+    static final MethodHandle fuse_fs_rmdir$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_rmdir",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_rmdir$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_rmdir$MH() { return fuse_fs_rmdir$MH_; }
+
+    static final FunctionDescriptor fuse_fs_symlink$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_symlink$FUNC() { return fuse_fs_symlink$FUNC_; }
+
+    static final MethodHandle fuse_fs_symlink$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_symlink",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_symlink$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_symlink$MH() { return fuse_fs_symlink$MH_; }
+
+    static final FunctionDescriptor fuse_fs_link$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_link$FUNC() { return fuse_fs_link$FUNC_; }
+
+    static final MethodHandle fuse_fs_link$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_link",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_link$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_link$MH() { return fuse_fs_link$MH_; }
+
+    static final FunctionDescriptor fuse_fs_release$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_release$FUNC() { return fuse_fs_release$FUNC_; }
+
+    static final MethodHandle fuse_fs_release$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_release",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_release$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_release$MH() { return fuse_fs_release$MH_; }
+
+    static final FunctionDescriptor fuse_fs_open$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_open$FUNC() { return fuse_fs_open$FUNC_; }
+
+    static final MethodHandle fuse_fs_open$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_open",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_open$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_open$MH() { return fuse_fs_open$MH_; }
+
+    static final FunctionDescriptor fuse_fs_read$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_read$FUNC() { return fuse_fs_read$FUNC_; }
+
+    static final MethodHandle fuse_fs_read$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_read",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JJLjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_read$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_read$MH() { return fuse_fs_read$MH_; }
+
+    static final FunctionDescriptor fuse_fs_read_buf$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_read_buf$FUNC() { return fuse_fs_read_buf$FUNC_; }
+
+    static final MethodHandle fuse_fs_read_buf$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_read_buf",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JJLjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_read_buf$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_read_buf$MH() { return fuse_fs_read_buf$MH_; }
+
+    static final FunctionDescriptor fuse_fs_write$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_write$FUNC() { return fuse_fs_write$FUNC_; }
+
+    static final MethodHandle fuse_fs_write$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_write",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JJLjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_write$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_write$MH() { return fuse_fs_write$MH_; }
+
+    static final FunctionDescriptor fuse_fs_write_buf$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_write_buf$FUNC() { return fuse_fs_write_buf$FUNC_; }
+
+    static final MethodHandle fuse_fs_write_buf$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_write_buf",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JLjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_write_buf$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_write_buf$MH() { return fuse_fs_write_buf$MH_; }
+
+    static final FunctionDescriptor fuse_fs_fsync$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_fsync$FUNC() { return fuse_fs_fsync$FUNC_; }
+
+    static final MethodHandle fuse_fs_fsync$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_fsync",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;ILjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_fsync$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_fsync$MH() { return fuse_fs_fsync$MH_; }
+
+    static final FunctionDescriptor fuse_fs_flush$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_flush$FUNC() { return fuse_fs_flush$FUNC_; }
+
+    static final MethodHandle fuse_fs_flush$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_flush",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_flush$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_flush$MH() { return fuse_fs_flush$MH_; }
+
+    static final FunctionDescriptor fuse_fs_statfs$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_statfs$FUNC() { return fuse_fs_statfs$FUNC_; }
+
+    static final MethodHandle fuse_fs_statfs$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_statfs",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_statfs$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_statfs$MH() { return fuse_fs_statfs$MH_; }
+
+    static final FunctionDescriptor fuse_fs_statfs_x$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_statfs_x$FUNC() { return fuse_fs_statfs_x$FUNC_; }
+
+    static final MethodHandle fuse_fs_statfs_x$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_statfs_x",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_statfs_x$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_statfs_x$MH() { return fuse_fs_statfs_x$MH_; }
+
+    static final FunctionDescriptor fuse_fs_opendir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_opendir$FUNC() { return fuse_fs_opendir$FUNC_; }
+
+    static final MethodHandle fuse_fs_opendir$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_opendir",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_opendir$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_opendir$MH() { return fuse_fs_opendir$MH_; }
+
+    static final FunctionDescriptor fuse_fs_readdir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_readdir$FUNC() { return fuse_fs_readdir$FUNC_; }
+
+    static final MethodHandle fuse_fs_readdir$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_readdir",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JLjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_readdir$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_readdir$MH() { return fuse_fs_readdir$MH_; }
+
+    static final FunctionDescriptor fuse_fs_readdir$filler$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG_LONG
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_readdir$filler$FUNC() { return fuse_fs_readdir$filler$FUNC_; }
+
+    static final FunctionDescriptor fuse_fs_fsyncdir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_fsyncdir$FUNC() { return fuse_fs_fsyncdir$FUNC_; }
+
+    static final MethodHandle fuse_fs_fsyncdir$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_fsyncdir",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;ILjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_fsyncdir$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_fsyncdir$MH() { return fuse_fs_fsyncdir$MH_; }
+
+    static final FunctionDescriptor fuse_fs_releasedir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_releasedir$FUNC() { return fuse_fs_releasedir$FUNC_; }
+
+    static final MethodHandle fuse_fs_releasedir$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_releasedir",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_releasedir$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_releasedir$MH() { return fuse_fs_releasedir$MH_; }
+
+    static final FunctionDescriptor fuse_fs_create$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_SHORT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_create$FUNC() { return fuse_fs_create$FUNC_; }
+
+    static final MethodHandle fuse_fs_create$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_create",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;SLjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_create$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_create$MH() { return fuse_fs_create$MH_; }
+
+    static final FunctionDescriptor fuse_fs_lock$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_lock$FUNC() { return fuse_fs_lock$FUNC_; }
+
+    static final MethodHandle fuse_fs_lock$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_lock",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;ILjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_lock$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_lock$MH() { return fuse_fs_lock$MH_; }
+
+    static final FunctionDescriptor fuse_fs_flock$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_flock$FUNC() { return fuse_fs_flock$FUNC_; }
+
+    static final MethodHandle fuse_fs_flock$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_flock",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;I)I",
+        fuse_fs_flock$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_flock$MH() { return fuse_fs_flock$MH_; }
+
+    static final FunctionDescriptor fuse_fs_chflags$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_chflags$FUNC() { return fuse_fs_chflags$FUNC_; }
+
+    static final MethodHandle fuse_fs_chflags$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_chflags",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;I)I",
+        fuse_fs_chflags$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_chflags$MH() { return fuse_fs_chflags$MH_; }
+
+    static final FunctionDescriptor fuse_fs_getxtimes$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_getxtimes$FUNC() { return fuse_fs_getxtimes$FUNC_; }
+
+    static final MethodHandle fuse_fs_getxtimes$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_getxtimes",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_getxtimes$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_getxtimes$MH() { return fuse_fs_getxtimes$MH_; }
+
+    static final FunctionDescriptor fuse_fs_setbkuptime$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_setbkuptime$FUNC() { return fuse_fs_setbkuptime$FUNC_; }
+
+    static final MethodHandle fuse_fs_setbkuptime$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_setbkuptime",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_setbkuptime$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_setbkuptime$MH() { return fuse_fs_setbkuptime$MH_; }
+
+    static final FunctionDescriptor fuse_fs_setchgtime$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_setchgtime$FUNC() { return fuse_fs_setchgtime$FUNC_; }
+
+    static final MethodHandle fuse_fs_setchgtime$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_setchgtime",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_setchgtime$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_setchgtime$MH() { return fuse_fs_setchgtime$MH_; }
+
+    static final FunctionDescriptor fuse_fs_setcrtime$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_setcrtime$FUNC() { return fuse_fs_setcrtime$FUNC_; }
+
+    static final MethodHandle fuse_fs_setcrtime$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_setcrtime",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_setcrtime$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_setcrtime$MH() { return fuse_fs_setcrtime$MH_; }
+
+    static final FunctionDescriptor fuse_fs_chmod$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_SHORT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_chmod$FUNC() { return fuse_fs_chmod$FUNC_; }
+
+    static final MethodHandle fuse_fs_chmod$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_chmod",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;S)I",
+        fuse_fs_chmod$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_chmod$MH() { return fuse_fs_chmod$MH_; }
+
+    static final FunctionDescriptor fuse_fs_chown$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_chown$FUNC() { return fuse_fs_chown$FUNC_; }
+
+    static final MethodHandle fuse_fs_chown$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_chown",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;II)I",
+        fuse_fs_chown$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_chown$MH() { return fuse_fs_chown$MH_; }
+
+    static final FunctionDescriptor fuse_fs_truncate$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_LONG_LONG
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_truncate$FUNC() { return fuse_fs_truncate$FUNC_; }
+
+    static final MethodHandle fuse_fs_truncate$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_truncate",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;J)I",
+        fuse_fs_truncate$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_truncate$MH() { return fuse_fs_truncate$MH_; }
+
+    static final FunctionDescriptor fuse_fs_ftruncate$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_ftruncate$FUNC() { return fuse_fs_ftruncate$FUNC_; }
+
+    static final MethodHandle fuse_fs_ftruncate$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_ftruncate",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JLjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_ftruncate$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_ftruncate$MH() { return fuse_fs_ftruncate$MH_; }
+
+    static final FunctionDescriptor fuse_fs_utimens$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_utimens$FUNC() { return fuse_fs_utimens$FUNC_; }
+
+    static final MethodHandle fuse_fs_utimens$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_utimens",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_utimens$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_utimens$MH() { return fuse_fs_utimens$MH_; }
+
+    static final FunctionDescriptor fuse_fs_access$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_access$FUNC() { return fuse_fs_access$FUNC_; }
+
+    static final MethodHandle fuse_fs_access$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_access",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;I)I",
+        fuse_fs_access$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_access$MH() { return fuse_fs_access$MH_; }
+
+    static final FunctionDescriptor fuse_fs_readlink$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_readlink$FUNC() { return fuse_fs_readlink$FUNC_; }
+
+    static final MethodHandle fuse_fs_readlink$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_readlink",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;J)I",
+        fuse_fs_readlink$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_readlink$MH() { return fuse_fs_readlink$MH_; }
+
+    static final FunctionDescriptor fuse_fs_mknod$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_SHORT,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_mknod$FUNC() { return fuse_fs_mknod$FUNC_; }
+
+    static final MethodHandle fuse_fs_mknod$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_mknod",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;SI)I",
+        fuse_fs_mknod$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_mknod$MH() { return fuse_fs_mknod$MH_; }
+
+    static final FunctionDescriptor fuse_fs_mkdir$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_SHORT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_mkdir$FUNC() { return fuse_fs_mkdir$FUNC_; }
+
+    static final MethodHandle fuse_fs_mkdir$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_mkdir",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;S)I",
+        fuse_fs_mkdir$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_mkdir$MH() { return fuse_fs_mkdir$MH_; }
+
+    static final FunctionDescriptor fuse_fs_setxattr$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_INT,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_setxattr$FUNC() { return fuse_fs_setxattr$FUNC_; }
+
+    static final MethodHandle fuse_fs_setxattr$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_setxattr",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JII)I",
+        fuse_fs_setxattr$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_setxattr$MH() { return fuse_fs_setxattr$MH_; }
+
+    static final FunctionDescriptor fuse_fs_getxattr$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_INT
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_getxattr$FUNC() { return fuse_fs_getxattr$FUNC_; }
+
+    static final MethodHandle fuse_fs_getxattr$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_getxattr",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JI)I",
+        fuse_fs_getxattr$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_getxattr$MH() { return fuse_fs_getxattr$MH_; }
+
+    static final FunctionDescriptor fuse_fs_listxattr$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_LONG
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_listxattr$FUNC() { return fuse_fs_listxattr$FUNC_; }
+
+    static final MethodHandle fuse_fs_listxattr$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_listxattr",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;J)I",
+        fuse_fs_listxattr$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_listxattr$MH() { return fuse_fs_listxattr$MH_; }
+
+    static final FunctionDescriptor fuse_fs_removexattr$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_removexattr$FUNC() { return fuse_fs_removexattr$FUNC_; }
+
+    static final MethodHandle fuse_fs_removexattr$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_removexattr",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_removexattr$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_removexattr$MH() { return fuse_fs_removexattr$MH_; }
+
+    static final FunctionDescriptor fuse_fs_bmap$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_bmap$FUNC() { return fuse_fs_bmap$FUNC_; }
+
+    static final MethodHandle fuse_fs_bmap$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_bmap",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JLjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_bmap$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_bmap$MH() { return fuse_fs_bmap$MH_; }
+
+    static final FunctionDescriptor fuse_fs_ioctl$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_ioctl$FUNC() { return fuse_fs_ioctl$FUNC_; }
+
+    static final MethodHandle fuse_fs_ioctl$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_ioctl",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;ILjdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;ILjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_ioctl$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_ioctl$MH() { return fuse_fs_ioctl$MH_; }
+
+    static final FunctionDescriptor fuse_fs_poll$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_poll$FUNC() { return fuse_fs_poll$FUNC_; }
+
+    static final MethodHandle fuse_fs_poll$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_poll",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_poll$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_poll$MH() { return fuse_fs_poll$MH_; }
+
+    static final FunctionDescriptor fuse_fs_fallocate$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER,
+        C_POINTER,
+        C_INT,
+        C_LONG_LONG,
+        C_LONG_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_fallocate$FUNC() { return fuse_fs_fallocate$FUNC_; }
+
+    static final MethodHandle fuse_fs_fallocate$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_fallocate",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;IJJLjdk/incubator/foreign/MemoryAddress;)I",
+        fuse_fs_fallocate$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_fallocate$MH() { return fuse_fs_fallocate$MH_; }
+
+    static final FunctionDescriptor fuse_fs_init$FUNC_ = FunctionDescriptor.ofVoid(
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_init$FUNC() { return fuse_fs_init$FUNC_; }
+
+    static final MethodHandle fuse_fs_init$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_init",
+        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)V",
+        fuse_fs_init$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_init$MH() { return fuse_fs_init$MH_; }
+
+    static final FunctionDescriptor fuse_fs_destroy$FUNC_ = FunctionDescriptor.ofVoid(
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_destroy$FUNC() { return fuse_fs_destroy$FUNC_; }
+
+    static final MethodHandle fuse_fs_destroy$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_destroy",
+        "(Ljdk/incubator/foreign/MemoryAddress;)V",
+        fuse_fs_destroy$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_destroy$MH() { return fuse_fs_destroy$MH_; }
+
+    static final FunctionDescriptor fuse_notify_poll$FUNC_ = FunctionDescriptor.of(C_INT,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_notify_poll$FUNC() { return fuse_notify_poll$FUNC_; }
+
+    static final MethodHandle fuse_notify_poll$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_notify_poll",
+        "(Ljdk/incubator/foreign/MemoryAddress;)I",
+        fuse_notify_poll$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_notify_poll$MH() { return fuse_notify_poll$MH_; }
+
+    static final FunctionDescriptor fuse_fs_new$FUNC_ = FunctionDescriptor.of(C_POINTER,
+        C_POINTER,
+        C_LONG,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor fuse_fs_new$FUNC() { return fuse_fs_new$FUNC_; }
+
+    static final MethodHandle fuse_fs_new$MH_ = RuntimeHelper.downcallHandle(
+        LIBRARIES, "fuse_fs_new",
+        "(Ljdk/incubator/foreign/MemoryAddress;JLjdk/incubator/foreign/MemoryAddress;)Ljdk/incubator/foreign/MemoryAddress;",
+        fuse_fs_new$FUNC_, false
+    );
+    static final java.lang.invoke.MethodHandle fuse_fs_new$MH() { return fuse_fs_new$MH_; }
+
+    static final MemoryLayout fuse_module$struct$LAYOUT_ = MemoryLayout.ofStruct(
+        C_POINTER.withName("name"),
+        C_POINTER.withName("factory"),
+        C_POINTER.withName("next"),
+        C_POINTER.withName("so"),
+        C_INT.withName("ctr"),
+        MemoryLayout.ofPaddingBits(32)
+    ).withName("fuse_module");
+    static final jdk.incubator.foreign.MemoryLayout fuse_module$struct$LAYOUT() { return fuse_module$struct$LAYOUT_; }
+
+    static final MemoryLayout fuse_module$name$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_module$name$LAYOUT() { return fuse_module$name$LAYOUT_; }
+
+    static final VarHandle fuse_module$name$VH_ = MemoryHandles.asAddressVarHandle(fuse_module$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("name")));
+    static final java.lang.invoke.VarHandle fuse_module$name$VH() { return fuse_module$name$VH_; }
+
+    static final FunctionDescriptor factory$FUNC_ = FunctionDescriptor.of(C_POINTER,
+        C_POINTER,
+        C_POINTER
+    );
+    static final jdk.incubator.foreign.FunctionDescriptor factory$FUNC() { return factory$FUNC_; }
+
+    static final MemoryLayout fuse_module$factory$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_module$factory$LAYOUT() { return fuse_module$factory$LAYOUT_; }
+
+    static final VarHandle fuse_module$factory$VH_ = MemoryHandles.asAddressVarHandle(fuse_module$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("factory")));
+    static final java.lang.invoke.VarHandle fuse_module$factory$VH() { return fuse_module$factory$VH_; }
+
+    static final MemoryLayout fuse_module$next$LAYOUT_ = C_POINTER;
+    static final jdk.incubator.foreign.MemoryLayout fuse_module$next$LAYOUT() { return fuse_module$next$LAYOUT_; }
+
+    static final VarHandle fuse_module$next$VH_ = MemoryHandles.asAddressVarHandle(fuse_module$struct$LAYOUT_.varHandle(long.class, MemoryLayout.PathElement.groupElement("next")));
+    static final java.lang.invoke.VarHandle fuse_module$next$VH() { return fuse_module$next$VH_; }
 
 }
 

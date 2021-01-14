@@ -48,7 +48,7 @@ public class DirFiller {
 	 */
 	public int fill(String name, Stat stat, long offset) {
 		try (NativeScope scope = NativeScope.unboundedScope()) {
-			return (int) methodHandle.invokeExact(buf, CLinker.toCString(name, scope), null, offset);
+			return (int) methodHandle.invokeExact(buf, CLinker.toCString(name, scope), MemoryAddress.NULL, offset);
 		} catch (Throwable e) {
 			throw new AssertionError(e);
 		}

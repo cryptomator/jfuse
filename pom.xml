@@ -84,6 +84,7 @@
 						<version>1.6.0</version>
 						<executions>
 							<execution>
+								<id>jextract</id>
 								<goals>
 									<goal>exec</goal>
 								</goals>
@@ -105,6 +106,14 @@
 										<argument>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/</argument>
 										<argument>-C-D_FILE_OFFSET_BITS=64</argument>
 										<argument>-C-DFUSE_USE_VERSION=29</argument>
+										<argument>--filter</argument>
+										<argument>fuse.h</argument>
+										<argument>--filter</argument>
+										<argument>fuse_common.h</argument>
+										<argument>--filter</argument>
+										<argument>_timespec.h</argument>
+										<argument>--filter</argument>
+										<argument>stat.h</argument>
 										<argument>/usr/local/include/fuse/fuse.h</argument>
 									</arguments>
 								</configuration>
