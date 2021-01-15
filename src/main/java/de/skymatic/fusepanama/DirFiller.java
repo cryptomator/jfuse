@@ -19,11 +19,11 @@ import static jdk.incubator.foreign.CLinker.C_POINTER;
 public class DirFiller {
 
 	// int fuse_fill_dir_t(void *buf, const char *name, const struct stat *stbuf, off_t off);
-	private static final MethodType METHOD_TYPE = MethodType.methodType(Integer.class,
+	private static final MethodType METHOD_TYPE = MethodType.methodType(int.class,
 			MemoryAddress.class,
 			MemoryAddress.class,
 			MemoryAddress.class,
-			Long.class);
+			long.class);
 
 	private static final FunctionDescriptor FUNC = FunctionDescriptor.of(C_INT,
 			C_POINTER,
@@ -48,7 +48,7 @@ public class DirFiller {
 	 */
 	public int fill(String name, Stat stat, long offset) {
 		try (NativeScope scope = NativeScope.unboundedScope()) {
-			return (int) methodHandle.invokeExact(buf, CLinker.toCString(name, scope), MemoryAddress.NULL, offset);
+			return (int) methodHandle.invokeExact(buf, CLinker.toCString(name, scope).address(), MemoryAddress.NULL, offset);
 		} catch (Throwable e) {
 			throw new AssertionError(e);
 		}
