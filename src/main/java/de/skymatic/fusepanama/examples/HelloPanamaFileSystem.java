@@ -9,26 +9,24 @@ import de.skymatic.fusepanama.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class HelloFileSystem implements FuseOperations {
+public class HelloPanamaFileSystem implements FuseOperations {
 
 	private static final int S_IFDIR = 0040000;
 	private static final int S_IFREG = 0100000;
 
-	private static final Logger LOG = LoggerFactory.getLogger(HelloFileSystem.class);
+	private static final Logger LOG = LoggerFactory.getLogger(HelloPanamaFileSystem.class);
 
-	public static final String HELLO_PATH = "/hello";
-	public static final String HELLO_STR = "Hello World!";
+	public static final String HELLO_PATH = "/hello.txt";
+	public static final String HELLO_STR = "Hello Panama!";
 
 	public static void main(String[] args) {
 		Path mountPoint = Path.of("/Volumes/foo");
 		LOG.info("mounting at {}. Unmount to terminate this process.", mountPoint);
-		Fuse.mount(new HelloFileSystem(), mountPoint);
+		Fuse.mount(new HelloPanamaFileSystem(), mountPoint);
 	}
 
 	@Override
@@ -42,6 +40,11 @@ public class HelloFileSystem implements FuseOperations {
 			stat.setMode((short) (S_IFREG | 0444));
 			stat.setNLink((short) 1);
 			stat.setSize(HELLO_STR.getBytes().length);
+			return 0;
+		} else if (path.length() == 4) {
+			stat.setMode((short) (S_IFREG | 0444));
+			stat.setNLink((short) 1);
+			stat.setSize(0);
 			return 0;
 		} else {
 			return -Errno.ENOENT;
@@ -79,6 +82,13 @@ public class HelloFileSystem implements FuseOperations {
 			filler.fill(".", null, 0);
 			filler.fill("..", null, 1);
 			filler.fill(HELLO_PATH.substring(1), null, 2);
+			filler.fill("aaa", null, 3);
+			filler.fill("bbb", null, 4);
+			filler.fill("ccc", null, 5);
+			filler.fill("ddd", null, 6);
+			filler.fill("xxx", null, 7);
+			filler.fill("yyy", null, 8);
+			filler.fill("zzz", null, 9);
 		}
 		return 0;
 	}

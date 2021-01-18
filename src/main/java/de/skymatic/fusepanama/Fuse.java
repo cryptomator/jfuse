@@ -50,7 +50,7 @@ public class Fuse implements AutoCloseable {
 
 		// TODO: add further methods
 
-		fuseMain(Arrays.asList("fusefs-3000", "-f", "-d", mountPoint.toString()), nativeFuseOps);
+		fuseMain(Arrays.asList("fusefs-3000", "-f", mountPoint.toString()), nativeFuseOps);
 	}
 
 	private int getattr(MemoryAddress path, MemoryAddress stat) {
