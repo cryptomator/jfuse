@@ -1,6 +1,6 @@
 package de.skymatic.fusepanama;
 
-import de.skymatic.fusepanama.macfuse.fuse_h;
+import de.skymatic.fusepanama.lowlevel.timespec;
 import jdk.incubator.foreign.MemorySegment;
 
 import java.time.Instant;
@@ -14,13 +14,13 @@ public class TimeSpec {
 	}
 
 	public void set(Instant newValue) {
-		fuse_h.timespec.tv_sec$set(segment, newValue.getEpochSecond());
-		fuse_h.timespec.tv_nsec$set(segment, newValue.getNano());
+		timespec.tv_sec$set(segment, newValue.getEpochSecond());
+		timespec.tv_nsec$set(segment, newValue.getNano());
 	}
 
 	public Instant get() {
-		var seconds = fuse_h.timespec.tv_sec$get(segment);
-		var nanos = fuse_h.timespec.tv_nsec$get(segment);
+		var seconds = timespec.tv_sec$get(segment);
+		var nanos = timespec.tv_nsec$get(segment);
 		return Instant.ofEpochSecond(seconds, nanos);
 	}
 

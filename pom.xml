@@ -11,7 +11,7 @@
 		<dependency>
 			<groupId>com.github.serceman</groupId>
 			<artifactId>jnr-fuse</artifactId>
-			<version>0.5.4</version>
+			<version>0.5.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -39,14 +39,6 @@
 		</dependency>
 	</dependencies>
 
-	<repositories>
-		<repository>
-			<id>central</id>
-			<name>bintray</name>
-			<url>http://jcenter.bintray.com</url>
-		</repository>
-	</repositories>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -54,7 +46,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<release>16</release>
+					<release>17</release>
 					<encoding>UTF-8</encoding>
 					<showWarnings>true</showWarnings>
 					<compilerArgs>
@@ -68,7 +60,7 @@
 
 	<profiles>
 		<profile>
-			<id>update-macfuse</id>
+			<id>jextract</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -87,12 +79,6 @@
 											<family>mac</family>
 											<message>This build configuration requires macOS.</message>
 										</requireOS>
-										<requireFilesExist>
-											<files>
-												<file>/usr/local/include/fuse/fuse.h</file>
-											</files>
-											<message>macFUSE header files not found</message>
-										</requireFilesExist>
 										<requireFilesExist>
 											<files>
 												<file>/Applications/Xcode.app</file>
@@ -121,26 +107,41 @@
 									<arguments>
 										<argument>--source</argument>
 										<argument>-l</argument>
-										<argument>fuse</argument> <!-- will be resolved to libosxfuse.dylib at runtime -->
+										<argument>fuse</argument>
 										<argument>-d</argument>
 										<argument>${project.build.sourceDirectory}</argument>
 										<argument>-t</argument>
-										<argument>de.skymatic.fusepanama.macfuse</argument>
+										<argument>de.skymatic.fusepanama.lowlevel</argument>
 										<argument>-I</argument>
 										<argument>/usr/local/include</argument>
 										<argument>-I</argument>
 										<argument>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/</argument>
 										<argument>-C-D_FILE_OFFSET_BITS=64</argument>
 										<argument>-C-DFUSE_USE_VERSION=29</argument>
-										<argument>--filter</argument>
-										<argument>fuse.h</argument>
-										<argument>--filter</argument>
-										<argument>fuse_common.h</argument>
-										<argument>--filter</argument>
-										<argument>_timespec.h</argument>
-										<argument>--filter</argument>
-										<argument>stat.h</argument>
-										<argument>/usr/local/include/fuse/fuse.h</argument>
+										<!-- structs: -->
+										<argument>--include-struct</argument>
+										<argument>fuse_operations</argument>
+										<argument>--include-struct</argument>
+										<argument>fuse_file_info</argument>
+										<argument>--include-struct</argument>
+										<argument>fuse_context</argument>
+										<argument>--include-struct</argument>
+										<argument>stat</argument>
+										<argument>--include-struct</argument>
+										<argument>timespec</argument>
+										<!-- typedefs: -->
+										<argument>--include-typedef</argument>
+										<argument>fuse_fill_dir_t</argument>
+										<!-- functions: -->
+										<argument>--include-function</argument>
+										<argument>fuse_main_real</argument>
+										<argument>--include-function</argument>
+										<argument>fuse_get_context</argument>
+										<argument>--include-function</argument>
+										<argument>fuse_exit</argument>
+										<!-- extract fuse.h header: -->
+										<argument>${project.basedir}/libfuse/include/fuse.h</argument>
+										<!--<argument>/usr/local/include/fuse/fuse.h</argument>-->
 									</arguments>
 								</configuration>
 							</execution>

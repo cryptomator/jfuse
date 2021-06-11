@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HelloPanamaFileSystem" type="Application" factoryName="Application" nameIsGenerated="true">
-    <option name="ALTERNATIVE_JRE_PATH" value="16" />
+    <option name="ALTERNATIVE_JRE_PATH" value="17" />
     <option name="MAIN_CLASS_NAME" value="de.skymatic.fusepanama.examples.HelloPanamaFileSystem" />
     <module name="fuse-panama" />
-    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug -Dforeign.restricted=permit --add-modules jdk.incubator.foreign" />
+    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.foreign" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
