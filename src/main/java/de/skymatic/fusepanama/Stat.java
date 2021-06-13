@@ -5,16 +5,10 @@ import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-public class Stat {
-
-	private final MemorySegment segment;
+public record Stat(MemorySegment segment) {
 
 	Stat(MemoryAddress address, ResourceScope scope) {
 		this(stat.ofAddress(address, scope));
-	}
-
-	Stat(MemorySegment segment) {
-		this.segment = segment;
 	}
 
 	public TimeSpec aTime() {

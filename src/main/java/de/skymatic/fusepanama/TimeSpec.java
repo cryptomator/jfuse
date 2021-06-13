@@ -5,13 +5,7 @@ import jdk.incubator.foreign.MemorySegment;
 
 import java.time.Instant;
 
-public class TimeSpec {
-
-	private final MemorySegment segment;
-
-	TimeSpec(MemorySegment segment) {
-		this.segment = segment;
-	}
+public record TimeSpec(MemorySegment segment) {
 
 	public void set(Instant newValue) {
 		timespec.tv_sec$set(segment, newValue.getEpochSecond());

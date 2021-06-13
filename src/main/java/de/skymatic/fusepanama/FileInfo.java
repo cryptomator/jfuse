@@ -5,16 +5,10 @@ import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-public class FileInfo {
-
-	private final MemorySegment segment;
+public record FileInfo(MemorySegment segment) {
 
 	FileInfo(MemoryAddress address, ResourceScope scope) {
 		this(fuse_file_info.ofAddress(address, scope));
-	}
-
-	FileInfo(MemorySegment segment) {
-		this.segment = segment;
 	}
 
 	public long getFh() {
