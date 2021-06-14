@@ -16,6 +16,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public interface FuseOperations {
 
 	enum Operation {
+		ACCESS((ops, scope) -> fuse_operations.access.allocate(ops::access, scope), fuse_operations::access$set),
 		GET_ATTR((ops, scope) -> fuse_operations.getattr.allocate(ops::getattr, scope), fuse_operations::getattr$set),
 		OPEN((ops, scope) -> fuse_operations.open.allocate(ops::open, scope), fuse_operations::open$set),
 		READ((ops, scope) -> fuse_operations.read.allocate(ops::read, scope), fuse_operations::read$set),
@@ -436,6 +437,10 @@ public interface FuseOperations {
 	 */
 	default int access(String path, int mask) {
 		return 0;
+	}
+
+	private int access(MemoryAddress path, int mask) {
+		return access(CLinker.toJavaString(path, UTF_8), mask);
 	}
 
 	/**

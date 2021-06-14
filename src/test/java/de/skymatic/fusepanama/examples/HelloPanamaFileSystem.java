@@ -35,7 +35,13 @@ public class HelloPanamaFileSystem implements FuseOperations {
 
 	@Override
 	public Set<Operation> supportedOperations() {
-		return EnumSet.of(GET_ATTR, OPEN, READ, READ_DIR);
+		return EnumSet.of(ACCESS, GET_ATTR, OPEN, READ, READ_DIR);
+	}
+
+	@Override
+	public int access(String path, int mask) {
+		LOG.debug("access() {}", path);
+		return 0;
 	}
 
 	@Override
