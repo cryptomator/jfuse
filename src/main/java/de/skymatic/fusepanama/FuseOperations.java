@@ -21,6 +21,7 @@ public interface FuseOperations {
 		GET_ATTR((ops, scope) -> fuse_operations.getattr.allocate(ops::getattr, scope), fuse_operations::getattr$set),
 		INIT((ops, scope) -> fuse_operations.init.allocate(ops::init, scope), fuse_operations::init$set),
 		OPEN((ops, scope) -> fuse_operations.open.allocate(ops::open, scope), fuse_operations::open$set),
+		OPEN_DIR((ops, scope) -> fuse_operations.opendir.allocate(ops::opendir, scope), fuse_operations::opendir$set),
 		READ((ops, scope) -> fuse_operations.read.allocate(ops::read, scope), fuse_operations::read$set),
 		READ_DIR((ops, scope) -> fuse_operations.readdir.allocate(ops::readdir, scope), fuse_operations::readdir$set),
 		STATFS((ops, scope) -> fuse_operations.statfs.allocate(ops::statfs, scope), fuse_operations::statfs$set),
@@ -354,6 +355,12 @@ public interface FuseOperations {
 	 */
 	default int opendir(String path, FileInfo fi) {
 		return 0;
+	}
+
+	private int opendir(MemoryAddress path, MemoryAddress fi) {
+		try (var scope = ResourceScope.newConfinedScope()) {
+			return opendir(CLinker.toJavaString(path, UTF_8), new FileInfo(fi, scope));
+		}
 	}
 
 	/**
