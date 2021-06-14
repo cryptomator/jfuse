@@ -37,7 +37,7 @@ public class HelloPanamaFileSystem implements FuseOperations {
 
 	@Override
 	public Set<Operation> supportedOperations() {
-		return EnumSet.of(DESTROY, GET_ATTR, INIT, OPEN, OPEN_DIR, READ, READ_DIR, RELEASE_DIR, STATFS);
+		return EnumSet.of(DESTROY, GET_ATTR, INIT, OPEN, OPEN_DIR, READ, READ_DIR, RELEASE, RELEASE_DIR, STATFS);
 	}
 
 	@Override
@@ -100,6 +100,12 @@ public class HelloPanamaFileSystem implements FuseOperations {
 		buf.put(content.slice(pos, len));
 
 		return len;
+	}
+
+	@Override
+	public int release(String path, FileInfo fi) {
+		LOG.debug("release() {}", path);
+		return 0;
 	}
 
 	@Override
