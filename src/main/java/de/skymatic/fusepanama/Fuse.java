@@ -10,76 +10,23 @@ import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.SegmentAllocator;
 
-import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Fuse implements AutoCloseable {
 
 	private final ResourceScope fuseScope;
-	private final FuseOperations fuseOperations;
 
 	private Fuse(FuseOperations fuseOperations, Path mountPoint) {
 		this.fuseScope = ResourceScope.newConfinedScope();
-		this.fuseOperations = fuseOperations;
 		var nativeFuseOps = fuse_operations.allocate(fuseScope);
-		var notImplementedMethods = Arrays.stream(fuseOperations.getClass().getMethods())
-				.filter(method -> method.getAnnotation(NotImplemented.class) != null)
-				.map(Method::getName)
-				.collect(Collectors.toSet());
-
-		if (!notImplementedMethods.contains("getattr")) {
-			var method = fuse_operations.getattr.allocate(this::getattr, fuseScope);
-			fuse_operations.getattr$set(nativeFuseOps, method.address());
-		}
-
-		if (!notImplementedMethods.contains("readdir")) {
-			var method = fuse_operations.readdir.allocate(this::readdir, fuseScope);
-			fuse_operations.readdir$set(nativeFuseOps, method.address());
-		}
-
-		if (!notImplementedMethods.contains("open")) {
-			var method = fuse_operations.open.allocate(this::open, fuseScope);
-			fuse_operations.open$set(nativeFuseOps, method.address());
-		}
-
-		if (!notImplementedMethods.contains("read")) {
-			var method = fuse_operations.read.allocate(this::read, fuseScope);
-			fuse_operations.read$set(nativeFuseOps, method.address());
-		}
-
-		// TODO: add further methods
-
+		fuseOperations.supportedOperations().forEach(op -> {
+			op.bind(fuseOperations, nativeFuseOps, fuseScope);
+		});
 		fuseMain(Arrays.asList("fusefs-3000", "-f", mountPoint.toString()), nativeFuseOps);
-	}
-
-	private int getattr(MemoryAddress path, MemoryAddress stat) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			return fuseOperations.getattr(CLinker.toJavaString(path, UTF_8), new Stat(stat, scope));
-		}
-	}
-
-	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			return fuseOperations.readdir(CLinker.toJavaString(path, UTF_8), new DirFiller(buf, filler), offset, new FileInfo(fi, scope));
-		}
-	}
-
-	private int open(MemoryAddress path, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			return fuseOperations.open(CLinker.toJavaString(path, UTF_8), new FileInfo(fi, scope));
-		}
-	}
-
-	private int read(MemoryAddress path, MemoryAddress buf, long size, long offset, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			var buffer = buf.asSegment(size, scope).asByteBuffer();
-			return fuseOperations.read(CLinker.toJavaString(path, UTF_8), buffer, size, offset, new FileInfo(fi, scope));
-		}
 	}
 
 	private int fuseMain(List<String> flags, MemorySegment fuseOperations) {

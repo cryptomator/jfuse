@@ -12,6 +12,10 @@ import org.slf4j.LoggerFactory;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.EnumSet;
+import java.util.Set;
+
+import static de.skymatic.fusepanama.FuseOperations.Operation.*;
 
 public class HelloPanamaFileSystem implements FuseOperations {
 
@@ -27,6 +31,11 @@ public class HelloPanamaFileSystem implements FuseOperations {
 		Path mountPoint = Path.of("/Volumes/foo");
 		LOG.info("mounting at {}. Unmount to terminate this process.", mountPoint);
 		Fuse.mount(new HelloPanamaFileSystem(), mountPoint);
+	}
+
+	@Override
+	public Set<Operation> supportedOperations() {
+		return EnumSet.of(GET_ATTR, OPEN, READ, READ_DIR);
 	}
 
 	@Override
