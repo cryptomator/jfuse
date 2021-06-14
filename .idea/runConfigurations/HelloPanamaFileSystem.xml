@@ -3,7 +3,7 @@
     <option name="ALTERNATIVE_JRE_PATH" value="17" />
     <option name="MAIN_CLASS_NAME" value="de.skymatic.fusepanama.examples.HelloPanamaFileSystem" />
     <module name="fuse-panama" />
-    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.foreign" />
+    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.foreign -Djdk.internal.foreign.ProgrammableUpcallHandler.USE_INTRINSICS=false" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

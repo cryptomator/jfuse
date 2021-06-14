@@ -1,7 +1,6 @@
 package de.skymatic.fusepanama;
 
 import de.skymatic.fusepanama.lowlevel.fuse_context;
-import de.skymatic.fusepanama.lowlevel.fuse_fill_dir_t;
 import de.skymatic.fusepanama.lowlevel.fuse_h;
 import de.skymatic.fusepanama.lowlevel.fuse_operations;
 import jdk.incubator.foreign.Addressable;
@@ -57,10 +56,6 @@ public class Fuse implements AutoCloseable {
 			fuse_operations.read$set(nativeFuseOps, method.address());
 		}
 
-		// FIXME: this is just a workaround: we need to create a fuse_fill_dir_t on main thread before it can be created on FUSE threads...
-		var foo = fuse_fill_dir_t.ofAddress(null);
-		System.err.println("WOOT " + foo);
-
 		// TODO: add further methods
 
 		fuseMain(Arrays.asList("fusefs-3000", "-f", mountPoint.toString()), nativeFuseOps);
@@ -98,10 +93,6 @@ public class Fuse implements AutoCloseable {
 			var allocator = SegmentAllocator.ofScope(scope);
 			var argc = cStrings.length;
 			var argv = allocator.allocateArray(CLinker.C_POINTER, cStrings);
-			for (int i = 0; i < argc; i++) {
-				// FIXME: this is just a workaround: we need to invoke CLinker.toJavaString on main thread before it can be used on FUSE threads
-				LOG.info("flag {}: {}", i, CLinker.toJavaString(cStrings[i].address(), UTF_8));
-			}
 			return fuse_h.fuse_main_real(argc, argv, fuseOperations, fuse_operations.sizeof(), MemoryAddress.NULL);
 		}
 	}
