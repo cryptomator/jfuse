@@ -24,6 +24,7 @@ public interface FuseOperations {
 		OPEN_DIR((ops, scope) -> fuse_operations.opendir.allocate(ops::opendir, scope), fuse_operations::opendir$set),
 		READ((ops, scope) -> fuse_operations.read.allocate(ops::read, scope), fuse_operations::read$set),
 		READ_DIR((ops, scope) -> fuse_operations.readdir.allocate(ops::readdir, scope), fuse_operations::readdir$set),
+		RELEASE_DIR((ops, scope) -> fuse_operations.releasedir.allocate(ops::releasedir, scope), fuse_operations::releasedir$set),
 		STATFS((ops, scope) -> fuse_operations.statfs.allocate(ops::statfs, scope), fuse_operations::statfs$set),
 		;
 
@@ -402,6 +403,12 @@ public interface FuseOperations {
 	 */
 	default int releasedir(String path, FileInfo fi) {
 		return 0;
+	}
+
+	private int releasedir(MemoryAddress path, MemoryAddress fi) {
+		try (var scope = ResourceScope.newConfinedScope()) {
+			return releasedir(CLinker.toJavaString(path, UTF_8), new FileInfo(fi, scope));
+		}
 	}
 
 	/**
