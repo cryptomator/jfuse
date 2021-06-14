@@ -434,7 +434,7 @@ public interface FuseOperations {
 	 * Changed in version 2.6
 	 */
 	default void init(FuseConnInfo conn) {
-		// TODO should we store the returned object?
+		// no-op
 	}
 
 	private MemoryAddress init(MemoryAddress conn) {
@@ -452,7 +452,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.3
 	 */
 	default void destroy() {
-		// TODO should we pass in the object stored during init()?
+		// no-op
 	}
 
 	private void destroy(MemoryAddress addr) {
