@@ -7,6 +7,7 @@ import de.skymatic.fusepanama.Fuse;
 import de.skymatic.fusepanama.FuseConnInfo;
 import de.skymatic.fusepanama.FuseOperations;
 import de.skymatic.fusepanama.Stat;
+import de.skymatic.fusepanama.Statvfs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +37,7 @@ public class HelloPanamaFileSystem implements FuseOperations {
 
 	@Override
 	public Set<Operation> supportedOperations() {
-		return EnumSet.of(DESTROY, GET_ATTR, INIT, OPEN, READ, READ_DIR);
+		return EnumSet.of(DESTROY, GET_ATTR, INIT, OPEN, READ, READ_DIR, STATFS);
 	}
 
 	@Override
@@ -119,4 +120,14 @@ public class HelloPanamaFileSystem implements FuseOperations {
 		return 0;
 	}
 
+	@Override
+	public int statfs(String path, Statvfs statvfs) {
+		LOG.debug("statfs() {}", path);
+		statvfs.setNameMax(255);
+		statvfs.setBsize(4096);
+		statvfs.setBlocks(1000);
+		statvfs.setBfree(500);
+		statvfs.setBavail(500);
+		return 0;
+	}
 }

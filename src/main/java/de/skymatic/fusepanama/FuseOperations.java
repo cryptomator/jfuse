@@ -22,7 +22,9 @@ public interface FuseOperations {
 		INIT((ops, scope) -> fuse_operations.init.allocate(ops::init, scope), fuse_operations::init$set),
 		OPEN((ops, scope) -> fuse_operations.open.allocate(ops::open, scope), fuse_operations::open$set),
 		READ((ops, scope) -> fuse_operations.read.allocate(ops::read, scope), fuse_operations::read$set),
-		READ_DIR((ops, scope) -> fuse_operations.readdir.allocate(ops::readdir, scope), fuse_operations::readdir$set);
+		READ_DIR((ops, scope) -> fuse_operations.readdir.allocate(ops::readdir, scope), fuse_operations::readdir$set),
+		STATFS((ops, scope) -> fuse_operations.statfs.allocate(ops::statfs, scope), fuse_operations::statfs$set),
+		;
 
 		private final BiFunction<FuseOperations, ResourceScope, MemoryAddress> upcallAllocator;
 		private final BiConsumer<MemorySegment, MemoryAddress> binder;
@@ -234,17 +236,23 @@ public interface FuseOperations {
 		return Errno.ENOSYS;
 	}
 
-//	/**
-//	 * Get file system statistics
-//	 * <p>
-//	 * The 'f_frsize', 'f_favail', 'f_fsid' and 'f_flag' fields are ignored
-//	 * <p>
-//	 * Replaced 'struct statfs' parameter with 'struct statvfs' in
-//	 * version 2.5
-//	 */
-//	default int statfs(String path, Pointer<statvfs_h.statvfs> buf) {
-//		return 0;
-//	}
+	/**
+	 * Get file system statistics
+	 * <p>
+	 * The 'f_frsize', 'f_favail', 'f_fsid' and 'f_flag' fields are ignored
+	 * <p>
+	 * Replaced 'struct statfs' parameter with 'struct statvfs' in
+	 * version 2.5
+	 */
+	default int statfs(String path, Statvfs statvfs) {
+		return 0;
+	}
+
+	private int statfs(MemoryAddress path, MemoryAddress statvfs) {
+		try (var scope = ResourceScope.newConfinedScope()) {
+			return statfs(CLinker.toJavaString(path, UTF_8), new Statvfs(statvfs, scope));
+		}
+	}
 
 	/**
 	 * Possibly flush cached data

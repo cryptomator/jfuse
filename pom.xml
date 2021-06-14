@@ -123,6 +123,8 @@
 										<argument>--include-struct</argument>
 										<argument>stat</argument>
 										<argument>--include-struct</argument>
+										<argument>statvfs</argument>
+										<argument>--include-struct</argument>
 										<argument>timespec</argument>
 										<argument>--include-struct</argument>
 										<argument>fuse_conn_info</argument>
