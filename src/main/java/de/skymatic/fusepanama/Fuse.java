@@ -9,8 +9,6 @@ import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.SegmentAllocator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.nio.file.Path;
@@ -21,8 +19,6 @@ import java.util.stream.Collectors;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Fuse implements AutoCloseable {
-
-	private static final Logger LOG = LoggerFactory.getLogger(Fuse.class);
 
 	private final ResourceScope fuseScope;
 	private final FuseOperations fuseOperations;
@@ -69,7 +65,6 @@ public class Fuse implements AutoCloseable {
 
 	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			LOG.info("readdir {}", CLinker.toJavaString(path, UTF_8));
 			return fuseOperations.readdir(CLinker.toJavaString(path, UTF_8), new DirFiller(buf, filler), offset, new FileInfo(fi, scope));
 		}
 	}
