@@ -18,6 +18,7 @@ public interface FuseOperations {
 	enum Operation {
 		ACCESS((ops, scope) -> fuse_operations.access.allocate(ops::access, scope), fuse_operations::access$set),
 		GET_ATTR((ops, scope) -> fuse_operations.getattr.allocate(ops::getattr, scope), fuse_operations::getattr$set),
+		INIT((ops, scope) -> fuse_operations.init.allocate(ops::init, scope), fuse_operations::init$set),
 		OPEN((ops, scope) -> fuse_operations.open.allocate(ops::open, scope), fuse_operations::open$set),
 		READ((ops, scope) -> fuse_operations.read.allocate(ops::read, scope), fuse_operations::read$set),
 		READ_DIR((ops, scope) -> fuse_operations.readdir.allocate(ops::readdir, scope), fuse_operations::readdir$set);
@@ -399,19 +400,26 @@ public interface FuseOperations {
 		return Errno.ENOSYS;
 	}
 
-//	/**
-//	 * Initialize filesystem
-//	 * <p>
-//	 * The return value will passed in the private_data field of
-//	 * fuse_context to all file operations and as a parameter to the
-//	 * destroy() method.
-//	 * <p>
-//	 * Introduced in version 2.3
-//	 * Changed in version 2.6
-//	 */
-//	default Pointer<Void> init(Pointer<fuse_common_h.fuse_conn_info> conn) {
-//		return conn;
-//	}
+	/**
+	 * Initialize filesystem
+	 * <p>
+	 * The return value will passed in the private_data field of
+	 * fuse_context to all file operations and as a parameter to the
+	 * destroy() method.
+	 * <p>
+	 * Introduced in version 2.3
+	 * Changed in version 2.6
+	 */
+	default void init(FuseConnInfo conn) {
+		// TODO should we store the returned object?
+	}
+
+	private MemoryAddress init(MemoryAddress conn) {
+		try (var scope = ResourceScope.newConfinedScope()) {
+			init(new FuseConnInfo(conn, scope));
+			return MemoryAddress.NULL;
+		}
+	}
 
 //	/**
 //	 * Clean up filesystem

@@ -124,6 +124,8 @@
 										<argument>stat</argument>
 										<argument>--include-struct</argument>
 										<argument>timespec</argument>
+										<argument>--include-struct</argument>
+										<argument>fuse_conn_info</argument>
 										<!-- typedefs: -->
 										<argument>--include-typedef</argument>
 										<argument>fuse_fill_dir_t</argument>

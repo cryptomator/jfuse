@@ -4,6 +4,7 @@ import de.skymatic.fusepanama.DirFiller;
 import de.skymatic.fusepanama.Errno;
 import de.skymatic.fusepanama.FileInfo;
 import de.skymatic.fusepanama.Fuse;
+import de.skymatic.fusepanama.FuseConnInfo;
 import de.skymatic.fusepanama.FuseOperations;
 import de.skymatic.fusepanama.Stat;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class HelloPanamaFileSystem implements FuseOperations {
 
 	@Override
 	public Set<Operation> supportedOperations() {
-		return EnumSet.of(ACCESS, GET_ATTR, OPEN, READ, READ_DIR);
+		return EnumSet.of(GET_ATTR, INIT, OPEN, READ, READ_DIR);
 	}
 
 	@Override
@@ -64,6 +65,11 @@ public class HelloPanamaFileSystem implements FuseOperations {
 		} else {
 			return -Errno.ENOENT;
 		}
+	}
+
+	@Override
+	public void init(FuseConnInfo conn) {
+		LOG.info("init() {}.{}", conn.protoMajor(), conn.protoMinor());
 	}
 
 	@Override
