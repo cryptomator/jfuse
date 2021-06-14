@@ -17,6 +17,7 @@ public interface FuseOperations {
 
 	enum Operation {
 		ACCESS((ops, scope) -> fuse_operations.access.allocate(ops::access, scope), fuse_operations::access$set),
+		DESTROY((ops, scope) -> fuse_operations.destroy.allocate(ops::destroy, scope), fuse_operations::destroy$set),
 		GET_ATTR((ops, scope) -> fuse_operations.getattr.allocate(ops::getattr, scope), fuse_operations::getattr$set),
 		INIT((ops, scope) -> fuse_operations.init.allocate(ops::init, scope), fuse_operations::init$set),
 		OPEN((ops, scope) -> fuse_operations.open.allocate(ops::open, scope), fuse_operations::open$set),
@@ -421,16 +422,20 @@ public interface FuseOperations {
 		}
 	}
 
-//	/**
-//	 * Clean up filesystem
-//	 * <p>
-//	 * Called on filesystem exit.
-//	 * <p>
-//	 * Introduced in version 2.3
-//	 */
-//	default void destroy(Pointer<?> pointer) {
-//		// no-op
-//	}
+	/**
+	 * Clean up filesystem
+	 * <p>
+	 * Called on filesystem exit.
+	 * <p>
+	 * Introduced in version 2.3
+	 */
+	default void destroy() {
+		// TODO should we pass in the object stored during init()?
+	}
+
+	private void destroy(MemoryAddress addr) {
+		destroy();
+	}
 
 	/**
 	 * Check file access permissions
