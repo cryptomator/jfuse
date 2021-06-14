@@ -23,9 +23,7 @@ public class Fuse implements AutoCloseable {
 	private Fuse(FuseOperations fuseOperations, Path mountPoint) {
 		this.fuseScope = ResourceScope.newConfinedScope();
 		var nativeFuseOps = fuse_operations.allocate(fuseScope);
-		fuseOperations.supportedOperations().forEach(op -> {
-			op.bind(fuseOperations, nativeFuseOps, fuseScope);
-		});
+		fuseOperations.supportedOperations().forEach(op -> op.bind(fuseOperations, nativeFuseOps, fuseScope));
 		fuseMain(Arrays.asList("fusefs-3000", "-f", mountPoint.toString()), nativeFuseOps);
 	}
 
@@ -35,7 +33,7 @@ public class Fuse implements AutoCloseable {
 			var allocator = SegmentAllocator.ofScope(scope);
 			var argc = cStrings.length;
 			var argv = allocator.allocateArray(CLinker.C_POINTER, cStrings);
-			return fuse_h.fuse_main_real(argc, argv, fuseOperations, fuse_operations.sizeof(), MemoryAddress.NULL);
+			return fuse_h.fuse_main_real(argc, argv, fuseOperations, fuseOperations.byteSize(), MemoryAddress.NULL);
 		}
 	}
 
