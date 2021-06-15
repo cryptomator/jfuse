@@ -9,7 +9,7 @@ public final class Errno {
 
 	private Errno() {}
 	
-	private static boolean IS_MAC = System.getProperty("os.name").toLowerCase().contains("mac");
+
 
 	/**
 	 * No such file or directory
@@ -19,5 +19,5 @@ public final class Errno {
 	/**
 	 * Invalid system call number
 	 */
-	public static int ENOSYS = IS_MAC ? 78 : 38;
+	public static int ENOSYS = Platform.IS_MAC ? 78 : 38;
 }
