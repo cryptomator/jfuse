@@ -29,7 +29,11 @@ public class Fuse implements AutoCloseable {
 	public Fuse(FuseOperations fuseOperations) {
 		this.userFuseOperations = fuseOperations;
 		this.nativeFuseOperations = fuse_operations.allocate(fuseScope);
-		fuseOperations.supportedOperations().forEach(op -> op.bind(fuseOperations, nativeFuseOperations, fuseScope));
+		initFuseOperationsStruct();
+	}
+
+	private void initFuseOperationsStruct() {
+		userFuseOperations.supportedOperations().forEach(op -> op.bind(nativeFuseOperations, userFuseOperations, fuseScope));
 		fuse_operations.init$set(nativeFuseOperations, fuse_operations.init.allocate(this::init, fuseScope));
 		fuse_operations.destroy$set(nativeFuseOperations, fuse_operations.destroy.allocate(this::destroy, fuseScope));
 	}

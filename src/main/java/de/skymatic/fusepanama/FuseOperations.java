@@ -8,38 +8,44 @@ import jdk.incubator.foreign.ResourceScope;
 
 import java.nio.ByteBuffer;
 import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public interface FuseOperations {
 
 	enum Operation {
-		ACCESS((ops, scope) -> fuse_operations.access.allocate(ops::access, scope), fuse_operations::access$set),
-		DESTROY((ops, scope) -> null, (h, l) -> {}), // handled by Fuse.java
-		GET_ATTR((ops, scope) -> fuse_operations.getattr.allocate(ops::getattr, scope), fuse_operations::getattr$set),
-		INIT((ops, scope) -> null, (h, l) -> {}), // handled by Fuse.java
-		OPEN((ops, scope) -> fuse_operations.open.allocate(ops::open, scope), fuse_operations::open$set),
-		OPEN_DIR((ops, scope) -> fuse_operations.opendir.allocate(ops::opendir, scope), fuse_operations::opendir$set),
-		READ((ops, scope) -> fuse_operations.read.allocate(ops::read, scope), fuse_operations::read$set),
-		READ_DIR((ops, scope) -> fuse_operations.readdir.allocate(ops::readdir, scope), fuse_operations::readdir$set),
-		RELEASE((ops, scope) -> fuse_operations.release.allocate(ops::release, scope), fuse_operations::release$set),
-		RELEASE_DIR((ops, scope) -> fuse_operations.releasedir.allocate(ops::releasedir, scope), fuse_operations::releasedir$set),
-		STATFS((ops, scope) -> fuse_operations.statfs.allocate(ops::statfs, scope), fuse_operations::statfs$set),
+		ACCESS((struct, ops, scope) -> fuse_operations.access$set(struct, fuse_operations.access.allocate(ops::access, scope))),
+		DESTROY((struct, ops, scope) -> { /* handled by Fuse.java */ }),
+		GET_ATTR((struct, ops, scope) -> fuse_operations.getattr$set(struct, fuse_operations.getattr.allocate(ops::getattr, scope))),
+		INIT((struct, ops, scope) -> { /* handled by Fuse.java */ }),
+		OPEN((struct, ops, scope) -> fuse_operations.open$set(struct, fuse_operations.open.allocate(ops::open, scope))),
+		OPEN_DIR((struct, ops, scope) -> fuse_operations.opendir$set(struct, fuse_operations.opendir.allocate(ops::opendir, scope))),
+		READ((struct, ops, scope) -> fuse_operations.read$set(struct, fuse_operations.read.allocate(ops::read, scope))),
+		READ_DIR((struct, ops, scope) -> fuse_operations.readdir$set(struct, fuse_operations.readdir.allocate(ops::readdir, scope))),
+		RELEASE((struct, ops, scope) -> fuse_operations.release$set(struct, fuse_operations.release.allocate(ops::release, scope))),
+		RELEASE_DIR((struct, ops, scope) -> fuse_operations.releasedir$set(struct, fuse_operations.releasedir.allocate(ops::releasedir, scope))),
+		STATFS((struct, ops, scope) -> fuse_operations.statfs$set(struct, fuse_operations.statfs.allocate(ops::statfs, scope))),
 		;
 
-		private final BiFunction<FuseOperations, ResourceScope, MemoryAddress> upcallAllocator;
-		private final BiConsumer<MemorySegment, MemoryAddress> binder;
+		private final Binder binder;
 
-		Operation(BiFunction<FuseOperations, ResourceScope, MemoryAddress> upcallAllocator, BiConsumer<MemorySegment, MemoryAddress> binder) {
-			this.upcallAllocator = upcallAllocator;
+		Operation(Binder binder) {
 			this.binder = binder;
 		}
 
-		void bind(FuseOperations highLevel, MemorySegment lowLevel, ResourceScope scope) {
-			var method = upcallAllocator.apply(highLevel, scope);
-			binder.accept(lowLevel, method);
+		void bind(MemorySegment struct, FuseOperations ops, ResourceScope scope) {
+			binder.bind(struct, ops, scope);
+		}
+
+		private interface Binder {
+			/**
+			 * Binds function pointers within the given <code>struct</code> to the corresponding methods defined in <code>ops</code>.
+			 *
+			 * @param struct A memory segment containing a <code>fuse_operations</code> struct
+			 * @param ops    The FuseOperations instance, whose methods should be referenced
+			 * @param scope  The scope of the upcall stub that needs to be allocated (should not be closed before the <code>struct</code>'s scope)
+			 */
+			void bind(MemorySegment struct, FuseOperations ops, ResourceScope scope);
 		}
 
 	}
