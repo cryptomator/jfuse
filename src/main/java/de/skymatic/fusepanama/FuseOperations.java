@@ -17,9 +17,9 @@ public interface FuseOperations {
 
 	enum Operation {
 		ACCESS((ops, scope) -> fuse_operations.access.allocate(ops::access, scope), fuse_operations::access$set),
-		DESTROY((ops, scope) -> fuse_operations.destroy.allocate(ops::destroy, scope), fuse_operations::destroy$set),
+		DESTROY((ops, scope) -> null, (h, l) -> {}), // handled by Fuse.java
 		GET_ATTR((ops, scope) -> fuse_operations.getattr.allocate(ops::getattr, scope), fuse_operations::getattr$set),
-		INIT((ops, scope) -> fuse_operations.init.allocate(ops::init, scope), fuse_operations::init$set),
+		INIT((ops, scope) -> null, (h, l) -> {}), // handled by Fuse.java
 		OPEN((ops, scope) -> fuse_operations.open.allocate(ops::open, scope), fuse_operations::open$set),
 		OPEN_DIR((ops, scope) -> fuse_operations.opendir.allocate(ops::opendir, scope), fuse_operations::opendir$set),
 		READ((ops, scope) -> fuse_operations.read.allocate(ops::read, scope), fuse_operations::read$set),
@@ -444,13 +444,6 @@ public interface FuseOperations {
 		// no-op
 	}
 
-	private MemoryAddress init(MemoryAddress conn) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			init(new FuseConnInfo(conn, scope));
-			return MemoryAddress.NULL;
-		}
-	}
-
 	/**
 	 * Clean up filesystem
 	 * <p>
@@ -460,10 +453,6 @@ public interface FuseOperations {
 	 */
 	default void destroy() {
 		// no-op
-	}
-
-	private void destroy(MemoryAddress addr) {
-		destroy();
 	}
 
 	/**

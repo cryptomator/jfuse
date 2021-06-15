@@ -11,11 +11,13 @@ import de.skymatic.fusepanama.Statvfs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.concurrent.CompletionException;
 
 import static de.skymatic.fusepanama.FuseOperations.Operation.*;
 
@@ -29,10 +31,20 @@ public class HelloPanamaFileSystem implements FuseOperations {
 	public static final String HELLO_PATH = "/hello.txt";
 	public static final String HELLO_STR = "Hello Panama!";
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Path mountPoint = Path.of("/Volumes/foo");
-		LOG.info("mounting at {}. Unmount to terminate this process.", mountPoint);
-		Fuse.mount(new HelloPanamaFileSystem(), mountPoint);
+		try (var fuse = new Fuse(new HelloPanamaFileSystem())) {
+			LOG.info("Mounting at {}...", mountPoint);
+			int result = fuse.mount(mountPoint);
+			if (result == 0) {
+				LOG.info("Mounted to {}. Unmount to terminate this process", mountPoint);
+			} else {
+				LOG.error("Failed to mount to {}. Exit code: {}", mountPoint, result);
+			}
+		} catch (CompletionException e) {
+			LOG.error("Un/Mounting failed. ", e);
+			System.exit(1);
+		}
 	}
 
 	@Override
