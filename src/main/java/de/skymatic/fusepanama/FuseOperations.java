@@ -9,8 +9,6 @@ import jdk.incubator.foreign.ResourceScope;
 import java.nio.ByteBuffer;
 import java.util.Set;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 public interface FuseOperations {
 
 	enum Operation {
@@ -68,7 +66,7 @@ public interface FuseOperations {
 
 	private int getattr(MemoryAddress path, MemoryAddress stat) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return getattr(CLinker.toJavaString(path, UTF_8), new Stat(stat, scope));
+			return getattr(CLinker.toJavaString(path), new Stat(stat, scope));
 		}
 	}
 
@@ -205,7 +203,7 @@ public interface FuseOperations {
 
 	private int open(MemoryAddress path, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return open(CLinker.toJavaString(path, UTF_8), new FileInfo(fi, scope));
+			return open(CLinker.toJavaString(path), new FileInfo(fi, scope));
 		}
 	}
 
@@ -228,7 +226,7 @@ public interface FuseOperations {
 	private int read(MemoryAddress path, MemoryAddress buf, long size, long offset, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
 			var buffer = buf.asSegment(size, scope).asByteBuffer();
-			return read(CLinker.toJavaString(path, UTF_8), buffer, size, offset, new FileInfo(fi, scope));
+			return read(CLinker.toJavaString(path), buffer, size, offset, new FileInfo(fi, scope));
 		}
 	}
 
@@ -259,7 +257,7 @@ public interface FuseOperations {
 
 	private int statfs(MemoryAddress path, MemoryAddress statvfs) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return statfs(CLinker.toJavaString(path, UTF_8), new Statvfs(statvfs, scope));
+			return statfs(CLinker.toJavaString(path), new Statvfs(statvfs, scope));
 		}
 	}
 
@@ -312,7 +310,7 @@ public interface FuseOperations {
 
 	private int release(MemoryAddress path, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return release(CLinker.toJavaString(path, UTF_8), new FileInfo(fi, scope));
+			return release(CLinker.toJavaString(path), new FileInfo(fi, scope));
 		}
 	}
 
@@ -373,7 +371,7 @@ public interface FuseOperations {
 
 	private int opendir(MemoryAddress path, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return opendir(CLinker.toJavaString(path, UTF_8), new FileInfo(fi, scope));
+			return opendir(CLinker.toJavaString(path), new FileInfo(fi, scope));
 		}
 	}
 
@@ -405,7 +403,7 @@ public interface FuseOperations {
 
 	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return readdir(CLinker.toJavaString(path, UTF_8), new DirFiller(buf, filler), offset, new FileInfo(fi, scope));
+			return readdir(CLinker.toJavaString(path), new DirFiller(buf, filler), offset, new FileInfo(fi, scope));
 		}
 	}
 
@@ -420,7 +418,7 @@ public interface FuseOperations {
 
 	private int releasedir(MemoryAddress path, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return releasedir(CLinker.toJavaString(path, UTF_8), new FileInfo(fi, scope));
+			return releasedir(CLinker.toJavaString(path), new FileInfo(fi, scope));
 		}
 	}
 
@@ -477,7 +475,7 @@ public interface FuseOperations {
 	}
 
 	private int access(MemoryAddress path, int mask) {
-		return access(CLinker.toJavaString(path, UTF_8), mask);
+		return access(CLinker.toJavaString(path), mask);
 	}
 
 	/**

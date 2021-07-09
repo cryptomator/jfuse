@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 public class Fuse implements AutoCloseable {
 
 	private final CompletableFuture<Integer> initResult = new CompletableFuture<>();
@@ -61,7 +59,7 @@ public class Fuse implements AutoCloseable {
 
 	private int fuseMain(List<String> flags) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			var cStrings = flags.stream().map(s -> CLinker.toCString(s, UTF_8, scope)).toArray(Addressable[]::new);
+			var cStrings = flags.stream().map(s -> CLinker.toCString(s, scope)).toArray(Addressable[]::new);
 			var allocator = SegmentAllocator.ofScope(scope);
 			var argc = cStrings.length;
 			var argv = allocator.allocateArray(CLinker.C_POINTER, cStrings);

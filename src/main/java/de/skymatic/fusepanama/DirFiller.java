@@ -5,8 +5,6 @@ import jdk.incubator.foreign.CLinker;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.ResourceScope;
 
-import java.nio.charset.StandardCharsets;
-
 public record DirFiller(MemoryAddress buf, fuse_fill_dir_t callback) {
 
 	DirFiller(MemoryAddress buf, MemoryAddress callback) {
@@ -22,7 +20,7 @@ public record DirFiller(MemoryAddress buf, fuse_fill_dir_t callback) {
 	 */
 	public int fill(String name, Stat stat, long offset) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return callback.apply(buf, CLinker.toCString(name, StandardCharsets.UTF_8, scope).address(), MemoryAddress.NULL, offset);
+			return callback.apply(buf, CLinker.toCString(name, scope).address(), MemoryAddress.NULL, offset);
 		}
 	}
 

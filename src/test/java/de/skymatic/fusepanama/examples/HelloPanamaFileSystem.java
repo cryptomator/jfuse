@@ -23,6 +23,10 @@ import static de.skymatic.fusepanama.FuseOperations.Operation.*;
 
 public class HelloPanamaFileSystem implements FuseOperations {
 
+	static {
+		System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "info");
+	}
+
 	private static final int S_IFDIR = 0040000;
 	private static final int S_IFREG = 0100000;
 
@@ -31,7 +35,7 @@ public class HelloPanamaFileSystem implements FuseOperations {
 	public static final String HELLO_PATH = "/hello.txt";
 	public static final String HELLO_STR = "Hello Panama!";
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		Path mountPoint = Path.of("/Volumes/foo");
 		try (var fuse = new Fuse(new HelloPanamaFileSystem())) {
 			LOG.info("Mounting at {}...", mountPoint);
