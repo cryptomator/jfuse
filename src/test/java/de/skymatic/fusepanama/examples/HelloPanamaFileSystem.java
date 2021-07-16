@@ -1,7 +1,6 @@
 package de.skymatic.fusepanama.examples;
 
 import de.skymatic.fusepanama.DirFiller;
-import de.skymatic.fusepanama.Errno;
 import de.skymatic.fusepanama.FileInfo;
 import de.skymatic.fusepanama.Fuse;
 import de.skymatic.fusepanama.FuseConnInfo;
@@ -11,7 +10,6 @@ import de.skymatic.fusepanama.Statvfs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -19,6 +17,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.CompletionException;
 
+import static de.skymatic.fusepanama.Errno.ERRNO;
 import static de.skymatic.fusepanama.FuseOperations.Operation.*;
 
 public class HelloPanamaFileSystem implements FuseOperations {
@@ -37,7 +36,7 @@ public class HelloPanamaFileSystem implements FuseOperations {
 
 	public static void main(String[] args) {
 		Path mountPoint = Path.of("/Volumes/foo");
-		try (var fuse = new Fuse(new HelloPanamaFileSystem())) {
+		try (var fuse = Fuse.create(new HelloPanamaFileSystem())) {
 			LOG.info("Mounting at {}...", mountPoint);
 			int result = fuse.mount(mountPoint);
 			if (result == 0) {
@@ -80,7 +79,7 @@ public class HelloPanamaFileSystem implements FuseOperations {
 			stat.setSize(0);
 			return 0;
 		} else {
-			return -Errno.ENOENT;
+			return -ERRNO.enoent();
 		}
 	}
 
@@ -98,7 +97,7 @@ public class HelloPanamaFileSystem implements FuseOperations {
 	public int open(String path, FileInfo fi) {
 		LOG.debug("open() {}", path);
 		if (!HELLO_PATH.equals(path)) {
-			return -Errno.ENOENT;
+			return -ERRNO.enoent();
 		}
 		return 0;
 	}
@@ -107,7 +106,7 @@ public class HelloPanamaFileSystem implements FuseOperations {
 	public int read(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
 		LOG.debug("read() {}", path);
 		if (!HELLO_PATH.equals(path)) {
-			return -Errno.ENOENT;
+			return -ERRNO.enoent();
 		}
 
 		ByteBuffer content = StandardCharsets.UTF_8.encode(HELLO_STR);
@@ -135,15 +134,15 @@ public class HelloPanamaFileSystem implements FuseOperations {
 		LOG.debug("readdir() {}", path);
 		if (offset == 0) {
 			filler.fill(".", null, 0);
-			filler.fill("..", null, 1);
-			filler.fill(HELLO_PATH.substring(1), null, 2);
-			filler.fill("aaa", null, 3);
-			filler.fill("bbb", null, 4);
-			filler.fill("ccc", null, 5);
-			filler.fill("ddd", null, 6);
-			filler.fill("xxx", null, 7);
-			filler.fill("yyy", null, 8);
-			filler.fill("zzz", null, 9);
+			filler.fill("..", null, 0);
+			filler.fill(HELLO_PATH.substring(1), null, 0);
+			filler.fill("aaa", null, 0);
+			filler.fill("bbb", null, 0);
+			filler.fill("ccc", null, 0);
+			filler.fill("ddd", null, 0);
+			filler.fill("xxx", null, 0);
+			filler.fill("yyy", null, 0);
+			filler.fill("zzz", null, 0);
 		}
 		return 0;
 	}

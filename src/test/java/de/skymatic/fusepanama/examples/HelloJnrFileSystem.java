@@ -1,6 +1,6 @@
 package de.skymatic.fusepanama.examples;
 
-import de.skymatic.fusepanama.Errno;
+import jnr.constants.platform.Errno;
 import jnr.ffi.Pointer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class HelloJnrFileSystem extends FuseStubFS {
 			stat.st_size.set(0);
 			return 0;
 		} else {
-			return -Errno.ENOENT;
+			return -Errno.ENOENT.value();
 		}
 	}
 
@@ -55,7 +55,7 @@ public class HelloJnrFileSystem extends FuseStubFS {
 	public int open(String path, FuseFileInfo fi) {
 		LOG.debug("open() {}", path);
 		if (!HELLO_PATH.equals(path)) {
-			return -Errno.ENOENT;
+			return -Errno.ENOENT.value();
 		}
 		return 0;
 	}
@@ -64,7 +64,7 @@ public class HelloJnrFileSystem extends FuseStubFS {
 	public int read(String path, Pointer buf, long size, long offset, FuseFileInfo fi) {
 		LOG.debug("read() {}", path);
 		if (!HELLO_PATH.equals(path)) {
-			return -Errno.ENOENT;
+			return -Errno.ENOENT.value();
 		}
 
 		ByteBuffer content = StandardCharsets.UTF_8.encode(HELLO_STR);
@@ -80,15 +80,15 @@ public class HelloJnrFileSystem extends FuseStubFS {
 		LOG.debug("readdir() {}", path);
 		if (offset == 0) {
 			filler.apply(buf, ".", null, 0);
-			filler.apply(buf, "..", null, 1);
-			filler.apply(buf, HELLO_PATH.substring(1), null, 2);
-			filler.apply(buf, "aaa", null, 3);
-			filler.apply(buf, "bbb", null, 4);
-			filler.apply(buf, "ccc", null, 5);
-			filler.apply(buf, "ddd", null, 6);
-			filler.apply(buf, "xxx", null, 7);
-			filler.apply(buf, "yyy", null, 8);
-			filler.apply(buf, "zzz", null, 9);
+			filler.apply(buf, "..", null, 0);
+			filler.apply(buf, HELLO_PATH.substring(1), null, 0);
+			filler.apply(buf, "aaa", null, 0);
+			filler.apply(buf, "bbb", null, 0);
+			filler.apply(buf, "ccc", null, 0);
+			filler.apply(buf, "ddd", null, 0);
+			filler.apply(buf, "xxx", null, 0);
+			filler.apply(buf, "yyy", null, 0);
+			filler.apply(buf, "zzz", null, 0);
 		}
 		return 0;
 	}

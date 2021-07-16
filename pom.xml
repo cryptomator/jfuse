@@ -17,19 +17,19 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.29</version>
+			<version>1.7.31</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openjdk.jmh</groupId>
 			<artifactId>jmh-core</artifactId>
-			<version>1.27</version>
+			<version>1.32</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openjdk.jmh</groupId>
 			<artifactId>jmh-generator-annprocess</artifactId>
-			<version>1.27</version>
+			<version>1.32</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -39,7 +39,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
+				<version>3.8.1</version>
 				<configuration>
 					<release>17</release>
 					<encoding>UTF-8</encoding>
@@ -55,7 +55,7 @@
 
 	<profiles>
 		<profile>
-			<id>jextract</id>
+			<id>jextract-mac</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -88,7 +88,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.6.0</version>
+						<version>3.0.0</version>
 						<executions>
 							<execution>
 								<id>jextract</id>
@@ -106,7 +106,7 @@
 										<argument>-d</argument>
 										<argument>${project.build.sourceDirectory}</argument>
 										<argument>-t</argument>
-										<argument>de.skymatic.fusepanama.lowlevel</argument>
+										<argument>de.skymatic.fusepanama.mac.lowlevel</argument>
 										<argument>-I</argument>
 										<argument>/usr/local/include</argument>
 										<argument>-I</argument>

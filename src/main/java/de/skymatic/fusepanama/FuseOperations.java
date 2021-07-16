@@ -1,51 +1,24 @@
 package de.skymatic.fusepanama;
 
-import de.skymatic.fusepanama.lowlevel.fuse_operations;
-import jdk.incubator.foreign.CLinker;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-
 import java.nio.ByteBuffer;
 import java.util.Set;
+
+import static de.skymatic.fusepanama.Errno.ERRNO;
 
 public interface FuseOperations {
 
 	enum Operation {
-		ACCESS((struct, ops, scope) -> fuse_operations.access$set(struct, fuse_operations.access.allocate(ops::access, scope))),
-		DESTROY((struct, ops, scope) -> { /* handled by Fuse.java */ }),
-		GET_ATTR((struct, ops, scope) -> fuse_operations.getattr$set(struct, fuse_operations.getattr.allocate(ops::getattr, scope))),
-		INIT((struct, ops, scope) -> { /* handled by Fuse.java */ }),
-		OPEN((struct, ops, scope) -> fuse_operations.open$set(struct, fuse_operations.open.allocate(ops::open, scope))),
-		OPEN_DIR((struct, ops, scope) -> fuse_operations.opendir$set(struct, fuse_operations.opendir.allocate(ops::opendir, scope))),
-		READ((struct, ops, scope) -> fuse_operations.read$set(struct, fuse_operations.read.allocate(ops::read, scope))),
-		READ_DIR((struct, ops, scope) -> fuse_operations.readdir$set(struct, fuse_operations.readdir.allocate(ops::readdir, scope))),
-		RELEASE((struct, ops, scope) -> fuse_operations.release$set(struct, fuse_operations.release.allocate(ops::release, scope))),
-		RELEASE_DIR((struct, ops, scope) -> fuse_operations.releasedir$set(struct, fuse_operations.releasedir.allocate(ops::releasedir, scope))),
-		STATFS((struct, ops, scope) -> fuse_operations.statfs$set(struct, fuse_operations.statfs.allocate(ops::statfs, scope))),
-		;
-
-		private final Binder binder;
-
-		Operation(Binder binder) {
-			this.binder = binder;
-		}
-
-		void bind(MemorySegment struct, FuseOperations ops, ResourceScope scope) {
-			binder.bind(struct, ops, scope);
-		}
-
-		private interface Binder {
-			/**
-			 * Binds function pointers within the given <code>struct</code> to the corresponding methods defined in <code>ops</code>.
-			 *
-			 * @param struct A memory segment containing a <code>fuse_operations</code> struct
-			 * @param ops    The FuseOperations instance, whose methods should be referenced
-			 * @param scope  The scope of the upcall stub that needs to be allocated (should not be closed before the <code>struct</code>'s scope)
-			 */
-			void bind(MemorySegment struct, FuseOperations ops, ResourceScope scope);
-		}
-
+		ACCESS,
+		DESTROY,
+		GET_ATTR,
+		INIT,
+		OPEN,
+		OPEN_DIR,
+		READ,
+		READ_DIR,
+		RELEASE,
+		RELEASE_DIR,
+		STATFS,
 	}
 
 	/**
@@ -61,13 +34,7 @@ public interface FuseOperations {
 	 * mount option is given.
 	 */
 	default int getattr(String path, Stat stat) {
-		return -Errno.ENOSYS;
-	}
-
-	private int getattr(MemoryAddress path, MemoryAddress stat) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			return getattr(CLinker.toJavaString(path), new Stat(stat, scope));
-		}
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -80,7 +47,7 @@ public interface FuseOperations {
 	 * for success.
 	 */
 	default int readlink(String path, ByteBuffer buf, long len) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 //	/**
@@ -88,7 +55,7 @@ public interface FuseOperations {
 //	 */
 //	@Deprecated
 //	default int getdir(String path, Pointer<fuse_h.fuse_dirhandle> fuse_dirhandlePointer, Callback<fuse_h.FI2> fi2Callback) {
-//		return -Errno.ENOSYS;
+//		return -ERRNO.enosys();
 //	}
 
 	/**
@@ -99,7 +66,7 @@ public interface FuseOperations {
 	 * regular files that will be called instead.
 	 */
 	default int mknod(String path, short mode, int rdev) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -110,63 +77,63 @@ public interface FuseOperations {
 	 * correct directory type bits use  mode|S_IFDIR
 	 */
 	default int mkdir(String path, short mode) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
 	 * Remove a file
 	 */
 	default int unlink(String path) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
 	 * Remove a directory
 	 */
 	default int rmdir(String path) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
 	 * Create a symbolic link
 	 */
 	default int symlink(String linkname, String target) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
 	 * Rename a file
 	 */
 	default int rename(String oldpath, String newpath) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
 	 * Create a hard link to a file
 	 */
 	default int link(String linkname, String target) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
 	 * Change the permission bits of a file
 	 */
 	default int chmod(String path, short mode) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
 	 * Change the owner and group of a file
 	 */
 	default int chown(String path, int uid, int gid) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
 	 * Change the size of a file
 	 */
 	default int truncate(String path, long size) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 //	/**
@@ -176,7 +143,7 @@ public interface FuseOperations {
 //	 */
 //	@Deprecated
 //	default int utime(String path, Pointer<utime_h.utimbuf> utimbufPointer) {
-//		return -Errno.ENOSYS;
+//		return -ERRNO.enosys();
 //	}
 
 	/**
@@ -198,13 +165,7 @@ public interface FuseOperations {
 	 * Changed in version 2.2
 	 */
 	default int open(String path, FileInfo fi) {
-		return -Errno.ENOSYS;
-	}
-
-	private int open(MemoryAddress path, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			return open(CLinker.toJavaString(path), new FileInfo(fi, scope));
-		}
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -220,14 +181,7 @@ public interface FuseOperations {
 	 * Changed in version 2.2
 	 */
 	default int read(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
-		return -Errno.ENOSYS;
-	}
-
-	private int read(MemoryAddress path, MemoryAddress buf, long size, long offset, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			var buffer = buf.asSegment(size, scope).asByteBuffer();
-			return read(CLinker.toJavaString(path), buffer, size, offset, new FileInfo(fi, scope));
-		}
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -240,7 +194,7 @@ public interface FuseOperations {
 	 * Changed in version 2.2
 	 */
 	default int write(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -252,13 +206,7 @@ public interface FuseOperations {
 	 * version 2.5
 	 */
 	default int statfs(String path, Statvfs statvfs) {
-		return -Errno.ENOSYS;
-	}
-
-	private int statfs(MemoryAddress path, MemoryAddress statvfs) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			return statfs(CLinker.toJavaString(path), new Statvfs(statvfs, scope));
-		}
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -286,7 +234,7 @@ public interface FuseOperations {
 	 * Changed in version 2.2
 	 */
 	default int flush(String path, FileInfo fi) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -308,12 +256,6 @@ public interface FuseOperations {
 		return 0;
 	}
 
-	private int release(MemoryAddress path, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			return release(CLinker.toJavaString(path), new FileInfo(fi, scope));
-		}
-	}
-
 	/**
 	 * Synchronize file contents
 	 * <p>
@@ -323,35 +265,35 @@ public interface FuseOperations {
 	 * Changed in version 2.2
 	 */
 	default int fsync(String path, int datasync, FileInfo fi) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
 	 * Set extended attributes
 	 */
 	default int setxattr(String path, String name, ByteBuffer value, long size, int flags) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
 	 * Get extended attributes
 	 */
 	default int getxattr(String path, String name, ByteBuffer value, long size) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
 	 * List extended attributes
 	 */
 	default int listxattr(String path, ByteBuffer list, long size) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
 	 * Remove extended attributes
 	 */
 	default int removexattr(String path, String name) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -366,13 +308,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.3
 	 */
 	default int opendir(String path, FileInfo fi) {
-		return -Errno.ENOSYS;
-	}
-
-	private int opendir(MemoryAddress path, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			return opendir(CLinker.toJavaString(path), new FileInfo(fi, scope));
-		}
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -398,13 +334,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.3
 	 */
 	default int readdir(String path, DirFiller filler, long offset, FileInfo fi) {
-		return -Errno.ENOSYS;
-	}
-
-	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			return readdir(CLinker.toJavaString(path), new DirFiller(buf, filler), offset, new FileInfo(fi, scope));
-		}
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -416,12 +346,6 @@ public interface FuseOperations {
 		return 0;
 	}
 
-	private int releasedir(MemoryAddress path, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			return releasedir(CLinker.toJavaString(path), new FileInfo(fi, scope));
-		}
-	}
-
 	/**
 	 * Synchronize directory contents
 	 * <p>
@@ -431,7 +355,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.3
 	 */
 	default int fsyncdir(String path, int datasync, FileInfo fi) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -471,11 +395,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.5
 	 */
 	default int access(String path, int mask) {
-		return -Errno.ENOSYS;
-	}
-
-	private int access(MemoryAddress path, int mask) {
-		return access(CLinker.toJavaString(path), mask);
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -491,7 +411,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.5
 	 */
 	default int create(String path, short mode, FileInfo fi) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -507,7 +427,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.5
 	 */
 	default int ftruncate(String path, long size, FileInfo fi) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -523,7 +443,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.5
 	 */
 	default int fgetattr(String path, Stat stat, FileInfo fi) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 //	/**
@@ -559,7 +479,7 @@ public interface FuseOperations {
 //	 * Introduced in version 2.6
 //	 */
 //	default int lock(String path, FileInfo fi, int cmd, Pointer<fcntl_h.flock> lock) {
-//		return -Errno.ENOSYS;
+//		return -ERRNO.enosys();
 //	}
 
 	/**
@@ -574,7 +494,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.6
 	 */
 	default int utimens(String path, TimeSpec tv) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 //	/**
@@ -586,7 +506,7 @@ public interface FuseOperations {
 //	 * Introduced in version 2.6
 //	 */
 //	default int bmap(String path, long blocksize, Pointer<Long> idx) {
-//		return -Errno.ENOSYS;
+//		return -ERRNO.enosys();
 //	}
 
 	/**
@@ -605,7 +525,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.8
 	 */
 	default int ioctl(String path, int cmd, ByteBuffer arg, FileInfo fi, int flags, ByteBuffer data) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 //	/**
@@ -626,7 +546,7 @@ public interface FuseOperations {
 //	 * Introduced in version 2.8
 //	 */
 //	default int poll(String path, FileInfo fi, Pointer<fuse_common_h.fuse_pollhandle> ph, Pointer<Integer> reventsp) {
-//		return -Errno.ENOSYS;
+//		return -ERRNO.enosys();
 //	}
 
 //	/**
@@ -639,7 +559,7 @@ public interface FuseOperations {
 //	 * Introduced in version 2.9
 //	 */
 //	default int writeBuf(String path, Pointer<fuse_common_h.fuse_bufvec> buf, long offset, FileInfo fi) {
-//		return -Errno.ENOSYS;
+//		return -ERRNO.enosys();
 //	}
 
 //	/**
@@ -660,7 +580,7 @@ public interface FuseOperations {
 //	 * Introduced in version 2.9
 //	 */
 //	default int readBuf(String path, Pointer<? extends Pointer<fuse_common_h.fuse_bufvec>> bufp, long size, long offset, FileInfo fi) {
-//		return -Errno.ENOSYS;
+//		return -ERRNO.enosys();
 //	}
 
 	/**
@@ -684,7 +604,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.9
 	 */
 	default int flock(String path, FileInfo fi, int op) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 
 	/**
@@ -698,6 +618,6 @@ public interface FuseOperations {
 	 * Introduced in version 2.9.1
 	 */
 	default int fallocate(String path, int mode, long offset, long length, FileInfo fi) {
-		return -Errno.ENOSYS;
+		return -ERRNO.enosys();
 	}
 }

@@ -1,54 +1,25 @@
 package de.skymatic.fusepanama;
 
-import de.skymatic.fusepanama.lowlevel.stat;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+public interface Stat {
 
-public record Stat(MemorySegment segment) {
+	TimeSpec aTime();
 
-	Stat(MemoryAddress address, ResourceScope scope) {
-		this(stat.ofAddress(address, scope));
-	}
+	TimeSpec cTime();
 
-	public TimeSpec aTime() {
-		return new TimeSpec(stat.st_atimespec$slice(segment));
-	}
+	TimeSpec mTime();
 
-	public TimeSpec cTime() {
-		return new TimeSpec(stat.st_ctimespec$slice(segment));
-	}
+	TimeSpec birthTime();
 
-	public TimeSpec mTime() {
-		return new TimeSpec(stat.st_mtimespec$slice(segment));
-	}
+	void setMode(short mode);
 
-	public TimeSpec birthTime() {
-		return new TimeSpec(stat.st_birthtimespec$slice(segment));
-	}
+	short getMode();
 
-	public void setMode(short mode) {
-		stat.st_mode$set(segment, mode);
-	}
+	void setNLink(short count);
 
-	public short getMode() {
-		return stat.st_mode$get(segment);
-	}
+	short getNLink();
 
-	public void setNLink(short count) {
-		stat.st_nlink$set(segment, count);
-	}
+	void setSize(long size);
 
-	public short getNLink() {
-		return stat.st_nlink$get(segment);
-	}
-
-	public void setSize(long size) {
-		stat.st_size$set(segment, size);
-	}
-
-	public long getSize() {
-		return stat.st_size$get(segment);
-	}
+	long getSize();
 
 }

@@ -1,54 +1,25 @@
 package de.skymatic.fusepanama;
 
-import de.skymatic.fusepanama.lowlevel.statvfs;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+public interface Statvfs {
 
-public record Statvfs(MemorySegment segment) {
+	long getBsize();
 
-	Statvfs(MemoryAddress address, ResourceScope scope) {
-		this(statvfs.ofAddress(address, scope));
-	}
+	void setBsize(long bsize);
 
-	public long getBsize() {
-		return statvfs.f_bsize$get(segment);
-	}
+	int getBlocks();
 
-	public void setBsize(long bsize) {
-		statvfs.f_bsize$set(segment, bsize);
-	}
+	void setBlocks(int blocks);
 
-	public int getBlocks() {
-		return statvfs.f_blocks$get(segment);
-	}
+	int getBfree();
 
-	public void setBlocks(int blocks) {
-		statvfs.f_blocks$set(segment, blocks);
-	}
+	void setBfree(int bfree);
 
-	public int getBfree() {
-		return statvfs.f_bfree$get(segment);
-	}
+	int getBavail();
 
-	public void setBfree(int bfree) {
-		statvfs.f_bfree$set(segment, bfree);
-	}
+	void setBavail(int bavail);
 
-	public int getBavail() {
-		return statvfs.f_bavail$get(segment);
-	}
+	long getNameMax();
 
-	public void setBavail(int bavail) {
-		statvfs.f_bavail$set(segment, bavail);
-	}
-
-	public long getNameMax() {
-		return statvfs.f_namemax$get(segment);
-	}
-
-	public void setNameMax(long namemax) {
-		statvfs.f_namemax$set(segment, namemax);
-	}
+	void setNameMax(long namemax);
 
 }
