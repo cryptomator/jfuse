@@ -19,22 +19,22 @@ public class BenchmarkTest {
 		org.openjdk.jmh.Main.main(args);
 	}
 
-	/*@Benchmark
+	@Benchmark
 	@Warmup(iterations = 2)
 	@Fork(value = 1)
 	@OutputTimeUnit(TimeUnit.MICROSECONDS)
 	@BenchmarkMode(Mode.AverageTime)
 	public void testListDirJnr() throws IOException {
-		Files.list(Path.of("/Volumes/bar")).close();
-	}*/
+		Files.list(Path.of("/home/sebastian/Volumes/bar")).close();
+	}
 
-	/*@Benchmark
+	@Benchmark
 	@Warmup(iterations = 2)
 	@Fork(value = 1)
 	@OutputTimeUnit(TimeUnit.MICROSECONDS)
 	@BenchmarkMode(Mode.AverageTime)
 	public void testListDirPanama() throws IOException {
-		Files.list(Path.of("/Volumes/foo")).close();
-	}*/
+		Files.list(Path.of("/home/sebastian/Volumes/foo")).close();
+	}
 
 }

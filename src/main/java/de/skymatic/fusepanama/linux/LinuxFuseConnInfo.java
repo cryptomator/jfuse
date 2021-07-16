@@ -1,14 +1,14 @@
-package de.skymatic.fusepanama.mac;
+package de.skymatic.fusepanama.linux;
 
 import de.skymatic.fusepanama.FuseConnInfo;
-import de.skymatic.fusepanama.mac.lowlevel.fuse_conn_info;
+import de.skymatic.fusepanama.linux.lowlevel.fuse_conn_info;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-record MacFuseConnInfo(MemorySegment segment) implements FuseConnInfo {
+record LinuxFuseConnInfo(MemorySegment segment) implements FuseConnInfo {
 
-	public MacFuseConnInfo(MemoryAddress address, ResourceScope scope) {
+	public LinuxFuseConnInfo(MemoryAddress address, ResourceScope scope) {
 		this(fuse_conn_info.ofAddress(address, scope));
 	}
 

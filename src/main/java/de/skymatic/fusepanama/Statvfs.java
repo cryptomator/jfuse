@@ -6,15 +6,15 @@ public interface Statvfs {
 
 	void setBsize(long bsize);
 
-	int getBlocks();
+	long getBlocks();
 
 	void setBlocks(int blocks);
 
-	int getBfree();
+	long getBfree();
 
 	void setBfree(int bfree);
 
-	int getBavail();
+	long getBavail();
 
 	void setBavail(int bavail);
 

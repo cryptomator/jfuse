@@ -1,14 +1,14 @@
-package de.skymatic.fusepanama.mac;
+package de.skymatic.fusepanama.linux;
 
 import de.skymatic.fusepanama.FileInfo;
-import de.skymatic.fusepanama.mac.lowlevel.fuse_file_info;
+import de.skymatic.fusepanama.linux.lowlevel.fuse_file_info;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-record MacFileInfo(MemorySegment segment) implements FileInfo {
+record LinuxFileInfo(MemorySegment segment) implements FileInfo {
 
-	public MacFileInfo(MemoryAddress address, ResourceScope scope) {
+	public LinuxFileInfo(MemoryAddress address, ResourceScope scope) {
 		this(fuse_file_info.ofAddress(address, scope));
 	}
 

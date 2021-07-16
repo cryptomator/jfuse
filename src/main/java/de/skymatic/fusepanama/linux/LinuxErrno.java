@@ -1,9 +1,9 @@
-package de.skymatic.fusepanama.mac;
+package de.skymatic.fusepanama.linux;
 
 import de.skymatic.fusepanama.Errno;
-import de.skymatic.fusepanama.mac.lowlevel.errno_h;
+import de.skymatic.fusepanama.linux.lowlevel.errno_h;
 
-public final record MacErrno() implements Errno {
+public final record LinuxErrno() implements Errno {
 
 	@Override
 	public int enoent() {

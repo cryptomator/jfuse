@@ -1,5 +1,6 @@
 package de.skymatic.fusepanama;
 
+import de.skymatic.fusepanama.linux.LinuxErrno;
 import de.skymatic.fusepanama.mac.MacErrno;
 
 /**
@@ -11,6 +12,7 @@ public interface Errno {
 
 	Errno ERRNO = switch (Platform.CURRENT) {
 		case MAC -> new MacErrno();
+		case LINUX -> new LinuxErrno();
 		default -> null; // TODO
 	};
 

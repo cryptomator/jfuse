@@ -1,5 +1,6 @@
 package de.skymatic.fusepanama;
 
+import de.skymatic.fusepanama.linux.LinuxFuse;
 import de.skymatic.fusepanama.mac.MacFuse;
 
 import java.nio.file.Path;
@@ -10,6 +11,7 @@ public interface Fuse extends AutoCloseable {
 	static Fuse create(FuseOperations fuseOperations) {
 		return switch (Platform.CURRENT) {
 			case MAC -> new MacFuse(fuseOperations);
+			case LINUX -> new LinuxFuse(fuseOperations);
 			default -> throw new UnsupportedOperationException("");
 		};
 	}

@@ -12,11 +12,11 @@ public interface Stat {
 
 	void setMode(short mode);
 
-	short getMode();
+	int getMode();
 
 	void setNLink(short count);
 
-	short getNLink();
+	long getNLink();
 
 	void setSize(long size);
 

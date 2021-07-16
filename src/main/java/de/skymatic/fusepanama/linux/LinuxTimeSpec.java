@@ -1,12 +1,12 @@
-package de.skymatic.fusepanama.mac;
+package de.skymatic.fusepanama.linux;
 
 import de.skymatic.fusepanama.TimeSpec;
-import de.skymatic.fusepanama.mac.lowlevel.timespec;
+import de.skymatic.fusepanama.linux.lowlevel.timespec;
 import jdk.incubator.foreign.MemorySegment;
 
 import java.time.Instant;
 
-record MacTimeSpec(MemorySegment segment) implements TimeSpec {
+record LinuxTimeSpec(MemorySegment segment) implements TimeSpec {
 
 	@Override
 	public void set(Instant newValue) {

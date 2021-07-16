@@ -1,7 +1,7 @@
-package de.skymatic.fusepanama.mac;
+package de.skymatic.fusepanama.linux;
 
 import de.skymatic.fusepanama.FuseOperations;
-import de.skymatic.fusepanama.mac.lowlevel.fuse_operations;
+import de.skymatic.fusepanama.linux.lowlevel.fuse_operations;
 import jdk.incubator.foreign.CLinker;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
@@ -9,7 +9,7 @@ import jdk.incubator.foreign.ResourceScope;
 
 import java.util.concurrent.CompletableFuture;
 
-class MacFuseOperationsMapper {
+class LinuxFuseOperationsMapper {
 
 	final CompletableFuture<Integer> initialized = new CompletableFuture<>();
 	final CompletableFuture<Void> destroyed = new CompletableFuture<>();
@@ -17,7 +17,7 @@ class MacFuseOperationsMapper {
 	private final FuseOperations delegate;
 	private final ResourceScope scope;
 
-	public MacFuseOperationsMapper(FuseOperations delegate, ResourceScope scope) {
+	public LinuxFuseOperationsMapper(FuseOperations delegate, ResourceScope scope) {
 		this.struct = fuse_operations.allocate(scope);
 		this.delegate = delegate;
 		this.scope = scope;
@@ -44,7 +44,7 @@ class MacFuseOperationsMapper {
 	private MemoryAddress init(MemoryAddress conn) {
 		try (var scope = ResourceScope.newConfinedScope()) {
 			if (delegate.supportedOperations().contains(FuseOperations.Operation.INIT)) {
-				delegate.init(new MacFuseConnInfo(conn, scope));
+				delegate.init(new LinuxFuseConnInfo(conn, scope));
 			}
 			initialized.complete(0);
 		} catch (Exception e) {
@@ -70,50 +70,50 @@ class MacFuseOperationsMapper {
 
 	private int getattr(MemoryAddress path, MemoryAddress stat) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.getattr(CLinker.toJavaString(path), new MacStat(stat, scope));
+			return delegate.getattr(CLinker.toJavaString(path), new LinuxStat(stat, scope));
 		}
 	}
 
 	private int open(MemoryAddress path, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.open(CLinker.toJavaString(path), new MacFileInfo(fi, scope));
+			return delegate.open(CLinker.toJavaString(path), new LinuxFileInfo(fi, scope));
 		}
 	}
 
 	private int opendir(MemoryAddress path, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.opendir(CLinker.toJavaString(path), new MacFileInfo(fi, scope));
+			return delegate.opendir(CLinker.toJavaString(path), new LinuxFileInfo(fi, scope));
 		}
 	}
 
 	private int read(MemoryAddress path, MemoryAddress buf, long size, long offset, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
 			var buffer = buf.asSegment(size, scope).asByteBuffer();
-			return delegate.read(CLinker.toJavaString(path), buffer, size, offset, new MacFileInfo(fi, scope));
+			return delegate.read(CLinker.toJavaString(path), buffer, size, offset, new LinuxFileInfo(fi, scope));
 		}
 	}
 
 	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.readdir(CLinker.toJavaString(path), new MacDirFiller(buf, filler), offset, new MacFileInfo(fi, scope));
+			return delegate.readdir(CLinker.toJavaString(path), new LinuxDirFiller(buf, filler), offset, new LinuxFileInfo(fi, scope));
 		}
 	}
 
 	private int release(MemoryAddress path, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.release(CLinker.toJavaString(path), new MacFileInfo(fi, scope));
+			return delegate.release(CLinker.toJavaString(path), new LinuxFileInfo(fi, scope));
 		}
 	}
 
 	private int releasedir(MemoryAddress path, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.releasedir(CLinker.toJavaString(path), new MacFileInfo(fi, scope));
+			return delegate.releasedir(CLinker.toJavaString(path), new LinuxFileInfo(fi, scope));
 		}
 	}
 
 	private int statfs(MemoryAddress path, MemoryAddress statvfs) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.statfs(CLinker.toJavaString(path), new MacStatvfs(statvfs, scope));
+			return delegate.statfs(CLinker.toJavaString(path), new LinuxStatvfs(statvfs, scope));
 		}
 	}
 

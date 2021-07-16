@@ -1,14 +1,14 @@
-package de.skymatic.fusepanama.mac;
+package de.skymatic.fusepanama.linux;
 
 import de.skymatic.fusepanama.Statvfs;
-import de.skymatic.fusepanama.mac.lowlevel.statvfs;
+import de.skymatic.fusepanama.linux.lowlevel.statvfs;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-record MacStatvfs(MemorySegment segment) implements Statvfs {
+record LinuxStatvfs(MemorySegment segment) implements Statvfs {
 
-	public MacStatvfs(MemoryAddress address, ResourceScope scope) {
+	public LinuxStatvfs(MemoryAddress address, ResourceScope scope) {
 		this(statvfs.ofAddress(address, scope));
 	}
 

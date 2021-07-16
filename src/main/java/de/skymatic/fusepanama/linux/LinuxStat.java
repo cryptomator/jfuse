@@ -1,36 +1,36 @@
-package de.skymatic.fusepanama.mac;
+package de.skymatic.fusepanama.linux;
 
 import de.skymatic.fusepanama.Stat;
 import de.skymatic.fusepanama.TimeSpec;
-import de.skymatic.fusepanama.mac.lowlevel.stat;
+import de.skymatic.fusepanama.linux.lowlevel.stat;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-record MacStat(MemorySegment segment) implements Stat {
+record LinuxStat(MemorySegment segment) implements Stat {
 
-	public MacStat(MemoryAddress address, ResourceScope scope) {
+	public LinuxStat(MemoryAddress address, ResourceScope scope) {
 		this(stat.ofAddress(address, scope));
 	}
 
 	@Override
 	public TimeSpec aTime() {
-		return new MacTimeSpec(stat.st_atimespec$slice(segment));
+		return new LinuxTimeSpec(stat.st_atim$slice(segment));
 	}
 
 	@Override
 	public TimeSpec cTime() {
-		return new MacTimeSpec(stat.st_ctimespec$slice(segment));
+		return new LinuxTimeSpec(stat.st_ctim$slice(segment));
 	}
 
 	@Override
 	public TimeSpec mTime() {
-		return new MacTimeSpec(stat.st_mtimespec$slice(segment));
+		return new LinuxTimeSpec(stat.st_mtim$slice(segment));
 	}
 
 	@Override
 	public TimeSpec birthTime() {
-		return new MacTimeSpec(stat.st_birthtimespec$slice(segment));
+		return new LinuxTimeSpec(stat.st_ctim$slice(segment));
 	}
 
 	@Override
