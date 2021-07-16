@@ -1,13 +1,17 @@
 package de.skymatic.fusepanama.mac;
 
 import de.skymatic.fusepanama.Errno;
+import de.skymatic.fusepanama.mac.lowlevel.errno_h;
 
-/**
- * Error codes extracted from <a href="https://github.com/apple/darwin-xnu/blob/master/bsd/sys/errno.h">errno.h (darwin)</a>
- */
 public final class MacErrno implements Errno {
+
+	@Override
+	public int enoent() {
+		return errno_h.ENOENT();
+	}
+
 	@Override
 	public int enosys() {
-		return 78;
+		return errno_h.ENOSYS();
 	}
 }

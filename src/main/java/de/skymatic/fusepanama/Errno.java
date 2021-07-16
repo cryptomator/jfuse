@@ -11,20 +11,16 @@ public interface Errno {
 
 	Errno ERRNO = switch (Platform.CURRENT) {
 		case MAC -> new MacErrno();
-		default -> null;
+		default -> null; // TODO
 	};
 
 	/**
 	 * No such file or directory
 	 */
-	default int enoent() {
-		return 2;
-	}
+	int enoent();
 
 	/**
 	 * Invalid system call number
 	 */
-	default int enosys() {
-		return 38;
-	}
+	int enosys();
 }

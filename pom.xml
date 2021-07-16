@@ -91,7 +91,7 @@
 						<version>3.0.0</version>
 						<executions>
 							<execution>
-								<id>jextract</id>
+								<id>jextract-fuse</id>
 								<goals>
 									<goal>exec</goal>
 								</goals>
@@ -141,6 +141,31 @@
 										<!-- extract fuse.h header: -->
 										<argument>${project.basedir}/libfuse/include/fuse.h</argument>
 										<!--<argument>/usr/local/include/fuse/fuse.h</argument>-->
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-errno</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<executable>${java.home}/bin/jextract</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>--source</argument>
+										<argument>-d</argument>
+										<argument>${project.build.sourceDirectory}</argument>
+										<argument>-t</argument>
+										<argument>de.skymatic.fusepanama.mac.lowlevel</argument>
+										<!-- constants -->
+										<argument>--include-macro</argument>
+										<argument>ENOENT</argument>
+										<argument>--include-macro</argument>
+										<argument>ENOSYS</argument>
+										<!-- extract errno.h header: -->
+										<argument>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/errno.h</argument>
 									</arguments>
 								</configuration>
 							</execution>
