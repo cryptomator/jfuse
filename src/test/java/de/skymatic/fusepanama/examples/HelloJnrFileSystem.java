@@ -26,7 +26,7 @@ public class HelloJnrFileSystem extends FuseStubFS {
 	public static void main(String[] args) {
 		Path mountPoint = Path.of("/home/sebastian/Volumes/bar");
 		LOG.info("mounting at {}. Unmount to terminate this process.", mountPoint);
-		new HelloJnrFileSystem().mount(mountPoint, true, false);
+		new HelloJnrFileSystem().mount(mountPoint, true, false, new String[]{"-s"});
 	}
 
 	@Override

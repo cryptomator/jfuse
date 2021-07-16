@@ -3,21 +3,13 @@ package de.skymatic.fusepanama.mac;
 import de.skymatic.fusepanama.Fuse;
 import de.skymatic.fusepanama.FuseOperations;
 import de.skymatic.fusepanama.mac.lowlevel.fuse_h;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.CLinker;
 import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.SegmentAllocator;
+import jdk.incubator.foreign.MemorySegment;
 
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 
-public class MacFuse implements Fuse {
+public final class MacFuse extends Fuse {
 
-	private final ResourceScope fuseScope = ResourceScope.newSharedScope();
 	private final MacFuseOperationsMapper fuseOperations;
 
 	public MacFuse(FuseOperations fuseOperations) {
@@ -25,41 +17,18 @@ public class MacFuse implements Fuse {
 	}
 
 	@Override
-	public int mount(Path mountPoint) throws CompletionException {
-		// fuseMain() will block (unless failing with return code != 0), therefore we need to wait for init()
-		// if any of these two completes, we know that mounting succeeded of failed.
-		var mountResult = CompletableFuture.supplyAsync(() -> fuseMain(Arrays.asList("fusefs-3000", "-f", mountPoint.toString())));
-		var result = CompletableFuture.anyOf(mountResult, fuseOperations.initialized).join();
-		if (result instanceof Integer i) {
-			return i;
-		} else {
-			throw new IllegalStateException("Expected Future<Integer>");
-		}
-	}
-
-	private int fuseMain(List<String> flags) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			var cStrings = flags.stream().map(s -> CLinker.toCString(s, scope)).toArray(Addressable[]::new);
-			var allocator = SegmentAllocator.ofScope(scope);
-			var argc = cStrings.length;
-			var argv = allocator.allocateArray(CLinker.C_POINTER, cStrings);
-			return fuse_h.fuse_main_real(argc, argv, fuseOperations.struct, fuseOperations.struct.byteSize(), MemoryAddress.NULL);
-		}
+	protected CompletableFuture<Integer> initialized() {
+		return fuseOperations.initialized;
 	}
 
 	@Override
-	public void close() {
-		try {
-			awaitUnmount();
-		} finally {
-			fuseScope.close();
-		}
+	protected CompletableFuture<Void> destroyed() {
+		return fuseOperations.destroyed;
 	}
 
-	private void awaitUnmount() {
-		if (fuseOperations.initialized.isDone()) {
-			fuseOperations.destroyed.join();
-		}
+	@Override
+	protected int fuseMain(int argc, MemorySegment argv) {
+		return fuse_h.fuse_main_real(argc, argv, fuseOperations.struct, fuseOperations.struct.byteSize(), MemoryAddress.NULL);
 	}
 
 //	private void exit() {
