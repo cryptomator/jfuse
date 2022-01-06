@@ -3,7 +3,7 @@ package de.skymatic.fusepanama.mac;
 import de.skymatic.fusepanama.Errno;
 import de.skymatic.fusepanama.mac.lowlevel.errno_h;
 
-public final record MacErrno() implements Errno {
+public record MacErrno() implements Errno {
 
 	@Override
 	public int enoent() {

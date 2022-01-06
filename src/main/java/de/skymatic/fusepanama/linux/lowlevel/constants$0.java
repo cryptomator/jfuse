@@ -6,8 +6,19 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import jdk.incubator.foreign.*;
-import static jdk.incubator.foreign.CLinker.*;
+import static jdk.incubator.foreign.ValueLayout.*;
 class constants$0 {
+
+    /* package-private */ constants$0() {}
+    public static OfByte C_CHAR = Constants$root.C_CHAR$LAYOUT;
+    public static OfShort C_SHORT = Constants$root.C_SHORT$LAYOUT;
+    public static OfInt C_INT = Constants$root.C_INT$LAYOUT;
+    public static OfLong C_LONG = Constants$root.C_LONG_LONG$LAYOUT;
+    public static OfLong C_LONG_LONG = Constants$root.C_LONG_LONG$LAYOUT;
+    public static OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
+    public static OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
+    public static OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
+
 
     static final FunctionDescriptor fuse_fill_dir_t$FUNC = FunctionDescriptor.of(C_INT,
         C_POINTER,
@@ -23,14 +34,12 @@ class constants$0 {
         C_POINTER
     );
     static final MethodHandle fuse_exit$MH = RuntimeHelper.downcallHandle(
-        fuse_h.LIBRARIES, "fuse_exit",
-        "(Ljdk/incubator/foreign/MemoryAddress;)V",
+        "fuse_exit",
         constants$0.fuse_exit$FUNC, false
     );
     static final FunctionDescriptor fuse_get_context$FUNC = FunctionDescriptor.of(C_POINTER);
     static final MethodHandle fuse_get_context$MH = RuntimeHelper.downcallHandle(
-        fuse_h.LIBRARIES, "fuse_get_context",
-        "()Ljdk/incubator/foreign/MemoryAddress;",
+        "fuse_get_context",
         constants$0.fuse_get_context$FUNC, false
     );
     static final FunctionDescriptor fuse_main_real$FUNC = FunctionDescriptor.of(C_INT,
@@ -41,8 +50,7 @@ class constants$0 {
         C_POINTER
     );
     static final MethodHandle fuse_main_real$MH = RuntimeHelper.downcallHandle(
-        fuse_h.LIBRARIES, "fuse_main_real",
-        "(ILjdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JLjdk/incubator/foreign/MemoryAddress;)I",
+        "fuse_main_real",
         constants$0.fuse_main_real$FUNC, false
     );
 }

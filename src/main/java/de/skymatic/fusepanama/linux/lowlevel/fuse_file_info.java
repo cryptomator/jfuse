@@ -10,25 +10,25 @@ import static jdk.incubator.foreign.CLinker.*;
 public class fuse_file_info {
 
     static final MemoryLayout $struct$LAYOUT = MemoryLayout.structLayout(
-        C_INT.withName("flags"),
+        Constants$root.C_INT$LAYOUT.withName("flags"),
         MemoryLayout.paddingLayout(32),
-        C_LONG.withName("fh_old"),
-        C_INT.withName("writepage"),
+        Constants$root.C_LONG$LAYOUT.withName("fh_old"),
+        Constants$root.C_INT$LAYOUT.withName("writepage"),
         MemoryLayout.structLayout(
-            MemoryLayout.valueLayout(1, ByteOrder.nativeOrder()).withName("direct_io"),
-            MemoryLayout.valueLayout(1, ByteOrder.nativeOrder()).withName("keep_cache"),
-            MemoryLayout.valueLayout(1, ByteOrder.nativeOrder()).withName("flush"),
-            MemoryLayout.valueLayout(1, ByteOrder.nativeOrder()).withName("nonseekable"),
-            MemoryLayout.valueLayout(1, ByteOrder.nativeOrder()).withName("flock_release"),
-            MemoryLayout.valueLayout(27, ByteOrder.nativeOrder()).withName("padding")
+            MemoryLayout.paddingLayout(1).withName("direct_io"),
+            MemoryLayout.paddingLayout(1).withName("keep_cache"),
+            MemoryLayout.paddingLayout(1).withName("flush"),
+            MemoryLayout.paddingLayout(1).withName("nonseekable"),
+            MemoryLayout.paddingLayout(1).withName("flock_release"),
+            MemoryLayout.paddingLayout(27).withName("padding")
         ),
-        C_LONG.withName("fh"),
-        C_LONG.withName("lock_owner")
+        Constants$root.C_LONG$LAYOUT.withName("fh"),
+        Constants$root.C_LONG$LAYOUT.withName("lock_owner")
     ).withName("fuse_file_info");
     public static MemoryLayout $LAYOUT() {
         return fuse_file_info.$struct$LAYOUT;
     }
-    static final VarHandle flags$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("flags"));
+    static final VarHandle flags$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("flags"));
     public static VarHandle flags$VH() {
         return fuse_file_info.flags$VH;
     }
@@ -44,7 +44,7 @@ public class fuse_file_info {
     public static void flags$set(MemorySegment seg, long index, int x) {
         fuse_file_info.flags$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle fh_old$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("fh_old"));
+    static final VarHandle fh_old$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("fh_old"));
     public static VarHandle fh_old$VH() {
         return fuse_file_info.fh_old$VH;
     }
@@ -60,7 +60,7 @@ public class fuse_file_info {
     public static void fh_old$set(MemorySegment seg, long index, long x) {
         fuse_file_info.fh_old$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle writepage$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("writepage"));
+    static final VarHandle writepage$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("writepage"));
     public static VarHandle writepage$VH() {
         return fuse_file_info.writepage$VH;
     }
@@ -76,7 +76,7 @@ public class fuse_file_info {
     public static void writepage$set(MemorySegment seg, long index, int x) {
         fuse_file_info.writepage$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle fh$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("fh"));
+    static final VarHandle fh$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("fh"));
     public static VarHandle fh$VH() {
         return fuse_file_info.fh$VH;
     }
@@ -92,7 +92,7 @@ public class fuse_file_info {
     public static void fh$set(MemorySegment seg, long index, long x) {
         fuse_file_info.fh$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle lock_owner$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("lock_owner"));
+    static final VarHandle lock_owner$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("lock_owner"));
     public static VarHandle lock_owner$VH() {
         return fuse_file_info.lock_owner$VH;
     }
@@ -110,12 +110,11 @@ public class fuse_file_info {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocate(ResourceScope scope) { return allocate(SegmentAllocator.ofScope(scope)); }
     public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
     public static MemorySegment allocateArray(int len, ResourceScope scope) {
-        return allocateArray(len, SegmentAllocator.ofScope(scope));
+        return allocateArray(len, SegmentAllocator.nativeAllocator(scope));
     }
     public static MemorySegment ofAddress(MemoryAddress addr, ResourceScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }

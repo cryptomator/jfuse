@@ -4,34 +4,39 @@ package de.skymatic.fusepanama.linux.lowlevel;
 import jdk.incubator.foreign.Addressable;
 import jdk.incubator.foreign.CLinker;
 import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.SymbolLookup;
+import jdk.incubator.foreign.GroupLayout;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.NativeSymbol;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.SegmentAllocator;
+import jdk.incubator.foreign.SymbolLookup;
+import jdk.incubator.foreign.ValueLayout;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.stream.Stream;
 
-import static jdk.incubator.foreign.CLinker.*;
+import static jdk.incubator.foreign.ValueLayout.ADDRESS;
+import static jdk.incubator.foreign.ValueLayout.JAVA_DOUBLE;
+import static jdk.incubator.foreign.ValueLayout.JAVA_LONG;
 
 final class RuntimeHelper {
+
     private RuntimeHelper() {}
-    private final static CLinker LINKER = CLinker.getInstance();
+    private final static CLinker LINKER = CLinker.systemCLinker();
     private final static ClassLoader LOADER = RuntimeHelper.class.getClassLoader();
     private final static MethodHandles.Lookup MH_LOOKUP = MethodHandles.lookup();
+    private final static SymbolLookup SYMBOL_LOOKUP;
 
-    static SymbolLookup lookup() {
+    final static SegmentAllocator CONSTANT_ALLOCATOR =
+            (size, align) -> MemorySegment.allocateNative(size, align, ResourceScope.newImplicitScope());
+
+    static {
+
         SymbolLookup loaderLookup = SymbolLookup.loaderLookup();
-        SymbolLookup systemLookup = CLinker.systemLookup();
-        return name -> loaderLookup.lookup(name).or(() -> systemLookup.lookup(name));
+        SYMBOL_LOOKUP = name -> loaderLookup.lookup(name).or(() -> LINKER.lookup(name));
     }
 
     static <T> T requireNonNull(T obj, String symbolName) {
@@ -43,33 +48,27 @@ final class RuntimeHelper {
 
     private final static SegmentAllocator THROWING_ALLOCATOR = (x, y) -> { throw new AssertionError("should not reach here"); };
 
-    static final MemorySegment lookupGlobalVariable(SymbolLookup LOOKUP, String name, MemoryLayout layout) {
-        return LOOKUP.lookup(name).map(s -> s.address().asSegment(layout.byteSize(), ResourceScope.newImplicitScope())).orElse(null);
+    static final MemorySegment lookupGlobalVariable(String name, MemoryLayout layout) {
+        return SYMBOL_LOOKUP.lookup(name).map(symbol -> MemorySegment.ofAddress(symbol.address(), layout.byteSize(), ResourceScope.newSharedScope())).orElse(null);
     }
 
-    static final MethodHandle downcallHandle(SymbolLookup LOOKUP, String name, String desc, FunctionDescriptor fdesc, boolean variadic) {
-        return LOOKUP.lookup(name).map(
+    static final MethodHandle downcallHandle(String name, FunctionDescriptor fdesc, boolean variadic) {
+        return SYMBOL_LOOKUP.lookup(name).map(
                 addr -> {
-                    MethodType mt = MethodType.fromMethodDescriptorString(desc, LOADER);
                     return variadic ?
-                        VarargsInvoker.make(addr, mt, fdesc) :
-                        LINKER.downcallHandle(addr, mt, fdesc);
+                            RuntimeHelper.VarargsInvoker.make(addr, fdesc) :
+                            LINKER.downcallHandle(addr, fdesc);
                 }).orElse(null);
     }
 
-    static final MethodHandle downcallHandle(String desc, FunctionDescriptor fdesc, boolean variadic) {
+    static final MethodHandle downcallHandle(FunctionDescriptor fdesc, boolean variadic) {
         if (variadic) {
             throw new AssertionError("Cannot get here!");
         }
-        MethodType mt = MethodType.fromMethodDescriptorString(desc, LOADER);
-        return LINKER.downcallHandle(mt, fdesc);
+        return LINKER.downcallHandle(fdesc);
     }
 
-    static final <Z> MemoryAddress upcallStub(Class<Z> fi, Z z, FunctionDescriptor fdesc, String mtypeDesc) {
-        return upcallStub(fi, z, fdesc, mtypeDesc, ResourceScope.newImplicitScope());
-    }
-
-    static final <Z> MemoryAddress upcallStub(Class<Z> fi, Z z, FunctionDescriptor fdesc, String mtypeDesc, ResourceScope scope) {
+    static final <Z> NativeSymbol upcallStub(Class<Z> fi, Z z, FunctionDescriptor fdesc, String mtypeDesc, ResourceScope scope) {
         try {
             MethodHandle handle = MH_LOOKUP.findVirtual(fi, "apply",
                     MethodType.fromMethodDescriptorString(mtypeDesc, LOADER));
@@ -81,40 +80,54 @@ final class RuntimeHelper {
     }
 
     static MemorySegment asArray(MemoryAddress addr, MemoryLayout layout, int numElements, ResourceScope scope) {
-         return addr.asSegment(numElements * layout.byteSize(), scope);
+        return MemorySegment.ofAddress(addr, numElements * layout.byteSize(), scope);
     }
 
     // Internals only below this point
 
     private static class VarargsInvoker {
         private static final MethodHandle INVOKE_MH;
-        private final Addressable symbol;
-        private final MethodType varargs;
+        private final NativeSymbol symbol;
         private final FunctionDescriptor function;
 
-        private VarargsInvoker(Addressable symbol, MethodType type, FunctionDescriptor function) {
+        private VarargsInvoker(NativeSymbol symbol, FunctionDescriptor function) {
             this.symbol = symbol;
-            this.varargs = type;
             this.function = function;
         }
 
         static {
             try {
-                INVOKE_MH = MethodHandles.lookup().findVirtual(VarargsInvoker.class, "invoke", MethodType.methodType(Object.class, SegmentAllocator.class, Object[].class));
+                INVOKE_MH = MethodHandles.lookup().findVirtual(RuntimeHelper.VarargsInvoker.class, "invoke", MethodType.methodType(Object.class, SegmentAllocator.class, Object[].class));
             } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        static MethodHandle make(Addressable symbol, MethodType type, FunctionDescriptor function) {
-            VarargsInvoker invoker = new VarargsInvoker(symbol, type, function);
-            MethodHandle handle = INVOKE_MH.bindTo(invoker).asCollector(Object[].class, type.parameterCount());
-            if (type.returnType().equals(MemorySegment.class)) {
-                type = type.insertParameterTypes(0, SegmentAllocator.class);
+        static MethodHandle make(NativeSymbol symbol, FunctionDescriptor function) {
+            RuntimeHelper.VarargsInvoker invoker = new RuntimeHelper.VarargsInvoker(symbol, function);
+            MethodHandle handle = INVOKE_MH.bindTo(invoker).asCollector(Object[].class, function.argumentLayouts().size() + 1);
+            MethodType mtype = MethodType.methodType(function.returnLayout().isPresent() ? carrier(function.returnLayout().get(), true) : void.class);
+            for (MemoryLayout layout : function.argumentLayouts()) {
+                mtype = mtype.appendParameterTypes(carrier(layout, false));
+            }
+            mtype = mtype.appendParameterTypes(Object[].class);
+            if (mtype.returnType().equals(MemorySegment.class)) {
+                mtype = mtype.insertParameterTypes(0, SegmentAllocator.class);
             } else {
                 handle = MethodHandles.insertArguments(handle, 0, THROWING_ALLOCATOR);
             }
-            return handle.asType(type);
+            return handle.asType(mtype);
+        }
+
+        static Class<?> carrier(MemoryLayout layout, boolean ret) {
+            if (layout instanceof ValueLayout valueLayout) {
+                return (ret || valueLayout.carrier() != MemoryAddress.class) ?
+                        valueLayout.carrier() : Addressable.class;
+            } else if (layout instanceof GroupLayout) {
+                return MemorySegment.class;
+            } else {
+                throw new AssertionError("Cannot get here!");
+            }
         }
 
         private Object invoke(SegmentAllocator allocator, Object[] args) throws Throwable {
@@ -130,23 +143,23 @@ final class RuntimeHelper {
 
             int pos = 0;
             for (pos = 0; pos < nNamedArgs; pos++) {
-                argTypes[pos] = varargs.parameterType(pos);
                 argLayouts[pos] = function.argumentLayouts().get(pos);
             }
 
             assert pos == nNamedArgs;
             for (Object o: unnamedArgs) {
-                argTypes[pos] = normalize(o.getClass());
-                argLayouts[pos] = variadicLayout(argTypes[pos]);
+                argLayouts[pos] = variadicLayout(normalize(o.getClass()));
                 pos++;
             }
             assert pos == argsCount;
 
-            MethodType mt = MethodType.methodType(varargs.returnType(), argTypes);
             FunctionDescriptor f = (function.returnLayout().isEmpty()) ?
                     FunctionDescriptor.ofVoid(argLayouts) :
                     FunctionDescriptor.of(function.returnLayout().get(), argLayouts);
-            MethodHandle mh = LINKER.downcallHandle(symbol, allocator, mt, f);
+            MethodHandle mh = LINKER.downcallHandle(symbol, f);
+            if (mh.type().returnType() == MemorySegment.class) {
+                mh = mh.bindTo(allocator);
+            }
             // flatten argument list so that it can be passed to an asSpreader MH
             Object[] allArgs = new Object[nNamedArgs + unnamedArgs.length];
             System.arraycopy(args, 0, allArgs, 0, nNamedArgs);
@@ -205,11 +218,11 @@ final class RuntimeHelper {
 
         private MemoryLayout variadicLayout(Class<?> c) {
             if (c == long.class) {
-                return C_LONG_LONG;
+                return JAVA_LONG;
             } else if (c == double.class) {
-                return C_DOUBLE;
+                return JAVA_DOUBLE;
             } else if (MemoryAddress.class.isAssignableFrom(c)) {
-                return C_POINTER;
+                return ADDRESS;
             } else {
                 throw new IllegalArgumentException("Unhandled variadic argument class: " + c);
             }

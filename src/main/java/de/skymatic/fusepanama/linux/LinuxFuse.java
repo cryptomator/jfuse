@@ -10,6 +10,11 @@ import java.util.concurrent.CompletableFuture;
 
 public final class LinuxFuse extends Fuse {
 
+	static {
+		// TODO: there must be a better way to load libfuse.so...
+		System.load("/lib/x86_64-linux-gnu/libfuse.so.2.9.9");
+	}
+
 	private final LinuxFuseOperationsMapper fuseOperations;
 
 	public LinuxFuse(FuseOperations fuseOperations) {
@@ -19,11 +24,6 @@ public final class LinuxFuse extends Fuse {
 	@Override
 	protected CompletableFuture<Integer> initialized() {
 		return fuseOperations.initialized;
-	}
-
-	@Override
-	protected CompletableFuture<Void> destroyed() {
-		return fuseOperations.destroyed;
 	}
 
 	@Override

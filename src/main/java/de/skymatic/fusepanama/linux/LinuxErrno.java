@@ -3,7 +3,7 @@ package de.skymatic.fusepanama.linux;
 import de.skymatic.fusepanama.Errno;
 import de.skymatic.fusepanama.linux.lowlevel.errno_h;
 
-public final record LinuxErrno() implements Errno {
+public record LinuxErrno() implements Errno {
 
 	@Override
 	public int enoent() {

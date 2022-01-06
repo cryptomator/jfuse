@@ -4,19 +4,24 @@ import de.skymatic.fusepanama.linux.LinuxFuse;
 import de.skymatic.fusepanama.mac.MacFuse;
 import jdk.incubator.foreign.Addressable;
 import jdk.incubator.foreign.CLinker;
+import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.SegmentAllocator;
+import jdk.incubator.foreign.ValueLayout;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Phaser;
 
 public abstract sealed class Fuse implements AutoCloseable permits MacFuse, LinuxFuse {
 
 	protected final ResourceScope fuseScope = ResourceScope.newSharedScope();
+	private final CountDownLatch mainExited = new CountDownLatch(1);
 
 	protected Fuse() {
 	}
@@ -63,11 +68,16 @@ public abstract sealed class Fuse implements AutoCloseable permits MacFuse, Linu
 
 	protected int fuseMain(List<String> flags) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			var cStrings = flags.stream().map(s -> CLinker.toCString(s, scope)).toArray(Addressable[]::new);
-			var allocator = SegmentAllocator.ofScope(scope);
-			var argc = cStrings.length;
-			var argv = allocator.allocateArray(CLinker.C_POINTER, cStrings);
+			var allocator = SegmentAllocator.nativeAllocator(scope);
+			var argc = flags.size();
+			var argv = allocator.allocateArray(ValueLayout.ADDRESS, argc);
+			for (int i = 0; i < argc; i++) {
+				var cString = allocator.allocateUtf8String(flags.get(i));
+				argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
+			}
 			return fuseMain(argc, argv);
+		} finally {
+			mainExited.countDown(); // make sure fuse_main finished before allowing to release fuseScope
 		}
 	}
 
@@ -75,20 +85,14 @@ public abstract sealed class Fuse implements AutoCloseable permits MacFuse, Linu
 
 	protected abstract CompletableFuture<Integer> initialized();
 
-	protected abstract CompletableFuture<Void> destroyed();
-
 	@Override
 	public void close() {
 		try {
-			awaitUnmount();
+			mainExited.await(); // TODO: check if main has been started first?
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
 		} finally {
 			fuseScope.close();
-		}
-	}
-
-	private void awaitUnmount() {
-		if (initialized().isDone()) {
-			destroyed().join();
 		}
 	}
 

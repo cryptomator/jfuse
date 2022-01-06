@@ -10,23 +10,23 @@ import static jdk.incubator.foreign.CLinker.*;
 public class statvfs {
 
     static final MemoryLayout $struct$LAYOUT = MemoryLayout.structLayout(
-        C_LONG.withName("f_bsize"),
-        C_LONG.withName("f_frsize"),
-        C_LONG.withName("f_blocks"),
-        C_LONG.withName("f_bfree"),
-        C_LONG.withName("f_bavail"),
-        C_LONG.withName("f_files"),
-        C_LONG.withName("f_ffree"),
-        C_LONG.withName("f_favail"),
-        C_LONG.withName("f_fsid"),
-        C_LONG.withName("f_flag"),
-        C_LONG.withName("f_namemax"),
-        MemoryLayout.sequenceLayout(6, C_INT).withName("__f_spare")
+        Constants$root.C_LONG$LAYOUT.withName("f_bsize"),
+        Constants$root.C_LONG$LAYOUT.withName("f_frsize"),
+        Constants$root.C_LONG$LAYOUT.withName("f_blocks"),
+        Constants$root.C_LONG$LAYOUT.withName("f_bfree"),
+        Constants$root.C_LONG$LAYOUT.withName("f_bavail"),
+        Constants$root.C_LONG$LAYOUT.withName("f_files"),
+        Constants$root.C_LONG$LAYOUT.withName("f_ffree"),
+        Constants$root.C_LONG$LAYOUT.withName("f_favail"),
+        Constants$root.C_LONG$LAYOUT.withName("f_fsid"),
+        Constants$root.C_LONG$LAYOUT.withName("f_flag"),
+        Constants$root.C_LONG$LAYOUT.withName("f_namemax"),
+        MemoryLayout.sequenceLayout(6, Constants$root.C_INT$LAYOUT).withName("__f_spare")
     ).withName("statvfs");
     public static MemoryLayout $LAYOUT() {
         return statvfs.$struct$LAYOUT;
     }
-    static final VarHandle f_bsize$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("f_bsize"));
+    static final VarHandle f_bsize$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("f_bsize"));
     public static VarHandle f_bsize$VH() {
         return statvfs.f_bsize$VH;
     }
@@ -42,7 +42,7 @@ public class statvfs {
     public static void f_bsize$set(MemorySegment seg, long index, long x) {
         statvfs.f_bsize$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle f_frsize$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("f_frsize"));
+    static final VarHandle f_frsize$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("f_frsize"));
     public static VarHandle f_frsize$VH() {
         return statvfs.f_frsize$VH;
     }
@@ -58,7 +58,7 @@ public class statvfs {
     public static void f_frsize$set(MemorySegment seg, long index, long x) {
         statvfs.f_frsize$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle f_blocks$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("f_blocks"));
+    static final VarHandle f_blocks$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("f_blocks"));
     public static VarHandle f_blocks$VH() {
         return statvfs.f_blocks$VH;
     }
@@ -74,7 +74,7 @@ public class statvfs {
     public static void f_blocks$set(MemorySegment seg, long index, long x) {
         statvfs.f_blocks$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle f_bfree$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("f_bfree"));
+    static final VarHandle f_bfree$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("f_bfree"));
     public static VarHandle f_bfree$VH() {
         return statvfs.f_bfree$VH;
     }
@@ -90,7 +90,7 @@ public class statvfs {
     public static void f_bfree$set(MemorySegment seg, long index, long x) {
         statvfs.f_bfree$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle f_bavail$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("f_bavail"));
+    static final VarHandle f_bavail$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("f_bavail"));
     public static VarHandle f_bavail$VH() {
         return statvfs.f_bavail$VH;
     }
@@ -106,7 +106,7 @@ public class statvfs {
     public static void f_bavail$set(MemorySegment seg, long index, long x) {
         statvfs.f_bavail$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle f_files$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("f_files"));
+    static final VarHandle f_files$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("f_files"));
     public static VarHandle f_files$VH() {
         return statvfs.f_files$VH;
     }
@@ -122,7 +122,7 @@ public class statvfs {
     public static void f_files$set(MemorySegment seg, long index, long x) {
         statvfs.f_files$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle f_ffree$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("f_ffree"));
+    static final VarHandle f_ffree$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("f_ffree"));
     public static VarHandle f_ffree$VH() {
         return statvfs.f_ffree$VH;
     }
@@ -138,7 +138,7 @@ public class statvfs {
     public static void f_ffree$set(MemorySegment seg, long index, long x) {
         statvfs.f_ffree$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle f_favail$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("f_favail"));
+    static final VarHandle f_favail$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("f_favail"));
     public static VarHandle f_favail$VH() {
         return statvfs.f_favail$VH;
     }
@@ -154,7 +154,7 @@ public class statvfs {
     public static void f_favail$set(MemorySegment seg, long index, long x) {
         statvfs.f_favail$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle f_fsid$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("f_fsid"));
+    static final VarHandle f_fsid$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("f_fsid"));
     public static VarHandle f_fsid$VH() {
         return statvfs.f_fsid$VH;
     }
@@ -170,7 +170,7 @@ public class statvfs {
     public static void f_fsid$set(MemorySegment seg, long index, long x) {
         statvfs.f_fsid$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle f_flag$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("f_flag"));
+    static final VarHandle f_flag$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("f_flag"));
     public static VarHandle f_flag$VH() {
         return statvfs.f_flag$VH;
     }
@@ -186,7 +186,7 @@ public class statvfs {
     public static void f_flag$set(MemorySegment seg, long index, long x) {
         statvfs.f_flag$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle f_namemax$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("f_namemax"));
+    static final VarHandle f_namemax$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("f_namemax"));
     public static VarHandle f_namemax$VH() {
         return statvfs.f_namemax$VH;
     }
@@ -207,12 +207,12 @@ public class statvfs {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocate(ResourceScope scope) { return allocate(SegmentAllocator.ofScope(scope)); }
+    public static MemorySegment allocate(ResourceScope scope) { return allocate(SegmentAllocator.nativeAllocator(scope)); }
     public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
     public static MemorySegment allocateArray(int len, ResourceScope scope) {
-        return allocateArray(len, SegmentAllocator.ofScope(scope));
+        return allocateArray(len, SegmentAllocator.nativeAllocator(scope));
     }
     public static MemorySegment ofAddress(MemoryAddress addr, ResourceScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }

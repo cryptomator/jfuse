@@ -35,7 +35,7 @@ public class HelloPanamaFileSystem implements FuseOperations {
 	public static final String HELLO_STR = "Hello Panama!";
 
 	public static void main(String[] args) {
-		Path mountPoint = Path.of("/home/sebastian/Volumes/foo");
+		Path mountPoint = Path.of("/Volumes/foo");
 		try (var fuse = Fuse.create(new HelloPanamaFileSystem())) {
 			LOG.info("Mounting at {}...", mountPoint);
 			int result = fuse.mount("fuse-panama", mountPoint, "-s");

@@ -6,23 +6,23 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import jdk.incubator.foreign.*;
-import static jdk.incubator.foreign.CLinker.*;
+import static jdk.incubator.foreign.ValueLayout.*;
 public class fuse_context {
 
-    static final MemoryLayout $struct$LAYOUT = MemoryLayout.structLayout(
-        C_POINTER.withName("fuse"),
-        C_INT.withName("uid"),
-        C_INT.withName("gid"),
-        C_INT.withName("pid"),
+    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+        Constants$root.C_POINTER$LAYOUT.withName("fuse"),
+        Constants$root.C_INT$LAYOUT.withName("uid"),
+        Constants$root.C_INT$LAYOUT.withName("gid"),
+        Constants$root.C_INT$LAYOUT.withName("pid"),
         MemoryLayout.paddingLayout(32),
-        C_POINTER.withName("private_data"),
-        C_SHORT.withName("umask"),
+        Constants$root.C_POINTER$LAYOUT.withName("private_data"),
+        Constants$root.C_SHORT$LAYOUT.withName("umask"),
         MemoryLayout.paddingLayout(48)
     ).withName("fuse_context");
     public static MemoryLayout $LAYOUT() {
         return fuse_context.$struct$LAYOUT;
     }
-    static final VarHandle fuse$VH = MemoryHandles.asAddressVarHandle($struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("fuse")));
+    static final VarHandle fuse$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("fuse"));
     public static VarHandle fuse$VH() {
         return fuse_context.fuse$VH;
     }
@@ -38,7 +38,7 @@ public class fuse_context {
     public static void fuse$set(MemorySegment seg, long index, MemoryAddress x) {
         fuse_context.fuse$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle uid$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("uid"));
+    static final VarHandle uid$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("uid"));
     public static VarHandle uid$VH() {
         return fuse_context.uid$VH;
     }
@@ -54,7 +54,7 @@ public class fuse_context {
     public static void uid$set(MemorySegment seg, long index, int x) {
         fuse_context.uid$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle gid$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("gid"));
+    static final VarHandle gid$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("gid"));
     public static VarHandle gid$VH() {
         return fuse_context.gid$VH;
     }
@@ -70,7 +70,7 @@ public class fuse_context {
     public static void gid$set(MemorySegment seg, long index, int x) {
         fuse_context.gid$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle pid$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("pid"));
+    static final VarHandle pid$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("pid"));
     public static VarHandle pid$VH() {
         return fuse_context.pid$VH;
     }
@@ -86,7 +86,7 @@ public class fuse_context {
     public static void pid$set(MemorySegment seg, long index, int x) {
         fuse_context.pid$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle private_data$VH = MemoryHandles.asAddressVarHandle($struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("private_data")));
+    static final VarHandle private_data$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("private_data"));
     public static VarHandle private_data$VH() {
         return fuse_context.private_data$VH;
     }
@@ -102,7 +102,7 @@ public class fuse_context {
     public static void private_data$set(MemorySegment seg, long index, MemoryAddress x) {
         fuse_context.private_data$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle umask$VH = $struct$LAYOUT.varHandle(short.class, MemoryLayout.PathElement.groupElement("umask"));
+    static final VarHandle umask$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("umask"));
     public static VarHandle umask$VH() {
         return fuse_context.umask$VH;
     }
@@ -120,12 +120,12 @@ public class fuse_context {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocate(ResourceScope scope) { return allocate(SegmentAllocator.ofScope(scope)); }
     public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
+    public static MemorySegment allocate(ResourceScope scope) { return allocate(SegmentAllocator.nativeAllocator(scope)); }
     public static MemorySegment allocateArray(int len, ResourceScope scope) {
-        return allocateArray(len, SegmentAllocator.ofScope(scope));
+        return allocateArray(len, SegmentAllocator.nativeAllocator(scope));
     }
     public static MemorySegment ofAddress(MemoryAddress addr, ResourceScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }

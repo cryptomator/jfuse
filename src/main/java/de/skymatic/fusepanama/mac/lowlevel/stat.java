@@ -6,46 +6,46 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import jdk.incubator.foreign.*;
-import static jdk.incubator.foreign.CLinker.*;
+import static jdk.incubator.foreign.ValueLayout.*;
 public class stat {
 
-    static final MemoryLayout $struct$LAYOUT = MemoryLayout.structLayout(
-        C_INT.withName("st_dev"),
-        C_SHORT.withName("st_mode"),
-        C_SHORT.withName("st_nlink"),
-        C_LONG_LONG.withName("st_ino"),
-        C_INT.withName("st_uid"),
-        C_INT.withName("st_gid"),
-        C_INT.withName("st_rdev"),
+    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+        Constants$root.C_INT$LAYOUT.withName("st_dev"),
+        Constants$root.C_SHORT$LAYOUT.withName("st_mode"),
+        Constants$root.C_SHORT$LAYOUT.withName("st_nlink"),
+        Constants$root.C_LONG_LONG$LAYOUT.withName("st_ino"),
+        Constants$root.C_INT$LAYOUT.withName("st_uid"),
+        Constants$root.C_INT$LAYOUT.withName("st_gid"),
+        Constants$root.C_INT$LAYOUT.withName("st_rdev"),
         MemoryLayout.paddingLayout(32),
         MemoryLayout.structLayout(
-            C_LONG.withName("tv_sec"),
-            C_LONG.withName("tv_nsec")
+            Constants$root.C_LONG_LONG$LAYOUT.withName("tv_sec"),
+            Constants$root.C_LONG_LONG$LAYOUT.withName("tv_nsec")
         ).withName("st_atimespec"),
         MemoryLayout.structLayout(
-            C_LONG.withName("tv_sec"),
-            C_LONG.withName("tv_nsec")
+            Constants$root.C_LONG_LONG$LAYOUT.withName("tv_sec"),
+            Constants$root.C_LONG_LONG$LAYOUT.withName("tv_nsec")
         ).withName("st_mtimespec"),
         MemoryLayout.structLayout(
-            C_LONG.withName("tv_sec"),
-            C_LONG.withName("tv_nsec")
+            Constants$root.C_LONG_LONG$LAYOUT.withName("tv_sec"),
+            Constants$root.C_LONG_LONG$LAYOUT.withName("tv_nsec")
         ).withName("st_ctimespec"),
         MemoryLayout.structLayout(
-            C_LONG.withName("tv_sec"),
-            C_LONG.withName("tv_nsec")
+            Constants$root.C_LONG_LONG$LAYOUT.withName("tv_sec"),
+            Constants$root.C_LONG_LONG$LAYOUT.withName("tv_nsec")
         ).withName("st_birthtimespec"),
-        C_LONG_LONG.withName("st_size"),
-        C_LONG_LONG.withName("st_blocks"),
-        C_INT.withName("st_blksize"),
-        C_INT.withName("st_flags"),
-        C_INT.withName("st_gen"),
-        C_INT.withName("st_lspare"),
-        MemoryLayout.sequenceLayout(2, C_LONG_LONG).withName("st_qspare")
+        Constants$root.C_LONG_LONG$LAYOUT.withName("st_size"),
+        Constants$root.C_LONG_LONG$LAYOUT.withName("st_blocks"),
+        Constants$root.C_INT$LAYOUT.withName("st_blksize"),
+        Constants$root.C_INT$LAYOUT.withName("st_flags"),
+        Constants$root.C_INT$LAYOUT.withName("st_gen"),
+        Constants$root.C_INT$LAYOUT.withName("st_lspare"),
+        MemoryLayout.sequenceLayout(2, Constants$root.C_LONG_LONG$LAYOUT).withName("st_qspare")
     ).withName("stat");
     public static MemoryLayout $LAYOUT() {
         return stat.$struct$LAYOUT;
     }
-    static final VarHandle st_dev$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_dev"));
+    static final VarHandle st_dev$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_dev"));
     public static VarHandle st_dev$VH() {
         return stat.st_dev$VH;
     }
@@ -61,7 +61,7 @@ public class stat {
     public static void st_dev$set(MemorySegment seg, long index, int x) {
         stat.st_dev$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle st_mode$VH = $struct$LAYOUT.varHandle(short.class, MemoryLayout.PathElement.groupElement("st_mode"));
+    static final VarHandle st_mode$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_mode"));
     public static VarHandle st_mode$VH() {
         return stat.st_mode$VH;
     }
@@ -77,7 +77,7 @@ public class stat {
     public static void st_mode$set(MemorySegment seg, long index, short x) {
         stat.st_mode$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle st_nlink$VH = $struct$LAYOUT.varHandle(short.class, MemoryLayout.PathElement.groupElement("st_nlink"));
+    static final VarHandle st_nlink$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_nlink"));
     public static VarHandle st_nlink$VH() {
         return stat.st_nlink$VH;
     }
@@ -93,7 +93,7 @@ public class stat {
     public static void st_nlink$set(MemorySegment seg, long index, short x) {
         stat.st_nlink$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle st_ino$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("st_ino"));
+    static final VarHandle st_ino$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_ino"));
     public static VarHandle st_ino$VH() {
         return stat.st_ino$VH;
     }
@@ -109,7 +109,7 @@ public class stat {
     public static void st_ino$set(MemorySegment seg, long index, long x) {
         stat.st_ino$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle st_uid$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_uid"));
+    static final VarHandle st_uid$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_uid"));
     public static VarHandle st_uid$VH() {
         return stat.st_uid$VH;
     }
@@ -125,7 +125,7 @@ public class stat {
     public static void st_uid$set(MemorySegment seg, long index, int x) {
         stat.st_uid$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle st_gid$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_gid"));
+    static final VarHandle st_gid$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_gid"));
     public static VarHandle st_gid$VH() {
         return stat.st_gid$VH;
     }
@@ -141,7 +141,7 @@ public class stat {
     public static void st_gid$set(MemorySegment seg, long index, int x) {
         stat.st_gid$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle st_rdev$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_rdev"));
+    static final VarHandle st_rdev$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_rdev"));
     public static VarHandle st_rdev$VH() {
         return stat.st_rdev$VH;
     }
@@ -169,7 +169,7 @@ public class stat {
     public static MemorySegment st_birthtimespec$slice(MemorySegment seg) {
         return seg.asSlice(80, 16);
     }
-    static final VarHandle st_size$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("st_size"));
+    static final VarHandle st_size$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_size"));
     public static VarHandle st_size$VH() {
         return stat.st_size$VH;
     }
@@ -185,7 +185,7 @@ public class stat {
     public static void st_size$set(MemorySegment seg, long index, long x) {
         stat.st_size$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle st_blocks$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("st_blocks"));
+    static final VarHandle st_blocks$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_blocks"));
     public static VarHandle st_blocks$VH() {
         return stat.st_blocks$VH;
     }
@@ -201,7 +201,7 @@ public class stat {
     public static void st_blocks$set(MemorySegment seg, long index, long x) {
         stat.st_blocks$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle st_blksize$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_blksize"));
+    static final VarHandle st_blksize$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_blksize"));
     public static VarHandle st_blksize$VH() {
         return stat.st_blksize$VH;
     }
@@ -217,7 +217,7 @@ public class stat {
     public static void st_blksize$set(MemorySegment seg, long index, int x) {
         stat.st_blksize$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle st_flags$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_flags"));
+    static final VarHandle st_flags$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_flags"));
     public static VarHandle st_flags$VH() {
         return stat.st_flags$VH;
     }
@@ -233,7 +233,7 @@ public class stat {
     public static void st_flags$set(MemorySegment seg, long index, int x) {
         stat.st_flags$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle st_gen$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_gen"));
+    static final VarHandle st_gen$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_gen"));
     public static VarHandle st_gen$VH() {
         return stat.st_gen$VH;
     }
@@ -249,7 +249,7 @@ public class stat {
     public static void st_gen$set(MemorySegment seg, long index, int x) {
         stat.st_gen$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle st_lspare$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("st_lspare"));
+    static final VarHandle st_lspare$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("st_lspare"));
     public static VarHandle st_lspare$VH() {
         return stat.st_lspare$VH;
     }
@@ -270,12 +270,12 @@ public class stat {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocate(ResourceScope scope) { return allocate(SegmentAllocator.ofScope(scope)); }
     public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
+    public static MemorySegment allocate(ResourceScope scope) { return allocate(SegmentAllocator.nativeAllocator(scope)); }
     public static MemorySegment allocateArray(int len, ResourceScope scope) {
-        return allocateArray(len, SegmentAllocator.ofScope(scope));
+        return allocateArray(len, SegmentAllocator.nativeAllocator(scope));
     }
     public static MemorySegment ofAddress(MemoryAddress addr, ResourceScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }

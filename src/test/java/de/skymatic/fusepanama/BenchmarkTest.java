@@ -24,8 +24,8 @@ public class BenchmarkTest {
 	@Fork(value = 1)
 	@OutputTimeUnit(TimeUnit.MICROSECONDS)
 	@BenchmarkMode(Mode.AverageTime)
-	public void testListDirJnr() throws IOException {
-		Files.list(Path.of("/home/sebastian/Volumes/bar")).close();
+	public void testListDirJnrMulti() throws IOException {
+		Files.list(Path.of("/Volumes/bar")).close();
 	}
 
 	@Benchmark
@@ -33,8 +33,26 @@ public class BenchmarkTest {
 	@Fork(value = 1)
 	@OutputTimeUnit(TimeUnit.MICROSECONDS)
 	@BenchmarkMode(Mode.AverageTime)
-	public void testListDirPanama() throws IOException {
-		Files.list(Path.of("/home/sebastian/Volumes/foo")).close();
+	public void testListDirPanamaMulti() throws IOException {
+		Files.list(Path.of("/Volumes/foo")).close();
+	}
+
+	@Benchmark
+	@Warmup(iterations = 2)
+	@Fork(value = 1)
+	@OutputTimeUnit(TimeUnit.MICROSECONDS)
+	@BenchmarkMode(Mode.AverageTime)
+	public void testListDirJnrSingle() throws IOException {
+		Files.list(Path.of("/Volumes/bars")).close();
+	}
+
+	@Benchmark
+	@Warmup(iterations = 2)
+	@Fork(value = 1)
+	@OutputTimeUnit(TimeUnit.MICROSECONDS)
+	@BenchmarkMode(Mode.AverageTime)
+	public void testListDirPanamaSingle() throws IOException {
+		Files.list(Path.of("/Volumes/foos")).close();
 	}
 
 }

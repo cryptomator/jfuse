@@ -6,25 +6,25 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import jdk.incubator.foreign.*;
-import static jdk.incubator.foreign.CLinker.*;
+import static jdk.incubator.foreign.ValueLayout.*;
 public class fuse_conn_info {
 
-    static final MemoryLayout $struct$LAYOUT = MemoryLayout.structLayout(
-        C_INT.withName("proto_major"),
-        C_INT.withName("proto_minor"),
-        C_INT.withName("async_read"),
-        C_INT.withName("max_write"),
-        C_INT.withName("max_readahead"),
-        C_INT.withName("capable"),
-        C_INT.withName("want"),
-        C_INT.withName("max_background"),
-        C_INT.withName("congestion_threshold"),
-        MemoryLayout.sequenceLayout(23, C_INT).withName("reserved")
+    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+        Constants$root.C_INT$LAYOUT.withName("proto_major"),
+        Constants$root.C_INT$LAYOUT.withName("proto_minor"),
+        Constants$root.C_INT$LAYOUT.withName("async_read"),
+        Constants$root.C_INT$LAYOUT.withName("max_write"),
+        Constants$root.C_INT$LAYOUT.withName("max_readahead"),
+        Constants$root.C_INT$LAYOUT.withName("capable"),
+        Constants$root.C_INT$LAYOUT.withName("want"),
+        Constants$root.C_INT$LAYOUT.withName("max_background"),
+        Constants$root.C_INT$LAYOUT.withName("congestion_threshold"),
+        MemoryLayout.sequenceLayout(23, Constants$root.C_INT$LAYOUT).withName("reserved")
     ).withName("fuse_conn_info");
     public static MemoryLayout $LAYOUT() {
         return fuse_conn_info.$struct$LAYOUT;
     }
-    static final VarHandle proto_major$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("proto_major"));
+    static final VarHandle proto_major$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("proto_major"));
     public static VarHandle proto_major$VH() {
         return fuse_conn_info.proto_major$VH;
     }
@@ -40,7 +40,7 @@ public class fuse_conn_info {
     public static void proto_major$set(MemorySegment seg, long index, int x) {
         fuse_conn_info.proto_major$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle proto_minor$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("proto_minor"));
+    static final VarHandle proto_minor$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("proto_minor"));
     public static VarHandle proto_minor$VH() {
         return fuse_conn_info.proto_minor$VH;
     }
@@ -56,7 +56,7 @@ public class fuse_conn_info {
     public static void proto_minor$set(MemorySegment seg, long index, int x) {
         fuse_conn_info.proto_minor$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle async_read$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("async_read"));
+    static final VarHandle async_read$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("async_read"));
     public static VarHandle async_read$VH() {
         return fuse_conn_info.async_read$VH;
     }
@@ -72,7 +72,7 @@ public class fuse_conn_info {
     public static void async_read$set(MemorySegment seg, long index, int x) {
         fuse_conn_info.async_read$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle max_write$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("max_write"));
+    static final VarHandle max_write$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("max_write"));
     public static VarHandle max_write$VH() {
         return fuse_conn_info.max_write$VH;
     }
@@ -88,7 +88,7 @@ public class fuse_conn_info {
     public static void max_write$set(MemorySegment seg, long index, int x) {
         fuse_conn_info.max_write$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle max_readahead$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("max_readahead"));
+    static final VarHandle max_readahead$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("max_readahead"));
     public static VarHandle max_readahead$VH() {
         return fuse_conn_info.max_readahead$VH;
     }
@@ -104,7 +104,7 @@ public class fuse_conn_info {
     public static void max_readahead$set(MemorySegment seg, long index, int x) {
         fuse_conn_info.max_readahead$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle capable$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("capable"));
+    static final VarHandle capable$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("capable"));
     public static VarHandle capable$VH() {
         return fuse_conn_info.capable$VH;
     }
@@ -120,7 +120,7 @@ public class fuse_conn_info {
     public static void capable$set(MemorySegment seg, long index, int x) {
         fuse_conn_info.capable$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle want$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("want"));
+    static final VarHandle want$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("want"));
     public static VarHandle want$VH() {
         return fuse_conn_info.want$VH;
     }
@@ -136,7 +136,7 @@ public class fuse_conn_info {
     public static void want$set(MemorySegment seg, long index, int x) {
         fuse_conn_info.want$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle max_background$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("max_background"));
+    static final VarHandle max_background$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("max_background"));
     public static VarHandle max_background$VH() {
         return fuse_conn_info.max_background$VH;
     }
@@ -152,7 +152,7 @@ public class fuse_conn_info {
     public static void max_background$set(MemorySegment seg, long index, int x) {
         fuse_conn_info.max_background$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle congestion_threshold$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("congestion_threshold"));
+    static final VarHandle congestion_threshold$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("congestion_threshold"));
     public static VarHandle congestion_threshold$VH() {
         return fuse_conn_info.congestion_threshold$VH;
     }
@@ -173,12 +173,12 @@ public class fuse_conn_info {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocate(ResourceScope scope) { return allocate(SegmentAllocator.ofScope(scope)); }
     public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
+    public static MemorySegment allocate(ResourceScope scope) { return allocate(SegmentAllocator.nativeAllocator(scope)); }
     public static MemorySegment allocateArray(int len, ResourceScope scope) {
-        return allocateArray(len, SegmentAllocator.ofScope(scope));
+        return allocateArray(len, SegmentAllocator.nativeAllocator(scope));
     }
     public static MemorySegment ofAddress(MemoryAddress addr, ResourceScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }

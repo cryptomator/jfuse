@@ -10,6 +10,10 @@ import java.util.concurrent.CompletableFuture;
 
 public final class MacFuse extends Fuse {
 
+	static {
+		System.loadLibrary("fuse");
+	}
+
 	private final MacFuseOperationsMapper fuseOperations;
 
 	public MacFuse(FuseOperations fuseOperations) {
@@ -19,11 +23,6 @@ public final class MacFuse extends Fuse {
 	@Override
 	protected CompletableFuture<Integer> initialized() {
 		return fuseOperations.initialized;
-	}
-
-	@Override
-	protected CompletableFuture<Void> destroyed() {
-		return fuseOperations.destroyed;
 	}
 
 	@Override

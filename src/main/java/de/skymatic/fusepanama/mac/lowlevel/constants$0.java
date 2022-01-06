@@ -6,43 +6,39 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import jdk.incubator.foreign.*;
-import static jdk.incubator.foreign.CLinker.*;
+import static jdk.incubator.foreign.ValueLayout.*;
 class constants$0 {
 
-    static final FunctionDescriptor fuse_fill_dir_t$FUNC = FunctionDescriptor.of(C_INT,
-        C_POINTER,
-        C_POINTER,
-        C_POINTER,
-        C_LONG_LONG
+    static final FunctionDescriptor fuse_fill_dir_t$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_LONG_LONG$LAYOUT
     );
     static final MethodHandle fuse_fill_dir_t$MH = RuntimeHelper.downcallHandle(
-        "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;J)I",
         constants$0.fuse_fill_dir_t$FUNC, false
     );
     static final FunctionDescriptor fuse_exit$FUNC = FunctionDescriptor.ofVoid(
-        C_POINTER
+        Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fuse_exit$MH = RuntimeHelper.downcallHandle(
-        fuse_h.LIBRARIES, "fuse_exit",
-        "(Ljdk/incubator/foreign/MemoryAddress;)V",
+        "fuse_exit",
         constants$0.fuse_exit$FUNC, false
     );
-    static final FunctionDescriptor fuse_get_context$FUNC = FunctionDescriptor.of(C_POINTER);
+    static final FunctionDescriptor fuse_get_context$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT);
     static final MethodHandle fuse_get_context$MH = RuntimeHelper.downcallHandle(
-        fuse_h.LIBRARIES, "fuse_get_context",
-        "()Ljdk/incubator/foreign/MemoryAddress;",
+        "fuse_get_context",
         constants$0.fuse_get_context$FUNC, false
     );
-    static final FunctionDescriptor fuse_main_real$FUNC = FunctionDescriptor.of(C_INT,
-        C_INT,
-        C_POINTER,
-        C_POINTER,
-        C_LONG,
-        C_POINTER
+    static final FunctionDescriptor fuse_main_real$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+        Constants$root.C_INT$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_LONG_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fuse_main_real$MH = RuntimeHelper.downcallHandle(
-        fuse_h.LIBRARIES, "fuse_main_real",
-        "(ILjdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;JLjdk/incubator/foreign/MemoryAddress;)I",
+        "fuse_main_real",
         constants$0.fuse_main_real$FUNC, false
     );
 }
