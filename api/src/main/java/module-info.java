@@ -6,6 +6,7 @@ import de.skymatic.fusepanama.FuseProvider;
  */
 module de.skymatic.fusepanama {
 	requires jdk.incubator.foreign;
+	requires static org.jetbrains.annotations;
 
 	exports de.skymatic.fusepanama;
 

@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.CompletionException;
+import java.util.stream.Stream;
 
 import static de.skymatic.fusepanama.FuseOperations.Operation.*;
 
@@ -130,19 +131,19 @@ public class HelloPanamaFileSystem implements FuseOperations {
 
 	@Override
 	public int readdir(String path, DirFiller filler, long offset, FileInfo fi) {
-		LOG.debug("readdir() {}", path);
-		if (offset == 0) {
-			filler.fill(".", null, 0);
-			filler.fill("..", null, 0);
-			filler.fill(HELLO_PATH.substring(1), null, 0);
-			filler.fill("aaa", null, 0);
-			filler.fill("bbb", null, 0);
-			filler.fill("ccc", null, 0);
-			filler.fill("ddd", null, 0);
-			filler.fill("xxx", null, 0);
-			filler.fill("yyy", null, 0);
-			filler.fill("zzz", null, 0);
-		}
+		LOG.debug("readdir() {} {}", path, offset);
+		var entries = Stream.of( //
+				".", //
+				"..", //
+				HELLO_PATH.substring(1), //
+				"aaa", //
+				"bbb", //
+				"ccc", //
+				"ddd", //
+				"xxx", //
+				"yyy", //
+				"zzz").skip(offset);
+		filler.fillNamesFromOffset(entries, offset);
 		return 0;
 	}
 
