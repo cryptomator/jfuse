@@ -133,6 +133,8 @@
 										<argument>--include-macro</argument>
 										<argument>ENOENT</argument>
 										<argument>--include-macro</argument>
+										<argument>ENOMEM</argument>
+										<argument>--include-macro</argument>
 										<argument>ENOSYS</argument>
 										<!-- extract errno.h header: -->
 										<argument>

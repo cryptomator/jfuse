@@ -27,4 +27,6 @@ public interface Errno {
 	 * Invalid system call number
 	 */
 	int enosys();
+
+	int enomem();
 }

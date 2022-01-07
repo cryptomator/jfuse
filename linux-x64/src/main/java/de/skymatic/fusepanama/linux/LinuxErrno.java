@@ -14,4 +14,9 @@ public record LinuxErrno() implements Errno {
 	public int enosys() {
 		return errno_h.ENOSYS();
 	}
+
+	@Override
+	public int enomem() {
+		return errno_h.ENOMEM();
+	}
 }
