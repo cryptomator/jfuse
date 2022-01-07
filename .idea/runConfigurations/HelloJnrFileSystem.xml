@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HelloJnrFileSystem" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="de.skymatic.fusepanama.examples.HelloJnrFileSystem" />
-    <module name="fuse-panama" />
+    <module name="examples" />
     <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib" />
     <extension name="coverage">
       <pattern>
