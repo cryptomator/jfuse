@@ -10,10 +10,6 @@ import java.util.concurrent.CompletableFuture;
 
 public final class MacFuse extends Fuse {
 
-	static {
-		System.loadLibrary("fuse");
-	}
-
 	private final MacFuseOperationsMapper fuseOperations;
 
 	public MacFuse(FuseOperations fuseOperations) {

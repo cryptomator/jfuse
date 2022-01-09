@@ -6,20 +6,10 @@ import de.skymatic.fusepanama.FuseProvider;
 
 public class MacFuseProvider implements FuseProvider {
 
-	private volatile boolean initialized = false;
-
-	synchronized private void init() {
-		if (!initialized) {
-			System.loadLibrary("fuse");
-			initialized = true;
-		}
-	}
-
 	@Override
 	public boolean isAvailable() {
 		try {
-			init();
-			return true;
+			return Holder.INSTANCE.isAvailable();
 		} catch (UnsatisfiedLinkError e) {
 			return false;
 		}
@@ -27,7 +17,28 @@ public class MacFuseProvider implements FuseProvider {
 
 	@Override
 	public Fuse create(FuseOperations fuseOperations) {
-		init();
-		return new MacFuse(fuseOperations);
+		return Holder.INSTANCE.create(fuseOperations);
 	}
+
+	// initialization-on-demand used for lazy library loading
+	private static class Holder implements FuseProvider {
+		private static final Holder INSTANCE = new Holder();
+
+		private Holder() {
+			// requires -Djava.library.path=/usr/local/lib or the like
+			System.loadLibrary("fuse"); // TODO: make configurable?
+		}
+
+		@Override
+		public boolean isAvailable() {
+			return true;
+		}
+
+		@Override
+		public Fuse create(FuseOperations fuseOperations) {
+			return new MacFuse(fuseOperations);
+		}
+
+	}
+
 }
