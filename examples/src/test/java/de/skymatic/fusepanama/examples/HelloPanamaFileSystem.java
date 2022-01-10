@@ -2,6 +2,7 @@ package de.skymatic.fusepanama.examples;
 
 import de.skymatic.fusepanama.DirFiller;
 import de.skymatic.fusepanama.FileInfo;
+import de.skymatic.fusepanama.FileModes;
 import de.skymatic.fusepanama.Fuse;
 import de.skymatic.fusepanama.FuseConnInfo;
 import de.skymatic.fusepanama.FuseOperations;
@@ -26,8 +27,8 @@ public class HelloPanamaFileSystem implements FuseOperations {
 		System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "info");
 	}
 
-	private static final int S_IFDIR = 0040000;
-	private static final int S_IFREG = 0100000;
+	private static final int S_IFDIR = FileModes.instance().dir();
+	private static final int S_IFREG = FileModes.instance().reg();
 
 	private static final Logger LOG = LoggerFactory.getLogger(HelloPanamaFileSystem.class);
 
