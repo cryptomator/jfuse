@@ -1,5 +1,7 @@
 package de.skymatic.fusepanama;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.nio.ByteBuffer;
 import java.util.Set;
 
@@ -29,6 +31,7 @@ public interface FuseOperations {
 	/**
 	 * @return The set of supported operations.
 	 */
+	@NotNull // TODO: remove? causes false positive warnings downstream...
 	Set<Operation> supportedOperations();
 
 	/**

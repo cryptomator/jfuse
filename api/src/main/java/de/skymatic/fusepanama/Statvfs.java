@@ -2,22 +2,44 @@ package de.skymatic.fusepanama;
 
 public interface Statvfs {
 
+	/**
+	 * @return Block size
+	 */
 	long getBsize();
 
 	void setBsize(long bsize);
 
+	/**
+	 * @return Fragment size
+	 */
+	long getFrsize();
+
+	void setFrsize(long frsize);
+
+	/**
+	 * @return Number of total blocks
+	 */
 	long getBlocks();
 
-	void setBlocks(int blocks);
+	void setBlocks(long blocks);
 
+	/**
+	 * @return Number of unallocated blocks
+	 */
 	long getBfree();
 
-	void setBfree(int bfree);
+	void setBfree(long bfree);
 
+	/**
+	 * @return Number of usable blocks
+	 */
 	long getBavail();
 
-	void setBavail(int bavail);
+	void setBavail(long bavail);
 
+	/**
+	 * @return Maximum filename length
+	 */
 	long getNameMax();
 
 	void setNameMax(long namemax);

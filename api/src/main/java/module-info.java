@@ -1,4 +1,5 @@
 import de.skymatic.fusepanama.Errno;
+import de.skymatic.fusepanama.FileModes;
 import de.skymatic.fusepanama.FuseProvider;
 
 /**
@@ -12,4 +13,5 @@ module de.skymatic.fusepanama {
 
 	uses Errno;
 	uses FuseProvider;
+	uses FileModes;
 }
