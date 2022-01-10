@@ -23,13 +23,27 @@ record MacStatvfs(MemorySegment segment) implements Statvfs {
 	}
 
 	@Override
+	public long getFrsize() {
+		return statvfs.f_frsize$get(segment);
+	}
+
+	@Override
+	public void setFrsize(long frsize) {
+		statvfs.f_frsize$set(segment, frsize);
+	}
+
+	@Override
 	public long getBlocks() {
 		return statvfs.f_blocks$get(segment);
 	}
 
 	@Override
-	public void setBlocks(int blocks) {
-		statvfs.f_blocks$set(segment, blocks);
+	public void setBlocks(long blocks) {
+		if (blocks > Integer.MAX_VALUE) {
+			throw new IllegalArgumentException("Max supported number of blocks: " + Integer.MAX_VALUE);
+		} else {
+			statvfs.f_blocks$set(segment, (int) blocks);
+		}
 	}
 
 	@Override
@@ -38,8 +52,12 @@ record MacStatvfs(MemorySegment segment) implements Statvfs {
 	}
 
 	@Override
-	public void setBfree(int bfree) {
-		statvfs.f_bfree$set(segment, bfree);
+	public void setBfree(long bfree) {
+		if (bfree > Integer.MAX_VALUE) {
+			throw new IllegalArgumentException("Max supported number of blocks: " + Integer.MAX_VALUE);
+		} else {
+			statvfs.f_bfree$set(segment, (int) bfree);
+		}
 	}
 
 	@Override
@@ -48,8 +66,12 @@ record MacStatvfs(MemorySegment segment) implements Statvfs {
 	}
 
 	@Override
-	public void setBavail(int bavail) {
-		statvfs.f_bavail$set(segment, bavail);
+	public void setBavail(long bavail) {
+		if (bavail > Integer.MAX_VALUE) {
+			throw new IllegalArgumentException("Max supported number of blocks: " + Integer.MAX_VALUE);
+		} else {
+			statvfs.f_bavail$set(segment, (int) bavail);
+		}
 	}
 
 	@Override

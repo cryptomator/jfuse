@@ -105,7 +105,7 @@
 										<argument>--include-function</argument>
 										<argument>fuse_exit</argument>
 										<!-- extract fuse.h header: -->
-										<argument>${project.basedir}/libfuse/include/fuse.h</argument>
+										<argument>${project.parent.basedir}/libfuse/include/fuse.h</argument>
 										<!--<argument>/usr/local/include/fuse/fuse.h</argument>-->
 									</arguments>
 								</configuration>
@@ -133,12 +133,79 @@
 										<argument>--include-macro</argument>
 										<argument>ENOENT</argument>
 										<argument>--include-macro</argument>
+										<argument>ENOSYS</argument>
+										<argument>--include-macro</argument>
 										<argument>ENOMEM</argument>
 										<argument>--include-macro</argument>
-										<argument>ENOSYS</argument>
+										<argument>EACCES</argument>
+										<argument>--include-macro</argument>
+										<argument>EIO</argument>
+										<argument>--include-macro</argument>
+										<argument>EROFS</argument>
+										<argument>--include-macro</argument>
+										<argument>EBADF</argument>
+										<argument>--include-macro</argument>
+										<argument>EEXIST</argument>
+										<argument>--include-macro</argument>
+										<argument>ENOTDIR</argument>
+										<argument>--include-macro</argument>
+										<argument>ENOTEMPTY</argument>
+										<argument>--include-macro</argument>
+										<argument>EINVAL</argument>
 										<!-- extract errno.h header: -->
 										<argument>
 											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/errno.h
+										</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-stat</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<executable>${java.home}/bin/jextract</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>--source</argument>
+										<argument>-d</argument>
+										<argument>${project.build.sourceDirectory}</argument>
+										<argument>-t</argument>
+										<argument>de.skymatic.fusepanama.mac.lowlevel</argument>
+										<argument>-I</argument>
+										<argument>
+											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/
+										</argument>
+										<!-- constants -->
+										<argument>--include-macro</argument>
+										<argument>S_IFREG</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IFDIR</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IFLNK</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IRUSR</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IWUSR</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IXUSR</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IRGRP</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IWGRP</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IXGRP</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IROTH</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IWOTH</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IXOTH</argument>
+										<!-- extract sys/stat.h header: -->
+										<argument>
+											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stat.h
 										</argument>
 									</arguments>
 								</configuration>

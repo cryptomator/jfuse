@@ -18,6 +18,11 @@ record MacFileInfo(MemorySegment segment) implements FileInfo {
 	}
 
 	@Override
+	public void setFh(long fh) {
+		fuse_file_info.fh$set(segment, fh);
+	}
+
+	@Override
 	public int getFlags() {
 		return fuse_file_info.flags$get(segment);
 	}
