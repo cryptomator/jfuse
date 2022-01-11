@@ -66,6 +66,11 @@ public interface Errno {
 	int enotdir();
 
 	/**
+	 * @return code representing: Is a directory
+	 */
+	int eisdir();
+
+	/**
 	 * @return code representing: Directory not empty
 	 */
 	int enotempty();

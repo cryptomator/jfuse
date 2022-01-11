@@ -13,19 +13,32 @@ import java.util.Set;
 public interface FuseOperations {
 
 	Errno ERRNO = Errno.instance();
+	FileModes FILE_MODES = FileModes.instance();
+	OpenFlags OPEN_FLAGS = OpenFlags.instance();
 
 	enum Operation {
 		ACCESS,
+		CHMOD,
+		CREATE,
 		DESTROY,
 		GET_ATTR,
 		INIT,
+		MKDIR,
 		OPEN,
 		OPEN_DIR,
 		READ,
+		READLINK,
 		READ_DIR,
 		RELEASE,
 		RELEASE_DIR,
+		RENAME,
+		RMDIR,
 		STATFS,
+		SYMLINK,
+		TRUNCATE,
+		UNLINK,
+		UTIMENS,
+		WRITE
 	}
 
 	/**
@@ -501,7 +514,7 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.6
 	 */
-	default int utimens(String path, TimeSpec tv) {
+	default int utimens(String path, TimeSpec atime, TimeSpec mtime) {
 		return -ERRNO.enosys();
 	}
 
