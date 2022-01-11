@@ -3,27 +3,35 @@ package de.skymatic.fusepanama.examples;
 import com.google.common.base.CharMatcher;
 import de.skymatic.fusepanama.DirFiller;
 import de.skymatic.fusepanama.FileInfo;
-import de.skymatic.fusepanama.FileModes;
 import de.skymatic.fusepanama.Fuse;
 import de.skymatic.fusepanama.FuseOperations;
 import de.skymatic.fusepanama.Stat;
 import de.skymatic.fusepanama.Statvfs;
+import de.skymatic.fusepanama.TimeSpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.AccessMode;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.CompletionException;
@@ -47,7 +55,7 @@ public class MirroringFileSystem implements FuseOperations {
 		Path mountPoint = Path.of("/Volumes/foo");
 		try (var fuse = Fuse.create(new MirroringFileSystem(mirrored))) {
 			LOG.info("Mounting at {}...", mountPoint);
-			int result = fuse.mount("fuse-panama", mountPoint, "-s", "-r");
+			int result = fuse.mount("fuse-panama", mountPoint, "-s");
 			if (result == 0) {
 				LOG.info("Mounted to {}. Unmount to terminate this process", mountPoint);
 			} else {
@@ -77,21 +85,33 @@ public class MirroringFileSystem implements FuseOperations {
 	public Set<Operation> supportedOperations() {
 		return EnumSet.of(
 				Operation.ACCESS,
-				Operation.STATFS,
+				Operation.CHMOD,
+				Operation.CREATE,
+				Operation.DESTROY,
 				Operation.GET_ATTR,
+				Operation.MKDIR,
 				Operation.OPEN_DIR,
 				Operation.READ_DIR,
 				Operation.RELEASE_DIR,
+				Operation.RENAME,
+				Operation.RMDIR,
 				Operation.OPEN,
 				Operation.READ,
+				Operation.READLINK,
 				Operation.RELEASE,
-				Operation.DESTROY);
+				Operation.STATFS,
+				Operation.SYMLINK,
+				Operation.TRUNCATE,
+				Operation.UNLINK,
+				Operation.UTIMENS,
+				Operation.WRITE
+		);
 	}
 
 	@Override
 	public int access(String path, int mask) {
+		LOG.trace("access {}", path);
 		Path node = resolvePath(path);
-		LOG.debug("access {}", node);
 		Set<AccessMode> desiredAccess = EnumSet.noneOf(AccessMode.class);
 		if ((mask & 0x01) == 0x01) desiredAccess.add(AccessMode.EXECUTE);
 		if ((mask & 0x02) == 0x02) desiredAccess.add(AccessMode.WRITE);
@@ -110,8 +130,7 @@ public class MirroringFileSystem implements FuseOperations {
 
 	@Override
 	public int statfs(String path, Statvfs statvfs) {
-		Path node = resolvePath(path);
-		LOG.debug("statfs {}", node);
+		LOG.trace("statfs");
 		try {
 			long bsize = 4096L;
 			statvfs.setBsize(bsize);
@@ -128,23 +147,41 @@ public class MirroringFileSystem implements FuseOperations {
 
 	@Override
 	public int symlink(String linkname, String target) {
-		// TODO: implement
-		return -ERRNO.enosys();
+		LOG.trace("symlink {} -> {}", linkname, target);
+		Path node = resolvePath(linkname);
+		try {
+			Files.createSymbolicLink(node, Path.of(target));
+			return 0;
+		} catch (IOException e) {
+			return -ERRNO.eio();
+		}
 	}
 
 	@Override
 	public int readlink(String path, ByteBuffer buf, long len) {
-		// TODO: implement
-		return -ERRNO.enosys();
+		LOG.trace("readlink {}", path);
+		Path node = resolvePath(path);
+		try {
+			var target = Files.readSymbolicLink(node);
+			var tmp = StandardCharsets.UTF_8.encode(target.toString());
+			buf.put(tmp);
+			return 0;
+		} catch (BufferOverflowException e) {
+			return -ERRNO.enomem();
+		} catch (NoSuchFileException e) {
+			return -ERRNO.enoent();
+		} catch (IOException e) {
+			return -ERRNO.eio();
+		}
 	}
 
 	@Override
 	public int getattr(String path, Stat stat) {
+		LOG.trace("getattr {}", path);
 		Path node = resolvePath(path);
-		LOG.debug("getattr {}", node);
 		try {
-			var attrs = Files.readAttributes(node, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
-			stat.setMode((short) FileModes.instance().toMode(attrs));
+			var attrs = Files.readAttributes(node, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+			stat.setMode((short) FILE_MODES.toMode(attrs));
 			stat.setSize(attrs.size());
 			if (attrs.isDirectory()) {
 				stat.setNLink((short) (2 + countSubDirs(node)));
@@ -156,6 +193,8 @@ public class MirroringFileSystem implements FuseOperations {
 			stat.cTime().set(attrs.lastAccessTime().toInstant());
 			stat.birthTime().set(attrs.creationTime().toInstant());
 			return 0;
+		} catch (NoSuchFileException e) {
+			return -ERRNO.enoent();
 		} catch (IOException e) {
 			return -ERRNO.eio();
 		}
@@ -168,9 +207,51 @@ public class MirroringFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public int opendir(String path, FileInfo fi) {
+	public int chmod(String path, short mode) {
+		LOG.trace("chmod {}", path);
 		Path node = resolvePath(path);
-		LOG.debug("opendir {}", node);
+		try {
+			Files.setPosixFilePermissions(node, FILE_MODES.toPermissions(mode));
+			return 0;
+		} catch (IOException e) {
+			return -ERRNO.eio();
+		}
+	}
+
+	@Override
+	public int utimens(String path, TimeSpec atime, TimeSpec mtime) {
+		LOG.trace("utimens {}", path);
+		Path node = resolvePath(path);
+		var view = Files.getFileAttributeView(node, BasicFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+		var lastModified = mtime.get().map(FileTime::from).orElse(null);
+		var lastAccess = atime.get().map(FileTime::from).orElse(null);
+		try {
+			view.setTimes(lastModified, lastAccess, null);
+			return 0;
+		} catch (IOException e) {
+			return -ERRNO.eio();
+		}
+	}
+
+	@Override
+	public int mkdir(String path, short mode) {
+		LOG.trace("mkdir {}", path);
+		Path node = resolvePath(path);
+		var attr = PosixFilePermissions.asFileAttribute(FILE_MODES.toPermissions(mode));
+		try {
+			Files.createDirectory(node, attr);
+			return 0;
+		} catch (FileAlreadyExistsException e) {
+			return -ERRNO.eexist();
+		} catch (IOException e) {
+			return -ERRNO.eio();
+		}
+	}
+
+	@Override
+	public int opendir(String path, FileInfo fi) {
+		LOG.trace("opendir {}", path);
+		Path node = resolvePath(path);
 		if (Files.isDirectory(node)) {
 			// no-op: this is a quick and dirty implementation.
 			// usually you'd want to open the dir now and keep it open until releasedir(), blocking the resource
@@ -182,8 +263,8 @@ public class MirroringFileSystem implements FuseOperations {
 
 	@Override
 	public int readdir(String path, DirFiller filler, long offset, FileInfo fi) {
+		LOG.trace("readdir {}", path);
 		Path node = resolvePath(path);
-		LOG.debug("readdir {}", node);
 		try (var ds = Files.newDirectoryStream(node)) {
 			var childNames = StreamSupport.stream(ds.spliterator(), false).map(Path::getFileName).map(Path::toString);
 			var allNames = Stream.concat(Stream.of(".", ".."), childNames);
@@ -203,16 +284,44 @@ public class MirroringFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public int open(String path, FileInfo fi) {
+	public int rmdir(String path) {
 		Path node = resolvePath(path);
-		LOG.debug("open {}", node);
+		if (!Files.isDirectory(node, LinkOption.NOFOLLOW_LINKS)) {
+			return -ERRNO.enotdir();
+		}
 		try {
-			// TODO check fi.getFlags() and adjust OpenOptions
-			var fc = FileChannel.open(node, StandardOpenOption.READ);
+			Files.delete(node);
+			return 0;
+		} catch (NoSuchFileException e) {
+			return -ERRNO.enoent();
+		} catch (IOException e) {
+			return -ERRNO.eio();
+		}
+	}
+
+	@Override
+	public int create(String path, short mode, FileInfo fi) {
+		LOG.trace("create {}", path);
+		return createOrOpen(path, fi, PosixFilePermissions.asFileAttribute(FILE_MODES.toPermissions(mode)));
+	}
+
+	@Override
+	public int open(String path, FileInfo fi) {
+		LOG.trace("open {}", path);
+		return createOrOpen(path, fi);
+	}
+
+	private int createOrOpen(String path, FileInfo fi, FileAttribute<?>... attr) {
+		Path node = resolvePath(path);
+		var openOptions = OPEN_FLAGS.toOpenOptions(fi.getFlags());
+		try {
+			var fc = FileChannel.open(node, openOptions, attr);
 			var fh = fileHandleGen.incrementAndGet();
 			fi.setFh(fh);
 			openFiles.put(fh, fc);
 			return 0;
+		} catch (FileAlreadyExistsException e) {
+			return -ERRNO.eexist();
 		} catch (IOException e) {
 			return -ERRNO.eio();
 		}
@@ -220,7 +329,7 @@ public class MirroringFileSystem implements FuseOperations {
 
 	@Override
 	public int read(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
-		LOG.debug("read {} at pos {}", path, offset);
+		LOG.trace("read {} at pos {}", path, offset);
 		var fc = openFiles.get(fi.getFh());
 		if (fc == null) {
 			return -ERRNO.ebadf();
@@ -233,14 +342,72 @@ public class MirroringFileSystem implements FuseOperations {
 	}
 
 	@Override
+	public int write(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
+		LOG.trace("write {} at pos {}", path, offset);
+		var fc = openFiles.get(fi.getFh());
+		if (fc == null) {
+			return -ERRNO.ebadf();
+		}
+		try {
+			return fc.write(buf, offset);
+		} catch (IOException e) {
+			return -ERRNO.eio();
+		}
+	}
+
+	@Override
+	public int truncate(String path, long size) {
+		LOG.trace("truncate {} to size {}", path, size);
+		Path node = resolvePath(path);
+		try (FileChannel fc = FileChannel.open(node, StandardOpenOption.WRITE)) {
+			fc.truncate(size);
+			return 0;
+		} catch (NoSuchFileException e) {
+			return -ERRNO.enoent();
+		} catch (IOException e) {
+			return -ERRNO.eio();
+		}
+	}
+
+	@Override
 	public int release(String path, FileInfo fi) {
-		LOG.debug("release {}", path);
+		LOG.trace("release {}", path);
 		var fc = openFiles.remove(fi.getFh());
 		if (fc == null) {
 			return -ERRNO.ebadf();
 		}
 		try {
 			fc.close();
+			return 0;
+		} catch (IOException e) {
+			return -ERRNO.eio();
+		}
+	}
+
+	@Override
+	public int unlink(String path) {
+		LOG.trace("unlink {}", path);
+		Path node = resolvePath(path);
+		if (Files.isDirectory(node, LinkOption.NOFOLLOW_LINKS)) {
+			return -ERRNO.eisdir();
+		}
+		try {
+			Files.delete(node);
+			return 0;
+		} catch (NoSuchFileException e) {
+			return -ERRNO.enoent();
+		} catch (IOException e) {
+			return -ERRNO.eio();
+		}
+	}
+
+	@Override
+	public int rename(String oldpath, String newpath) {
+		LOG.trace("rename {} -> {}", oldpath, newpath);
+		Path nodeOld = resolvePath(oldpath);
+		Path nodeNew = resolvePath(newpath);
+		try {
+			Files.move(nodeOld, nodeNew, StandardCopyOption.REPLACE_EXISTING);
 			return 0;
 		} catch (IOException e) {
 			return -ERRNO.eio();
