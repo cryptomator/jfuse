@@ -127,6 +127,12 @@ public class MirroringFileSystem implements FuseOperations {
 	}
 
 	@Override
+	public int symlink(String linkname, String target) {
+		// TODO: implement
+		return -ERRNO.enosys();
+	}
+
+	@Override
 	public int readlink(String path, ByteBuffer buf, long len) {
 		// TODO: implement
 		return -ERRNO.enosys();
@@ -141,7 +147,7 @@ public class MirroringFileSystem implements FuseOperations {
 			stat.setMode((short) FileModes.instance().toMode(attrs));
 			stat.setSize(attrs.size());
 			if (attrs.isDirectory()) {
-				stat.setNLink((short) 2);  // TODO: is this correct?
+				stat.setNLink((short) (2 + countSubDirs(node)));
 			} else {
 				stat.setNLink((short) 1);
 			}
@@ -152,6 +158,12 @@ public class MirroringFileSystem implements FuseOperations {
 			return 0;
 		} catch (IOException e) {
 			return -ERRNO.eio();
+		}
+	}
+
+	private long countSubDirs(Path dir) throws IOException {
+		try (var ds = Files.newDirectoryStream(dir)) {
+			return StreamSupport.stream(ds.spliterator(), false).filter(Files::isDirectory).count();
 		}
 	}
 
