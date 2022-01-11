@@ -51,6 +51,11 @@ public record MacErrno() implements Errno {
 	}
 
 	@Override
+	public int eisdir() {
+		return errno_h.EISDIR();
+	}
+
+	@Override
 	public int enotempty() {
 		return errno_h.ENOTEMPTY();
 	}

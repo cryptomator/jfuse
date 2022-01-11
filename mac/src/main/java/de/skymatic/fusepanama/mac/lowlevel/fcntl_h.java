@@ -7,9 +7,9 @@ import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import jdk.incubator.foreign.*;
 import static jdk.incubator.foreign.ValueLayout.*;
-public class errno_h  {
+public class fcntl_h  {
 
-    /* package-private */ errno_h() {}
+    /* package-private */ fcntl_h() {}
     public static OfByte C_CHAR = Constants$root.C_CHAR$LAYOUT;
     public static OfShort C_SHORT = Constants$root.C_SHORT$LAYOUT;
     public static OfInt C_INT = Constants$root.C_INT$LAYOUT;
@@ -18,41 +18,32 @@ public class errno_h  {
     public static OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
     public static OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
     public static OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
-    public static int ENOENT() {
+    public static int O_RDONLY() {
+        return (int)0L;
+    }
+    public static int O_WRONLY() {
+        return (int)1L;
+    }
+    public static int O_RDWR() {
         return (int)2L;
     }
-    public static int EIO() {
-        return (int)5L;
+    public static int O_APPEND() {
+        return (int)8L;
     }
-    public static int EBADF() {
-        return (int)9L;
+    public static int O_SYNC() {
+        return (int)128L;
     }
-    public static int ENOMEM() {
-        return (int)12L;
+    public static int O_CREAT() {
+        return (int)512L;
     }
-    public static int EACCES() {
-        return (int)13L;
+    public static int O_TRUNC() {
+        return (int)1024L;
     }
-    public static int EEXIST() {
-        return (int)17L;
+    public static int O_EXCL() {
+        return (int)2048L;
     }
-    public static int ENOTDIR() {
-        return (int)20L;
-    }
-    public static int EISDIR() {
-        return (int)21L;
-    }
-    public static int EINVAL() {
-        return (int)22L;
-    }
-    public static int EROFS() {
-        return (int)30L;
-    }
-    public static int ENOTEMPTY() {
-        return (int)66L;
-    }
-    public static int ENOSYS() {
-        return (int)78L;
+    public static int O_DSYNC() {
+        return (int)4194304L;
     }
 }
 

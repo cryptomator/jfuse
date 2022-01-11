@@ -149,6 +149,8 @@
 										<argument>--include-macro</argument>
 										<argument>ENOTDIR</argument>
 										<argument>--include-macro</argument>
+										<argument>EISDIR</argument>
+										<argument>--include-macro</argument>
 										<argument>ENOTEMPTY</argument>
 										<argument>--include-macro</argument>
 										<argument>EINVAL</argument>
@@ -178,7 +180,7 @@
 										<argument>
 											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/
 										</argument>
-										<!-- constants -->
+										<!-- file type bits -->
 										<argument>--include-macro</argument>
 										<argument>S_IFREG</argument>
 										<argument>--include-macro</argument>
@@ -186,6 +188,7 @@
 										<argument>--include-macro</argument>
 										<argument>S_IFLNK</argument>
 										<argument>--include-macro</argument>
+										<!-- file mode bits -->
 										<argument>S_IRUSR</argument>
 										<argument>--include-macro</argument>
 										<argument>S_IWUSR</argument>
@@ -203,9 +206,59 @@
 										<argument>S_IWOTH</argument>
 										<argument>--include-macro</argument>
 										<argument>S_IXOTH</argument>
+										<!-- special utime values -->
+										<argument>--include-macro</argument>
+										<argument>UTIME_NOW</argument>
+										<argument>--include-macro</argument>
+										<argument>UTIME_OMIT</argument>
 										<!-- extract sys/stat.h header: -->
 										<argument>
 											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stat.h
+										</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-fcntl</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<executable>${java.home}/bin/jextract</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>--source</argument>
+										<argument>-d</argument>
+										<argument>${project.build.sourceDirectory}</argument>
+										<argument>-t</argument>
+										<argument>de.skymatic.fusepanama.mac.lowlevel</argument>
+										<argument>-I</argument>
+										<argument>
+											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/
+										</argument>
+										<!-- open flags -->
+										<argument>--include-macro</argument>
+										<argument>O_RDONLY</argument>
+										<argument>--include-macro</argument>
+										<argument>O_WRONLY</argument>
+										<argument>--include-macro</argument>
+										<argument>O_RDWR</argument>
+										<argument>--include-macro</argument>
+										<argument>O_APPEND</argument>
+										<argument>--include-macro</argument>
+										<argument>O_CREAT</argument>
+										<argument>--include-macro</argument>
+										<argument>O_TRUNC</argument>
+										<argument>--include-macro</argument>
+										<argument>O_EXCL</argument>
+										<argument>--include-macro</argument>
+										<argument>O_DSYNC</argument>
+										<argument>--include-macro</argument>
+										<argument>O_SYNC</argument>
+										<!-- extract fcntl.h header: -->
+										<argument>
+											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/fcntl.h
 										</argument>
 									</arguments>
 								</configuration>

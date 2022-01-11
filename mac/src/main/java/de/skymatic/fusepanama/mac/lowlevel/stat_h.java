@@ -54,6 +54,12 @@ public class stat_h  {
     public static int S_IXOTH() {
         return (int)1L;
     }
+    public static int UTIME_NOW() {
+        return (int)-1L;
+    }
+    public static int UTIME_OMIT() {
+        return (int)-2L;
+    }
 }
 
 
