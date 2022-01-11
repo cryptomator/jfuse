@@ -57,15 +57,14 @@
 
 	<profiles>
 		<profile>
-			<id>mac-x64</id>
+			<id>mac</id>
 			<activation>
 				<os>
 					<family>mac</family>
-					<arch>x86_64</arch>
 				</os>
 			</activation>
 			<modules>
-				<module>mac-x64</module>
+				<module>mac</module>
 			</modules>
 		</profile>
 

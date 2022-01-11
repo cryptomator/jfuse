@@ -2,7 +2,7 @@ import de.skymatic.fusepanama.Errno;
 import de.skymatic.fusepanama.FileModes;
 import de.skymatic.fusepanama.FuseProvider;
 
-module de.skymatic.fusepanama.macintel {
+module de.skymatic.fusepanama.mac {
 	requires de.skymatic.fusepanama;
 	requires jdk.incubator.foreign;
 

@@ -53,7 +53,7 @@
 
 	<profiles>
 		<profile>
-			<id>mac-x64</id>
+			<id>mac</id>
 			<activation>
 				<os>
 					<family>mac</family>
@@ -63,7 +63,7 @@
 			<dependencies>
 				<dependency>
 					<groupId>de.skymatic</groupId>
-					<artifactId>fusepanama-mac-x64</artifactId>
+					<artifactId>fusepanama-mac</artifactId>
 					<version>${project.version}</version>
 					<scope>test</scope>
 				</dependency>
