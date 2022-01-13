@@ -9,7 +9,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>fusepanama-linux-x64</artifactId>
+	<artifactId>fusepanama-linux-amd64</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>de.skymatic</groupId>

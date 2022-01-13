@@ -1,6 +1,6 @@
 import de.skymatic.fusepanama.Errno;
 
-module de.skymatic.fusepanama.linuxintel {
+module de.skymatic.fusepanama.linuxamd64impl {
 	requires de.skymatic.fusepanama;
 	requires jdk.incubator.foreign;
 

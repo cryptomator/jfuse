@@ -69,7 +69,7 @@
 		</profile>
 
 		<profile>
-			<id>linux-x64</id>
+			<id>linux-amd64</id>
 			<activation>
 				<os>
 					<family>unix</family>
@@ -78,7 +78,7 @@
 				</os>
 			</activation>
 			<modules>
-				<module>linux-x64</module>
+				<module>linux-amd64</module>
 			</modules>
 		</profile>
 
