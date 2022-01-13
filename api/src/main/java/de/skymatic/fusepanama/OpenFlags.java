@@ -25,12 +25,12 @@ public interface OpenFlags {
 		// @formatter:off
 		if ((flags & read) != 0) result.add(StandardOpenOption.READ);
 		if ((flags & write) != 0) result.add(StandardOpenOption.WRITE);
-		if ((flags & append()) == append()) result.add(StandardOpenOption.APPEND);
-		if ((flags & create()) == create()) result.add(StandardOpenOption.CREATE);
-		if ((flags & createNew) == createNew) result.add(StandardOpenOption.CREATE_NEW);
-		if ((flags & truncate()) == truncate()) result.add(StandardOpenOption.TRUNCATE_EXISTING);
-		if ((flags & sync()) == sync()) result.add(StandardOpenOption.SYNC);
-		if ((flags & dsync()) == dsync()) result.add(StandardOpenOption.DSYNC);
+		if ((flags & append()) != 0) result.add(StandardOpenOption.APPEND);
+		if ((flags & create()) != 0) result.add(StandardOpenOption.CREATE);
+		if ((flags & createNew) != 0) result.add(StandardOpenOption.CREATE_NEW);
+		if ((flags & truncate()) != 0) result.add(StandardOpenOption.TRUNCATE_EXISTING);
+		if ((flags & sync()) != 0) result.add(StandardOpenOption.SYNC);
+		if ((flags & dsync()) != 0) result.add(StandardOpenOption.DSYNC);
 		// @formatter:on
 		return result;
 	}

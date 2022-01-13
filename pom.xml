@@ -81,6 +81,19 @@
 				<module>linux-x64</module>
 			</modules>
 		</profile>
+
+		<profile>
+			<id>win-amd64</id>
+			<activation>
+				<os>
+					<family>windows</family>
+					<arch>amd64</arch>
+				</os>
+			</activation>
+			<modules>
+				<module>win-amd64</module>
+			</modules>
+		</profile>
 	</profiles>
 
 </project>

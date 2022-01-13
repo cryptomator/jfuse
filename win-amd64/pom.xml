@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>fuse-panama</artifactId>
+		<groupId>de.skymatic</groupId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>fusepanama-win-amd64</artifactId>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>18</source>
+					<target>18</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>de.skymatic</groupId>
+			<artifactId>fusepanama-api</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>jextract</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>check-preconditions</id>
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+								<configuration>
+									<rules>
+										<requireOS>
+											<family>windows</family>
+											<message>This build configuration requires Windows.</message>
+										</requireOS>
+										<requireFilesExist>
+											<files>
+												<file>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</file>
+											</files>
+											<message>Windows UCRT headers not found.</message>
+										</requireFilesExist>
+									</rules>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>jextract-fuse</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<executable>${java.home}/bin/jextract</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>--source</argument>
+										<argument>-l</argument>
+										<argument>fuse</argument>
+										<argument>-d</argument>
+										<argument>${project.build.sourceDirectory}</argument>
+										<argument>-t</argument>
+										<argument>de.skymatic.fusepanama.win.amd64.lowlevel</argument>
+										<argument>-I</argument>
+										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</argument>
+										<argument>-C-D_FILE_OFFSET_BITS=64</argument>
+										<argument>-C-DFUSE_USE_VERSION=29</argument>
+										<!-- structs: -->
+										<argument>--include-struct</argument>
+										<argument>fuse_operations</argument>
+										<argument>--include-struct</argument>
+										<argument>fuse_file_info</argument>
+										<argument>--include-struct</argument>
+										<argument>fuse_context</argument>
+										<argument>--include-struct</argument>
+										<argument>stat</argument>
+										<argument>--include-struct</argument>
+										<argument>statvfs</argument>
+										<argument>--include-struct</argument>
+										<argument>timespec</argument>
+										<argument>--include-struct</argument>
+										<argument>fuse_conn_info</argument>
+										<!-- typedefs: -->
+										<argument>--include-typedef</argument>
+										<argument>fuse_fill_dir_t</argument>
+										<!-- functions: -->
+										<argument>--include-function</argument>
+										<argument>fuse_main_real</argument>
+										<argument>--include-function</argument>
+										<argument>fuse_get_context</argument>
+										<argument>--include-function</argument>
+										<argument>fuse_exit</argument>
+										<!-- extract fuse.h header: -->
+										<argument>${project.parent.basedir}/winfsp/inc/fuse/winfsp_fuse.h</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-errno</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<executable>${java.home}/bin/jextract</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>--source</argument>
+										<argument>-d</argument>
+										<argument>${project.build.sourceDirectory}</argument>
+										<argument>-t</argument>
+										<argument>de.skymatic.fusepanama.win.amd64.lowlevel</argument>
+										<argument>-I</argument>
+										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</argument>
+										<!-- constants -->
+										<argument>--include-macro</argument>
+										<argument>ENOENT</argument>
+										<argument>--include-macro</argument>
+										<argument>ENOSYS</argument>
+										<argument>--include-macro</argument>
+										<argument>ENOMEM</argument>
+										<argument>--include-macro</argument>
+										<argument>EACCES</argument>
+										<argument>--include-macro</argument>
+										<argument>EIO</argument>
+										<argument>--include-macro</argument>
+										<argument>EROFS</argument>
+										<argument>--include-macro</argument>
+										<argument>EBADF</argument>
+										<argument>--include-macro</argument>
+										<argument>EEXIST</argument>
+										<argument>--include-macro</argument>
+										<argument>ENOTDIR</argument>
+										<argument>--include-macro</argument>
+										<argument>EISDIR</argument>
+										<argument>--include-macro</argument>
+										<argument>ENOTEMPTY</argument>
+										<argument>--include-macro</argument>
+										<argument>EINVAL</argument>
+										<!-- extract errno.h header: -->
+										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\errno.h</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-stat</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<executable>${java.home}/bin/jextract</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>--source</argument>
+										<argument>-d</argument>
+										<argument>${project.build.sourceDirectory}</argument>
+										<argument>-t</argument>
+										<argument>de.skymatic.fusepanama.win.amd64.lowlevel</argument>
+										<argument>-I</argument>
+										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</argument>
+										<!-- file type bits -->
+										<argument>--include-macro</argument>
+										<argument>S_IFREG</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IFDIR</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IFCHR</argument>
+										<!-- extract sys/stat.h header: -->
+										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\sys\stat.h</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-fcntl</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<executable>${java.home}/bin/jextract</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>--source</argument>
+										<argument>-d</argument>
+										<argument>${project.build.sourceDirectory}</argument>
+										<argument>-t</argument>
+										<argument>de.skymatic.fusepanama.win.amd64.lowlevel</argument>
+										<argument>-I</argument>
+										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</argument>
+										<!-- open flags -->
+										<argument>--include-macro</argument>
+										<argument>O_RDONLY</argument>
+										<argument>--include-macro</argument>
+										<argument>O_WRONLY</argument>
+										<argument>--include-macro</argument>
+										<argument>O_RDWR</argument>
+										<argument>--include-macro</argument>
+										<argument>O_APPEND</argument>
+										<argument>--include-macro</argument>
+										<argument>O_CREAT</argument>
+										<argument>--include-macro</argument>
+										<argument>O_TRUNC</argument>
+										<argument>--include-macro</argument>
+										<argument>O_EXCL</argument>
+										<!-- extract fcntl.h header: -->
+										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\fcntl.h</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
