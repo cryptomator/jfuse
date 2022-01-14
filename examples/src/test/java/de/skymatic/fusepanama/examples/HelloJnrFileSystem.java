@@ -33,17 +33,17 @@ public class HelloJnrFileSystem extends FuseStubFS {
 	public int getattr(String path, FileStat stat) {
 		LOG.debug("getattr() {}", path);
 		if ("/".equals(path)) {
-			stat.st_mode.set((short) (S_IFDIR | 0755));
-			stat.st_nlink.set((short) 2);
+			stat.st_mode.set(S_IFDIR | 0755);
+			stat.st_nlink.set(2);
 			return 0;
 		} else if (HELLO_PATH.equals(path)) {
-			stat.st_mode.set((short) (S_IFREG | 0444));
-			stat.st_nlink.set((short) 1);
+			stat.st_mode.set(S_IFREG | 0444);
+			stat.st_nlink.set(1);
 			stat.st_size.set(HELLO_STR.getBytes().length);
 			return 0;
 		} else if (path.length() == 4) {
-			stat.st_mode.set((short) (S_IFREG | 0444));
-			stat.st_nlink.set((short) 1);
+			stat.st_mode.set(S_IFREG | 0444);
+			stat.st_nlink.set(1);
 			stat.st_size.set(0);
 			return 0;
 		} else {

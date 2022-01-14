@@ -10,7 +10,7 @@ public interface Stat {
 
 	TimeSpec birthTime();
 
-	void setMode(short mode);
+	void setMode(int mode);
 
 	int getMode();
 

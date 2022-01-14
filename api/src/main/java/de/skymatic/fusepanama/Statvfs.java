@@ -14,6 +14,7 @@ public interface Statvfs {
 	 */
 	long getFrsize();
 
+	// TODO: remove. ignored during statfs() call anyway...
 	void setFrsize(long frsize);
 
 	/**

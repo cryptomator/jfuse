@@ -66,16 +66,16 @@ public class HelloPanamaFileSystem implements FuseOperations {
 	public int getattr(String path, Stat stat) {
 		LOG.debug("getattr() {}", path);
 		if ("/".equals(path)) {
-			stat.setMode((short) (S_IFDIR | 0755));
+			stat.setMode(S_IFDIR | 0755);
 			stat.setNLink((short) 2);
 			return 0;
 		} else if (HELLO_PATH.equals(path)) {
-			stat.setMode((short) (S_IFREG | 0444));
+			stat.setMode(S_IFREG | 0444);
 			stat.setNLink((short) 1);
 			stat.setSize(HELLO_STR.getBytes().length);
 			return 0;
 		} else if (path.length() == 4) {
-			stat.setMode((short) (S_IFREG | 0444));
+			stat.setMode(S_IFREG | 0444);
 			stat.setNLink((short) 1);
 			stat.setSize(0);
 			return 0;

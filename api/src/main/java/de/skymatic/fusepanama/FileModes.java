@@ -1,6 +1,7 @@
 package de.skymatic.fusepanama;
 
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.DosFileAttributes;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.EnumSet;
@@ -19,6 +20,7 @@ public interface FileModes {
 		return SERVICE_LOADER.findFirst().orElseThrow(() -> new IllegalStateException("No implementation of FileModes loaded."));
 	}
 
+	@SuppressWarnings("OctalInteger")
 	default int toMode(BasicFileAttributes attrs) {
 		int mode = 0;
 		if (attrs.isDirectory()) {
@@ -41,10 +43,19 @@ public interface FileModes {
 			if (perms.contains(PosixFilePermission.OTHERS_WRITE))   mode |= 0002;
 			if (perms.contains(PosixFilePermission.OTHERS_EXECUTE)) mode |= 0001;
 			// @formatter:on
+		} else if (attrs instanceof DosFileAttributes dos) {
+			// @formatter:off
+			if (dos.isDirectory()) mode |= 0111;
+			if (dos.isReadOnly())  mode |= 0444;
+			if (!dos.isReadOnly()) mode |= 0644;
+			// @formatter:on
+		} else {
+			mode |= attrs.isDirectory() ? 0755 : 0644;
 		}
 		return mode;
 	}
 
+	@SuppressWarnings("OctalInteger")
 	default Set<PosixFilePermission> toPermissions(int mode) {
 		Set<PosixFilePermission> result = EnumSet.noneOf(PosixFilePermission.class);
 		// @formatter:off
