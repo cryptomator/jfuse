@@ -8,12 +8,12 @@ import jdk.incubator.foreign.MemorySegment;
 
 import java.util.concurrent.CompletableFuture;
 
-public final class MacFuse extends Fuse {
+public final class FuseImpl extends Fuse {
 
-	private final MacFuseOperationsMapper fuseOperations;
+	private final FuseOperationsMapper fuseOperations;
 
-	public MacFuse(FuseOperations fuseOperations) {
-		this.fuseOperations = new MacFuseOperationsMapper(fuseOperations, fuseScope);
+	public FuseImpl(FuseOperations fuseOperations) {
+		this.fuseOperations = new FuseOperationsMapper(fuseOperations, fuseScope);
 	}
 
 	@Override

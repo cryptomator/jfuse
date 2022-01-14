@@ -6,9 +6,9 @@ import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-record MacFileInfo(MemorySegment segment) implements FileInfo {
+record FileInfoImpl(MemorySegment segment) implements FileInfo {
 
-	public MacFileInfo(MemoryAddress address, ResourceScope scope) {
+	public FileInfoImpl(MemoryAddress address, ResourceScope scope) {
 		this(fuse_file_info.ofAddress(address, scope));
 	}
 

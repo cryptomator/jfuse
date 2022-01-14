@@ -27,33 +27,6 @@ public class stat_h  {
     public static int S_IFLNK() {
         return (int)40960L;
     }
-    public static int S_IRUSR() {
-        return (int)256L;
-    }
-    public static int S_IWUSR() {
-        return (int)128L;
-    }
-    public static int S_IXUSR() {
-        return (int)64L;
-    }
-    public static int S_IRGRP() {
-        return (int)32L;
-    }
-    public static int S_IWGRP() {
-        return (int)16L;
-    }
-    public static int S_IXGRP() {
-        return (int)8L;
-    }
-    public static int S_IROTH() {
-        return (int)4L;
-    }
-    public static int S_IWOTH() {
-        return (int)2L;
-    }
-    public static int S_IXOTH() {
-        return (int)1L;
-    }
     public static int UTIME_NOW() {
         return (int)-1L;
     }

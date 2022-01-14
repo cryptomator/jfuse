@@ -12,14 +12,14 @@ import jdk.incubator.foreign.ResourceScope;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
 
-class MacFuseOperationsMapper {
+class FuseOperationsMapper {
 
 	final CompletableFuture<Integer> initialized = new CompletableFuture<>();
 	final MemorySegment struct;
 	private final FuseOperations delegate;
 	private final ResourceScope scope;
 
-	public MacFuseOperationsMapper(FuseOperations delegate, ResourceScope scope) {
+	public FuseOperationsMapper(FuseOperations delegate, ResourceScope scope) {
 		this.struct = fuse_operations.allocate(scope);
 		this.delegate = delegate;
 		this.scope = scope;
@@ -57,7 +57,7 @@ class MacFuseOperationsMapper {
 	private MemoryAddress init(MemoryAddress conn) {
 		try (var scope = ResourceScope.newConfinedScope()) {
 			if (delegate.supportedOperations().contains(FuseOperations.Operation.INIT)) {
-				delegate.init(new MacFuseConnInfo(conn, scope));
+				delegate.init(new FuseConnInfoImpl(conn, scope));
 			}
 			initialized.complete(0);
 		} catch (Exception e) {
@@ -71,14 +71,12 @@ class MacFuseOperationsMapper {
 	}
 
 	private int chmod(MemoryAddress path, short mode) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.chmod(path.getUtf8String(0), mode);
-		}
+		return delegate.chmod(path.getUtf8String(0), mode);
 	}
 
 	private int create(MemoryAddress path, short mode, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.create(path.getUtf8String(0), mode, new MacFileInfo(fi, scope));
+			return delegate.create(path.getUtf8String(0), mode, new FileInfoImpl(fi, scope));
 		}
 	}
 
@@ -88,7 +86,7 @@ class MacFuseOperationsMapper {
 
 	private int getattr(MemoryAddress path, MemoryAddress stat) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.getattr(path.getUtf8String(0), new MacStat(stat, scope));
+			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope));
 		}
 	}
 
@@ -98,26 +96,26 @@ class MacFuseOperationsMapper {
 
 	private int open(MemoryAddress path, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.open(path.getUtf8String(0), new MacFileInfo(fi, scope));
+			return delegate.open(path.getUtf8String(0), new FileInfoImpl(fi, scope));
 		}
 	}
 
 	private int opendir(MemoryAddress path, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.opendir(path.getUtf8String(0), new MacFileInfo(fi, scope));
+			return delegate.opendir(path.getUtf8String(0), new FileInfoImpl(fi, scope));
 		}
 	}
 
 	private int read(MemoryAddress path, MemoryAddress buf, long size, long offset, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
 			var buffer = MemorySegment.ofAddress(buf, size, scope).asByteBuffer();
-			return delegate.read(path.getUtf8String(0), buffer, size, offset, new MacFileInfo(fi, scope));
+			return delegate.read(path.getUtf8String(0), buffer, size, offset, new FileInfoImpl(fi, scope));
 		}
 	}
 
 	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.readdir(path.getUtf8String(0), new MacDirFiller(buf, filler, scope), offset, new MacFileInfo(fi, scope));
+			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope));
 		}
 	}
 
@@ -130,13 +128,13 @@ class MacFuseOperationsMapper {
 
 	private int release(MemoryAddress path, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.release(path.getUtf8String(0), new MacFileInfo(fi, scope));
+			return delegate.release(path.getUtf8String(0), new FileInfoImpl(fi, scope));
 		}
 	}
 
 	private int releasedir(MemoryAddress path, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.releasedir(path.getUtf8String(0), new MacFileInfo(fi, scope));
+			return delegate.releasedir(path.getUtf8String(0), new FileInfoImpl(fi, scope));
 		}
 	}
 
@@ -150,7 +148,7 @@ class MacFuseOperationsMapper {
 
 	private int statfs(MemoryAddress path, MemoryAddress statvfs) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.statfs(path.getUtf8String(0), new MacStatvfs(statvfs, scope));
+			return delegate.statfs(path.getUtf8String(0), new StatvfsImpl(statvfs, scope));
 		}
 	}
 
@@ -172,7 +170,7 @@ class MacFuseOperationsMapper {
 			var segment = MemorySegment.ofByteBuffer(ByteBuffer.allocate((int) timespec.$LAYOUT().byteSize()));
 			timespec.tv_sec$set(segment, 0);
 			timespec.tv_nsec$set(segment, stat_h.UTIME_NOW());
-			var time = new MacTimeSpec(segment);
+			var time = new TimeSpecImpl(segment);
 			return delegate.utimens(path.getUtf8String(0), time, time);
 		} else {
 			try (var scope = ResourceScope.newConfinedScope()) {
@@ -181,7 +179,7 @@ class MacFuseOperationsMapper {
 				var time0 = segment.asSlice(0, timespec.$LAYOUT().byteSize());
 				var time1 = segment.asSlice(timespec.$LAYOUT().byteSize(), timespec.$LAYOUT().byteSize());
 //				var timeSpecs = segment.elements(seq.elementLayout()).map(MacTimeSpec::new).toArray(MacTimeSpec[]::new);
-				return delegate.utimens(path.getUtf8String(0), new MacTimeSpec(time0), new MacTimeSpec(time1));
+				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1));
 			}
 		}
 	}
@@ -189,7 +187,7 @@ class MacFuseOperationsMapper {
 	private int write(MemoryAddress path, MemoryAddress buf, long size, long offset, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
 			var buffer = MemorySegment.ofAddress(buf, size, scope).asByteBuffer();
-			return delegate.write(path.getUtf8String(0), buffer, size, offset, new MacFileInfo(fi, scope));
+			return delegate.write(path.getUtf8String(0), buffer, size, offset, new FileInfoImpl(fi, scope));
 		}
 	}
 

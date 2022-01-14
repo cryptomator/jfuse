@@ -36,7 +36,7 @@ public class MacFuseProvider implements FuseProvider {
 
 		@Override
 		public Fuse create(FuseOperations fuseOperations) {
-			return new MacFuse(fuseOperations);
+			return new FuseImpl(fuseOperations);
 		}
 
 	}

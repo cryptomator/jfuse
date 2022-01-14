@@ -6,9 +6,9 @@ import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-record MacStatvfs(MemorySegment segment) implements Statvfs {
+record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
-	public MacStatvfs(MemoryAddress address, ResourceScope scope) {
+	public StatvfsImpl(MemoryAddress address, ResourceScope scope) {
 		this(statvfs.ofAddress(address, scope));
 	}
 

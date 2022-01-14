@@ -7,30 +7,30 @@ import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-record MacStat(MemorySegment segment) implements Stat {
+record StatImpl(MemorySegment segment) implements Stat {
 
-	public MacStat(MemoryAddress address, ResourceScope scope) {
+	public StatImpl(MemoryAddress address, ResourceScope scope) {
 		this(stat.ofAddress(address, scope));
 	}
 
 	@Override
 	public TimeSpec aTime() {
-		return new MacTimeSpec(stat.st_atimespec$slice(segment));
+		return new TimeSpecImpl(stat.st_atimespec$slice(segment));
 	}
 
 	@Override
 	public TimeSpec cTime() {
-		return new MacTimeSpec(stat.st_ctimespec$slice(segment));
+		return new TimeSpecImpl(stat.st_ctimespec$slice(segment));
 	}
 
 	@Override
 	public TimeSpec mTime() {
-		return new MacTimeSpec(stat.st_mtimespec$slice(segment));
+		return new TimeSpecImpl(stat.st_mtimespec$slice(segment));
 	}
 
 	@Override
 	public TimeSpec birthTime() {
-		return new MacTimeSpec(stat.st_birthtimespec$slice(segment));
+		return new TimeSpecImpl(stat.st_birthtimespec$slice(segment));
 	}
 
 	@Override

@@ -188,24 +188,6 @@
 										<argument>--include-macro</argument>
 										<argument>S_IFLNK</argument>
 										<argument>--include-macro</argument>
-										<!-- file mode bits -->
-										<argument>S_IRUSR</argument>
-										<argument>--include-macro</argument>
-										<argument>S_IWUSR</argument>
-										<argument>--include-macro</argument>
-										<argument>S_IXUSR</argument>
-										<argument>--include-macro</argument>
-										<argument>S_IRGRP</argument>
-										<argument>--include-macro</argument>
-										<argument>S_IWGRP</argument>
-										<argument>--include-macro</argument>
-										<argument>S_IXGRP</argument>
-										<argument>--include-macro</argument>
-										<argument>S_IROTH</argument>
-										<argument>--include-macro</argument>
-										<argument>S_IWOTH</argument>
-										<argument>--include-macro</argument>
-										<argument>S_IXOTH</argument>
 										<!-- special utime values -->
 										<argument>--include-macro</argument>
 										<argument>UTIME_NOW</argument>

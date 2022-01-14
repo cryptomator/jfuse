@@ -7,7 +7,7 @@ import jdk.incubator.foreign.MemorySegment;
 
 import java.time.Instant;
 
-record MacTimeSpec(MemorySegment segment) implements TimeSpec {
+record TimeSpecImpl(MemorySegment segment) implements TimeSpec {
 
 	@Override
 	public boolean isUtimeOmit() {

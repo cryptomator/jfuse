@@ -6,9 +6,9 @@ import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-record MacFuseConnInfo(MemorySegment segment) implements FuseConnInfo {
+record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
 
-	public MacFuseConnInfo(MemoryAddress address, ResourceScope scope) {
+	public FuseConnInfoImpl(MemoryAddress address, ResourceScope scope) {
 		this(fuse_conn_info.ofAddress(address, scope));
 	}
 
