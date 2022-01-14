@@ -1,7 +1,5 @@
 package de.skymatic.fusepanama;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.nio.ByteBuffer;
 import java.util.Set;
 
@@ -10,11 +8,8 @@ import java.util.Set;
  *
  * @see <a href="https://libfuse.github.io/doxygen/structfuse__operations.html">fuse_operations</a>
  */
+@SuppressWarnings("unused")
 public interface FuseOperations {
-
-	Errno ERRNO = Errno.instance();
-	FileModes FILE_MODES = FileModes.instance();
-	OpenFlags OPEN_FLAGS = OpenFlags.instance();
 
 	enum Operation {
 		ACCESS,
@@ -42,9 +37,14 @@ public interface FuseOperations {
 	}
 
 	/**
+	 * @return The error codes from <code>errno.h</code> for the current platform.
+	 * @see FuseBuilder#errno()
+	 */
+	Errno errno();
+
+	/**
 	 * @return The set of supported operations.
 	 */
-	@NotNull // TODO: remove? causes false positive warnings downstream...
 	Set<Operation> supportedOperations();
 
 	/**
@@ -55,7 +55,7 @@ public interface FuseOperations {
 	 * mount option is given.
 	 */
 	default int getattr(String path, Stat stat) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -68,7 +68,7 @@ public interface FuseOperations {
 	 * for success.
 	 */
 	default int readlink(String path, ByteBuffer buf, long len) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 //	/**
@@ -76,7 +76,7 @@ public interface FuseOperations {
 //	 */
 //	@Deprecated
 //	default int getdir(String path, Pointer<fuse_h.fuse_dirhandle> fuse_dirhandlePointer, Callback<fuse_h.FI2> fi2Callback) {
-//		return -ERRNO.enosys();
+//		return -errno().enosys();
 //	}
 
 	/**
@@ -87,7 +87,7 @@ public interface FuseOperations {
 	 * regular files that will be called instead.
 	 */
 	default int mknod(String path, short mode, int rdev) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -98,63 +98,63 @@ public interface FuseOperations {
 	 * correct directory type bits use  mode|S_IFDIR
 	 */
 	default int mkdir(String path, short mode) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
 	 * Remove a file
 	 */
 	default int unlink(String path) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
 	 * Remove a directory
 	 */
 	default int rmdir(String path) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
 	 * Create a symbolic link
 	 */
 	default int symlink(String linkname, String target) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
 	 * Rename a file
 	 */
 	default int rename(String oldpath, String newpath) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
 	 * Create a hard link to a file
 	 */
 	default int link(String linkname, String target) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
 	 * Change the permission bits of a file
 	 */
 	default int chmod(String path, short mode) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
 	 * Change the owner and group of a file
 	 */
 	default int chown(String path, int uid, int gid) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
 	 * Change the size of a file
 	 */
 	default int truncate(String path, long size) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 //	/**
@@ -164,7 +164,7 @@ public interface FuseOperations {
 //	 */
 //	@Deprecated
 //	default int utime(String path, Pointer<utime_h.utimbuf> utimbufPointer) {
-//		return -ERRNO.enosys();
+//		return -errno().enosys();
 //	}
 
 	/**
@@ -186,7 +186,7 @@ public interface FuseOperations {
 	 * Changed in version 2.2
 	 */
 	default int open(String path, FileInfo fi) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -202,7 +202,7 @@ public interface FuseOperations {
 	 * Changed in version 2.2
 	 */
 	default int read(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -215,7 +215,7 @@ public interface FuseOperations {
 	 * Changed in version 2.2
 	 */
 	default int write(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -227,7 +227,7 @@ public interface FuseOperations {
 	 * version 2.5
 	 */
 	default int statfs(String path, Statvfs statvfs) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -255,7 +255,7 @@ public interface FuseOperations {
 	 * Changed in version 2.2
 	 */
 	default int flush(String path, FileInfo fi) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -286,35 +286,35 @@ public interface FuseOperations {
 	 * Changed in version 2.2
 	 */
 	default int fsync(String path, int datasync, FileInfo fi) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
 	 * Set extended attributes
 	 */
 	default int setxattr(String path, String name, ByteBuffer value, long size, int flags) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
 	 * Get extended attributes
 	 */
 	default int getxattr(String path, String name, ByteBuffer value, long size) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
 	 * List extended attributes
 	 */
 	default int listxattr(String path, ByteBuffer list, long size) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
 	 * Remove extended attributes
 	 */
 	default int removexattr(String path, String name) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -329,7 +329,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.3
 	 */
 	default int opendir(String path, FileInfo fi) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -355,7 +355,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.3
 	 */
 	default int readdir(String path, DirFiller filler, long offset, FileInfo fi) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -376,7 +376,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.3
 	 */
 	default int fsyncdir(String path, int datasync, FileInfo fi) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -416,7 +416,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.5
 	 */
 	default int access(String path, int mask) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -432,7 +432,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.5
 	 */
 	default int create(String path, short mode, FileInfo fi) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -448,7 +448,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.5
 	 */
 	default int ftruncate(String path, long size, FileInfo fi) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -464,7 +464,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.5
 	 */
 	default int fgetattr(String path, Stat stat, FileInfo fi) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 //	/**
@@ -500,7 +500,7 @@ public interface FuseOperations {
 //	 * Introduced in version 2.6
 //	 */
 //	default int lock(String path, FileInfo fi, int cmd, Pointer<fcntl_h.flock> lock) {
-//		return -ERRNO.enosys();
+//		return -errno().enosys();
 //	}
 
 	/**
@@ -515,7 +515,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.6
 	 */
 	default int utimens(String path, TimeSpec atime, TimeSpec mtime) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 //	/**
@@ -527,7 +527,7 @@ public interface FuseOperations {
 //	 * Introduced in version 2.6
 //	 */
 //	default int bmap(String path, long blocksize, Pointer<Long> idx) {
-//		return -ERRNO.enosys();
+//		return -errno().enosys();
 //	}
 
 	/**
@@ -546,7 +546,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.8
 	 */
 	default int ioctl(String path, int cmd, ByteBuffer arg, FileInfo fi, int flags, ByteBuffer data) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 //	/**
@@ -567,7 +567,7 @@ public interface FuseOperations {
 //	 * Introduced in version 2.8
 //	 */
 //	default int poll(String path, FileInfo fi, Pointer<fuse_common_h.fuse_pollhandle> ph, Pointer<Integer> reventsp) {
-//		return -ERRNO.enosys();
+//		return -errno().enosys();
 //	}
 
 //	/**
@@ -580,7 +580,7 @@ public interface FuseOperations {
 //	 * Introduced in version 2.9
 //	 */
 //	default int writeBuf(String path, Pointer<fuse_common_h.fuse_bufvec> buf, long offset, FileInfo fi) {
-//		return -ERRNO.enosys();
+//		return -errno().enosys();
 //	}
 
 //	/**
@@ -601,7 +601,7 @@ public interface FuseOperations {
 //	 * Introduced in version 2.9
 //	 */
 //	default int readBuf(String path, Pointer<? extends Pointer<fuse_common_h.fuse_bufvec>> bufp, long size, long offset, FileInfo fi) {
-//		return -ERRNO.enosys();
+//		return -errno().enosys();
 //	}
 
 	/**
@@ -625,7 +625,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.9
 	 */
 	default int flock(String path, FileInfo fi, int op) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 
 	/**
@@ -639,6 +639,6 @@ public interface FuseOperations {
 	 * Introduced in version 2.9.1
 	 */
 	default int fallocate(String path, int mode, long offset, long length, FileInfo fi) {
-		return -ERRNO.enosys();
+		return -errno().enosys();
 	}
 }

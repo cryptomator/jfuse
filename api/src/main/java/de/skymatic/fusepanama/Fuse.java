@@ -8,7 +8,6 @@ import jdk.incubator.foreign.ValueLayout;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ServiceLoader;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.CountDownLatch;
@@ -21,13 +20,8 @@ public abstract class Fuse implements AutoCloseable {
 	protected Fuse() {
 	}
 
-	public static Fuse create(FuseOperations fuseOperations) {
-		var provider = ServiceLoader.load(FuseProvider.class).stream() //
-				.map(ServiceLoader.Provider::get) //
-				.filter(FuseProvider::isAvailable) //
-				.findFirst() //
-				.orElseThrow(() -> new UnsupportedOperationException("No suitable implementation of FuseProvider found."));
-		return provider.create(fuseOperations);
+	public static FuseBuilder builder() {
+		return FuseBuilder.getSupported();
 	}
 
 	/**

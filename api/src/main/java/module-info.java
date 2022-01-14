@@ -1,7 +1,4 @@
-import de.skymatic.fusepanama.Errno;
-import de.skymatic.fusepanama.FileModes;
-import de.skymatic.fusepanama.FuseProvider;
-import de.skymatic.fusepanama.OpenFlags;
+import de.skymatic.fusepanama.FuseBuilder;
 
 /**
  * Defines the API to create a FUSE file system in Java.
@@ -12,8 +9,5 @@ module de.skymatic.fusepanama {
 
 	exports de.skymatic.fusepanama;
 
-	uses Errno;
-	uses FuseProvider;
-	uses FileModes;
-	uses OpenFlags;
+	uses FuseBuilder;
 }

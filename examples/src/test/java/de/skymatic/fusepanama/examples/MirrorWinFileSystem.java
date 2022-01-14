@@ -2,6 +2,7 @@ package de.skymatic.fusepanama.examples;
 
 import com.google.common.base.CharMatcher;
 import de.skymatic.fusepanama.DirFiller;
+import de.skymatic.fusepanama.Errno;
 import de.skymatic.fusepanama.FileInfo;
 import de.skymatic.fusepanama.Fuse;
 import de.skymatic.fusepanama.FuseOperations;
@@ -28,7 +29,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributeView;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.DosFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileTime;
@@ -46,14 +46,16 @@ public class MirrorWinFileSystem implements FuseOperations {
 	private static final Logger LOG = LoggerFactory.getLogger(HelloPanamaFileSystem.class);
 
 	private final Path root;
+	private final Errno errno;
 	private final ConcurrentMap<Long, FileChannel> openFiles;
-	private final AtomicLong fileHandleGen = new AtomicLong(1l);
+	private final AtomicLong fileHandleGen = new AtomicLong(1L);
 	private final FileStore fileStore;
 
 	public static void main(String[] args) {
 		Path mirrored = Path.of("C:/Users/Sebastian/Desktop/TMP");
 		Path mountPoint = Path.of("M:");
-		try (var fuse = Fuse.create(new MirrorWinFileSystem(mirrored))) {
+		var builder = Fuse.builder();
+		try (var fuse = builder.build(new MirrorWinFileSystem(mirrored, builder.errno()))) {
 			LOG.info("Mounting at {}...", mountPoint);
 			int result = fuse.mount("fuse-panama", mountPoint, "-s", "-ouid=-1", "-ogid=11", "-ovolname=mirror");
 			if (result == 0) {
@@ -70,8 +72,9 @@ public class MirrorWinFileSystem implements FuseOperations {
 		}
 	}
 
-	public MirrorWinFileSystem(Path root) throws IOException {
+	public MirrorWinFileSystem(Path root, Errno errno) throws IOException {
 		this.root = root;
+		this.errno = errno;
 		this.fileStore = Files.getFileStore(root);
 		this.openFiles = new ConcurrentHashMap<>();
 	}
@@ -108,6 +111,11 @@ public class MirrorWinFileSystem implements FuseOperations {
 	}
 
 	@Override
+	public Errno errno() {
+		return errno;
+	}
+
+	@Override
 	public int access(String path, int mask) {
 		LOG.trace("access {}", path);
 		Path node = resolvePath(path);
@@ -119,11 +127,11 @@ public class MirrorWinFileSystem implements FuseOperations {
 			node.getFileSystem().provider().checkAccess(node, desiredAccess.toArray(AccessMode[]::new));
 			return 0;
 		} catch (NoSuchFileException e) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		} catch (AccessDeniedException e) {
-			return -ERRNO.eacces();
+			return -errno.eacces();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -139,7 +147,7 @@ public class MirrorWinFileSystem implements FuseOperations {
 			statvfs.setNameMax(255);
 			return 0;
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -151,7 +159,7 @@ public class MirrorWinFileSystem implements FuseOperations {
 			Files.createSymbolicLink(node, Path.of(target));
 			return 0;
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -165,11 +173,11 @@ public class MirrorWinFileSystem implements FuseOperations {
 			buf.put(tmp);
 			return 0;
 		} catch (BufferOverflowException e) {
-			return -ERRNO.enomem();
+			return -errno.enomem();
 		} catch (NoSuchFileException e) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -178,13 +186,14 @@ public class MirrorWinFileSystem implements FuseOperations {
 		LOG.trace("getattr {}", path);
 		Path node = resolvePath(path);
 		try {
-			final BasicFileAttributes attrs = Files.readAttributes(node, DosFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
-			stat.setMode(FILE_MODES.toMode(attrs));
+			var attrs = Files.readAttributes(node, DosFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
 			stat.setSize(attrs.size());
+			stat.setNLink((short) 1);
 			if (attrs.isDirectory()) {
+				stat.toggleDir(attrs.isDirectory());
 				stat.setNLink((short) (2 + countSubDirs(node)));
-			} else {
-				stat.setNLink((short) 1);
+			} else if (attrs.isRegularFile()){
+				stat.toggleReg(true);
 			}
 			stat.aTime().set(attrs.lastAccessTime().toInstant());
 			stat.mTime().set(attrs.lastModifiedTime().toInstant());
@@ -192,9 +201,9 @@ public class MirrorWinFileSystem implements FuseOperations {
 			stat.birthTime().set(attrs.creationTime().toInstant());
 			return 0;
 		} catch (NoSuchFileException e) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -215,7 +224,7 @@ public class MirrorWinFileSystem implements FuseOperations {
 			view.setTimes(lastModified, lastAccess, null);
 			return 0;
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -227,9 +236,9 @@ public class MirrorWinFileSystem implements FuseOperations {
 			Files.createDirectory(node);
 			return 0;
 		} catch (FileAlreadyExistsException e) {
-			return -ERRNO.eexist();
+			return -errno.eexist();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -242,7 +251,7 @@ public class MirrorWinFileSystem implements FuseOperations {
 			// usually you'd want to open the dir now and keep it open until releasedir(), blocking the resource
 			return 0;
 		} else {
-			return -ERRNO.enotdir();
+			return -errno.enotdir();
 		}
 	}
 
@@ -256,9 +265,9 @@ public class MirrorWinFileSystem implements FuseOperations {
 			filler.fillNamesFromOffset(allNames.skip(offset), offset);
 			return 0;
 		} catch (NotDirectoryException e) {
-			return -ERRNO.enotdir();
+			return -errno.enotdir();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -272,15 +281,15 @@ public class MirrorWinFileSystem implements FuseOperations {
 	public int rmdir(String path) {
 		Path node = resolvePath(path);
 		if (!Files.isDirectory(node, LinkOption.NOFOLLOW_LINKS)) {
-			return -ERRNO.enotdir();
+			return -errno.enotdir();
 		}
 		try {
 			Files.delete(node);
 			return 0;
 		} catch (NoSuchFileException e) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -298,17 +307,16 @@ public class MirrorWinFileSystem implements FuseOperations {
 
 	private int createOrOpen(String path, FileInfo fi, FileAttribute<?>... attr) {
 		Path node = resolvePath(path);
-		var openOptions = OPEN_FLAGS.toOpenOptions(fi.getFlags());
 		try {
-			var fc = FileChannel.open(node, openOptions, attr);
+			var fc = FileChannel.open(node, fi.getOpenFlags(), attr);
 			var fh = fileHandleGen.incrementAndGet();
 			fi.setFh(fh);
 			openFiles.put(fh, fc);
 			return 0;
 		} catch (FileAlreadyExistsException e) {
-			return -ERRNO.eexist();
+			return -errno.eexist();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -317,12 +325,12 @@ public class MirrorWinFileSystem implements FuseOperations {
 		LOG.trace("read {} at pos {}", path, offset);
 		var fc = openFiles.get(fi.getFh());
 		if (fc == null) {
-			return -ERRNO.ebadf();
+			return -errno.ebadf();
 		}
 		try {
 			return fc.read(buf, offset);
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -331,12 +339,12 @@ public class MirrorWinFileSystem implements FuseOperations {
 		LOG.trace("write {} at pos {}", path, offset);
 		var fc = openFiles.get(fi.getFh());
 		if (fc == null) {
-			return -ERRNO.ebadf();
+			return -errno.ebadf();
 		}
 		try {
 			return fc.write(buf, offset);
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -348,9 +356,9 @@ public class MirrorWinFileSystem implements FuseOperations {
 			fc.truncate(size);
 			return 0;
 		} catch (NoSuchFileException e) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -359,13 +367,13 @@ public class MirrorWinFileSystem implements FuseOperations {
 		LOG.trace("release {}", path);
 		var fc = openFiles.remove(fi.getFh());
 		if (fc == null) {
-			return -ERRNO.ebadf();
+			return -errno.ebadf();
 		}
 		try {
 			fc.close();
 			return 0;
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -374,15 +382,15 @@ public class MirrorWinFileSystem implements FuseOperations {
 		LOG.trace("unlink {}", path);
 		Path node = resolvePath(path);
 		if (Files.isDirectory(node, LinkOption.NOFOLLOW_LINKS)) {
-			return -ERRNO.eisdir();
+			return -errno.eisdir();
 		}
 		try {
 			Files.delete(node);
 			return 0;
 		} catch (NoSuchFileException e) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -395,7 +403,7 @@ public class MirrorWinFileSystem implements FuseOperations {
 			Files.move(nodeOld, nodeNew, StandardCopyOption.REPLACE_EXISTING);
 			return 0;
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 

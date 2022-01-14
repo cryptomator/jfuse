@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MirrorPosixFileSystem" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="de.skymatic.fusepanama.examples.MirrorPosixFileSystem" />
-    <module name="fusepanama-examples" />
+    <module name="examples" />
     <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.foreign" />
     <extension name="coverage">
       <pattern>

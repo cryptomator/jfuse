@@ -2,7 +2,9 @@ package de.skymatic.fusepanama.examples;
 
 import com.google.common.base.CharMatcher;
 import de.skymatic.fusepanama.DirFiller;
+import de.skymatic.fusepanama.Errno;
 import de.skymatic.fusepanama.FileInfo;
+import de.skymatic.fusepanama.FileModes;
 import de.skymatic.fusepanama.Fuse;
 import de.skymatic.fusepanama.FuseOperations;
 import de.skymatic.fusepanama.Stat;
@@ -46,14 +48,16 @@ public class MirrorPosixFileSystem implements FuseOperations {
 	private static final Logger LOG = LoggerFactory.getLogger(HelloPanamaFileSystem.class);
 
 	private final Path root;
+	private final Errno errno;
 	private final ConcurrentMap<Long, FileChannel> openFiles;
-	private final AtomicLong fileHandleGen = new AtomicLong(1l);
+	private final AtomicLong fileHandleGen = new AtomicLong(1L);
 	private final FileStore fileStore;
 
 	public static void main(String[] args) {
 		Path mirrored = Path.of("/Users/sebastian/Desktop/TMP");
 		Path mountPoint = Path.of("/Volumes/foo");
-		try (var fuse = Fuse.create(new MirrorPosixFileSystem(mirrored))) {
+		var builder = Fuse.builder();
+		try (var fuse = builder.build(new MirrorPosixFileSystem(mirrored, builder.errno()))) {
 			LOG.info("Mounting at {}...", mountPoint);
 			int result = fuse.mount("fuse-panama", mountPoint, "-s", "-ovolname=mirror");
 			if (result == 0) {
@@ -70,8 +74,9 @@ public class MirrorPosixFileSystem implements FuseOperations {
 		}
 	}
 
-	public MirrorPosixFileSystem(Path root) throws IOException {
+	public MirrorPosixFileSystem(Path root, Errno errno) throws IOException {
 		this.root = root;
+		this.errno = errno;
 		this.fileStore = Files.getFileStore(root);
 		this.openFiles = new ConcurrentHashMap<>();
 	}
@@ -109,6 +114,11 @@ public class MirrorPosixFileSystem implements FuseOperations {
 	}
 
 	@Override
+	public Errno errno() {
+		return errno;
+	}
+
+	@Override
 	public int access(String path, int mask) {
 		LOG.trace("access {}", path);
 		Path node = resolvePath(path);
@@ -120,11 +130,11 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			node.getFileSystem().provider().checkAccess(node, desiredAccess.toArray(AccessMode[]::new));
 			return 0;
 		} catch (NoSuchFileException e) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		} catch (AccessDeniedException e) {
-			return -ERRNO.eacces();
+			return -errno.eacces();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -140,7 +150,7 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			statvfs.setNameMax(255);
 			return 0;
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -152,7 +162,7 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			Files.createSymbolicLink(node, Path.of(target));
 			return 0;
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -166,11 +176,11 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			buf.put(tmp);
 			return 0;
 		} catch (BufferOverflowException e) {
-			return -ERRNO.enomem();
+			return -errno.enomem();
 		} catch (NoSuchFileException e) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -180,12 +190,16 @@ public class MirrorPosixFileSystem implements FuseOperations {
 		Path node = resolvePath(path);
 		try {
 			var attrs = Files.readAttributes(node, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
-			stat.setMode(FILE_MODES.toMode(attrs));
+			stat.setPermissions(attrs.permissions());
 			stat.setSize(attrs.size());
+			stat.setNLink((short) 1);
 			if (attrs.isDirectory()) {
+				stat.toggleDir(true);
 				stat.setNLink((short) (2 + countSubDirs(node)));
-			} else {
-				stat.setNLink((short) 1);
+			} else if (attrs.isSymbolicLink()) {
+				stat.toggleLnk(true);
+			} else if (attrs.isRegularFile()){
+				stat.toggleReg(true);
 			}
 			stat.aTime().set(attrs.lastAccessTime().toInstant());
 			stat.mTime().set(attrs.lastModifiedTime().toInstant());
@@ -193,9 +207,9 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			stat.birthTime().set(attrs.creationTime().toInstant());
 			return 0;
 		} catch (NoSuchFileException e) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -210,10 +224,10 @@ public class MirrorPosixFileSystem implements FuseOperations {
 		LOG.trace("chmod {}", path);
 		Path node = resolvePath(path);
 		try {
-			Files.setPosixFilePermissions(node, FILE_MODES.toPermissions(mode));
+			Files.setPosixFilePermissions(node, FileModes.toPermissions(mode));
 			return 0;
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -228,7 +242,7 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			view.setTimes(lastModified, lastAccess, null);
 			return 0;
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -236,14 +250,14 @@ public class MirrorPosixFileSystem implements FuseOperations {
 	public int mkdir(String path, short mode) {
 		LOG.trace("mkdir {}", path);
 		Path node = resolvePath(path);
-		var attr = PosixFilePermissions.asFileAttribute(FILE_MODES.toPermissions(mode));
+		var attr = PosixFilePermissions.asFileAttribute(FileModes.toPermissions(mode));
 		try {
 			Files.createDirectory(node, attr);
 			return 0;
 		} catch (FileAlreadyExistsException e) {
-			return -ERRNO.eexist();
+			return -errno.eexist();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -256,7 +270,7 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			// usually you'd want to open the dir now and keep it open until releasedir(), blocking the resource
 			return 0;
 		} else {
-			return -ERRNO.enotdir();
+			return -errno.enotdir();
 		}
 	}
 
@@ -270,9 +284,9 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			filler.fillNamesFromOffset(allNames.skip(offset), offset);
 			return 0;
 		} catch (NotDirectoryException e) {
-			return -ERRNO.enotdir();
+			return -errno.enotdir();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -286,22 +300,22 @@ public class MirrorPosixFileSystem implements FuseOperations {
 	public int rmdir(String path) {
 		Path node = resolvePath(path);
 		if (!Files.isDirectory(node, LinkOption.NOFOLLOW_LINKS)) {
-			return -ERRNO.enotdir();
+			return -errno.enotdir();
 		}
 		try {
 			Files.delete(node);
 			return 0;
 		} catch (NoSuchFileException e) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
 	@Override
 	public int create(String path, short mode, FileInfo fi) {
 		LOG.trace("create {}", path);
-		return createOrOpen(path, fi, PosixFilePermissions.asFileAttribute(FILE_MODES.toPermissions(mode)));
+		return createOrOpen(path, fi, PosixFilePermissions.asFileAttribute(FileModes.toPermissions(mode)));
 	}
 
 	@Override
@@ -312,17 +326,16 @@ public class MirrorPosixFileSystem implements FuseOperations {
 
 	private int createOrOpen(String path, FileInfo fi, FileAttribute<?>... attr) {
 		Path node = resolvePath(path);
-		var openOptions = OPEN_FLAGS.toOpenOptions(fi.getFlags());
 		try {
-			var fc = FileChannel.open(node, openOptions, attr);
+			var fc = FileChannel.open(node, fi.getOpenFlags(), attr);
 			var fh = fileHandleGen.incrementAndGet();
 			fi.setFh(fh);
 			openFiles.put(fh, fc);
 			return 0;
 		} catch (FileAlreadyExistsException e) {
-			return -ERRNO.eexist();
+			return -errno.eexist();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -331,12 +344,12 @@ public class MirrorPosixFileSystem implements FuseOperations {
 		LOG.trace("read {} at pos {}", path, offset);
 		var fc = openFiles.get(fi.getFh());
 		if (fc == null) {
-			return -ERRNO.ebadf();
+			return -errno.ebadf();
 		}
 		try {
 			return fc.read(buf, offset);
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -345,12 +358,12 @@ public class MirrorPosixFileSystem implements FuseOperations {
 		LOG.trace("write {} at pos {}", path, offset);
 		var fc = openFiles.get(fi.getFh());
 		if (fc == null) {
-			return -ERRNO.ebadf();
+			return -errno.ebadf();
 		}
 		try {
 			return fc.write(buf, offset);
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -362,9 +375,9 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			fc.truncate(size);
 			return 0;
 		} catch (NoSuchFileException e) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -373,13 +386,13 @@ public class MirrorPosixFileSystem implements FuseOperations {
 		LOG.trace("release {}", path);
 		var fc = openFiles.remove(fi.getFh());
 		if (fc == null) {
-			return -ERRNO.ebadf();
+			return -errno.ebadf();
 		}
 		try {
 			fc.close();
 			return 0;
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -388,15 +401,15 @@ public class MirrorPosixFileSystem implements FuseOperations {
 		LOG.trace("unlink {}", path);
 		Path node = resolvePath(path);
 		if (Files.isDirectory(node, LinkOption.NOFOLLOW_LINKS)) {
-			return -ERRNO.eisdir();
+			return -errno.eisdir();
 		}
 		try {
 			Files.delete(node);
 			return 0;
 		} catch (NoSuchFileException e) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 
@@ -409,7 +422,7 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			Files.move(nodeOld, nodeNew, StandardCopyOption.REPLACE_EXISTING);
 			return 0;
 		} catch (IOException e) {
-			return -ERRNO.eio();
+			return -errno.eio();
 		}
 	}
 

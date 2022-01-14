@@ -1,6 +1,7 @@
 package de.skymatic.fusepanama.examples;
 
 import de.skymatic.fusepanama.DirFiller;
+import de.skymatic.fusepanama.Errno;
 import de.skymatic.fusepanama.FileInfo;
 import de.skymatic.fusepanama.FileModes;
 import de.skymatic.fusepanama.Fuse;
@@ -23,21 +24,20 @@ import static de.skymatic.fusepanama.FuseOperations.Operation.*;
 
 public class HelloPanamaFileSystem implements FuseOperations {
 
-	static {
-		System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "info");
-	}
-
-	private static final int S_IFDIR = FileModes.instance().dir();
-	private static final int S_IFREG = FileModes.instance().reg();
+	private static final int S_IFDIR = 0040000;
+	private static final int S_IFREG = 0100000;
 
 	private static final Logger LOG = LoggerFactory.getLogger(HelloPanamaFileSystem.class);
 
 	public static final String HELLO_PATH = "/hello.txt";
 	public static final String HELLO_STR = "Hello Panama!";
+	private final Errno errno;
 
 	public static void main(String[] args) {
 		Path mountPoint = Path.of("/Volumes/foo");
-		try (var fuse = Fuse.create(new HelloPanamaFileSystem())) {
+		var builder = Fuse.builder();
+		var fuseOps = new HelloPanamaFileSystem(builder.errno());
+		try (var fuse = builder.build(fuseOps)) {
 			LOG.info("Mounting at {}...", mountPoint);
 			int result = fuse.mount("fuse-panama", mountPoint, "-s");
 			if (result == 0) {
@@ -49,6 +49,15 @@ public class HelloPanamaFileSystem implements FuseOperations {
 			LOG.error("Un/Mounting failed. ", e);
 			System.exit(1);
 		}
+	}
+
+	public HelloPanamaFileSystem(Errno errno) {
+		this.errno = errno;
+	}
+
+	@Override
+	public Errno errno() {
+		return errno;
 	}
 
 	@Override
@@ -80,7 +89,7 @@ public class HelloPanamaFileSystem implements FuseOperations {
 			stat.setSize(0);
 			return 0;
 		} else {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		}
 	}
 
@@ -98,7 +107,7 @@ public class HelloPanamaFileSystem implements FuseOperations {
 	public int open(String path, FileInfo fi) {
 		LOG.debug("open() {}", path);
 		if (!HELLO_PATH.equals(path)) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		}
 		return 0;
 	}
@@ -107,7 +116,7 @@ public class HelloPanamaFileSystem implements FuseOperations {
 	public int read(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
 		LOG.debug("read() {}", path);
 		if (!HELLO_PATH.equals(path)) {
-			return -ERRNO.enoent();
+			return -errno.enoent();
 		}
 
 		ByteBuffer content = StandardCharsets.UTF_8.encode(HELLO_STR);
