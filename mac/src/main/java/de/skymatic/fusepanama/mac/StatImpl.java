@@ -34,8 +34,8 @@ record StatImpl(MemorySegment segment) implements Stat {
 	}
 
 	@Override
-	public void setMode(short mode) {
-		stat.st_mode$set(segment, mode);
+	public void setMode(int mode) {
+		stat.st_mode$set(segment, (short) mode);
 	}
 
 	@Override
