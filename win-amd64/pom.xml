@@ -95,11 +95,11 @@
 										<argument>--include-struct</argument>
 										<argument>fuse_context</argument>
 										<argument>--include-struct</argument>
-										<argument>stat</argument>
+										<argument>fuse_stat</argument>
 										<argument>--include-struct</argument>
 										<argument>statvfs</argument>
 										<argument>--include-struct</argument>
-										<argument>timespec</argument>
+										<argument>fuse_timespec</argument>
 										<argument>--include-struct</argument>
 										<argument>fuse_conn_info</argument>
 										<!-- typedefs: -->
@@ -161,35 +161,6 @@
 										<argument>EINVAL</argument>
 										<!-- extract errno.h header: -->
 										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\errno.h</argument>
-									</arguments>
-								</configuration>
-							</execution>
-							<execution>
-								<id>jextract-stat</id>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-								<phase>generate-sources</phase>
-								<configuration>
-									<executable>${java.home}/bin/jextract</executable>
-									<workingDirectory>${project.basedir}</workingDirectory>
-									<arguments>
-										<argument>--source</argument>
-										<argument>-d</argument>
-										<argument>${project.build.sourceDirectory}</argument>
-										<argument>-t</argument>
-										<argument>de.skymatic.fusepanama.win.amd64.lowlevel</argument>
-										<argument>-I</argument>
-										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</argument>
-										<!-- file type bits -->
-										<argument>--include-macro</argument>
-										<argument>S_IFREG</argument>
-										<argument>--include-macro</argument>
-										<argument>S_IFDIR</argument>
-										<argument>--include-macro</argument>
-										<argument>S_IFCHR</argument>
-										<!-- extract sys/stat.h header: -->
-										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\sys\stat.h</argument>
 									</arguments>
 								</configuration>
 							</execution>

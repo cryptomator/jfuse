@@ -2,7 +2,7 @@ package de.skymatic.fusepanama.win.amd64;
 
 import de.skymatic.fusepanama.FuseOperations;
 import de.skymatic.fusepanama.win.amd64.lowlevel.fuse_operations;
-import de.skymatic.fusepanama.win.amd64.lowlevel.timespec;
+import de.skymatic.fusepanama.win.amd64.lowlevel.fuse_timespec;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.MemorySegment;
@@ -70,9 +70,7 @@ class FuseOperationsMapper {
 	}
 
 	private int chmod(MemoryAddress path, short mode) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.chmod(path.getUtf8String(0), mode);
-		}
+		return delegate.chmod(path.getUtf8String(0), mode);
 	}
 
 	private int create(MemoryAddress path, short mode, MemoryAddress fi) {
@@ -149,7 +147,7 @@ class FuseOperationsMapper {
 
 	private int statfs(MemoryAddress path, MemoryAddress statvfs) {
 		try (var scope = ResourceScope.newConfinedScope()) {
-			return delegate.statfs(path.getUtf8String(0), new MacStatvfs(statvfs, scope));
+			return delegate.statfs(path.getUtf8String(0), new StatvfsImpl(statvfs, scope));
 		}
 	}
 
@@ -168,21 +166,18 @@ class FuseOperationsMapper {
 	private int utimens(MemoryAddress path, MemoryAddress times) {
 		if (MemoryAddress.NULL.equals(times)) {
 			// set both times to current time (using on-heap memory segments)
-			var segment = MemorySegment.ofByteBuffer(ByteBuffer.allocate((int) timespec.$LAYOUT().byteSize()));
-			timespec.tv_sec$set(segment, 0);
-			timespec.tv_nsec$set(segment, 0); // FIXME
-			var time = new MacTimeSpec(segment);
+			var segment = MemorySegment.ofByteBuffer(ByteBuffer.allocate((int) fuse_timespec.$LAYOUT().byteSize()));
+			fuse_timespec.tv_sec$set(segment, 0);
+			fuse_timespec.tv_nsec$set(segment, 0); // FIXME use hard-coded UTIME_NOW
+			var time = new TimeSpecImpl(segment);
 			return delegate.utimens(path.getUtf8String(0), time, time);
 		} else {
 			try (var scope = ResourceScope.newConfinedScope()) {
-				var seq = MemoryLayout.sequenceLayout(2, timespec.$LAYOUT());
+				var seq = MemoryLayout.sequenceLayout(2, fuse_timespec.$LAYOUT());
 				var segment = MemorySegment.ofAddress(times, seq.byteSize(), scope);
-				var time0 = segment.asSlice(0, timespec.$LAYOUT().byteSize());
-				var time1 = segment.asSlice(timespec.$LAYOUT().byteSize(), timespec.$LAYOUT().byteSize());
-//				var layout0 = seq.select(MemoryLayout.PathElement.sequenceElement(0));
-//				var layout1 = seq.select(MemoryLayout.PathElement.sequenceElement(1));
-//				times.getAtIndex(timespec.$LAYOUT()., 0);
-				return delegate.utimens(path.getUtf8String(0), new MacTimeSpec(time0), new MacTimeSpec(time1));
+				var time0 = segment.asSlice(0, fuse_timespec.$LAYOUT().byteSize());
+				var time1 = segment.asSlice(fuse_timespec.$LAYOUT().byteSize(), fuse_timespec.$LAYOUT().byteSize());
+				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1));
 			}
 		}
 	}
