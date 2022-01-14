@@ -8,7 +8,6 @@ import de.skymatic.fusepanama.FuseOperations;
 import de.skymatic.fusepanama.Stat;
 import de.skymatic.fusepanama.Statvfs;
 import de.skymatic.fusepanama.TimeSpec;
-import jnr.ffi.annotations.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +32,6 @@ import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.time.Instant;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.CompletionException;
@@ -43,7 +41,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class MirroringFileSystem implements FuseOperations {
+public class MirrorPosixFileSystem implements FuseOperations {
 
 	private static final Logger LOG = LoggerFactory.getLogger(HelloPanamaFileSystem.class);
 
@@ -55,9 +53,9 @@ public class MirroringFileSystem implements FuseOperations {
 	public static void main(String[] args) {
 		Path mirrored = Path.of("/Users/sebastian/Desktop/TMP");
 		Path mountPoint = Path.of("/Volumes/foo");
-		try (var fuse = Fuse.create(new MirroringFileSystem(mirrored))) {
+		try (var fuse = Fuse.create(new MirrorPosixFileSystem(mirrored))) {
 			LOG.info("Mounting at {}...", mountPoint);
-			int result = fuse.mount("fuse-panama", mountPoint, "-s");
+			int result = fuse.mount("fuse-panama", mountPoint, "-s", "-ovolname=mirror");
 			if (result == 0) {
 				LOG.info("Mounted to {}. Unmount to terminate this process", mountPoint);
 			} else {
@@ -72,7 +70,7 @@ public class MirroringFileSystem implements FuseOperations {
 		}
 	}
 
-	public MirroringFileSystem(Path root) throws IOException {
+	public MirrorPosixFileSystem(Path root) throws IOException {
 		this.root = root;
 		this.fileStore = Files.getFileStore(root);
 		this.openFiles = new ConcurrentHashMap<>();
@@ -136,7 +134,6 @@ public class MirroringFileSystem implements FuseOperations {
 		try {
 			long bsize = 4096L;
 			statvfs.setBsize(bsize);
-			statvfs.setFrsize(bsize);
 			statvfs.setBlocks(fileStore.getTotalSpace() / bsize);
 			statvfs.setBavail(fileStore.getUsableSpace() / bsize);
 			statvfs.setBfree(fileStore.getUnallocatedSpace() / bsize);
@@ -183,7 +180,7 @@ public class MirroringFileSystem implements FuseOperations {
 		Path node = resolvePath(path);
 		try {
 			var attrs = Files.readAttributes(node, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
-			stat.setMode((short) FILE_MODES.toMode(attrs));
+			stat.setMode(FILE_MODES.toMode(attrs));
 			stat.setSize(attrs.size());
 			if (attrs.isDirectory()) {
 				stat.setNLink((short) (2 + countSubDirs(node)));

@@ -71,7 +71,7 @@
 		</profile>
 
 		<profile>
-			<id>linux-x64</id>
+			<id>linux-amd64</id>
 			<activation>
 				<os>
 					<family>unix</family>
@@ -82,7 +82,25 @@
 			<dependencies>
 				<dependency>
 					<groupId>de.skymatic</groupId>
-					<artifactId>fusepanama-linux-x64</artifactId>
+					<artifactId>fusepanama-linux-amd64</artifactId>
+					<version>${project.version}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<profile>
+			<id>win-amd64</id>
+			<activation>
+				<os>
+					<family>windows</family>
+					<arch>amd64</arch>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>de.skymatic</groupId>
+					<artifactId>fusepanama-win-amd64</artifactId>
 					<version>${project.version}</version>
 					<scope>test</scope>
 				</dependency>
