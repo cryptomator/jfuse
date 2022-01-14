@@ -6,9 +6,20 @@ import de.skymatic.fusepanama.mac.lowlevel.timespec;
 import jdk.incubator.foreign.MemorySegment;
 
 import java.time.Instant;
-import java.util.Optional;
 
 record MacTimeSpec(MemorySegment segment) implements TimeSpec {
+
+	@Override
+	public boolean isUtimeOmit() {
+		var nanos = timespec.tv_nsec$get(segment);
+		return stat_h.UTIME_OMIT() == nanos;
+	}
+
+	@Override
+	public boolean isUtimeNow() {
+		var nanos = timespec.tv_nsec$get(segment);
+		return stat_h.UTIME_NOW() == nanos;
+	}
 
 	@Override
 	public void set(Instant newValue) {
@@ -17,16 +28,10 @@ record MacTimeSpec(MemorySegment segment) implements TimeSpec {
 	}
 
 	@Override
-	public Optional<Instant> get() {
+	public Instant get() {
 		var seconds = timespec.tv_sec$get(segment);
 		var nanos = timespec.tv_nsec$get(segment);
-		if (stat_h.UTIME_OMIT() == nanos) {
-			return Optional.empty();
-		} else if (stat_h.UTIME_NOW() == nanos) {
-			return Optional.of(Instant.now());
-		} else {
-			return Optional.of(Instant.ofEpochSecond(seconds, nanos));
-		}
+		return Instant.ofEpochSecond(seconds, nanos);
 	}
 
 }

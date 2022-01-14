@@ -8,6 +8,7 @@ import de.skymatic.fusepanama.FuseOperations;
 import de.skymatic.fusepanama.Stat;
 import de.skymatic.fusepanama.Statvfs;
 import de.skymatic.fusepanama.TimeSpec;
+import jnr.ffi.annotations.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +33,7 @@ import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.time.Instant;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.CompletionException;
@@ -223,8 +225,8 @@ public class MirroringFileSystem implements FuseOperations {
 		LOG.trace("utimens {}", path);
 		Path node = resolvePath(path);
 		var view = Files.getFileAttributeView(node, BasicFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
-		var lastModified = mtime.get().map(FileTime::from).orElse(null);
-		var lastAccess = atime.get().map(FileTime::from).orElse(null);
+		var lastModified = mtime.getOptional().map(FileTime::from).orElse(null);
+		var lastAccess = atime.getOptional().map(FileTime::from).orElse(null);
 		try {
 			view.setTimes(lastModified, lastAccess, null);
 			return 0;

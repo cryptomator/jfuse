@@ -180,9 +180,7 @@ class MacFuseOperationsMapper {
 				var segment = MemorySegment.ofAddress(times, seq.byteSize(), scope);
 				var time0 = segment.asSlice(0, timespec.$LAYOUT().byteSize());
 				var time1 = segment.asSlice(timespec.$LAYOUT().byteSize(), timespec.$LAYOUT().byteSize());
-//				var layout0 = seq.select(MemoryLayout.PathElement.sequenceElement(0));
-//				var layout1 = seq.select(MemoryLayout.PathElement.sequenceElement(1));
-//				times.getAtIndex(timespec.$LAYOUT()., 0);
+//				var timeSpecs = segment.elements(seq.elementLayout()).map(MacTimeSpec::new).toArray(MacTimeSpec[]::new);
 				return delegate.utimens(path.getUtf8String(0), new MacTimeSpec(time0), new MacTimeSpec(time1));
 			}
 		}
