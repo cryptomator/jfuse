@@ -1,14 +1,10 @@
-import de.skymatic.fusepanama.Errno;
-import de.skymatic.fusepanama.FileModes;
-import de.skymatic.fusepanama.FuseProvider;
-import de.skymatic.fusepanama.OpenFlags;
+import de.skymatic.fusepanama.FuseBuilder;
 
 module de.skymatic.fusepanama.mac {
 	requires de.skymatic.fusepanama;
 	requires jdk.incubator.foreign;
 
-	provides Errno with de.skymatic.fusepanama.mac.MacErrno;
-	provides FileModes with de.skymatic.fusepanama.mac.MacFileModes;
-	provides FuseProvider with de.skymatic.fusepanama.mac.MacFuseProvider;
-	provides OpenFlags with de.skymatic.fusepanama.mac.MacOpenFlags;
+	opens de.skymatic.fusepanama.mac to de.skymatic.fusepanama;
+
+	provides FuseBuilder with de.skymatic.fusepanama.mac.MacFuseBuilder;
 }

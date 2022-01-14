@@ -8,8 +8,12 @@
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-
 	<artifactId>fusepanama-mac</artifactId>
+
+	<properties>
+		<jextract.path>${java.home}/bin/jextract</jextract.path>
+		<mac.headerSearchPath>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/</mac.headerSearchPath>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -61,7 +65,7 @@
 								</goals>
 								<phase>generate-sources</phase>
 								<configuration>
-									<executable>${java.home}/bin/jextract</executable>
+									<executable>${jextract.path}</executable>
 									<workingDirectory>${project.basedir}</workingDirectory>
 									<arguments>
 										<argument>--source</argument>
@@ -74,9 +78,7 @@
 										<argument>-I</argument>
 										<argument>/usr/local/include</argument>
 										<argument>-I</argument>
-										<argument>
-											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/
-										</argument>
+										<argument>${mac.headerSearchPath}</argument>
 										<argument>-C-D_FILE_OFFSET_BITS=64</argument>
 										<argument>-C-DFUSE_USE_VERSION=29</argument>
 										<!-- structs: -->
@@ -106,7 +108,6 @@
 										<argument>fuse_exit</argument>
 										<!-- extract fuse.h header: -->
 										<argument>${project.parent.basedir}/libfuse/include/fuse.h</argument>
-										<!--<argument>/usr/local/include/fuse/fuse.h</argument>-->
 									</arguments>
 								</configuration>
 							</execution>
@@ -117,7 +118,7 @@
 								</goals>
 								<phase>generate-sources</phase>
 								<configuration>
-									<executable>${java.home}/bin/jextract</executable>
+									<executable>${jextract.path}</executable>
 									<workingDirectory>${project.basedir}</workingDirectory>
 									<arguments>
 										<argument>--source</argument>
@@ -126,9 +127,7 @@
 										<argument>-t</argument>
 										<argument>de.skymatic.fusepanama.mac.lowlevel</argument>
 										<argument>-I</argument>
-										<argument>
-											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/
-										</argument>
+										<argument>${mac.headerSearchPath}</argument>
 										<!-- constants -->
 										<argument>--include-macro</argument>
 										<argument>ENOENT</argument>
@@ -155,9 +154,7 @@
 										<argument>--include-macro</argument>
 										<argument>EINVAL</argument>
 										<!-- extract errno.h header: -->
-										<argument>
-											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/errno.h
-										</argument>
+										<argument>${mac.headerSearchPath}/errno.h</argument>
 									</arguments>
 								</configuration>
 							</execution>
@@ -168,7 +165,7 @@
 								</goals>
 								<phase>generate-sources</phase>
 								<configuration>
-									<executable>${java.home}/bin/jextract</executable>
+									<executable>${jextract.path}</executable>
 									<workingDirectory>${project.basedir}</workingDirectory>
 									<arguments>
 										<argument>--source</argument>
@@ -177,9 +174,7 @@
 										<argument>-t</argument>
 										<argument>de.skymatic.fusepanama.mac.lowlevel</argument>
 										<argument>-I</argument>
-										<argument>
-											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/
-										</argument>
+										<argument>${mac.headerSearchPath}</argument>
 										<!-- file type bits -->
 										<argument>--include-macro</argument>
 										<argument>S_IFREG</argument>
@@ -194,9 +189,7 @@
 										<argument>--include-macro</argument>
 										<argument>UTIME_OMIT</argument>
 										<!-- extract sys/stat.h header: -->
-										<argument>
-											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stat.h
-										</argument>
+										<argument>${mac.headerSearchPath}/sys/stat.h</argument>
 									</arguments>
 								</configuration>
 							</execution>
@@ -207,7 +200,7 @@
 								</goals>
 								<phase>generate-sources</phase>
 								<configuration>
-									<executable>${java.home}/bin/jextract</executable>
+									<executable>${jextract.path}</executable>
 									<workingDirectory>${project.basedir}</workingDirectory>
 									<arguments>
 										<argument>--source</argument>
@@ -216,9 +209,7 @@
 										<argument>-t</argument>
 										<argument>de.skymatic.fusepanama.mac.lowlevel</argument>
 										<argument>-I</argument>
-										<argument>
-											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/
-										</argument>
+										<argument>${mac.headerSearchPath}</argument>
 										<!-- open flags -->
 										<argument>--include-macro</argument>
 										<argument>O_RDONLY</argument>
@@ -239,9 +230,7 @@
 										<argument>--include-macro</argument>
 										<argument>O_SYNC</argument>
 										<!-- extract fcntl.h header: -->
-										<argument>
-											/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/fcntl.h
-										</argument>
+										<argument>${mac.headerSearchPath}/fcntl.h</argument>
 									</arguments>
 								</configuration>
 							</execution>

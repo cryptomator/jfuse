@@ -3,6 +3,7 @@ package de.skymatic.fusepanama.mac;
 import de.skymatic.fusepanama.Stat;
 import de.skymatic.fusepanama.TimeSpec;
 import de.skymatic.fusepanama.mac.lowlevel.stat;
+import de.skymatic.fusepanama.mac.lowlevel.stat_h;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
@@ -61,6 +62,48 @@ record StatImpl(MemorySegment segment) implements Stat {
 	@Override
 	public long getSize() {
 		return stat.st_size$get(segment);
+	}
+
+	@Override
+	public boolean isDir() {
+		return (getMode() & stat_h.S_IFDIR()) == stat_h.S_IFDIR();
+	}
+
+	@Override
+	public void toggleDir(boolean isDir) {
+		if (isDir) {
+			setMode(getMode() | stat_h.S_IFDIR());
+		} else {
+			setMode(getMode() & ~stat_h.S_IFDIR());
+		}
+	}
+
+	@Override
+	public boolean isReg() {
+		return (getMode() & stat_h.S_IFREG()) == stat_h.S_IFREG();
+	}
+
+	@Override
+	public void toggleReg(boolean isReg) {
+		if (isReg) {
+			setMode(getMode() | stat_h.S_IFREG());
+		} else {
+			setMode(getMode() & ~stat_h.S_IFREG());
+		}
+	}
+
+	@Override
+	public boolean isLnk() {
+		return (getMode() & stat_h.S_IFLNK()) == stat_h.S_IFLNK();
+	}
+
+	@Override
+	public void toggleLnk(boolean isLnk) {
+		if (isLnk) {
+			setMode(getMode() | stat_h.S_IFLNK());
+		} else {
+			setMode(getMode() & ~stat_h.S_IFLNK());
+		}
 	}
 
 }

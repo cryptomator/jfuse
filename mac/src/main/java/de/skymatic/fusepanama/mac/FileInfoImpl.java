@@ -1,10 +1,15 @@
 package de.skymatic.fusepanama.mac;
 
 import de.skymatic.fusepanama.FileInfo;
+import de.skymatic.fusepanama.mac.lowlevel.fcntl_h;
 import de.skymatic.fusepanama.mac.lowlevel.fuse_file_info;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
+
+import java.nio.file.StandardOpenOption;
+import java.util.EnumSet;
+import java.util.Set;
 
 record FileInfoImpl(MemorySegment segment) implements FileInfo {
 
@@ -25,6 +30,26 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 	@Override
 	public int getFlags() {
 		return fuse_file_info.flags$get(segment);
+	}
+
+	@Override
+	public Set<StandardOpenOption> getOpenFlags() {
+		Set<StandardOpenOption> result = EnumSet.noneOf(StandardOpenOption.class);
+		int read = fcntl_h.O_RDONLY() | fcntl_h.O_RDWR();
+		int write = fcntl_h.O_WRONLY() | fcntl_h.O_RDWR();
+		int createNew = fcntl_h.O_WRONLY() | fcntl_h.O_EXCL();
+		int flags = getFlags();
+		// @formatter:off
+		if ((flags & read) != 0)               result.add(StandardOpenOption.READ);
+		if ((flags & write) != 0)              result.add(StandardOpenOption.WRITE);
+		if ((flags & fcntl_h.O_APPEND()) != 0) result.add(StandardOpenOption.APPEND);
+		if ((flags & fcntl_h.O_CREAT()) != 0)  result.add(StandardOpenOption.CREATE);
+		if ((flags & createNew) != 0)          result.add(StandardOpenOption.CREATE_NEW);
+		if ((flags & fcntl_h.O_TRUNC()) != 0)  result.add(StandardOpenOption.TRUNCATE_EXISTING);
+		if ((flags & fcntl_h.O_SYNC()) != 0)   result.add(StandardOpenOption.SYNC);
+		if ((flags & fcntl_h.O_DSYNC()) != 0)  result.add(StandardOpenOption.DSYNC);
+		// @formatter:on
+		return result;
 	}
 
 	@Override
