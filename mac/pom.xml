@@ -55,6 +55,20 @@
 						</executions>
 					</plugin>
 					<plugin>
+						<artifactId>maven-clean-plugin</artifactId>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>${project.build.sourceDirectory}/de/skymatic/fusepanama/mac/lowlevel</directory>
+									<includes>
+										<include>*.java</include>
+									</includes>
+									<followSymlinks>false</followSymlinks>
+								</fileset>
+							</filesets>
+						</configuration>
+					</plugin>
+					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>
 						<executions>
@@ -182,7 +196,6 @@
 										<argument>S_IFDIR</argument>
 										<argument>--include-macro</argument>
 										<argument>S_IFLNK</argument>
-										<argument>--include-macro</argument>
 										<!-- special utime values -->
 										<argument>--include-macro</argument>
 										<argument>UTIME_NOW</argument>
