@@ -39,11 +39,7 @@ record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	@Override
 	public void setBlocks(long blocks) {
-		if (blocks > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("Max supported number of blocks: " + Integer.MAX_VALUE);
-		} else {
-			fuse_statvfs.f_blocks$set(segment, (int) blocks);
-		}
+		fuse_statvfs.f_blocks$set(segment, blocks);
 	}
 
 	@Override
@@ -53,11 +49,7 @@ record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	@Override
 	public void setBfree(long bfree) {
-		if (bfree > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("Max supported number of blocks: " + Integer.MAX_VALUE);
-		} else {
-			fuse_statvfs.f_bfree$set(segment, (int) bfree);
-		}
+		fuse_statvfs.f_bfree$set(segment, bfree);
 	}
 
 	@Override
@@ -67,11 +59,7 @@ record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	@Override
 	public void setBavail(long bavail) {
-		if (bavail > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("Max supported number of blocks: " + Integer.MAX_VALUE);
-		} else {
-			fuse_statvfs.f_bavail$set(segment, (int) bavail);
-		}
+		fuse_statvfs.f_bavail$set(segment, bavail);
 	}
 
 	@Override
