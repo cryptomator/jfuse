@@ -7,6 +7,11 @@ public interface Statvfs {
 	 */
 	long getBsize();
 
+	/**
+	 * Sets the block size. Should normally be equal to {@link #setFrsize(long) frsize}.
+	 *
+	 * @param bsize Block size
+	 */
 	void setBsize(long bsize);
 
 	/**
@@ -14,7 +19,12 @@ public interface Statvfs {
 	 */
 	long getFrsize();
 
-	// TODO: remove. ignored during statfs() call anyway...
+	/**
+	 * Sets the fragment size (required on Windows). Should normally be equal to {@link #setBsize(long) bsize}.
+	 *
+	 * @param frsize Fragment size
+	 * @see <a href="https://github.com/billziss-gh/winfsp/blob/73f587e674eda57333b42c7f284574d826a15a8b/src/dll/fuse/fuse_intf.c#L801-L802">WinFSP FS Quota Calculation</a>
+	 */
 	void setFrsize(long frsize);
 
 	/**
@@ -22,6 +32,11 @@ public interface Statvfs {
 	 */
 	long getBlocks();
 
+	/**
+	 * Sets the number of total blocks.
+	 *
+	 * @param blocks Number of total blocks
+	 */
 	void setBlocks(long blocks);
 
 	/**
@@ -29,6 +44,11 @@ public interface Statvfs {
 	 */
 	long getBfree();
 
+	/**
+	 * Sets the number of unallocated blocks.
+	 *
+	 * @param bfree Number of unallocated blocks.
+	 */
 	void setBfree(long bfree);
 
 	/**
@@ -36,6 +56,11 @@ public interface Statvfs {
 	 */
 	long getBavail();
 
+	/**
+	 * Sets the number of usable blocks.
+	 *
+	 * @param bavail Number of usable blocks
+	 */
 	void setBavail(long bavail);
 
 	/**
@@ -43,6 +68,11 @@ public interface Statvfs {
 	 */
 	long getNameMax();
 
+	/**
+	 * Sets the maximum filename length.
+	 *
+	 * @param namemax Maxium filename length
+	 */
 	void setNameMax(long namemax);
 
 }
