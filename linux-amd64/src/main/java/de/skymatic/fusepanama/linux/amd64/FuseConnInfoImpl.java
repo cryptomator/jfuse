@@ -1,14 +1,14 @@
-package de.skymatic.fusepanama.linux;
+package de.skymatic.fusepanama.linux.amd64;
 
 import de.skymatic.fusepanama.FuseConnInfo;
-import de.skymatic.fusepanama.linux.lowlevel.fuse_conn_info;
+import de.skymatic.fusepanama.linux.amd64.lowlevel.fuse_conn_info;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-record LinuxFuseConnInfo(MemorySegment segment) implements FuseConnInfo {
+record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
 
-	public LinuxFuseConnInfo(MemoryAddress address, ResourceScope scope) {
+	public FuseConnInfoImpl(MemoryAddress address, ResourceScope scope) {
 		this(fuse_conn_info.ofAddress(address, scope));
 	}
 

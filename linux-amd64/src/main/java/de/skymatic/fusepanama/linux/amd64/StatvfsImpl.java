@@ -1,14 +1,14 @@
-package de.skymatic.fusepanama.linux;
+package de.skymatic.fusepanama.linux.amd64;
 
 import de.skymatic.fusepanama.Statvfs;
-import de.skymatic.fusepanama.linux.lowlevel.statvfs;
+import de.skymatic.fusepanama.linux.amd64.lowlevel.statvfs;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-record LinuxStatvfs(MemorySegment segment) implements Statvfs {
+record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
-	public LinuxStatvfs(MemoryAddress address, ResourceScope scope) {
+	public StatvfsImpl(MemoryAddress address, ResourceScope scope) {
 		this(statvfs.ofAddress(address, scope));
 	}
 
@@ -23,12 +23,22 @@ record LinuxStatvfs(MemorySegment segment) implements Statvfs {
 	}
 
 	@Override
+	public long getFrsize() {
+		return statvfs.f_frsize$get(segment);
+	}
+
+	@Override
+	public void setFrsize(long frsize) {
+		statvfs.f_frsize$set(segment, frsize);
+	}
+
+	@Override
 	public long getBlocks() {
 		return statvfs.f_blocks$get(segment);
 	}
 
 	@Override
-	public void setBlocks(int blocks) {
+	public void setBlocks(long blocks) {
 		statvfs.f_blocks$set(segment, blocks);
 	}
 
@@ -38,7 +48,7 @@ record LinuxStatvfs(MemorySegment segment) implements Statvfs {
 	}
 
 	@Override
-	public void setBfree(int bfree) {
+	public void setBfree(long bfree) {
 		statvfs.f_bfree$set(segment, bfree);
 	}
 
@@ -48,7 +58,7 @@ record LinuxStatvfs(MemorySegment segment) implements Statvfs {
 	}
 
 	@Override
-	public void setBavail(int bavail) {
+	public void setBavail(long bavail) {
 		statvfs.f_bavail$set(segment, bavail);
 	}
 

@@ -8,8 +8,13 @@
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-
 	<artifactId>fusepanama-linux-amd64</artifactId>
+
+	<properties>
+		<jextract.path>${java.home}/bin/jextract</jextract.path>
+		<linux.headerSearchPath>/usr/include/</linux.headerSearchPath>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>de.skymatic</groupId>
@@ -46,6 +51,20 @@
 						</executions>
 					</plugin>
 					<plugin>
+						<artifactId>maven-clean-plugin</artifactId>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>${project.build.sourceDirectory}/de/skymatic/fusepanama/linux/amd64/lowlevel</directory>
+									<includes>
+										<include>*.java</include>
+									</includes>
+									<followSymlinks>false</followSymlinks>
+								</fileset>
+							</filesets>
+						</configuration>
+					</plugin>
+					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>
 						<executions>
@@ -65,9 +84,11 @@
 										<argument>-d</argument>
 										<argument>${project.build.sourceDirectory}</argument>
 										<argument>-t</argument>
-										<argument>de.skymatic.fusepanama.linux.lowlevel</argument>
+										<argument>de.skymatic.fusepanama.linux.amd64.lowlevel</argument>
 										<argument>-I</argument>
-										<argument>/usr/local/include</argument>
+										<argument>${linux.headerSearchPath}</argument>
+										<argument>-I</argument>
+										<argument>${linux.headerSearchPath}/x86_64-linux-gnu</argument>
 										<argument>-C-D_FILE_OFFSET_BITS=64</argument>
 										<argument>-C-DFUSE_USE_VERSION=29</argument>
 										<!-- structs: -->
@@ -96,7 +117,7 @@
 										<argument>--include-function</argument>
 										<argument>fuse_exit</argument>
 										<!-- extract fuse.h header: -->
-										<argument>${project.basedir}/libfuse/include/fuse.h</argument>
+										<argument>${project.parent.basedir}/libfuse/include/fuse.h</argument>
 									</arguments>
 								</configuration>
 							</execution>
@@ -114,16 +135,117 @@
 										<argument>-d</argument>
 										<argument>${project.build.sourceDirectory}</argument>
 										<argument>-t</argument>
-										<argument>de.skymatic.fusepanama.linux.lowlevel</argument>
+										<argument>de.skymatic.fusepanama.linux.amd64.lowlevel</argument>
+										<argument>-I</argument>
+										<argument>${linux.headerSearchPath}</argument>
+										<argument>-I</argument>
+										<argument>${linux.headerSearchPath}/x86_64-linux-gnu</argument>
 										<!-- constants -->
 										<argument>--include-macro</argument>
 										<argument>ENOENT</argument>
 										<argument>--include-macro</argument>
+										<argument>ENOSYS</argument>
+										<argument>--include-macro</argument>
 										<argument>ENOMEM</argument>
 										<argument>--include-macro</argument>
-										<argument>ENOSYS</argument>
+										<argument>EACCES</argument>
+										<argument>--include-macro</argument>
+										<argument>EIO</argument>
+										<argument>--include-macro</argument>
+										<argument>EROFS</argument>
+										<argument>--include-macro</argument>
+										<argument>EBADF</argument>
+										<argument>--include-macro</argument>
+										<argument>EEXIST</argument>
+										<argument>--include-macro</argument>
+										<argument>ENOTDIR</argument>
+										<argument>--include-macro</argument>
+										<argument>EISDIR</argument>
+										<argument>--include-macro</argument>
+										<argument>ENOTEMPTY</argument>
+										<argument>--include-macro</argument>
+										<argument>EINVAL</argument>
 										<!-- extract errno.h header: -->
-										<argument>/usr/include/errno.h</argument>
+										<argument>${linux.headerSearchPath}/errno.h</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-stat</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<executable>${jextract.path}</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>--source</argument>
+										<argument>-d</argument>
+										<argument>${project.build.sourceDirectory}</argument>
+										<argument>-t</argument>
+										<argument>de.skymatic.fusepanama.linux.amd64.lowlevel</argument>
+										<argument>-I</argument>
+										<argument>${linux.headerSearchPath}</argument>
+										<argument>-I</argument>
+										<argument>${linux.headerSearchPath}/x86_64-linux-gnu</argument>
+										<!-- file type bits -->
+										<argument>--include-macro</argument>
+										<argument>S_IFREG</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IFDIR</argument>
+										<argument>--include-macro</argument>
+										<argument>S_IFLNK</argument>
+										<!-- special utime values -->
+										<argument>--include-macro</argument>
+										<argument>UTIME_NOW</argument>
+										<argument>--include-macro</argument>
+										<argument>UTIME_OMIT</argument>
+										<!-- extract sys/stat.h header: -->
+										<argument>${linux.headerSearchPath}/x86_64-linux-gnu/sys/stat.h</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-fcntl</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<executable>${jextract.path}</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>--source</argument>
+										<argument>-d</argument>
+										<argument>${project.build.sourceDirectory}</argument>
+										<argument>-t</argument>
+										<argument>de.skymatic.fusepanama.linux.amd64.lowlevel</argument>
+										<argument>-I</argument>
+										<argument>${linux.headerSearchPath}</argument>
+										<argument>-I</argument>
+										<argument>${linux.headerSearchPath}/x86_64-linux-gnu</argument>
+										<!-- open flags -->
+										<argument>--include-macro</argument>
+										<argument>O_RDONLY</argument>
+										<argument>--include-macro</argument>
+										<argument>O_WRONLY</argument>
+										<argument>--include-macro</argument>
+										<argument>O_RDWR</argument>
+										<argument>--include-macro</argument>
+										<argument>O_APPEND</argument>
+										<argument>--include-macro</argument>
+										<argument>O_CREAT</argument>
+										<argument>--include-macro</argument>
+										<argument>O_TRUNC</argument>
+										<argument>--include-macro</argument>
+										<argument>O_EXCL</argument>
+										<argument>--include-macro</argument>
+										<argument>O_DSYNC</argument>
+										<argument>--include-macro</argument>
+										<argument>O_SYNC</argument>
+										<!-- extract fcntl.h header: -->
+										<argument>${linux.headerSearchPath}/fcntl.h</argument>
 									</arguments>
 								</configuration>
 							</execution>
