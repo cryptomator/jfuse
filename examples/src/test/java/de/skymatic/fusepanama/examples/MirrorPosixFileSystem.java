@@ -144,6 +144,7 @@ public class MirrorPosixFileSystem implements FuseOperations {
 		try {
 			long bsize = 4096L;
 			statvfs.setBsize(bsize);
+			statvfs.setFrsize(bsize);
 			statvfs.setBlocks(fileStore.getTotalSpace() / bsize);
 			statvfs.setBavail(fileStore.getUsableSpace() / bsize);
 			statvfs.setBfree(fileStore.getUnallocatedSpace() / bsize);

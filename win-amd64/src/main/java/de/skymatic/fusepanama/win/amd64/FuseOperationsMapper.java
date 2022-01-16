@@ -69,11 +69,11 @@ class FuseOperationsMapper {
 		return delegate.access(path.getUtf8String(0), mask);
 	}
 
-	private int chmod(MemoryAddress path, short mode) {
+	private int chmod(MemoryAddress path, int mode) {
 		return delegate.chmod(path.getUtf8String(0), mode);
 	}
 
-	private int create(MemoryAddress path, short mode, MemoryAddress fi) {
+	private int create(MemoryAddress path, int mode, MemoryAddress fi) {
 		try (var scope = ResourceScope.newConfinedScope()) {
 			return delegate.create(path.getUtf8String(0), mode, new FileInfoImpl(fi, scope));
 		}
@@ -89,7 +89,7 @@ class FuseOperationsMapper {
 		}
 	}
 
-	private int mkdir(MemoryAddress path, short mode) {
+	private int mkdir(MemoryAddress path, int mode) {
 		return delegate.mkdir(path.getUtf8String(0), mode);
 	}
 

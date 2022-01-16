@@ -2,21 +2,22 @@
 
 package de.skymatic.fusepanama.win.amd64.lowlevel;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
-
+import java.nio.ByteOrder;
 import jdk.incubator.foreign.*;
-
+import static jdk.incubator.foreign.ValueLayout.*;
 public class fuse_context {
 
     static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_POINTER$LAYOUT.withName("fuse"),
-        Constants$root.C_INT$LAYOUT.withName("uid"),
-        Constants$root.C_INT$LAYOUT.withName("gid"),
-        Constants$root.C_INT$LAYOUT.withName("pid"),
+        Constants$root.C_LONG$LAYOUT.withName("uid"),
+        Constants$root.C_LONG$LAYOUT.withName("gid"),
+        Constants$root.C_LONG$LAYOUT.withName("pid"),
         MemoryLayout.paddingLayout(32),
         Constants$root.C_POINTER$LAYOUT.withName("private_data"),
-        Constants$root.C_SHORT$LAYOUT.withName("umask"),
-        MemoryLayout.paddingLayout(48)
+        Constants$root.C_LONG$LAYOUT.withName("umask"),
+        MemoryLayout.paddingLayout(32)
     ).withName("fuse_context");
     public static MemoryLayout $LAYOUT() {
         return fuse_context.$struct$LAYOUT;
@@ -105,16 +106,16 @@ public class fuse_context {
     public static VarHandle umask$VH() {
         return fuse_context.umask$VH;
     }
-    public static short umask$get(MemorySegment seg) {
-        return (short)fuse_context.umask$VH.get(seg);
+    public static int umask$get(MemorySegment seg) {
+        return (int)fuse_context.umask$VH.get(seg);
     }
-    public static void umask$set( MemorySegment seg, short x) {
+    public static void umask$set( MemorySegment seg, int x) {
         fuse_context.umask$VH.set(seg, x);
     }
-    public static short umask$get(MemorySegment seg, long index) {
-        return (short)fuse_context.umask$VH.get(seg.asSlice(index*sizeof()));
+    public static int umask$get(MemorySegment seg, long index) {
+        return (int)fuse_context.umask$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void umask$set(MemorySegment seg, long index, short x) {
+    public static void umask$set(MemorySegment seg, long index, int x) {
         fuse_context.umask$VH.set(seg.asSlice(index*sizeof()), x);
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }

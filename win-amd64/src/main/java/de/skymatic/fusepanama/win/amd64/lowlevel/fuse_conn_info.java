@@ -2,23 +2,22 @@
 
 package de.skymatic.fusepanama.win.amd64.lowlevel;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
-
+import java.nio.ByteOrder;
 import jdk.incubator.foreign.*;
-
+import static jdk.incubator.foreign.ValueLayout.*;
 public class fuse_conn_info {
 
     static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
-        Constants$root.C_INT$LAYOUT.withName("proto_major"),
-        Constants$root.C_INT$LAYOUT.withName("proto_minor"),
-        Constants$root.C_INT$LAYOUT.withName("async_read"),
-        Constants$root.C_INT$LAYOUT.withName("max_write"),
-        Constants$root.C_INT$LAYOUT.withName("max_readahead"),
-        Constants$root.C_INT$LAYOUT.withName("capable"),
-        Constants$root.C_INT$LAYOUT.withName("want"),
-        Constants$root.C_INT$LAYOUT.withName("max_background"),
-        Constants$root.C_INT$LAYOUT.withName("congestion_threshold"),
-        MemoryLayout.sequenceLayout(23, Constants$root.C_INT$LAYOUT).withName("reserved")
+        Constants$root.C_LONG$LAYOUT.withName("proto_major"),
+        Constants$root.C_LONG$LAYOUT.withName("proto_minor"),
+        Constants$root.C_LONG$LAYOUT.withName("async_read"),
+        Constants$root.C_LONG$LAYOUT.withName("max_write"),
+        Constants$root.C_LONG$LAYOUT.withName("max_readahead"),
+        Constants$root.C_LONG$LAYOUT.withName("capable"),
+        Constants$root.C_LONG$LAYOUT.withName("want"),
+        MemoryLayout.sequenceLayout(25, Constants$root.C_LONG$LAYOUT).withName("reserved")
     ).withName("fuse_conn_info");
     public static MemoryLayout $LAYOUT() {
         return fuse_conn_info.$struct$LAYOUT;
@@ -135,40 +134,8 @@ public class fuse_conn_info {
     public static void want$set(MemorySegment seg, long index, int x) {
         fuse_conn_info.want$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle max_background$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("max_background"));
-    public static VarHandle max_background$VH() {
-        return fuse_conn_info.max_background$VH;
-    }
-    public static int max_background$get(MemorySegment seg) {
-        return (int)fuse_conn_info.max_background$VH.get(seg);
-    }
-    public static void max_background$set( MemorySegment seg, int x) {
-        fuse_conn_info.max_background$VH.set(seg, x);
-    }
-    public static int max_background$get(MemorySegment seg, long index) {
-        return (int)fuse_conn_info.max_background$VH.get(seg.asSlice(index*sizeof()));
-    }
-    public static void max_background$set(MemorySegment seg, long index, int x) {
-        fuse_conn_info.max_background$VH.set(seg.asSlice(index*sizeof()), x);
-    }
-    static final VarHandle congestion_threshold$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("congestion_threshold"));
-    public static VarHandle congestion_threshold$VH() {
-        return fuse_conn_info.congestion_threshold$VH;
-    }
-    public static int congestion_threshold$get(MemorySegment seg) {
-        return (int)fuse_conn_info.congestion_threshold$VH.get(seg);
-    }
-    public static void congestion_threshold$set( MemorySegment seg, int x) {
-        fuse_conn_info.congestion_threshold$VH.set(seg, x);
-    }
-    public static int congestion_threshold$get(MemorySegment seg, long index) {
-        return (int)fuse_conn_info.congestion_threshold$VH.get(seg.asSlice(index*sizeof()));
-    }
-    public static void congestion_threshold$set(MemorySegment seg, long index, int x) {
-        fuse_conn_info.congestion_threshold$VH.set(seg.asSlice(index*sizeof()), x);
-    }
     public static MemorySegment reserved$slice(MemorySegment seg) {
-        return seg.asSlice(36, 92);
+        return seg.asSlice(28, 100);
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }

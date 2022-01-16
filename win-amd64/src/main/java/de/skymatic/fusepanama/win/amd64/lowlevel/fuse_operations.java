@@ -4,15 +4,15 @@ package de.skymatic.fusepanama.win.amd64.lowlevel;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
-
+import java.nio.ByteOrder;
 import jdk.incubator.foreign.*;
-
+import static jdk.incubator.foreign.ValueLayout.*;
 public class fuse_operations {
 
     static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_POINTER$LAYOUT.withName("getattr"),
-        Constants$root.C_POINTER$LAYOUT.withName("readlink"),
         Constants$root.C_POINTER$LAYOUT.withName("getdir"),
+        Constants$root.C_POINTER$LAYOUT.withName("readlink"),
         Constants$root.C_POINTER$LAYOUT.withName("mknod"),
         Constants$root.C_POINTER$LAYOUT.withName("mkdir"),
         Constants$root.C_POINTER$LAYOUT.withName("unlink"),
@@ -60,12 +60,25 @@ public class fuse_operations {
         Constants$root.C_POINTER$LAYOUT.withName("write_buf"),
         Constants$root.C_POINTER$LAYOUT.withName("read_buf"),
         Constants$root.C_POINTER$LAYOUT.withName("flock"),
-        Constants$root.C_POINTER$LAYOUT.withName("fallocate")
+        Constants$root.C_POINTER$LAYOUT.withName("fallocate"),
+        Constants$root.C_POINTER$LAYOUT.withName("reserved00"),
+        Constants$root.C_POINTER$LAYOUT.withName("reserved01"),
+        Constants$root.C_POINTER$LAYOUT.withName("reserved02"),
+        Constants$root.C_POINTER$LAYOUT.withName("statfs_x"),
+        Constants$root.C_POINTER$LAYOUT.withName("setvolname"),
+        Constants$root.C_POINTER$LAYOUT.withName("exchange"),
+        Constants$root.C_POINTER$LAYOUT.withName("getxtimes"),
+        Constants$root.C_POINTER$LAYOUT.withName("setbkuptime"),
+        Constants$root.C_POINTER$LAYOUT.withName("setchgtime"),
+        Constants$root.C_POINTER$LAYOUT.withName("setcrtime"),
+        Constants$root.C_POINTER$LAYOUT.withName("chflags"),
+        Constants$root.C_POINTER$LAYOUT.withName("setattr_x"),
+        Constants$root.C_POINTER$LAYOUT.withName("fsetattr_x")
     ).withName("fuse_operations");
     public static MemoryLayout $LAYOUT() {
         return fuse_operations.$struct$LAYOUT;
     }
-    static final FunctionDescriptor getattr$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor getattr$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -109,52 +122,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static getattr getattr (MemorySegment segment, ResourceScope scope) {
         return getattr.ofAddress(getattr$get(segment), scope);
     }
-    static final FunctionDescriptor readlink$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_LONG_LONG$LAYOUT
-    );
-    static final MethodHandle readlink$MH = RuntimeHelper.downcallHandle(
-        fuse_operations.readlink$FUNC, false
-    );
-    public interface readlink {
-
-        int apply(jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1, long x2);
-        static NativeSymbol allocate(readlink fi, ResourceScope scope) {
-            return RuntimeHelper.upcallStub(readlink.class, fi, fuse_operations.readlink$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;J)I", scope);
-        }
-        static readlink ofAddress(MemoryAddress addr, ResourceScope scope) {
-            NativeSymbol symbol = NativeSymbol.ofAddress("readlink::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
-return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1, long x2) -> {
-                try {
-                    return (int)fuse_operations.readlink$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, (jdk.incubator.foreign.Addressable)x1, x2);
-                } catch (Throwable ex$) {
-                    throw new AssertionError("should not reach here", ex$);
-                }
-            };
-        }
-    }
-
-    static final VarHandle readlink$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("readlink"));
-    public static VarHandle readlink$VH() {
-        return fuse_operations.readlink$VH;
-    }
-    public static MemoryAddress readlink$get(MemorySegment seg) {
-        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.readlink$VH.get(seg);
-    }
-    public static void readlink$set( MemorySegment seg, MemoryAddress x) {
-        fuse_operations.readlink$VH.set(seg, x);
-    }
-    public static MemoryAddress readlink$get(MemorySegment seg, long index) {
-        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.readlink$VH.get(seg.asSlice(index*sizeof()));
-    }
-    public static void readlink$set(MemorySegment seg, long index, MemoryAddress x) {
-        fuse_operations.readlink$VH.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static readlink readlink (MemorySegment segment, ResourceScope scope) {
-        return readlink.ofAddress(readlink$get(segment), scope);
-    }
-    static final FunctionDescriptor getdir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor getdir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
@@ -199,23 +167,68 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static getdir getdir (MemorySegment segment, ResourceScope scope) {
         return getdir.ofAddress(getdir$get(segment), scope);
     }
-    static final FunctionDescriptor mknod$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor readlink$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_SHORT$LAYOUT,
-        Constants$root.C_INT$LAYOUT
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_LONG_LONG$LAYOUT
+    );
+    static final MethodHandle readlink$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.readlink$FUNC, false
+    );
+    public interface readlink {
+
+        int apply(jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1, long x2);
+        static NativeSymbol allocate(readlink fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(readlink.class, fi, fuse_operations.readlink$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;J)I", scope);
+        }
+        static readlink ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("readlink::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1, long x2) -> {
+                try {
+                    return (int)fuse_operations.readlink$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, (jdk.incubator.foreign.Addressable)x1, x2);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle readlink$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("readlink"));
+    public static VarHandle readlink$VH() {
+        return fuse_operations.readlink$VH;
+    }
+    public static MemoryAddress readlink$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.readlink$VH.get(seg);
+    }
+    public static void readlink$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.readlink$VH.set(seg, x);
+    }
+    public static MemoryAddress readlink$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.readlink$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void readlink$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.readlink$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static readlink readlink (MemorySegment segment, ResourceScope scope) {
+        return readlink.ofAddress(readlink$get(segment), scope);
+    }
+    static final FunctionDescriptor mknod$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_LONG$LAYOUT
     );
     static final MethodHandle mknod$MH = RuntimeHelper.downcallHandle(
         fuse_operations.mknod$FUNC, false
     );
     public interface mknod {
 
-        int apply(jdk.incubator.foreign.MemoryAddress x0, short x1, int x2);
+        int apply(jdk.incubator.foreign.MemoryAddress x0, int x1, int x2);
         static NativeSymbol allocate(mknod fi, ResourceScope scope) {
-            return RuntimeHelper.upcallStub(mknod.class, fi, fuse_operations.mknod$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;SI)I", scope);
+            return RuntimeHelper.upcallStub(mknod.class, fi, fuse_operations.mknod$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;II)I", scope);
         }
         static mknod ofAddress(MemoryAddress addr, ResourceScope scope) {
             NativeSymbol symbol = NativeSymbol.ofAddress("mknod::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
-return (jdk.incubator.foreign.MemoryAddress x0, short x1, int x2) -> {
+return (jdk.incubator.foreign.MemoryAddress x0, int x1, int x2) -> {
                 try {
                     return (int)fuse_operations.mknod$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, x1, x2);
                 } catch (Throwable ex$) {
@@ -244,22 +257,22 @@ return (jdk.incubator.foreign.MemoryAddress x0, short x1, int x2) -> {
     public static mknod mknod (MemorySegment segment, ResourceScope scope) {
         return mknod.ofAddress(mknod$get(segment), scope);
     }
-    static final FunctionDescriptor mkdir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor mkdir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_SHORT$LAYOUT
+        Constants$root.C_LONG$LAYOUT
     );
     static final MethodHandle mkdir$MH = RuntimeHelper.downcallHandle(
         fuse_operations.mkdir$FUNC, false
     );
     public interface mkdir {
 
-        int apply(jdk.incubator.foreign.MemoryAddress x0, short x1);
+        int apply(jdk.incubator.foreign.MemoryAddress x0, int x1);
         static NativeSymbol allocate(mkdir fi, ResourceScope scope) {
-            return RuntimeHelper.upcallStub(mkdir.class, fi, fuse_operations.mkdir$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;S)I", scope);
+            return RuntimeHelper.upcallStub(mkdir.class, fi, fuse_operations.mkdir$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;I)I", scope);
         }
         static mkdir ofAddress(MemoryAddress addr, ResourceScope scope) {
             NativeSymbol symbol = NativeSymbol.ofAddress("mkdir::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
-return (jdk.incubator.foreign.MemoryAddress x0, short x1) -> {
+return (jdk.incubator.foreign.MemoryAddress x0, int x1) -> {
                 try {
                     return (int)fuse_operations.mkdir$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, x1);
                 } catch (Throwable ex$) {
@@ -288,7 +301,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, short x1) -> {
     public static mkdir mkdir (MemorySegment segment, ResourceScope scope) {
         return mkdir.ofAddress(mkdir$get(segment), scope);
     }
-    static final FunctionDescriptor unlink$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor unlink$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle unlink$MH = RuntimeHelper.downcallHandle(
@@ -331,7 +344,7 @@ return (jdk.incubator.foreign.MemoryAddress x0) -> {
     public static unlink unlink (MemorySegment segment, ResourceScope scope) {
         return unlink.ofAddress(unlink$get(segment), scope);
     }
-    static final FunctionDescriptor rmdir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor rmdir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle rmdir$MH = RuntimeHelper.downcallHandle(
@@ -374,7 +387,7 @@ return (jdk.incubator.foreign.MemoryAddress x0) -> {
     public static rmdir rmdir (MemorySegment segment, ResourceScope scope) {
         return rmdir.ofAddress(rmdir$get(segment), scope);
     }
-    static final FunctionDescriptor symlink$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor symlink$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -418,7 +431,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static symlink symlink (MemorySegment segment, ResourceScope scope) {
         return symlink.ofAddress(symlink$get(segment), scope);
     }
-    static final FunctionDescriptor rename$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor rename$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -462,7 +475,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static rename rename (MemorySegment segment, ResourceScope scope) {
         return rename.ofAddress(rename$get(segment), scope);
     }
-    static final FunctionDescriptor link$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor link$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -506,22 +519,22 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static link link (MemorySegment segment, ResourceScope scope) {
         return link.ofAddress(link$get(segment), scope);
     }
-    static final FunctionDescriptor chmod$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor chmod$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_SHORT$LAYOUT
+        Constants$root.C_LONG$LAYOUT
     );
     static final MethodHandle chmod$MH = RuntimeHelper.downcallHandle(
         fuse_operations.chmod$FUNC, false
     );
     public interface chmod {
 
-        int apply(jdk.incubator.foreign.MemoryAddress x0, short x1);
+        int apply(jdk.incubator.foreign.MemoryAddress x0, int x1);
         static NativeSymbol allocate(chmod fi, ResourceScope scope) {
-            return RuntimeHelper.upcallStub(chmod.class, fi, fuse_operations.chmod$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;S)I", scope);
+            return RuntimeHelper.upcallStub(chmod.class, fi, fuse_operations.chmod$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;I)I", scope);
         }
         static chmod ofAddress(MemoryAddress addr, ResourceScope scope) {
             NativeSymbol symbol = NativeSymbol.ofAddress("chmod::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
-return (jdk.incubator.foreign.MemoryAddress x0, short x1) -> {
+return (jdk.incubator.foreign.MemoryAddress x0, int x1) -> {
                 try {
                     return (int)fuse_operations.chmod$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, x1);
                 } catch (Throwable ex$) {
@@ -550,10 +563,10 @@ return (jdk.incubator.foreign.MemoryAddress x0, short x1) -> {
     public static chmod chmod (MemorySegment segment, ResourceScope scope) {
         return chmod.ofAddress(chmod$get(segment), scope);
     }
-    static final FunctionDescriptor chown$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor chown$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_INT$LAYOUT,
-        Constants$root.C_INT$LAYOUT
+        Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_LONG$LAYOUT
     );
     static final MethodHandle chown$MH = RuntimeHelper.downcallHandle(
         fuse_operations.chown$FUNC, false
@@ -595,7 +608,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, int x1, int x2) -> {
     public static chown chown (MemorySegment segment, ResourceScope scope) {
         return chown.ofAddress(chown$get(segment), scope);
     }
-    static final FunctionDescriptor truncate$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor truncate$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT
     );
@@ -639,7 +652,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, long x1) -> {
     public static truncate truncate (MemorySegment segment, ResourceScope scope) {
         return truncate.ofAddress(truncate$get(segment), scope);
     }
-    static final FunctionDescriptor utime$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor utime$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -683,7 +696,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static utime utime (MemorySegment segment, ResourceScope scope) {
         return utime.ofAddress(utime$get(segment), scope);
     }
-    static final FunctionDescriptor open$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor open$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -727,7 +740,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static open open (MemorySegment segment, ResourceScope scope) {
         return open.ofAddress(open$get(segment), scope);
     }
-    static final FunctionDescriptor read$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor read$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT,
@@ -774,7 +787,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static read read (MemorySegment segment, ResourceScope scope) {
         return read.ofAddress(read$get(segment), scope);
     }
-    static final FunctionDescriptor write$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor write$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT,
@@ -821,7 +834,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static write write (MemorySegment segment, ResourceScope scope) {
         return write.ofAddress(write$get(segment), scope);
     }
-    static final FunctionDescriptor statfs$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor statfs$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -865,7 +878,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static statfs statfs (MemorySegment segment, ResourceScope scope) {
         return statfs.ofAddress(statfs$get(segment), scope);
     }
-    static final FunctionDescriptor flush$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor flush$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -909,7 +922,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static flush flush (MemorySegment segment, ResourceScope scope) {
         return flush.ofAddress(flush$get(segment), scope);
     }
-    static final FunctionDescriptor release$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor release$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -953,9 +966,9 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static release release (MemorySegment segment, ResourceScope scope) {
         return release.ofAddress(release$get(segment), scope);
     }
-    static final FunctionDescriptor fsync$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor fsync$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_INT$LAYOUT,
+        Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fsync$MH = RuntimeHelper.downcallHandle(
@@ -998,12 +1011,12 @@ return (jdk.incubator.foreign.MemoryAddress x0, int x1, jdk.incubator.foreign.Me
     public static fsync fsync (MemorySegment segment, ResourceScope scope) {
         return fsync.ofAddress(fsync$get(segment), scope);
     }
-    static final FunctionDescriptor setxattr$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor setxattr$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT,
-        Constants$root.C_INT$LAYOUT
+        Constants$root.C_LONG$LAYOUT
     );
     static final MethodHandle setxattr$MH = RuntimeHelper.downcallHandle(
         fuse_operations.setxattr$FUNC, false
@@ -1045,7 +1058,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static setxattr setxattr (MemorySegment segment, ResourceScope scope) {
         return setxattr.ofAddress(setxattr$get(segment), scope);
     }
-    static final FunctionDescriptor getxattr$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor getxattr$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1091,7 +1104,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static getxattr getxattr (MemorySegment segment, ResourceScope scope) {
         return getxattr.ofAddress(getxattr$get(segment), scope);
     }
-    static final FunctionDescriptor listxattr$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor listxattr$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT
@@ -1136,7 +1149,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static listxattr listxattr (MemorySegment segment, ResourceScope scope) {
         return listxattr.ofAddress(listxattr$get(segment), scope);
     }
-    static final FunctionDescriptor removexattr$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor removexattr$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -1180,7 +1193,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static removexattr removexattr (MemorySegment segment, ResourceScope scope) {
         return removexattr.ofAddress(removexattr$get(segment), scope);
     }
-    static final FunctionDescriptor opendir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor opendir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -1224,7 +1237,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static opendir opendir (MemorySegment segment, ResourceScope scope) {
         return opendir.ofAddress(opendir$get(segment), scope);
     }
-    static final FunctionDescriptor readdir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor readdir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1271,7 +1284,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static readdir readdir (MemorySegment segment, ResourceScope scope) {
         return readdir.ofAddress(readdir$get(segment), scope);
     }
-    static final FunctionDescriptor releasedir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor releasedir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -1315,9 +1328,9 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static releasedir releasedir (MemorySegment segment, ResourceScope scope) {
         return releasedir.ofAddress(releasedir$get(segment), scope);
     }
-    static final FunctionDescriptor fsyncdir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor fsyncdir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_INT$LAYOUT,
+        Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fsyncdir$MH = RuntimeHelper.downcallHandle(
@@ -1446,9 +1459,9 @@ return (jdk.incubator.foreign.MemoryAddress x0) -> {
     public static destroy destroy (MemorySegment segment, ResourceScope scope) {
         return destroy.ofAddress(destroy$get(segment), scope);
     }
-    static final FunctionDescriptor access$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor access$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_INT$LAYOUT
+        Constants$root.C_LONG$LAYOUT
     );
     static final MethodHandle access$MH = RuntimeHelper.downcallHandle(
         fuse_operations.access$FUNC, false
@@ -1490,9 +1503,9 @@ return (jdk.incubator.foreign.MemoryAddress x0, int x1) -> {
     public static access access (MemorySegment segment, ResourceScope scope) {
         return access.ofAddress(access$get(segment), scope);
     }
-    static final FunctionDescriptor create$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor create$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_SHORT$LAYOUT,
+        Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle create$MH = RuntimeHelper.downcallHandle(
@@ -1500,13 +1513,13 @@ return (jdk.incubator.foreign.MemoryAddress x0, int x1) -> {
     );
     public interface create {
 
-        int apply(jdk.incubator.foreign.MemoryAddress x0, short x1, jdk.incubator.foreign.MemoryAddress x2);
+        int apply(jdk.incubator.foreign.MemoryAddress x0, int x1, jdk.incubator.foreign.MemoryAddress x2);
         static NativeSymbol allocate(create fi, ResourceScope scope) {
-            return RuntimeHelper.upcallStub(create.class, fi, fuse_operations.create$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;SLjdk/incubator/foreign/MemoryAddress;)I", scope);
+            return RuntimeHelper.upcallStub(create.class, fi, fuse_operations.create$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;ILjdk/incubator/foreign/MemoryAddress;)I", scope);
         }
         static create ofAddress(MemoryAddress addr, ResourceScope scope) {
             NativeSymbol symbol = NativeSymbol.ofAddress("create::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
-return (jdk.incubator.foreign.MemoryAddress x0, short x1, jdk.incubator.foreign.MemoryAddress x2) -> {
+return (jdk.incubator.foreign.MemoryAddress x0, int x1, jdk.incubator.foreign.MemoryAddress x2) -> {
                 try {
                     return (int)fuse_operations.create$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, x1, (jdk.incubator.foreign.Addressable)x2);
                 } catch (Throwable ex$) {
@@ -1535,7 +1548,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, short x1, jdk.incubator.foreign.
     public static create create (MemorySegment segment, ResourceScope scope) {
         return create.ofAddress(create$get(segment), scope);
     }
-    static final FunctionDescriptor ftruncate$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor ftruncate$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
@@ -1580,7 +1593,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, long x1, jdk.incubator.foreign.M
     public static ftruncate ftruncate (MemorySegment segment, ResourceScope scope) {
         return ftruncate.ofAddress(ftruncate$get(segment), scope);
     }
-    static final FunctionDescriptor fgetattr$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor fgetattr$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
@@ -1625,10 +1638,10 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static fgetattr fgetattr (MemorySegment segment, ResourceScope scope) {
         return fgetattr.ofAddress(fgetattr$get(segment), scope);
     }
-    static final FunctionDescriptor lock$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor lock$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_INT$LAYOUT,
+        Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle lock$MH = RuntimeHelper.downcallHandle(
@@ -1671,7 +1684,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static lock lock (MemorySegment segment, ResourceScope scope) {
         return lock.ofAddress(lock$get(segment), scope);
     }
-    static final FunctionDescriptor utimens$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor utimens$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -1715,7 +1728,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static utimens utimens (MemorySegment segment, ResourceScope scope) {
         return utimens.ofAddress(utimens$get(segment), scope);
     }
-    static final FunctionDescriptor bmap$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor bmap$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
@@ -1760,12 +1773,12 @@ return (jdk.incubator.foreign.MemoryAddress x0, long x1, jdk.incubator.foreign.M
     public static bmap bmap (MemorySegment segment, ResourceScope scope) {
         return bmap.ofAddress(bmap$get(segment), scope);
     }
-    static final FunctionDescriptor ioctl$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor ioctl$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_INT$LAYOUT,
+        Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_INT$LAYOUT,
+        Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle ioctl$MH = RuntimeHelper.downcallHandle(
@@ -1808,7 +1821,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, int x1, jdk.incubator.foreign.Me
     public static ioctl ioctl (MemorySegment segment, ResourceScope scope) {
         return ioctl.ofAddress(ioctl$get(segment), scope);
     }
-    static final FunctionDescriptor poll$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor poll$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1854,7 +1867,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static poll poll (MemorySegment segment, ResourceScope scope) {
         return poll.ofAddress(poll$get(segment), scope);
     }
-    static final FunctionDescriptor write_buf$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor write_buf$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT,
@@ -1900,7 +1913,7 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static write_buf write_buf (MemorySegment segment, ResourceScope scope) {
         return write_buf.ofAddress(write_buf$get(segment), scope);
     }
-    static final FunctionDescriptor read_buf$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor read_buf$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT,
@@ -1947,10 +1960,10 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static read_buf read_buf (MemorySegment segment, ResourceScope scope) {
         return read_buf.ofAddress(read_buf$get(segment), scope);
     }
-    static final FunctionDescriptor flock$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor flock$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_INT$LAYOUT
+        Constants$root.C_LONG$LAYOUT
     );
     static final MethodHandle flock$MH = RuntimeHelper.downcallHandle(
         fuse_operations.flock$FUNC, false
@@ -1992,9 +2005,9 @@ return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddr
     public static flock flock (MemorySegment segment, ResourceScope scope) {
         return flock.ofAddress(flock$get(segment), scope);
     }
-    static final FunctionDescriptor fallocate$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor fallocate$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_INT$LAYOUT,
+        Constants$root.C_LONG$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
@@ -2038,6 +2051,571 @@ return (jdk.incubator.foreign.MemoryAddress x0, int x1, long x2, long x3, jdk.in
     }
     public static fallocate fallocate (MemorySegment segment, ResourceScope scope) {
         return fallocate.ofAddress(fallocate$get(segment), scope);
+    }
+    static final FunctionDescriptor reserved00$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT);
+    static final MethodHandle reserved00$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.reserved00$FUNC, false
+    );
+    public interface reserved00 {
+
+        int apply();
+        static NativeSymbol allocate(reserved00 fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(reserved00.class, fi, fuse_operations.reserved00$FUNC, "()I", scope);
+        }
+        static reserved00 ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("reserved00::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return () -> {
+                try {
+                    return (int)fuse_operations.reserved00$MH.invokeExact(symbol);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle reserved00$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("reserved00"));
+    public static VarHandle reserved00$VH() {
+        return fuse_operations.reserved00$VH;
+    }
+    public static MemoryAddress reserved00$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.reserved00$VH.get(seg);
+    }
+    public static void reserved00$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.reserved00$VH.set(seg, x);
+    }
+    public static MemoryAddress reserved00$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.reserved00$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void reserved00$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.reserved00$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static reserved00 reserved00 (MemorySegment segment, ResourceScope scope) {
+        return reserved00.ofAddress(reserved00$get(segment), scope);
+    }
+    static final FunctionDescriptor reserved01$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT);
+    static final MethodHandle reserved01$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.reserved01$FUNC, false
+    );
+    public interface reserved01 {
+
+        int apply();
+        static NativeSymbol allocate(reserved01 fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(reserved01.class, fi, fuse_operations.reserved01$FUNC, "()I", scope);
+        }
+        static reserved01 ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("reserved01::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return () -> {
+                try {
+                    return (int)fuse_operations.reserved01$MH.invokeExact(symbol);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle reserved01$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("reserved01"));
+    public static VarHandle reserved01$VH() {
+        return fuse_operations.reserved01$VH;
+    }
+    public static MemoryAddress reserved01$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.reserved01$VH.get(seg);
+    }
+    public static void reserved01$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.reserved01$VH.set(seg, x);
+    }
+    public static MemoryAddress reserved01$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.reserved01$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void reserved01$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.reserved01$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static reserved01 reserved01 (MemorySegment segment, ResourceScope scope) {
+        return reserved01.ofAddress(reserved01$get(segment), scope);
+    }
+    static final FunctionDescriptor reserved02$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT);
+    static final MethodHandle reserved02$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.reserved02$FUNC, false
+    );
+    public interface reserved02 {
+
+        int apply();
+        static NativeSymbol allocate(reserved02 fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(reserved02.class, fi, fuse_operations.reserved02$FUNC, "()I", scope);
+        }
+        static reserved02 ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("reserved02::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return () -> {
+                try {
+                    return (int)fuse_operations.reserved02$MH.invokeExact(symbol);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle reserved02$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("reserved02"));
+    public static VarHandle reserved02$VH() {
+        return fuse_operations.reserved02$VH;
+    }
+    public static MemoryAddress reserved02$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.reserved02$VH.get(seg);
+    }
+    public static void reserved02$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.reserved02$VH.set(seg, x);
+    }
+    public static MemoryAddress reserved02$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.reserved02$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void reserved02$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.reserved02$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static reserved02 reserved02 (MemorySegment segment, ResourceScope scope) {
+        return reserved02.ofAddress(reserved02$get(segment), scope);
+    }
+    static final FunctionDescriptor statfs_x$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle statfs_x$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.statfs_x$FUNC, false
+    );
+    public interface statfs_x {
+
+        int apply(jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1);
+        static NativeSymbol allocate(statfs_x fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(statfs_x.class, fi, fuse_operations.statfs_x$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I", scope);
+        }
+        static statfs_x ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("statfs_x::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1) -> {
+                try {
+                    return (int)fuse_operations.statfs_x$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, (jdk.incubator.foreign.Addressable)x1);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle statfs_x$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("statfs_x"));
+    public static VarHandle statfs_x$VH() {
+        return fuse_operations.statfs_x$VH;
+    }
+    public static MemoryAddress statfs_x$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.statfs_x$VH.get(seg);
+    }
+    public static void statfs_x$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.statfs_x$VH.set(seg, x);
+    }
+    public static MemoryAddress statfs_x$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.statfs_x$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void statfs_x$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.statfs_x$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static statfs_x statfs_x (MemorySegment segment, ResourceScope scope) {
+        return statfs_x.ofAddress(statfs_x$get(segment), scope);
+    }
+    static final FunctionDescriptor setvolname$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle setvolname$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.setvolname$FUNC, false
+    );
+    public interface setvolname {
+
+        int apply(jdk.incubator.foreign.MemoryAddress x0);
+        static NativeSymbol allocate(setvolname fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(setvolname.class, fi, fuse_operations.setvolname$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;)I", scope);
+        }
+        static setvolname ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("setvolname::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return (jdk.incubator.foreign.MemoryAddress x0) -> {
+                try {
+                    return (int)fuse_operations.setvolname$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle setvolname$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("setvolname"));
+    public static VarHandle setvolname$VH() {
+        return fuse_operations.setvolname$VH;
+    }
+    public static MemoryAddress setvolname$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.setvolname$VH.get(seg);
+    }
+    public static void setvolname$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.setvolname$VH.set(seg, x);
+    }
+    public static MemoryAddress setvolname$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.setvolname$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void setvolname$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.setvolname$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static setvolname setvolname (MemorySegment segment, ResourceScope scope) {
+        return setvolname.ofAddress(setvolname$get(segment), scope);
+    }
+    static final FunctionDescriptor exchange$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_LONG$LAYOUT
+    );
+    static final MethodHandle exchange$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.exchange$FUNC, false
+    );
+    public interface exchange {
+
+        int apply(jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1, int x2);
+        static NativeSymbol allocate(exchange fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(exchange.class, fi, fuse_operations.exchange$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;I)I", scope);
+        }
+        static exchange ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("exchange::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1, int x2) -> {
+                try {
+                    return (int)fuse_operations.exchange$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, (jdk.incubator.foreign.Addressable)x1, x2);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle exchange$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("exchange"));
+    public static VarHandle exchange$VH() {
+        return fuse_operations.exchange$VH;
+    }
+    public static MemoryAddress exchange$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.exchange$VH.get(seg);
+    }
+    public static void exchange$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.exchange$VH.set(seg, x);
+    }
+    public static MemoryAddress exchange$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.exchange$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void exchange$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.exchange$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static exchange exchange (MemorySegment segment, ResourceScope scope) {
+        return exchange.ofAddress(exchange$get(segment), scope);
+    }
+    static final FunctionDescriptor getxtimes$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle getxtimes$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.getxtimes$FUNC, false
+    );
+    public interface getxtimes {
+
+        int apply(jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1, jdk.incubator.foreign.MemoryAddress x2);
+        static NativeSymbol allocate(getxtimes fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(getxtimes.class, fi, fuse_operations.getxtimes$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I", scope);
+        }
+        static getxtimes ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("getxtimes::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1, jdk.incubator.foreign.MemoryAddress x2) -> {
+                try {
+                    return (int)fuse_operations.getxtimes$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, (jdk.incubator.foreign.Addressable)x1, (jdk.incubator.foreign.Addressable)x2);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle getxtimes$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("getxtimes"));
+    public static VarHandle getxtimes$VH() {
+        return fuse_operations.getxtimes$VH;
+    }
+    public static MemoryAddress getxtimes$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.getxtimes$VH.get(seg);
+    }
+    public static void getxtimes$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.getxtimes$VH.set(seg, x);
+    }
+    public static MemoryAddress getxtimes$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.getxtimes$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void getxtimes$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.getxtimes$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static getxtimes getxtimes (MemorySegment segment, ResourceScope scope) {
+        return getxtimes.ofAddress(getxtimes$get(segment), scope);
+    }
+    static final FunctionDescriptor setbkuptime$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle setbkuptime$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.setbkuptime$FUNC, false
+    );
+    public interface setbkuptime {
+
+        int apply(jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1);
+        static NativeSymbol allocate(setbkuptime fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(setbkuptime.class, fi, fuse_operations.setbkuptime$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I", scope);
+        }
+        static setbkuptime ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("setbkuptime::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1) -> {
+                try {
+                    return (int)fuse_operations.setbkuptime$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, (jdk.incubator.foreign.Addressable)x1);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle setbkuptime$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("setbkuptime"));
+    public static VarHandle setbkuptime$VH() {
+        return fuse_operations.setbkuptime$VH;
+    }
+    public static MemoryAddress setbkuptime$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.setbkuptime$VH.get(seg);
+    }
+    public static void setbkuptime$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.setbkuptime$VH.set(seg, x);
+    }
+    public static MemoryAddress setbkuptime$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.setbkuptime$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void setbkuptime$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.setbkuptime$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static setbkuptime setbkuptime (MemorySegment segment, ResourceScope scope) {
+        return setbkuptime.ofAddress(setbkuptime$get(segment), scope);
+    }
+    static final FunctionDescriptor setchgtime$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle setchgtime$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.setchgtime$FUNC, false
+    );
+    public interface setchgtime {
+
+        int apply(jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1);
+        static NativeSymbol allocate(setchgtime fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(setchgtime.class, fi, fuse_operations.setchgtime$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I", scope);
+        }
+        static setchgtime ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("setchgtime::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1) -> {
+                try {
+                    return (int)fuse_operations.setchgtime$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, (jdk.incubator.foreign.Addressable)x1);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle setchgtime$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("setchgtime"));
+    public static VarHandle setchgtime$VH() {
+        return fuse_operations.setchgtime$VH;
+    }
+    public static MemoryAddress setchgtime$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.setchgtime$VH.get(seg);
+    }
+    public static void setchgtime$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.setchgtime$VH.set(seg, x);
+    }
+    public static MemoryAddress setchgtime$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.setchgtime$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void setchgtime$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.setchgtime$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static setchgtime setchgtime (MemorySegment segment, ResourceScope scope) {
+        return setchgtime.ofAddress(setchgtime$get(segment), scope);
+    }
+    static final FunctionDescriptor setcrtime$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle setcrtime$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.setcrtime$FUNC, false
+    );
+    public interface setcrtime {
+
+        int apply(jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1);
+        static NativeSymbol allocate(setcrtime fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(setcrtime.class, fi, fuse_operations.setcrtime$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I", scope);
+        }
+        static setcrtime ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("setcrtime::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1) -> {
+                try {
+                    return (int)fuse_operations.setcrtime$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, (jdk.incubator.foreign.Addressable)x1);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle setcrtime$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("setcrtime"));
+    public static VarHandle setcrtime$VH() {
+        return fuse_operations.setcrtime$VH;
+    }
+    public static MemoryAddress setcrtime$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.setcrtime$VH.get(seg);
+    }
+    public static void setcrtime$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.setcrtime$VH.set(seg, x);
+    }
+    public static MemoryAddress setcrtime$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.setcrtime$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void setcrtime$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.setcrtime$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static setcrtime setcrtime (MemorySegment segment, ResourceScope scope) {
+        return setcrtime.ofAddress(setcrtime$get(segment), scope);
+    }
+    static final FunctionDescriptor chflags$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_LONG$LAYOUT
+    );
+    static final MethodHandle chflags$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.chflags$FUNC, false
+    );
+    public interface chflags {
+
+        int apply(jdk.incubator.foreign.MemoryAddress x0, int x1);
+        static NativeSymbol allocate(chflags fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(chflags.class, fi, fuse_operations.chflags$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;I)I", scope);
+        }
+        static chflags ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("chflags::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return (jdk.incubator.foreign.MemoryAddress x0, int x1) -> {
+                try {
+                    return (int)fuse_operations.chflags$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, x1);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle chflags$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("chflags"));
+    public static VarHandle chflags$VH() {
+        return fuse_operations.chflags$VH;
+    }
+    public static MemoryAddress chflags$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.chflags$VH.get(seg);
+    }
+    public static void chflags$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.chflags$VH.set(seg, x);
+    }
+    public static MemoryAddress chflags$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.chflags$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void chflags$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.chflags$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static chflags chflags (MemorySegment segment, ResourceScope scope) {
+        return chflags.ofAddress(chflags$get(segment), scope);
+    }
+    static final FunctionDescriptor setattr_x$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle setattr_x$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.setattr_x$FUNC, false
+    );
+    public interface setattr_x {
+
+        int apply(jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1);
+        static NativeSymbol allocate(setattr_x fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(setattr_x.class, fi, fuse_operations.setattr_x$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I", scope);
+        }
+        static setattr_x ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("setattr_x::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1) -> {
+                try {
+                    return (int)fuse_operations.setattr_x$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, (jdk.incubator.foreign.Addressable)x1);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle setattr_x$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("setattr_x"));
+    public static VarHandle setattr_x$VH() {
+        return fuse_operations.setattr_x$VH;
+    }
+    public static MemoryAddress setattr_x$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.setattr_x$VH.get(seg);
+    }
+    public static void setattr_x$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.setattr_x$VH.set(seg, x);
+    }
+    public static MemoryAddress setattr_x$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.setattr_x$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void setattr_x$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.setattr_x$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static setattr_x setattr_x (MemorySegment segment, ResourceScope scope) {
+        return setattr_x.ofAddress(setattr_x$get(segment), scope);
+    }
+    static final FunctionDescriptor fsetattr_x$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle fsetattr_x$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.fsetattr_x$FUNC, false
+    );
+    public interface fsetattr_x {
+
+        int apply(jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1, jdk.incubator.foreign.MemoryAddress x2);
+        static NativeSymbol allocate(fsetattr_x fi, ResourceScope scope) {
+            return RuntimeHelper.upcallStub(fsetattr_x.class, fi, fuse_operations.fsetattr_x$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;)I", scope);
+        }
+        static fsetattr_x ofAddress(MemoryAddress addr, ResourceScope scope) {
+            NativeSymbol symbol = NativeSymbol.ofAddress("fsetattr_x::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
+return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1, jdk.incubator.foreign.MemoryAddress x2) -> {
+                try {
+                    return (int)fuse_operations.fsetattr_x$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, (jdk.incubator.foreign.Addressable)x1, (jdk.incubator.foreign.Addressable)x2);
+                } catch (Throwable ex$) {
+                    throw new AssertionError("should not reach here", ex$);
+                }
+            };
+        }
+    }
+
+    static final VarHandle fsetattr_x$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("fsetattr_x"));
+    public static VarHandle fsetattr_x$VH() {
+        return fuse_operations.fsetattr_x$VH;
+    }
+    public static MemoryAddress fsetattr_x$get(MemorySegment seg) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.fsetattr_x$VH.get(seg);
+    }
+    public static void fsetattr_x$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.fsetattr_x$VH.set(seg, x);
+    }
+    public static MemoryAddress fsetattr_x$get(MemorySegment seg, long index) {
+        return (jdk.incubator.foreign.MemoryAddress)fuse_operations.fsetattr_x$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void fsetattr_x$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.fsetattr_x$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    public static fsetattr_x fsetattr_x (MemorySegment segment, ResourceScope scope) {
+        return fsetattr_x.ofAddress(fsetattr_x$get(segment), scope);
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }

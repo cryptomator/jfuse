@@ -2,24 +2,23 @@
 
 package de.skymatic.fusepanama.win.amd64.lowlevel;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
-
+import java.nio.ByteOrder;
 import jdk.incubator.foreign.*;
-
+import static jdk.incubator.foreign.ValueLayout.*;
 public class fuse_file_info {
 
     static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
-        Constants$root.C_INT$LAYOUT.withName("flags"),
-        MemoryLayout.paddingLayout(32),
-        Constants$root.C_LONG_LONG$LAYOUT.withName("fh_old"),
-        Constants$root.C_INT$LAYOUT.withName("writepage"),
+        Constants$root.C_LONG$LAYOUT.withName("flags"),
+        Constants$root.C_LONG$LAYOUT.withName("fh_old"),
+        Constants$root.C_LONG$LAYOUT.withName("writepage"),
         MemoryLayout.structLayout(
             MemoryLayout.paddingLayout(1).withName("direct_io"),
             MemoryLayout.paddingLayout(1).withName("keep_cache"),
             MemoryLayout.paddingLayout(1).withName("flush"),
             MemoryLayout.paddingLayout(1).withName("nonseekable"),
-            MemoryLayout.paddingLayout(1).withName("flock_release"),
-            MemoryLayout.paddingLayout(27).withName("padding")
+            MemoryLayout.paddingLayout(28).withName("padding")
         ),
         Constants$root.C_LONG_LONG$LAYOUT.withName("fh"),
         Constants$root.C_LONG_LONG$LAYOUT.withName("lock_owner")
@@ -47,16 +46,16 @@ public class fuse_file_info {
     public static VarHandle fh_old$VH() {
         return fuse_file_info.fh_old$VH;
     }
-    public static long fh_old$get(MemorySegment seg) {
-        return (long)fuse_file_info.fh_old$VH.get(seg);
+    public static int fh_old$get(MemorySegment seg) {
+        return (int)fuse_file_info.fh_old$VH.get(seg);
     }
-    public static void fh_old$set( MemorySegment seg, long x) {
+    public static void fh_old$set( MemorySegment seg, int x) {
         fuse_file_info.fh_old$VH.set(seg, x);
     }
-    public static long fh_old$get(MemorySegment seg, long index) {
-        return (long)fuse_file_info.fh_old$VH.get(seg.asSlice(index*sizeof()));
+    public static int fh_old$get(MemorySegment seg, long index) {
+        return (int)fuse_file_info.fh_old$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void fh_old$set(MemorySegment seg, long index, long x) {
+    public static void fh_old$set(MemorySegment seg, long index, int x) {
         fuse_file_info.fh_old$VH.set(seg.asSlice(index*sizeof()), x);
     }
     static final VarHandle writepage$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("writepage"));

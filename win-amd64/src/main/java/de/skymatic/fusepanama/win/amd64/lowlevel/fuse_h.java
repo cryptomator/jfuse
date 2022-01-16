@@ -3,7 +3,8 @@
 package de.skymatic.fusepanama.win.amd64.lowlevel;
 
 import java.lang.invoke.MethodHandle;
-
+import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
 import jdk.incubator.foreign.*;
 import static jdk.incubator.foreign.ValueLayout.*;
 public class fuse_h  {
@@ -11,12 +12,23 @@ public class fuse_h  {
     /* package-private */ fuse_h() {}
     public static OfByte C_CHAR = Constants$root.C_CHAR$LAYOUT;
     public static OfShort C_SHORT = Constants$root.C_SHORT$LAYOUT;
-    public static OfInt C_INT = Constants$root.C_INT$LAYOUT;
-    public static OfLong C_LONG = Constants$root.C_LONG_LONG$LAYOUT;
+    public static OfInt C_INT = Constants$root.C_LONG$LAYOUT;
+    public static OfInt C_LONG = Constants$root.C_LONG$LAYOUT;
     public static OfLong C_LONG_LONG = Constants$root.C_LONG_LONG$LAYOUT;
     public static OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
     public static OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
     public static OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
+    public static MethodHandle fuse_main_real$MH() {
+        return RuntimeHelper.requireNonNull(constants$0.fuse_main_real$MH,"fuse_main_real");
+    }
+    public static int fuse_main_real ( int argc,  Addressable argv,  Addressable ops,  long opsize,  Addressable data) {
+        var mh$ = RuntimeHelper.requireNonNull(constants$0.fuse_main_real$MH, "fuse_main_real");
+        try {
+            return (int)mh$.invokeExact(argc, argv, ops, opsize, data);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
     public static MethodHandle fuse_exit$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse_exit$MH,"fuse_exit");
     }
@@ -35,17 +47,6 @@ public class fuse_h  {
         var mh$ = RuntimeHelper.requireNonNull(constants$0.fuse_get_context$MH, "fuse_get_context");
         try {
             return (jdk.incubator.foreign.MemoryAddress)mh$.invokeExact();
-        } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
-        }
-    }
-    public static MethodHandle fuse_main_real$MH() {
-        return RuntimeHelper.requireNonNull(constants$0.fuse_main_real$MH,"fuse_main_real");
-    }
-    public static int fuse_main_real ( int argc,  Addressable argv,  Addressable op,  long op_size,  Addressable user_data) {
-        var mh$ = RuntimeHelper.requireNonNull(constants$0.fuse_main_real$MH, "fuse_main_real");
-        try {
-            return (int)mh$.invokeExact(argc, argv, op, op_size, user_data);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }

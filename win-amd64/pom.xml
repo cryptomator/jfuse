@@ -8,20 +8,12 @@
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-
 	<artifactId>fusepanama-win-amd64</artifactId>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>18</source>
-					<target>18</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+
+	<properties>
+		<jextract.path>${java.home}/bin/jextract</jextract.path>
+		<win.ucrtHeaderPath>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</win.ucrtHeaderPath>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -53,7 +45,7 @@
 										</requireOS>
 										<requireFilesExist>
 											<files>
-												<file>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</file>
+												<file>${win.ucrtHeaderPath}</file>
 											</files>
 											<message>Windows UCRT headers not found.</message>
 										</requireFilesExist>
@@ -61,6 +53,20 @@
 								</configuration>
 							</execution>
 						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-clean-plugin</artifactId>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>${project.build.sourceDirectory}/de/skymatic/fusepanama/win/amd64/lowlevel</directory>
+									<includes>
+										<include>*.java</include>
+									</includes>
+									<followSymlinks>false</followSymlinks>
+								</fileset>
+							</filesets>
+						</configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
@@ -84,9 +90,7 @@
 										<argument>-t</argument>
 										<argument>de.skymatic.fusepanama.win.amd64.lowlevel</argument>
 										<argument>-I</argument>
-										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</argument>
-										<argument>-C-D_FILE_OFFSET_BITS=64</argument>
-										<argument>-C-DFUSE_USE_VERSION=29</argument>
+										<argument>${win.ucrtHeaderPath}</argument>
 										<!-- structs: -->
 										<argument>--include-struct</argument>
 										<argument>fuse_operations</argument>
@@ -94,12 +98,6 @@
 										<argument>fuse_file_info</argument>
 										<argument>--include-struct</argument>
 										<argument>fuse_context</argument>
-										<argument>--include-struct</argument>
-										<argument>fuse_stat</argument>
-										<argument>--include-struct</argument>
-										<argument>statvfs</argument>
-										<argument>--include-struct</argument>
-										<argument>fuse_timespec</argument>
 										<argument>--include-struct</argument>
 										<argument>fuse_conn_info</argument>
 										<!-- typedefs: -->
@@ -113,6 +111,37 @@
 										<argument>--include-function</argument>
 										<argument>fuse_exit</argument>
 										<!-- extract fuse.h header: -->
+										<argument>${project.parent.basedir}/winfsp/inc/fuse/fuse.h</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-winfsp-fuse</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<executable>${java.home}/bin/jextract</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>--source</argument>
+										<argument>-l</argument>
+										<argument>fuse</argument>
+										<argument>-d</argument>
+										<argument>${project.build.sourceDirectory}</argument>
+										<argument>-t</argument>
+										<argument>de.skymatic.fusepanama.win.amd64.lowlevel</argument>
+										<argument>-I</argument>
+										<argument>${win.ucrtHeaderPath}</argument>
+										<!-- structs -->
+										<argument>--include-struct</argument>
+										<argument>fuse_stat</argument>
+										<argument>--include-struct</argument>
+										<argument>fuse_statvfs</argument>
+										<argument>--include-struct</argument>
+										<argument>fuse_timespec</argument>
+										<!-- extract winfsp_fuse.h header: -->
 										<argument>${project.parent.basedir}/winfsp/inc/fuse/winfsp_fuse.h</argument>
 									</arguments>
 								</configuration>
@@ -133,7 +162,7 @@
 										<argument>-t</argument>
 										<argument>de.skymatic.fusepanama.win.amd64.lowlevel</argument>
 										<argument>-I</argument>
-										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</argument>
+										<argument>${win.ucrtHeaderPath}</argument>
 										<!-- constants -->
 										<argument>--include-macro</argument>
 										<argument>ENOENT</argument>
@@ -160,7 +189,7 @@
 										<argument>--include-macro</argument>
 										<argument>EINVAL</argument>
 										<!-- extract errno.h header: -->
-										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\errno.h</argument>
+										<argument>${win.ucrtHeaderPath}\errno.h</argument>
 									</arguments>
 								</configuration>
 							</execution>
@@ -180,7 +209,7 @@
 										<argument>-t</argument>
 										<argument>de.skymatic.fusepanama.win.amd64.lowlevel</argument>
 										<argument>-I</argument>
-										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</argument>
+										<argument>${win.ucrtHeaderPath}</argument>
 										<!-- open flags -->
 										<argument>--include-macro</argument>
 										<argument>O_RDONLY</argument>
@@ -197,7 +226,7 @@
 										<argument>--include-macro</argument>
 										<argument>O_EXCL</argument>
 										<!-- extract fcntl.h header: -->
-										<argument>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\fcntl.h</argument>
+										<argument>${win.ucrtHeaderPath}\fcntl.h</argument>
 									</arguments>
 								</configuration>
 							</execution>
