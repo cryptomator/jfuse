@@ -97,7 +97,7 @@ public interface FuseOperations {
 	 * bits set, i.e. S_ISDIR(mode) can be false.  To obtain the
 	 * correct directory type bits use  mode|S_IFDIR
 	 */
-	default int mkdir(String path, short mode) {
+	default int mkdir(String path, int mode) {
 		return -errno().enosys();
 	}
 
@@ -139,7 +139,7 @@ public interface FuseOperations {
 	/**
 	 * Change the permission bits of a file
 	 */
-	default int chmod(String path, short mode) {
+	default int chmod(String path, int mode) {
 		return -errno().enosys();
 	}
 
@@ -431,7 +431,7 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.5
 	 */
-	default int create(String path, short mode, FileInfo fi) {
+	default int create(String path, int mode, FileInfo fi) {
 		return -errno().enosys();
 	}
 

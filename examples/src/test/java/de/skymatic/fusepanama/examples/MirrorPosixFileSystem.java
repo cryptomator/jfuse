@@ -220,7 +220,7 @@ public class MirrorPosixFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public int chmod(String path, short mode) {
+	public int chmod(String path, int mode) {
 		LOG.trace("chmod {}", path);
 		Path node = resolvePath(path);
 		try {
@@ -247,7 +247,7 @@ public class MirrorPosixFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public int mkdir(String path, short mode) {
+	public int mkdir(String path, int mode) {
 		LOG.trace("mkdir {}", path);
 		Path node = resolvePath(path);
 		var attr = PosixFilePermissions.asFileAttribute(FileModes.toPermissions(mode));
@@ -313,7 +313,7 @@ public class MirrorPosixFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public int create(String path, short mode, FileInfo fi) {
+	public int create(String path, int mode, FileInfo fi) {
 		LOG.trace("create {}", path);
 		return createOrOpen(path, fi, PosixFilePermissions.asFileAttribute(FileModes.toPermissions(mode)));
 	}

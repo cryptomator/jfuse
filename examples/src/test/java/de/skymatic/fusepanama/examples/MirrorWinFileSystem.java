@@ -190,9 +190,11 @@ public class MirrorWinFileSystem implements FuseOperations {
 			stat.setSize(attrs.size());
 			stat.setNLink((short) 1);
 			if (attrs.isDirectory()) {
+				stat.setMode(attrs.isReadOnly() ? 0555 : 0755);
 				stat.toggleDir(attrs.isDirectory());
 				stat.setNLink((short) (2 + countSubDirs(node)));
 			} else if (attrs.isRegularFile()){
+				stat.setMode(attrs.isReadOnly() ? 0444 : 0644);
 				stat.toggleReg(true);
 			}
 			stat.aTime().set(attrs.lastAccessTime().toInstant());
@@ -229,7 +231,7 @@ public class MirrorWinFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public int mkdir(String path, short mode) {
+	public int mkdir(String path, int mode) {
 		LOG.trace("mkdir {}", path);
 		Path node = resolvePath(path);
 		try {
@@ -294,14 +296,14 @@ public class MirrorWinFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public int create(String path, short mode, FileInfo fi) {
-		LOG.trace("create {}", path);
+	public int create(String path, int mode, FileInfo fi) {
+		LOG.debug("create {}", path);
 		return createOrOpen(path, fi);
 	}
 
 	@Override
 	public int open(String path, FileInfo fi) {
-		LOG.trace("open {}", path);
+		LOG.debug("open {}", path);
 		return createOrOpen(path, fi);
 	}
 
@@ -322,7 +324,7 @@ public class MirrorWinFileSystem implements FuseOperations {
 
 	@Override
 	public int read(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
-		LOG.trace("read {} at pos {}", path, offset);
+		LOG.debug("read {} at pos {}", path, offset);
 		var fc = openFiles.get(fi.getFh());
 		if (fc == null) {
 			return -errno.ebadf();
@@ -336,7 +338,7 @@ public class MirrorWinFileSystem implements FuseOperations {
 
 	@Override
 	public int write(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
-		LOG.trace("write {} at pos {}", path, offset);
+		LOG.trace("info {} at pos {}", path, offset);
 		var fc = openFiles.get(fi.getFh());
 		if (fc == null) {
 			return -errno.ebadf();
