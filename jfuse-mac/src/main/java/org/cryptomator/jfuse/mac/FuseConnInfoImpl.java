@@ -1,6 +1,6 @@
 package org.cryptomator.jfuse.mac;
 
-import org.cryptomator.jfuse.FuseConnInfo;
+import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.mac.extr.fuse_conn_info;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;

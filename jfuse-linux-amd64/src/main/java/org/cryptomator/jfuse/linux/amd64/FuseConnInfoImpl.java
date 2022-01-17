@@ -1,6 +1,6 @@
 package org.cryptomator.jfuse.linux.amd64;
 
-import org.cryptomator.jfuse.FuseConnInfo;
+import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_conn_info;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;

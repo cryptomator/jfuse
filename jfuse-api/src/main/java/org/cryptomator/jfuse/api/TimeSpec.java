@@ -1,4 +1,4 @@
-package org.cryptomator.jfuse;
+package org.cryptomator.jfuse.api;
 
 import java.time.Instant;
 import java.util.Optional;

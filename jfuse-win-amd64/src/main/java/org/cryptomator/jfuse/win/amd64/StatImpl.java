@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.win.amd64;
 
-import org.cryptomator.jfuse.Stat;
-import org.cryptomator.jfuse.TimeSpec;
+import org.cryptomator.jfuse.api.Stat;
+import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_stat;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;

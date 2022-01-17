@@ -1,13 +1,13 @@
 package org.cryptomator.jfuse.examples;
 
-import org.cryptomator.jfuse.DirFiller;
-import org.cryptomator.jfuse.Errno;
-import org.cryptomator.jfuse.FileInfo;
-import org.cryptomator.jfuse.Fuse;
-import org.cryptomator.jfuse.FuseConnInfo;
-import org.cryptomator.jfuse.FuseOperations;
-import org.cryptomator.jfuse.Stat;
-import org.cryptomator.jfuse.Statvfs;
+import org.cryptomator.jfuse.api.DirFiller;
+import org.cryptomator.jfuse.api.Errno;
+import org.cryptomator.jfuse.api.FileInfo;
+import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.FuseConnInfo;
+import org.cryptomator.jfuse.api.FuseOperations;
+import org.cryptomator.jfuse.api.Stat;
+import org.cryptomator.jfuse.api.Statvfs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

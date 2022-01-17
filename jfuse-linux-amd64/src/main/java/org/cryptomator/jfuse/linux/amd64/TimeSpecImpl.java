@@ -1,6 +1,6 @@
 package org.cryptomator.jfuse.linux.amd64;
 
-import org.cryptomator.jfuse.TimeSpec;
+import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.linux.amd64.extr.stat_h;
 import org.cryptomator.jfuse.linux.amd64.extr.timespec;
 import jdk.incubator.foreign.MemorySegment;

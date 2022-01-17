@@ -1,4 +1,4 @@
-package org.cryptomator.jfuse;
+package org.cryptomator.jfuse.api;
 
 import org.jetbrains.annotations.Nullable;
 

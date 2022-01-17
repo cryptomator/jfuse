@@ -1,4 +1,4 @@
-package org.cryptomator.jfuse;
+package org.cryptomator.jfuse.api;
 
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;

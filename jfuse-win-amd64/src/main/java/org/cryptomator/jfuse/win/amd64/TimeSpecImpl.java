@@ -1,6 +1,6 @@
 package org.cryptomator.jfuse.win.amd64;
 
-import org.cryptomator.jfuse.TimeSpec;
+import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_timespec;
 import jdk.incubator.foreign.MemorySegment;
 

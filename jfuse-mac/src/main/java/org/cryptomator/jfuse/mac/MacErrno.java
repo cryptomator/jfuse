@@ -1,6 +1,6 @@
 package org.cryptomator.jfuse.mac;
 
-import org.cryptomator.jfuse.Errno;
+import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.mac.extr.errno_h;
 
 public record MacErrno() implements Errno {

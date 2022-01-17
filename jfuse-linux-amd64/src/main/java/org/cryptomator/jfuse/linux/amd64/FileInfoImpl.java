@@ -1,6 +1,6 @@
 package org.cryptomator.jfuse.linux.amd64;
 
-import org.cryptomator.jfuse.FileInfo;
+import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.linux.amd64.extr.fcntl_h;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_file_info;
 import jdk.incubator.foreign.MemoryAddress;

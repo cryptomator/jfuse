@@ -1,12 +1,12 @@
 package org.cryptomator.jfuse.win.amd64;
 
-import org.cryptomator.jfuse.Architecture;
-import org.cryptomator.jfuse.Errno;
-import org.cryptomator.jfuse.Fuse;
-import org.cryptomator.jfuse.FuseBuilder;
-import org.cryptomator.jfuse.FuseOperations;
-import org.cryptomator.jfuse.OperatingSystem;
-import org.cryptomator.jfuse.SupportedPlatform;
+import org.cryptomator.jfuse.api.Architecture;
+import org.cryptomator.jfuse.api.Errno;
+import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.FuseBuilder;
+import org.cryptomator.jfuse.api.FuseOperations;
+import org.cryptomator.jfuse.api.OperatingSystem;
+import org.cryptomator.jfuse.api.SupportedPlatform;
 
 @SupportedPlatform(os = OperatingSystem.WINDOWS, arch = Architecture.AMD64)
 public class WinFuseBuilder implements FuseBuilder {

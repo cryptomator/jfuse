@@ -1,6 +1,6 @@
 package org.cryptomator.jfuse.mac;
 
-import org.cryptomator.jfuse.FileInfo;
+import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.mac.extr.fcntl_h;
 import org.cryptomator.jfuse.mac.extr.fuse_file_info;
 import jdk.incubator.foreign.MemoryAddress;

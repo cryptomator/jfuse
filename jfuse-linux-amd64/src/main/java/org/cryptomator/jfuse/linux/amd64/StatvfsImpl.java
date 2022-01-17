@@ -1,6 +1,6 @@
 package org.cryptomator.jfuse.linux.amd64;
 
-import org.cryptomator.jfuse.Statvfs;
+import org.cryptomator.jfuse.api.Statvfs;
 import org.cryptomator.jfuse.linux.amd64.extr.statvfs;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;

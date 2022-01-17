@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.mac;
 
-import org.cryptomator.jfuse.Fuse;
-import org.cryptomator.jfuse.FuseOperations;
+import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.mac.extr.fuse_h;
 import org.cryptomator.jfuse.mac.extr.fuse_operations;
 import org.cryptomator.jfuse.mac.extr.stat_h;

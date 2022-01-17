@@ -1,4 +1,4 @@
-package org.cryptomator.jfuse;
+package org.cryptomator.jfuse.api;
 
 import java.nio.ByteBuffer;
 import java.util.Set;

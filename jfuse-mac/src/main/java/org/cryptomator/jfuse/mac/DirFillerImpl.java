@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.mac;
 
-import org.cryptomator.jfuse.DirFiller;
-import org.cryptomator.jfuse.Stat;
+import org.cryptomator.jfuse.api.DirFiller;
+import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.mac.extr.fuse_fill_dir_t;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.ResourceScope;
