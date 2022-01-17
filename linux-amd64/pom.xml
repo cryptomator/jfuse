@@ -12,7 +12,7 @@
 
 	<properties>
 		<jextract.path>${java.home}/bin/jextract</jextract.path>
-		<linux.headerSearchPath>/usr/include/</linux.headerSearchPath>
+		<linux.headerSearchPath>/usr/x86_64-linux-gnu/include/</linux.headerSearchPath> <!-- debian package libc6-dev-amd64-cross -->
 	</properties>
 
 	<dependencies>
@@ -45,6 +45,12 @@
 											<name>linux</name>
 											<message>This build configuration requires Linux.</message>
 										</requireOS>
+										<requireFilesExist>
+											<files>
+												<file>${linux.headerSearchPath}</file>
+											</files>
+											<message>libc6 headers not found.</message>
+										</requireFilesExist>
 									</rules>
 								</configuration>
 							</execution>
@@ -87,8 +93,6 @@
 										<argument>de.skymatic.fusepanama.linux.amd64.lowlevel</argument>
 										<argument>-I</argument>
 										<argument>${linux.headerSearchPath}</argument>
-										<argument>-I</argument>
-										<argument>${linux.headerSearchPath}/x86_64-linux-gnu</argument>
 										<argument>-C-D_FILE_OFFSET_BITS=64</argument>
 										<argument>-C-DFUSE_USE_VERSION=29</argument>
 										<!-- structs: -->
@@ -138,8 +142,6 @@
 										<argument>de.skymatic.fusepanama.linux.amd64.lowlevel</argument>
 										<argument>-I</argument>
 										<argument>${linux.headerSearchPath}</argument>
-										<argument>-I</argument>
-										<argument>${linux.headerSearchPath}/x86_64-linux-gnu</argument>
 										<!-- constants -->
 										<argument>--include-macro</argument>
 										<argument>ENOENT</argument>
@@ -187,8 +189,6 @@
 										<argument>de.skymatic.fusepanama.linux.amd64.lowlevel</argument>
 										<argument>-I</argument>
 										<argument>${linux.headerSearchPath}</argument>
-										<argument>-I</argument>
-										<argument>${linux.headerSearchPath}/x86_64-linux-gnu</argument>
 										<!-- file type bits -->
 										<argument>--include-macro</argument>
 										<argument>S_IFREG</argument>
@@ -202,7 +202,7 @@
 										<argument>--include-macro</argument>
 										<argument>UTIME_OMIT</argument>
 										<!-- extract sys/stat.h header: -->
-										<argument>${linux.headerSearchPath}/x86_64-linux-gnu/sys/stat.h</argument>
+										<argument>${linux.headerSearchPath}/sys/stat.h</argument>
 									</arguments>
 								</configuration>
 							</execution>
@@ -223,8 +223,6 @@
 										<argument>de.skymatic.fusepanama.linux.amd64.lowlevel</argument>
 										<argument>-I</argument>
 										<argument>${linux.headerSearchPath}</argument>
-										<argument>-I</argument>
-										<argument>${linux.headerSearchPath}/x86_64-linux-gnu</argument>
 										<!-- open flags -->
 										<argument>--include-macro</argument>
 										<argument>O_RDONLY</argument>
