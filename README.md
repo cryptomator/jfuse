@@ -1,4 +1,4 @@
-# FUSE-Panama
+# JFUSE
 
 Zero-Dependency Java bindings for FUSE using [JEP 419](https://openjdk.java.net/jeps/419).
 
@@ -61,7 +61,7 @@ Not all `fuse_operations` are supported yet.
 
 ## Usage
 
-Usage examples can be found under `/examples/`. You basically need to implement `FuseOperations` and pass it to the `Fuse.builder()`:
+Usage examples can be found under [`/jfuse-examples/`](jfuse-examples). You basically need to implement `FuseOperations` and pass it to the `Fuse.builder()`:
 
 ```java
 var builder = Fuse.builder();
@@ -72,7 +72,14 @@ try (var fuse = builder.build(fs)) {
 }
 ```
 
-During runtime, you will need a platform-specific implementation.
+During runtime, you will need to add allow native access from platform-specific implementations via `--enable-native-access`, e.g.:
+
+```bash
+java -p path/to/mods \
+  -m com.example.mymodule/com.example.mymodule \
+  --enable-native-access=org.cryptomator.jfuse.mac \
+  --add-modules jdk.incubator.foreign
+```
 
 ## Supported Platforms
 
@@ -80,8 +87,8 @@ Due to slight differences in memory layout, each platform needs its own implemen
 
 |        | Linux | Mac (macFUSE) | Windows (WinFSP) |
 |--------|-------|-----|---------|
-| x86_64 | [linux-amd64](linux-amd64) | [mac](mac) | [win-amd64](win-amd64) |
-| arm64  |       | [mac](mac) |         |
+| x86_64 | [jfuse-linux-amd64](jfuse-linux-amd64) | [jfuse-mac](jfuse-mac) | [jfuse-win-amd64](jfuse-win-amd64) |
+| arm64  |       | [jfuse-mac](jfuse-mac) |         |
 
 ## Building
 

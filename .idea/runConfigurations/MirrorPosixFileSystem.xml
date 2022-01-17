@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MirrorPosixFileSystem" type="Application" factoryName="Application" nameIsGenerated="true">
-    <option name="MAIN_CLASS_NAME" value="de.skymatic.fusepanama.examples.MirrorPosixFileSystem" />
-    <module name="examples" />
-    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.foreign" />
+    <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.examples.MirrorPosixFileSystem" />
+    <module name="jfuse-examples" />
+    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug --enable-native-access=org.cryptomator.jfuse.linuxamd64impl,org.cryptomator.jfuse.mac --add-modules jdk.incubator.foreign" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="de.skymatic.fusepanama.examples.*" />
