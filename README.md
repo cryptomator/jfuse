@@ -1,4 +1,4 @@
-# JFUSE
+# jFUSE
 
 Zero-Dependency Java bindings for FUSE using [JEP 419](https://openjdk.java.net/jeps/419).
 
