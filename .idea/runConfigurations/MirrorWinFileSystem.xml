@@ -2,7 +2,7 @@
   <configuration default="false" name="MirrorWinFileSystem" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.examples.MirrorWinFileSystem" />
     <module name="jfuse-examples" />
-    <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=info --enable-native-access=org.cryptomator.jfuse.winamd64impl --add-modules jdk.incubator.foreign" />
+    <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=info --enable-native-access=org.cryptomator.jfuse.win.amd64 --add-modules jdk.incubator.foreign" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="de.skymatic.fusepanama.examples.*" />

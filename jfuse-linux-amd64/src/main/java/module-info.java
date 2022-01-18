@@ -1,7 +1,8 @@
 import org.cryptomator.jfuse.api.FuseBuilder;
 import org.cryptomator.jfuse.linux.amd64.LinuxFuseBuilder;
 
-module org.cryptomator.jfuse.linuxamd64impl {
+@SuppressWarnings("JavaModuleNaming") // 64 is not a "version", see https://bugs.openjdk.java.net/browse/JDK-8264488
+module org.cryptomator.jfuse.linux.amd64 {
 	requires org.cryptomator.jfuse.api;
 	requires jdk.incubator.foreign;
 
