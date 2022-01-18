@@ -27,9 +27,8 @@ jobs:
       - name: Build and Test
         run: >
           mvn -B verify
-          jacoco:report
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-          -Pcoverage,dependency-check,linux-amd64,mac,win-amd64
+          -Plinux-amd64,mac,win-amd64
           -Dsonar.projectKey=cryptomator_jfuse
           -Dsonar.organization=cryptomator
           -Dsonar.host.url=https://sonarcloud.io
