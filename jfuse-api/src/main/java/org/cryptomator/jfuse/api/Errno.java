@@ -1,7 +1,5 @@
 package org.cryptomator.jfuse.api;
 
-import java.util.ServiceLoader;
-
 /**
  * System error numbers from <code>errno.h</code>.
  * <p>
@@ -12,13 +10,6 @@ import java.util.ServiceLoader;
  * @see <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/errno-constants">errno.h (windows)</a>
  */
 public interface Errno {
-
-	ServiceLoader<Errno> SERVICE_LOADER = ServiceLoader.load(Errno.class);
-
-	static Errno instance() {
-		// TODO: filter for current platform?
-		return SERVICE_LOADER.findFirst().orElseThrow(() -> new IllegalStateException("No implementation of Errno loaded."));
-	}
 
 	/**
 	 * @return code representing: No such file or directory
