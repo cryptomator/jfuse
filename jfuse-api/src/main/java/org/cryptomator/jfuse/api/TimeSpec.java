@@ -29,7 +29,7 @@ public interface TimeSpec {
 	 * or absent in case of {@link #isUtimeOmit() <code>UTIME_OMIT</code>}
 	 */
 	default Optional<Instant> getOptional() {
-		if (isUtimeNow()) {
+		if (isUtimeOmit()) {
 			return Optional.empty();
 		} else if (isUtimeNow()) {
 			return Optional.of(Instant.now());
