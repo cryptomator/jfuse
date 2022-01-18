@@ -28,6 +28,6 @@ jobs:
       with:
         languages: java
     - name: Build and Test
-      run: mvn -B install -DskipTests,linux-amd64,mac,win-amd64
+      run: mvn -B install -Plinux-amd64,mac,win-amd64 -DskipTests
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
