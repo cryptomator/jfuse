@@ -1,3 +1,6 @@
+[![Build](https://github.com/cryptomator/jfuse/actions/workflows/build.yml/badge.svg)](https://github.com/cryptomator/jfuse/actions/workflows/build.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cryptomator_jfuse&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cryptomator_jfuse)
+
 # jFUSE
 
 Zero-Dependency Java bindings for FUSE using [JEP 419](https://openjdk.java.net/jeps/419).
