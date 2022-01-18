@@ -140,6 +140,9 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludePackageNames>*.extr</excludePackageNames>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
