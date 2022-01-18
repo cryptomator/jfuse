@@ -36,6 +36,7 @@
 	</scm>
 
 	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
 		<jextract.path>${java.home}/bin/jextract</jextract.path>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -113,6 +114,11 @@
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
 					<version>1.6.8</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>3.0.0-M2</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

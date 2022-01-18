@@ -13,6 +13,10 @@
 	<description>The main API of jFUSE</description>
 	<url>https://github.com/cryptomator/jfuse/tree/develop/jfuse-api</url>
 
+	<properties>
+		<maven.deploy.skip>false</maven.deploy.skip>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.jetbrains</groupId>
