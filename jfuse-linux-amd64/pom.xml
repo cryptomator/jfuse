@@ -9,9 +9,11 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-linux-amd64</artifactId>
+	<name>jFUSE Linux x86_64</name>
+	<description>Java FUSE bindings for Linux x86_64</description>
+	<url>https://github.com/cryptomator/jfuse/tree/develop/jfuse-linux-amd64</url>
 
 	<properties>
-		<jextract.path>${java.home}/bin/jextract</jextract.path>
 		<linux.headerSearchPath>/usr/x86_64-linux-gnu/include/</linux.headerSearchPath> <!-- debian package libc6-dev-amd64-cross -->
 	</properties>
 

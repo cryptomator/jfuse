@@ -9,6 +9,9 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-api</artifactId>
+	<name>jFUSE API</name>
+	<description>The main API of jFUSE</description>
+	<url>https://github.com/cryptomator/jfuse/tree/develop/jfuse-api</url>
 
 	<dependencies>
 		<dependency>
