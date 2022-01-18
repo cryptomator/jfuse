@@ -1,20 +1,19 @@
 
 name: "CodeQL"
 
-on:
-  push:
-    branches: [develop, main]
-  pull_request:
-    branches: [develop]
-  schedule:
-    - cron: '0 7 * * 0'
+on: [] # DISABLED. codeql doesn't support Java 18 yet...
+#  push:
+#    branches: [develop, main]
+#  pull_request:
+#    branches: [develop]
+#  schedule:
+#    - cron: '0 7 * * 0'
 
 jobs:
   analyse:
     name: Analyse
     runs-on: ubuntu-latest
-    if: ${{ false }}  # codeql doesn't support Java 18 yet...
-    # if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
+    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
     steps:
     - uses: actions/checkout@v2
       with:
