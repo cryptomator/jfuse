@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>org.cryptomator</groupId>
 			<artifactId>jfuse-api</artifactId>
-			<version>0.1.0</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 
