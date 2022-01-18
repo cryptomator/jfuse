@@ -8,6 +8,10 @@
 	<packaging>pom</packaging>
 	<version>0.1.0-SNAPSHOT</version>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<modules>
 		<module>jfuse-api</module>
 		<module>jfuse-examples</module>
