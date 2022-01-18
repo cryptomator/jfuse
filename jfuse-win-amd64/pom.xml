@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse</artifactId>
-		<version>0.1.0-SNAPSHOT</version>
+		<version>0.1.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-win-amd64</artifactId>
@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>org.cryptomator</groupId>
 			<artifactId>jfuse-api</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>0.1.0</version>
 		</dependency>
 	</dependencies>
 
