@@ -88,10 +88,10 @@ java -p path/to/mods \
 
 Due to slight differences in memory layout, each platform needs its own implementation. Currently, the following operating systems and architectures are supported:
 
-|        | Linux | Mac (macFUSE) | Windows (WinFSP) |
-|--------|-------|-----|---------|
-| x86_64 | [jfuse-linux-amd64](jfuse-linux-amd64) | [jfuse-mac](jfuse-mac) | [jfuse-win-amd64](jfuse-win-amd64) |
-| arm64  |       | [jfuse-mac](jfuse-mac) |         |
+|        | Linux                                    | Mac (macFUSE) | Windows (WinFSP) |
+|--------|------------------------------------------|-----|---------|
+| x86_64 | [jfuse-linux-amd64](jfuse-linux-amd64)   | [jfuse-mac](jfuse-mac) | [jfuse-win-amd64](jfuse-win-amd64) |
+| arm64  | [jfuse-linux-aarch64](jfuse-linux-aarch64) | [jfuse-mac](jfuse-mac) |         |
 
 ## Building
 
