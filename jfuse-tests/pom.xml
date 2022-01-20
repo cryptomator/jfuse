@@ -89,6 +89,25 @@
 		</profile>
 
 		<profile>
+			<id>linux-aarch64</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<name>Linux</name>
+					<arch>aarch64</arch>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.cryptomator</groupId>
+					<artifactId>jfuse-linux-aarch64</artifactId>
+					<version>${project.version}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<profile>
 			<id>win-amd64</id>
 			<activation>
 				<os>

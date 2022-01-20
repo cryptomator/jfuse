@@ -172,6 +172,20 @@
 		</profile>
 
 		<profile>
+			<id>linux-aarch64</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<name>Linux</name>
+					<arch>aarch64</arch>
+				</os>
+			</activation>
+			<modules>
+				<module>jfuse-linux-aarch64</module>
+			</modules>
+		</profile>
+
+		<profile>
 			<id>win-amd64</id>
 			<activation>
 				<os>
