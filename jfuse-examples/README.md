@@ -33,6 +33,6 @@ $JAVA_HOME/bin/java \
   -Djava.library.path=/usr/local/lib \
   -p target/classes:target/mods \
   --enable-native-access=org.cryptomator.jfuse.win.amd64 \
-  -m org.cryptomator.jfuse.examples/org.cryptomator.jfuse.examples.MirrorPosixFileSystem \
+  -m org.cryptomator.jfuse.examples/org.cryptomator.jfuse.examples.MirrorWinFileSystem \
   C:/path/to/to-be-mirrored/dir M:
 ```
