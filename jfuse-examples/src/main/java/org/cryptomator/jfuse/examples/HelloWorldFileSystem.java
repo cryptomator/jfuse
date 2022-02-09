@@ -31,7 +31,10 @@ public class HelloWorldFileSystem implements FuseOperations {
 	private final Errno errno;
 
 	public static void main(String[] args) {
-		Path mountPoint = Path.of("/Volumes/foo");
+		if (args.length != 1) {
+			LOG.error("Invalid number of arguments. Expected {mountPoint}.");
+		}
+		Path mountPoint = Path.of(args[0]);
 		var builder = Fuse.builder();
 		var fuseOps = new HelloWorldFileSystem(builder.errno());
 		try (var fuse = builder.build(fuseOps)) {

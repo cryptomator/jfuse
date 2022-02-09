@@ -51,8 +51,11 @@ public class MirrorWinFileSystem implements FuseOperations {
 	private final FileStore fileStore;
 
 	public static void main(String[] args) {
-		Path mirrored = Path.of("C:/Users/Sebastian/Desktop/TMP");
-		Path mountPoint = Path.of("M:");
+		if (args.length != 2) {
+			LOG.error("Invalid number of arguments. Expected {mirroredDir} {driveLetter}.");
+		}
+		Path mirrored = Path.of(args[0]);
+		Path mountPoint = Path.of(args[1]);
 		var builder = Fuse.builder();
 		try (var fuse = builder.build(new MirrorWinFileSystem(mirrored, builder.errno()))) {
 			LOG.info("Mounting at {}...", mountPoint);
