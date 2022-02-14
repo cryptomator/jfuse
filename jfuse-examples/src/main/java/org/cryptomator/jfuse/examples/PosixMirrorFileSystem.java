@@ -18,9 +18,9 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
 import java.util.concurrent.CompletionException;
 
-public final class MirrorPosixFileSystem extends AbstractMirrorFileSystem {
+public final class PosixMirrorFileSystem extends AbstractMirrorFileSystem {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MirrorPosixFileSystem.class);
+	private static final Logger LOG = LoggerFactory.getLogger(PosixMirrorFileSystem.class);
 
 	public static void main(String[] args) {
 		if (args.length != 2) {
@@ -29,7 +29,7 @@ public final class MirrorPosixFileSystem extends AbstractMirrorFileSystem {
 		Path mirrored = Path.of(args[0]);
 		Path mountPoint = Path.of(args[1]);
 		var builder = Fuse.builder();
-		try (var fuse = builder.build(new MirrorPosixFileSystem(mirrored, builder.errno()))) {
+		try (var fuse = builder.build(new PosixMirrorFileSystem(mirrored, builder.errno()))) {
 			LOG.info("Mounting at {}...", mountPoint);
 			int result = fuse.mount("jfuse", mountPoint, "-s", "-ovolname=mirror");
 			if (result == 0) {
@@ -46,7 +46,7 @@ public final class MirrorPosixFileSystem extends AbstractMirrorFileSystem {
 		}
 	}
 
-	public MirrorPosixFileSystem(Path root, Errno errno) throws IOException {
+	public PosixMirrorFileSystem(Path root, Errno errno) throws IOException {
 		super(root, errno, Files.getFileStore(root));
 	}
 

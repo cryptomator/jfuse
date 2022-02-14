@@ -17,9 +17,9 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
 import java.util.concurrent.CompletionException;
 
-public final class MirrorWinFileSystem extends AbstractMirrorFileSystem {
+public final class WindowsMirrorFileSystem extends AbstractMirrorFileSystem {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MirrorWinFileSystem.class);
+	private static final Logger LOG = LoggerFactory.getLogger(WindowsMirrorFileSystem.class);
 
 	public static void main(String[] args) {
 		if (args.length != 2) {
@@ -28,7 +28,7 @@ public final class MirrorWinFileSystem extends AbstractMirrorFileSystem {
 		Path mirrored = Path.of(args[0]);
 		Path mountPoint = Path.of(args[1]);
 		var builder = Fuse.builder();
-		try (var fuse = builder.build(new MirrorWinFileSystem(mirrored, builder.errno()))) {
+		try (var fuse = builder.build(new WindowsMirrorFileSystem(mirrored, builder.errno()))) {
 			LOG.info("Mounting at {}...", mountPoint);
 			int result = fuse.mount("jfuse", mountPoint, "-s", "-ouid=-1", "-ogid=11", "-ovolname=mirror");
 			if (result == 0) {
@@ -45,7 +45,7 @@ public final class MirrorWinFileSystem extends AbstractMirrorFileSystem {
 		}
 	}
 
-	public MirrorWinFileSystem(Path root, Errno errno) throws IOException {
+	public WindowsMirrorFileSystem(Path root, Errno errno) throws IOException {
 		super(root, errno, Files.getFileStore(root));
 	}
 

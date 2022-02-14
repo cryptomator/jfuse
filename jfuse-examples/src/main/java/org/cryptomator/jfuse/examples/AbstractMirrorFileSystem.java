@@ -44,7 +44,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public abstract sealed class AbstractMirrorFileSystem implements FuseOperations permits MirrorPosixFileSystem, MirrorWinFileSystem {
+public abstract sealed class AbstractMirrorFileSystem implements FuseOperations permits PosixMirrorFileSystem, WindowsMirrorFileSystem {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractMirrorFileSystem.class);
 
@@ -173,7 +173,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		LOG.trace("getattr {}", path);
 		Path node = resolvePath(path);
 		try {
-			var attrs = this.readAttributes(node);
+			var attrs = readAttributes(node);
 			if (attrs instanceof PosixFileAttributes posixAttrs) {
 				stat.setPermissions(posixAttrs.permissions());
 			} else if (attrs instanceof DosFileAttributes dosAttrs) {
@@ -245,7 +245,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		Path node = resolvePath(path);
 		var attr = PosixFilePermissions.asFileAttribute(FileModes.toPermissions(mode));
 		try {
-			this.createDir(node, attr);
+			createDir(node, attr);
 			return 0;
 		} catch (FileAlreadyExistsException e) {
 			return -errno.eexist();

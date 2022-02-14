@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="MirrorPosixFileSystem" type="Application" factoryName="Application" nameIsGenerated="true">
-    <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.examples.MirrorPosixFileSystem" />
+  <configuration default="false" name="PosixMirrorFileSystem" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.examples.PosixMirrorFileSystem" />
     <module name="jfuse-examples" />
     <option name="PROGRAM_PARAMETERS" value="$USER_HOME$/Desktop/TMP /Volumes/foo" />
     <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug --enable-native-access=org.cryptomator.jfuse.linux.amd64,org.cryptomator.jfuse.mac --add-modules jdk.incubator.foreign" />
