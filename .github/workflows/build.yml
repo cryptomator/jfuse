@@ -34,7 +34,7 @@ jobs:
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
           -Plinux-amd64,linux-aarch64,mac,win-amd64
           -Dsonar.projectKey=cryptomator_jfuse
-          -Dsonar.coverage.jacoco.xmlReportPaths=${{ env.GITHUB_WORKSPACE }}/jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
+          -Dsonar.coverage.jacoco.xmlReportPaths=${GITHUB_WORKSPACE}/jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
           -Dsonar.organization=cryptomator
           -Dsonar.host.url=https://sonarcloud.io
         env:
