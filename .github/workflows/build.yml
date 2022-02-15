@@ -5,39 +5,39 @@ on:
 jobs:
 
   linux-amd64:
-    name: Test Linux AMD64
+    name: Test jfuse-linux-amd64
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v2
-      with:
-        java-version: 18-ea
-        distribution: 'zulu'
-        cache: 'maven'
-    - name: Setup fuse
-      run: |
-        sudo apt-get update
-        sudo apt-get install fuse libfuse-dev
-    - name: Maven build
-      run: mvn -B verify -Plinux-amd64
-    - uses: actions/upload-artifact@v2
-      with:
-        name: coverage-linux-amd64
-        path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
-        retention-days: 3
+        with:
+          java-version: 18-ea
+          distribution: 'zulu'
+          cache: 'maven'
+      - name: Setup fuse
+        run: |
+          sudo apt-get update
+          sudo apt-get install fuse libfuse-dev
+      - name: Maven build
+        run: mvn -B verify -Plinux-amd64
+      - uses: actions/upload-artifact@v2
+        with:
+          name: coverage-linux-amd64
+          path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
+          retention-days: 3
 
   mac:
-    name: Test macOS
+    name: Test jfuse-mac
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v2
-      with:
-        java-version: 18-ea
-        distribution: 'zulu'
-        cache: 'maven'
+        with:
+          java-version: 18-ea
+          distribution: 'zulu'
+          cache: 'maven'
       - name: Setup fuse
         run: brew install macfuse
       - name: Maven build
