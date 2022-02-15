@@ -50,7 +50,7 @@ jobs:
 
   sonarcloud:
     name: Run SonarCloud Analysis
-    needs: [linx-amd64, mac]
+    needs: [linux-amd64, mac]
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
     steps:
