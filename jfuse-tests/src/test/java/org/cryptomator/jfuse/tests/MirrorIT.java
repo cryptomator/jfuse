@@ -70,7 +70,7 @@ public class MirrorIT {
 		}
 		// TODO add win-specific unmount code
 		if (fuse != null) {
-			Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), fuse::close);
+			Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), fuse::close, "file system still active");
 		}
 	}
 
@@ -123,9 +123,11 @@ public class MirrorIT {
 		@RepeatedTest(10)
 		@DisplayName("list /dir0")
 		public void testListDir0() throws IOException {
-			var list = Files.list(mirror.resolve("dir0")).map(Path::getFileName).map(Path::toString).sorted().toArray(String[]::new);
+			try (var ds = Files.list(mirror.resolve("dir0"))) {
+				var list = ds.map(Path::getFileName).map(Path::toString).sorted().toArray(String[]::new);
 
-			Assertions.assertArrayEquals(new String[]{"file0", "file1", "file2", "file3", "file4", "subdir"}, list);
+				Assertions.assertArrayEquals(new String[]{"file0", "file1", "file2", "file3", "file4", "subdir"}, list);
+			}
 		}
 
 
