@@ -24,12 +24,17 @@ jobs:
       - name: Ensure to use tagged version
         if: startsWith(github.ref, 'refs/tags/')
         run: mvn versions:set --file ./pom.xml -DnewVersion=${GITHUB_REF##*/}
+      - name: setup fuse
+        run: |
+          sudo apt-get update
+          sudo apt-get install fuse libfuse-dev
       - name: Build and Test
         run: >
           mvn -B verify
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-          -Plinux-amd64,mac,win-amd64
+          -Plinux-amd64,linux-aarch64,mac,win-amd64
           -Dsonar.projectKey=cryptomator_jfuse
+          -Dsonar.coverage.jacoco.xmlReportPaths=jfuse-test/target/site/jacoco-aggregate/jacoco.xml
           -Dsonar.organization=cryptomator
           -Dsonar.host.url=https://sonarcloud.io
         env:
@@ -41,6 +46,7 @@ jobs:
           path: |
             jfuse-api/target/*.jar
             jfuse-linux-amd64/target/*.jar
+            jfuse-linux-aarch64/target/*.jar
             jfuse-mac/target/*.jar
             jfuse-win-amd64/target/*.jar
       - name: Create Release
