@@ -2,10 +2,11 @@
 
 package org.cryptomator.jfuse.linux.amd64.extr;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
-
+import java.nio.ByteOrder;
 import jdk.incubator.foreign.*;
-
+import static jdk.incubator.foreign.ValueLayout.*;
 public class statvfs {
 
     static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(

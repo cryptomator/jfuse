@@ -112,6 +112,8 @@
 										<argument>timespec</argument>
 										<argument>--include-struct</argument>
 										<argument>fuse_conn_info</argument>
+										<argument>--include-struct</argument>
+										<argument>fuse_args</argument>
 										<!-- typedefs: -->
 										<argument>--include-typedef</argument>
 										<argument>fuse_fill_dir_t</argument>
@@ -121,7 +123,19 @@
 										<argument>--include-function</argument>
 										<argument>fuse_get_context</argument>
 										<argument>--include-function</argument>
+										<argument>fuse_parse_cmdline</argument>
+										<argument>--include-function</argument>
+										<argument>fuse_mount</argument>
+										<argument>--include-function</argument>
+										<argument>fuse_new</argument>
+										<argument>--include-function</argument>
+										<argument>fuse_loop</argument>
+										<argument>--include-function</argument>
+										<argument>fuse_unmount</argument>
+										<argument>--include-function</argument>
 										<argument>fuse_exit</argument>
+										<argument>--include-function</argument>
+										<argument>fuse_destroy</argument>
 										<!-- extract fuse.h header: -->
 										<argument>${project.parent.basedir}/libfuse/include/fuse.h</argument>
 									</arguments>

@@ -2,6 +2,10 @@
 
 package org.cryptomator.jfuse.mac.extr;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
+import jdk.incubator.foreign.*;
 import static jdk.incubator.foreign.ValueLayout.*;
 public class stat_h  {
 

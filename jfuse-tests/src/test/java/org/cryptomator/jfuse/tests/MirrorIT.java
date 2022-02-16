@@ -26,7 +26,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MirrorIT {
@@ -56,19 +55,7 @@ public class MirrorIT {
 	}
 
 	@AfterAll
-	public void teardown() throws IOException, InterruptedException {
-		if (OS.MAC.isCurrentOs()) {
-			ProcessBuilder command = new ProcessBuilder("umount", "-f", "--", mirror.getFileName().toString());
-			command.directory(mirror.getParent().toFile());
-			Process p = command.start();
-			p.waitFor(10, TimeUnit.SECONDS);
-		} else if (OS.LINUX.isCurrentOs()) {
-			ProcessBuilder command = new ProcessBuilder("fusermount", "-u", "--", mirror.getFileName().toString());
-			command.directory(mirror.getParent().toFile());
-			Process p = command.start();
-			p.waitFor(10, TimeUnit.SECONDS);
-		}
-		// TODO add win-specific unmount code
+	public void teardown() {
 		if (fuse != null) {
 			Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), fuse::close, "file system still active");
 		}
