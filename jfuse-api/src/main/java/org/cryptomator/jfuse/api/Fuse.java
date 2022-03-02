@@ -121,6 +121,8 @@ public abstract class Fuse implements AutoCloseable {
 
 	/**
 	 * Unmounts (if needed) this fuse file system and frees up system resources.
+	 * <p>
+	 * <strong>Important:</strong> Before closing, a graceful unmount via system tools (e.g. {@code fusermount -u}) should be attempted.
 	 */
 	@Override
 	@MustBeInvokedByOverriders
