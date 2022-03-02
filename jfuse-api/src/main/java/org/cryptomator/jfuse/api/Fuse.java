@@ -46,7 +46,7 @@ public abstract class Fuse implements AutoCloseable {
 		List<String> args = new ArrayList<>();
 		args.add(progName);
 		args.addAll(List.of(flags));
-		// TODO remove?: args.add("-f"); // foreground mode required, so fuse_main_real() blocks
+		args.add("-f"); // always stay in foreground. don't fork & kill this process via `fuse_daemonize`
 		args.add(mountPoint.toString());
 
 		try (var scope = ResourceScope.newConfinedScope()) {
