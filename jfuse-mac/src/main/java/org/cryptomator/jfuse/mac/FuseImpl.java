@@ -68,10 +68,12 @@ public final class FuseImpl extends Fuse {
 		fuse_args.argc$set(fuseArgs, argc);
 		fuse_args.argv$set(fuseArgs, argv.address());
 		fuse_args.allocated$set(fuseArgs, 0);
-		int parseResult = fuse_h.fuse_parse_cmdline(fuseArgs, MemoryAddress.NULL, multithreaded, foreground);
+		var mountPointPtr = allocator.allocate(ValueLayout.ADDRESS);
+		int parseResult = fuse_h.fuse_parse_cmdline(fuseArgs, mountPointPtr, multithreaded, foreground);
 		if (parseResult != 0) {
 			throw new IllegalArgumentException("fuse_parse_cmdline failed to parse " + String.join(" ", args));
 		}
+		var mountPoint = mountPointPtr.get(ValueLayout.ADDRESS, 0).getUtf8String(0);
 		var isMultiThreaded = multithreaded.get(JAVA_INT, 0) == 1;
 		var isForeground = foreground.get(JAVA_INT, 0) == 1;
 		return new FuseArgs(fuseArgs, isMultiThreaded, isForeground);
