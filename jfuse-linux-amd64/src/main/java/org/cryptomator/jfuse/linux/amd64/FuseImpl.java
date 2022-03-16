@@ -59,11 +59,9 @@ public final class FuseImpl extends Fuse {
 		var multithreaded = allocator.allocate(JAVA_INT, 1);
 		var foreground = allocator.allocate(JAVA_INT, 1);
 		var fuseArgs = fuse_args.allocate(allocator);
-		var argv = allocator.allocateArray(ValueLayout.ADDRESS, 1);
-		argv.setAtIndex(ValueLayout.ADDRESS, 0, MemoryAddress.NULL);
 		fuse_args.argc$set(fuseArgs, 0);
-		fuse_args.argv$set(fuseArgs, argv.address());
-		fuse_args.allocated$set(fuseArgs, 1);
+		fuse_args.argv$set(fuseArgs, MemoryAddress.NULL);
+		fuse_args.allocated$set(fuseArgs, 0);
 		for (var arg : args) {
 			var cString = allocator.allocateUtf8String(arg);
 			fuse_h.fuse_opt_add_arg(fuseArgs, cString);
