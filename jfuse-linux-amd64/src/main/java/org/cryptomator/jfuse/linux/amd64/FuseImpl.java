@@ -68,6 +68,7 @@ public final class FuseImpl extends Fuse {
 		fuse_args.argc$set(fuseArgs, argc);
 		fuse_args.argv$set(fuseArgs, argv.address());
 		fuse_args.allocated$set(fuseArgs, 0);
+		System.out.println("args: " + String.join(" ", args));
 		var mountPointPtr = allocator.allocate(ValueLayout.ADDRESS);
 		int parseResult = fuse_h.fuse_parse_cmdline(fuseArgs, mountPointPtr, multithreaded, foreground);
 		if (parseResult != 0) {
@@ -76,7 +77,15 @@ public final class FuseImpl extends Fuse {
 		var mountPoint = mountPointPtr.get(ValueLayout.ADDRESS, 0).getUtf8String(0);
 		var isMultiThreaded = multithreaded.get(JAVA_INT, 0) == 1;
 		var isForeground = foreground.get(JAVA_INT, 0) == 1;
-		System.out.println("parsed args mp=" + mountPoint + ", mt=" + isMultiThreaded + ", f=" + isForeground);
+		{
+			var parsedArgc = fuse_args.argc$get(fuseArgs);
+			var parsedArgv = fuse_args.argv$get(fuseArgs);
+			System.out.println("parsed args mp=" + mountPoint + ", mt=" + isMultiThreaded + ", f=" + isForeground + ", argc=" + parsedArgc);
+			for (int i = 0; i < parsedArgc; i++) {
+				var cString = parsedArgv.getAtIndex(ValueLayout.ADDRESS, i).getUtf8String(0);
+				System.out.println("arg[" + i + "]: " + cString);
+			}
+		}
 		return new FuseArgs(fuseArgs, isMultiThreaded, isForeground);
 	}
 
