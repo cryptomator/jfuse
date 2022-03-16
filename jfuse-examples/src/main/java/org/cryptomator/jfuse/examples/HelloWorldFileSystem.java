@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
 
 public class HelloWorldFileSystem implements FuseOperations {
@@ -45,7 +46,7 @@ public class HelloWorldFileSystem implements FuseOperations {
 			} else {
 				LOG.error("Failed to mount to {}. Exit code: {}", mountPoint, result);
 			}
-		} catch (CompletionException e) {
+		} catch (TimeoutException | CompletionException e) {
 			LOG.error("Un/Mounting failed. ", e);
 			System.exit(1);
 		}
