@@ -18,6 +18,17 @@ public class fuse_h  {
     public static OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
     public static OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
     public static OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
+    public static MethodHandle fuse_opt_add_arg$MH() {
+        return RuntimeHelper.requireNonNull(constants$0.fuse_opt_add_arg$MH,"fuse_opt_add_arg");
+    }
+    public static int fuse_opt_add_arg ( Addressable args,  Addressable arg) {
+        var mh$ = RuntimeHelper.requireNonNull(constants$0.fuse_opt_add_arg$MH, "fuse_opt_add_arg");
+        try {
+            return (int)mh$.invokeExact(args, arg);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
     public static MethodHandle fuse_mount$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse_mount$MH,"fuse_mount");
     }
@@ -52,10 +63,10 @@ public class fuse_h  {
         }
     }
     public static MethodHandle fuse_new$MH() {
-        return RuntimeHelper.requireNonNull(constants$0.fuse_new$MH,"fuse_new");
+        return RuntimeHelper.requireNonNull(constants$1.fuse_new$MH,"fuse_new");
     }
     public static MemoryAddress fuse_new ( Addressable ch,  Addressable args,  Addressable op,  long op_size,  Addressable user_data) {
-        var mh$ = RuntimeHelper.requireNonNull(constants$0.fuse_new$MH, "fuse_new");
+        var mh$ = RuntimeHelper.requireNonNull(constants$1.fuse_new$MH, "fuse_new");
         try {
             return (jdk.incubator.foreign.MemoryAddress)mh$.invokeExact(ch, args, op, op_size, user_data);
         } catch (Throwable ex$) {

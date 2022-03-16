@@ -123,6 +123,8 @@
 										<argument>--include-function</argument>
 										<argument>fuse_get_context</argument>
 										<argument>--include-function</argument>
+										<argument>fuse_opt_add_arg</argument>
+										<argument>--include-function</argument>
 										<argument>fuse_parse_cmdline</argument>
 										<argument>--include-function</argument>
 										<argument>fuse_mount</argument>

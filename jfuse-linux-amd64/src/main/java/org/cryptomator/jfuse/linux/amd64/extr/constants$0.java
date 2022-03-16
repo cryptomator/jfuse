@@ -9,6 +9,14 @@ import jdk.incubator.foreign.*;
 import static jdk.incubator.foreign.ValueLayout.*;
 class constants$0 {
 
+    static final FunctionDescriptor fuse_opt_add_arg$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle fuse_opt_add_arg$MH = RuntimeHelper.downcallHandle(
+        "fuse_opt_add_arg",
+        constants$0.fuse_opt_add_arg$FUNC, false
+    );
     static final FunctionDescriptor fuse_mount$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
@@ -43,17 +51,6 @@ class constants$0 {
     );
     static final MethodHandle fuse_fill_dir_t$MH = RuntimeHelper.downcallHandle(
         constants$0.fuse_fill_dir_t$FUNC, false
-    );
-    static final FunctionDescriptor fuse_new$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_LONG_LONG$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT
-    );
-    static final MethodHandle fuse_new$MH = RuntimeHelper.downcallHandle(
-        "fuse_new",
-        constants$0.fuse_new$FUNC, false
     );
 }
 

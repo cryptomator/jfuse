@@ -59,15 +59,24 @@ public final class FuseImpl extends Fuse {
 		var multithreaded = allocator.allocate(JAVA_INT, 1);
 		var foreground = allocator.allocate(JAVA_INT, 1);
 		var fuseArgs = fuse_args.allocate(allocator);
-		var argc = args.size();
-		var argv = allocator.allocateArray(ValueLayout.ADDRESS, argc);
-		for (int i = 0; i < argc; i++) {
-			var cString = allocator.allocateUtf8String(args.get(i));
-			argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
-		}
-		fuse_args.argc$set(fuseArgs, argc);
+		var argv = allocator.allocateArray(ValueLayout.ADDRESS, 1);
+		argv.setAtIndex(ValueLayout.ADDRESS, 0, MemoryAddress.NULL);
+		fuse_args.argc$set(fuseArgs, 0);
 		fuse_args.argv$set(fuseArgs, argv.address());
-		fuse_args.allocated$set(fuseArgs, 0);
+		fuse_args.allocated$set(fuseArgs, 1);
+		for (var arg : args) {
+			var cString = allocator.allocateUtf8String(arg);
+			fuse_h.fuse_opt_add_arg(fuseArgs, cString);
+		}
+//		var argc = args.size();
+//		var argv = allocator.allocateArray(ValueLayout.ADDRESS, argc);
+//		for (int i = 0; i < argc; i++) {
+//			var cString = allocator.allocateUtf8String(args.get(i));
+//			argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
+//		}
+//		fuse_args.argc$set(fuseArgs, argc);
+//		fuse_args.argv$set(fuseArgs, argv.address());
+//		fuse_args.allocated$set(fuseArgs, 0);
 		System.out.println("args: " + String.join(" ", args));
 		var mountPointPtr = allocator.allocate(ValueLayout.ADDRESS);
 		int parseResult = fuse_h.fuse_parse_cmdline(fuseArgs, mountPointPtr, multithreaded, foreground);
