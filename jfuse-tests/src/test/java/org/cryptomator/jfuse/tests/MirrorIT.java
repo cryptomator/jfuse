@@ -27,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MirrorIT {
@@ -40,7 +41,7 @@ public class MirrorIT {
 	private Fuse fuse;
 
 	@BeforeAll
-	public void setup(@TempDir Path tmpDir) throws IOException {
+	public void setup(@TempDir Path tmpDir) throws IOException, TimeoutException {
 		var builder = Fuse.builder();
 		orig = tmpDir.resolve("orig");
 		Files.createDirectories(orig);
@@ -55,8 +56,8 @@ public class MirrorIT {
 			fs = new PosixMirrorFileSystem(orig, builder.errno());
 		}
 		fuse = builder.build(fs);
-		int result = fuse.mount("mirror-it", mirror, "-s", "-d");
-		Assumptions.assumeTrue(result == 0, "mount failed");
+		int result = fuse.mount("mirror-it", mirror, "-s");
+		Assertions.assertEquals(0, result, "mount failed");
 	}
 
 	@AfterAll

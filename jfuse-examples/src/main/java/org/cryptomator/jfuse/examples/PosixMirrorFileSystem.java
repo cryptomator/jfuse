@@ -17,6 +17,7 @@ import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.TimeoutException;
 
 public final class PosixMirrorFileSystem extends AbstractMirrorFileSystem {
 
@@ -37,7 +38,7 @@ public final class PosixMirrorFileSystem extends AbstractMirrorFileSystem {
 			} else {
 				LOG.error("Failed to mount to {}. Exit code: {}", mountPoint, result);
 			}
-		} catch (CompletionException e) {
+		} catch (TimeoutException | CompletionException e) {
 			LOG.error("Un/Mounting failed. ", e);
 			System.exit(1);
 		} catch (IOException e) {

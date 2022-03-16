@@ -1,24 +1,49 @@
 package org.cryptomator.jfuse.api;
 
 import jdk.incubator.foreign.ResourceScope;
+
 import org.jetbrains.annotations.Blocking;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
+
+import org.jetbrains.annotations.BlockingExecutor;
+
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.CountDownLatch;
+
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+
+/**
+ * Represents a FUSE file system. Instances of this class are stateful and can not be reused.
+ * <p>
+ * The lifecycle starts by creating an instance using the {@link #builder() builder},
+ * then {@link #mount(String, Path, String...) mounting} the file system and {@link #close() closing} it when done.
+ */
 public abstract class Fuse implements AutoCloseable {
 
 	protected final ResourceScope fuseScope = ResourceScope.newSharedScope();
-	private final CountDownLatch loopExited = new CountDownLatch(1);
 	private final AtomicReference<FuseSession> session = new AtomicReference<>();
+	@BlockingExecutor
+	private final ExecutorService executor;
 
 	protected Fuse() {
+		this.executor = Executors.newSingleThreadExecutor(runnable -> {
+			var thread = new Thread(runnable);
+			thread.setName("jfuse-main"); // TODO append id
+			thread.setDaemon(true);
+			return thread;
+		});
 	}
 
 	public static FuseBuilder builder() {
@@ -37,7 +62,7 @@ public abstract class Fuse implements AutoCloseable {
 	 * @throws CompletionException wrapping exceptions thrown during <code>init()</code> or <code>fuse_main_real()</code>
 	 */
 	@Blocking
-	public int mount(String progName, Path mountPoint, String... flags) throws CompletionException {
+	public int mount(String progName, Path mountPoint, String... flags) throws CompletionException, TimeoutException {
 		final FuseSession lock = new FuseSession(null, null, null);
 		if (!session.compareAndSet(null, lock)) {
 			throw new IllegalStateException("Already mounted");
@@ -55,15 +80,19 @@ public abstract class Fuse implements AutoCloseable {
 			var isOnlySession = session.compareAndSet(lock, fuseSession);
 			assert isOnlySession : "unreachable code, as no other method can set this.session to SESSION_LOCK";
 
-			var mountResult = CompletableFuture
-					.supplyAsync(() -> loop(fuseSession, false)) // TODO: specify executor?
-					.whenComplete((result, error) -> loopExited.countDown());
-			var result = CompletableFuture.anyOf(mountResult, initialized()).join();
+			// TODO get multithreaded flag from fuseSession
+			var mountResult = CompletableFuture.supplyAsync(() -> loop(fuseSession, false), executor);
+			var result = CompletableFuture.anyOf(mountResult, initialized()).get(10, TimeUnit.SECONDS);
 			if (result instanceof Integer i) {
 				return i;
 			} else {
 				throw new IllegalStateException("Expected Future<Integer>");
 			}
+		} catch (CancellationException | ExecutionException e) {
+			return 1;
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			return 1;
 		} finally {
 			session.compareAndSet(lock, null); // reset in case of error
 		}
@@ -126,12 +155,16 @@ public abstract class Fuse implements AutoCloseable {
 	 */
 	@Override
 	@MustBeInvokedByOverriders
-	public void close() {
+	public void close() throws TimeoutException {
 		try {
 			var session = this.session.getAndSet(null);
 			if (session != null) {
 				unmount(session);
-				loopExited.await();
+				executor.shutdown();
+				boolean exited = executor.awaitTermination(10, TimeUnit.SECONDS);
+				if (!exited) {
+					throw new TimeoutException("fuse main loop continued runn");
+				}
 				destroy(session);
 			}
 		} catch (InterruptedException e) {
