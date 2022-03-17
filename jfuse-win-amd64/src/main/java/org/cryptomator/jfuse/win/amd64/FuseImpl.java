@@ -1,14 +1,15 @@
 package org.cryptomator.jfuse.win.amd64;
 
-import org.cryptomator.jfuse.api.Fuse;
-import org.cryptomator.jfuse.api.FuseOperations;
-import org.cryptomator.jfuse.win.amd64.extr.fuse_h;
-import org.cryptomator.jfuse.win.amd64.extr.fuse_operations;
-import org.cryptomator.jfuse.win.amd64.extr.fuse_timespec;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
+import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.FuseOperations;
+import org.cryptomator.jfuse.win.amd64.extr.fuse_context;
+import org.cryptomator.jfuse.win.amd64.extr.fuse_h;
+import org.cryptomator.jfuse.win.amd64.extr.fuse_operations;
+import org.cryptomator.jfuse.win.amd64.extr.fuse_timespec;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
@@ -18,6 +19,8 @@ public final class FuseImpl extends Fuse {
 	private final CompletableFuture<Integer> initialized = new CompletableFuture<>();
 	private final FuseOperations delegate;
 	private final MemorySegment struct;
+
+	private volatile MemoryAddress fuseHandle;
 
 	public FuseImpl(FuseOperations fuseOperations) {
 		this.struct = fuse_operations.allocate(fuseScope);
@@ -31,6 +34,10 @@ public final class FuseImpl extends Fuse {
 			if (delegate.supportedOperations().contains(FuseOperations.Operation.INIT)) {
 				delegate.init(new FuseConnInfoImpl(conn, scope));
 			}
+			//store fuse handle to be used in fuse_exit()
+			var ctx = fuse_context.ofAddress(fuse_h.fuse_get_context(), scope);
+			this.fuseHandle = fuse_context.fuse$get(ctx);
+
 			initialized.complete(0);
 		} catch (Exception e) {
 			initialized.completeExceptionally(e);
@@ -48,13 +55,11 @@ public final class FuseImpl extends Fuse {
 		return fuse_h.fuse_main_real(argc, argv, struct, struct.byteSize(), MemoryAddress.NULL);
 	}
 
-//	private void exit() {
-//		try (var scope = ResourceScope.newConfinedScope()) {
-//			var ctx = fuse_context.ofAddress(fuse_h.fuse_get_context(), scope);
-//			var fusePtr = fuse_context.fuse$get(ctx);
-//			fuse_h.fuse_exit(fusePtr);
-//		}
-//	}
+	private void fuseExit() {
+		if (fuseHandle != null) {
+			fuse_h.fuse_exit(fuseHandle);
+		}
+	}
 
 	private void bind(FuseOperations.Operation operation) {
 		switch (operation) {
@@ -205,6 +210,12 @@ public final class FuseImpl extends Fuse {
 			var buffer = MemorySegment.ofAddress(buf, size, scope).asByteBuffer();
 			return delegate.write(path.getUtf8String(0), buffer, size, offset, new FileInfoImpl(fi, scope));
 		}
+	}
+
+	@Override
+	public void close() throws TimeoutException {
+		fuseExit();
+		super.close();
 	}
 
 }

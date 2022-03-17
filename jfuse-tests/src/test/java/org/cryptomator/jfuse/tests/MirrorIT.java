@@ -69,7 +69,7 @@ public class MirrorIT {
 			Process p = command.start();
 			p.waitFor(10, TimeUnit.SECONDS);
 		}
-		// TODO add win-specific unmount code
+		// for Windows we call internally fuse_exit
 		if (fuse != null) {
 			Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), fuse::close, "file system still active");
 		}
