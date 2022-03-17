@@ -71,7 +71,7 @@ jobs:
 
   sonarcloud:
     name: Run SonarCloud Analysis
-    needs: [linux-amd64, mac]
+    needs: [linux-amd64, mac, win-amd64]
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
     steps:
@@ -97,6 +97,10 @@ jobs:
         with:
           name: coverage-mac
           path: coverage/mac
+      - uses: actions/download-artifact@v2
+        with:
+          name: coverage-win-amd64
+          path: coverage/win-amd64
       - name: Analyze
         run: >
           mvn -B compile -DskipTests
