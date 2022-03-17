@@ -12,7 +12,9 @@ import org.cryptomator.jfuse.win.amd64.extr.fuse_operations;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_timespec;
 
 import java.nio.ByteBuffer;
+import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeoutException;
 
 public final class FuseImpl extends Fuse {
 
@@ -43,6 +45,16 @@ public final class FuseImpl extends Fuse {
 			initialized.completeExceptionally(e);
 		}
 		return MemoryAddress.NULL;
+	}
+
+	@Override
+	public int mount(String progName, Path mountPoint, String... flags) throws TimeoutException {
+		var adjustedMP = mountPoint;
+		if (mountPoint.compareTo(mountPoint.getRoot()) == 0 && mountPoint.isAbsolute()) {
+			//winfsp accepts only drive letters written in drive relative notation
+			adjustedMP = Path.of(mountPoint.toString().charAt(0) + ":");
+		}
+		return super.mount(progName, adjustedMP, flags);
 	}
 
 	@Override
