@@ -37,7 +37,7 @@ public final class WindowsMirrorFileSystem extends AbstractMirrorFileSystem {
 			} else {
 				LOG.error("Failed to mount to {}. Exit code: {}", mountPoint, result);
 			}
-			System.out.println("Enter a anything to unmount...");
+			LOG.info("Enter a anything to unmount...");
 			System.in.read();
 		} catch (TimeoutException | CompletionException e) {
 			LOG.error("Un/Mounting failed. ", e);

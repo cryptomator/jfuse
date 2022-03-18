@@ -67,6 +67,7 @@ public final class FuseImpl extends Fuse {
 		return fuse_h.fuse_main_real(argc, argv, struct, struct.byteSize(), MemoryAddress.NULL);
 	}
 
+	//TODO: subject to change
 	private void fuseExit() {
 		if (fuseHandle != null) {
 			fuse_h.fuse_exit(fuseHandle);
@@ -224,6 +225,7 @@ public final class FuseImpl extends Fuse {
 		}
 	}
 
+	//TODO: subject to change
 	@Override
 	public void close() throws TimeoutException {
 		fuseExit();
