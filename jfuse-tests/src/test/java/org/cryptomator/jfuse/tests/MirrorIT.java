@@ -48,20 +48,12 @@ public class MirrorIT {
 		AbstractMirrorFileSystem fs;
 		List<String> flags = new ArrayList<>();
 		flags.add("-s");
+		mirror = tmpDir.resolve("mirror");
 		if (OS.WINDOWS.isCurrentOs()) {
-			//Idea: read from system property! in build script we can set it via "-DmyProp=.."
-			var ciMountPath = System.getProperty(WIN_MOUNT_DIR_PROP);
-			if( ciMountPath != null) {
-				mirror = Path.of(ciMountPath).resolve("mnt");
-			} else {
-				mirror = Path.of("M:\\");
-			}
-			Assumptions.assumeTrue(Files.notExists(mirror), "M: drive occupied");
-			fs = new WindowsMirrorFileSystem(orig, builder.errno());
 			flags.add("-ouid=-1");
 			flags.add("-ogid=-1");
+			fs = new WindowsMirrorFileSystem(orig, builder.errno());
 		} else {
-			mirror = tmpDir.resolve("mirror");
 			Files.createDirectories(mirror);
 			fs = new PosixMirrorFileSystem(orig, builder.errno());
 		}
