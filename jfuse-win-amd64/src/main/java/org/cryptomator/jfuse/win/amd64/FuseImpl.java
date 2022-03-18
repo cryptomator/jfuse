@@ -15,6 +15,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class FuseImpl extends Fuse {
 
@@ -22,13 +23,14 @@ public final class FuseImpl extends Fuse {
 	private final FuseOperations delegate;
 	private final MemorySegment struct;
 
-	private volatile MemoryAddress fuseHandle;
+	private final AtomicReference<MemoryAddress> fuseHandle;
 
 	public FuseImpl(FuseOperations fuseOperations) {
 		this.struct = fuse_operations.allocate(fuseScope);
 		this.delegate = fuseOperations;
 		fuse_operations.init$set(struct, fuse_operations.init.allocate(this::init, fuseScope).address());
 		fuseOperations.supportedOperations().forEach(this::bind);
+		fuseHandle = new AtomicReference<>();
 	}
 
 	private MemoryAddress init(MemoryAddress conn) {
@@ -38,7 +40,7 @@ public final class FuseImpl extends Fuse {
 			}
 			//store fuse handle to be used in fuse_exit()
 			var ctx = fuse_context.ofAddress(fuse_h.fuse_get_context(), scope);
-			this.fuseHandle = fuse_context.fuse$get(ctx);
+			this.fuseHandle.set(fuse_context.fuse$get(ctx));
 
 			initialized.complete(0);
 		} catch (Exception e) {
@@ -69,8 +71,9 @@ public final class FuseImpl extends Fuse {
 
 	//TODO: subject to change
 	private void fuseExit() {
-		if (fuseHandle != null) {
-			fuse_h.fuse_exit(fuseHandle);
+		var actualHandle = fuseHandle.getAndSet(null);
+		if (actualHandle != null) {
+			fuse_h.fuse_exit(actualHandle);
 		}
 	}
 
