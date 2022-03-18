@@ -34,6 +34,8 @@ import java.util.concurrent.TimeoutException;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MirrorIT {
 
+	private static final String WIN_MOUNT_DIR_PROP = "jfuse.win.integrationMountDir";
+
 	private Path orig;
 	private Path mirror;
 	private Fuse fuse;
@@ -47,7 +49,13 @@ public class MirrorIT {
 		List<String> flags = new ArrayList<>();
 		flags.add("-s");
 		if (OS.WINDOWS.isCurrentOs()) {
-			mirror = Path.of("M:\\");
+			//Idea: read from system property! in build script we can set it via "-DmyProp=.."
+			var ciMountPath = System.getProperty(WIN_MOUNT_DIR_PROP);
+			if( ciMountPath != null) {
+				mirror = Path.of(ciMountPath).resolve("mnt");
+			} else {
+				mirror = Path.of("M:\\");
+			}
 			Assumptions.assumeTrue(Files.notExists(mirror), "M: drive occupied");
 			fs = new WindowsMirrorFileSystem(orig, builder.errno());
 			flags.add("-ouid=-1");
