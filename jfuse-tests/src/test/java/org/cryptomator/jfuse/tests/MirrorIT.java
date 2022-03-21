@@ -34,8 +34,6 @@ import java.util.concurrent.TimeoutException;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MirrorIT {
 
-	private static final String WIN_MOUNT_DIR_PROP = "jfuse.win.integrationMountDir";
-
 	private Path orig;
 	private Path mirror;
 	private Fuse fuse;
