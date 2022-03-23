@@ -26,6 +26,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -42,17 +44,19 @@ public class MirrorIT {
 		orig = tmpDir.resolve("orig");
 		Files.createDirectories(orig);
 		AbstractMirrorFileSystem fs;
+		List<String> flags = new ArrayList<>();
+		flags.add("-s");
+		mirror = tmpDir.resolve("mirror");
 		if (OS.WINDOWS.isCurrentOs()) {
-			mirror = Path.of("M:");
-			Assumptions.assumeTrue(Files.notExists(mirror), "M: drive occupied");
+			flags.add("-ouid=-1");
+			flags.add("-ogid=-1");
 			fs = new WindowsMirrorFileSystem(orig, builder.errno());
 		} else {
-			mirror = tmpDir.resolve("mirror");
 			Files.createDirectories(mirror);
 			fs = new PosixMirrorFileSystem(orig, builder.errno());
 		}
 		fuse = builder.build(fs);
-		int result = fuse.mount("mirror-it", mirror, "-s");
+		int result = fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));
 		Assertions.assertEquals(0, result, "mount failed");
 	}
 
@@ -69,7 +73,7 @@ public class MirrorIT {
 			Process p = command.start();
 			p.waitFor(10, TimeUnit.SECONDS);
 		}
-		// TODO add win-specific unmount code
+		// for Windows we call internally fuse_exit
 		if (fuse != null) {
 			Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), fuse::close, "file system still active");
 		}
