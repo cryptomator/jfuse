@@ -54,7 +54,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	protected final ConcurrentMap<Long, FileChannel> openFiles = new ConcurrentHashMap<>();
 	protected final AtomicLong fileHandleGen = new AtomicLong(1L);
 
-	public AbstractMirrorFileSystem(Path root, Errno errno, FileStore fileStore) {
+	protected AbstractMirrorFileSystem(Path root, Errno errno, FileStore fileStore) {
 		this.root = root;
 		this.errno = errno;
 		this.fileStore = fileStore;
