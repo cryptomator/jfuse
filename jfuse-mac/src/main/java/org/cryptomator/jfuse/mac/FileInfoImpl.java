@@ -3,9 +3,9 @@ package org.cryptomator.jfuse.mac;
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.mac.extr.fcntl_h;
 import org.cryptomator.jfuse.mac.extr.fuse_file_info;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 import java.nio.file.StandardOpenOption;
 import java.util.EnumSet;
@@ -13,7 +13,7 @@ import java.util.Set;
 
 record FileInfoImpl(MemorySegment segment) implements FileInfo {
 
-	public FileInfoImpl(MemoryAddress address, ResourceScope scope) {
+	public FileInfoImpl(MemoryAddress address, MemorySession scope) {
 		this(fuse_file_info.ofAddress(address, scope));
 	}
 
