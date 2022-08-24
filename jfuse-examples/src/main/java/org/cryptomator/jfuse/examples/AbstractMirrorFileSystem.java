@@ -344,7 +344,9 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 			return -errno.ebadf();
 		}
 		try {
-			return fc.read(buf, offset);
+			// TODO restrict to `size` bytes!
+			int read = fc.read(buf, offset);
+			return read == -1 ? 0 : read; // there is no "-1" in fuse
 		} catch (IOException e) {
 			return -errno.eio();
 		}

@@ -6,7 +6,6 @@ import org.cryptomator.jfuse.examples.PosixMirrorFileSystem;
 import org.cryptomator.jfuse.examples.WindowsMirrorFileSystem;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -22,9 +21,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileTime;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,6 +136,36 @@ public class MirrorIT {
 			}
 		}
 
+		@Order(5)
+		@DisplayName("touch /dir0/file0")
+		@Test
+		public void testChangeLastModifiedTime() throws IOException {
+			var file0 = mirror.resolve("dir0/file0");
+			var timeW = FileTime.fromMillis(1645484400000L);
+			Files.setLastModifiedTime(file0, timeW);
+			var timeR = Files.getLastModifiedTime(file0);
+			Assertions.assertEquals(timeW, timeR);
+		}
+
+		@Order(6)
+		@DisplayName("truncate /dir0/file0")
+		@Test
+		public void testTruncate() throws IOException {
+			var file0 = mirror.resolve("dir0/file0");
+			try (var ch = FileChannel.open(file0, StandardOpenOption.WRITE)) {
+				ch.truncate(2);
+			}
+			Assertions.assertEquals(2, Files.size(file0));
+		}
+
+		@Order(7)
+		@DisplayName("read files")
+		@ParameterizedTest(name = "read file /dir0/{0}")
+		@ValueSource(strings = {"file1", "file2", "file3", "file4"})
+		public void testReadFiles(String filename) throws IOException {
+			var content = Files.readString(mirror.resolve("dir0").resolve(filename));
+			Assertions.assertEquals(filename, content);
+		}
 
 	}
 
