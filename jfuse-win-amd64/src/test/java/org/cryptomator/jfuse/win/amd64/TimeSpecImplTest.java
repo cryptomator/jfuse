@@ -1,11 +1,11 @@
 package org.cryptomator.jfuse.win.amd64;
 
-import jdk.incubator.foreign.ResourceScope;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_timespec;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.lang.foreign.MemorySession;
 import java.time.Instant;
 
 public class TimeSpecImplTest {
@@ -13,7 +13,7 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test get()")
 	public void testGet() {
-		try (ResourceScope scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			var timeSpec = new TimeSpecImpl(fuse_timespec.allocate(scope));
 			fuse_timespec.tv_sec$set(timeSpec.segment(), 123L);
 			fuse_timespec.tv_nsec$set(timeSpec.segment(), 456L);
@@ -28,7 +28,7 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test set()")
 	public void testSet() {
-		try (ResourceScope scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			var timeSpec = new TimeSpecImpl(fuse_timespec.allocate(scope));
 			fuse_timespec.tv_sec$set(timeSpec.segment(), 0L);
 			fuse_timespec.tv_nsec$set(timeSpec.segment(), 0L);
@@ -43,7 +43,7 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test isUtimeOmit()")
 	public void testIsUtimeOmit() {
-		try (ResourceScope scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			var timeSpec = new TimeSpecImpl(fuse_timespec.allocate(scope));
 
 			Assertions.assertFalse(timeSpec.isUtimeOmit());
@@ -53,7 +53,7 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test isUtimeNow()")
 	public void testIsUtimeNow() {
-		try (ResourceScope scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			var timeSpec = new TimeSpecImpl(fuse_timespec.allocate(scope));
 
 			Assertions.assertFalse(timeSpec.isUtimeNow());

@@ -2,13 +2,14 @@ package org.cryptomator.jfuse.win.amd64;
 
 import org.cryptomator.jfuse.api.Statvfs;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_statvfs;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
-	public StatvfsImpl(MemoryAddress address, ResourceScope scope) {
+	public StatvfsImpl(MemoryAddress address, MemorySession scope) {
 		this(fuse_statvfs.ofAddress(address, scope));
 	}
 
