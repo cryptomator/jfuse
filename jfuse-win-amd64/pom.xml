@@ -74,9 +74,9 @@
 					<plugin>
 						<groupId>io.github.coffeelibs</groupId>
 						<artifactId>jextract-maven-plugin</artifactId>
-						<version>0.1.0</version>
+						<version>0.2.0</version>
 						<configuration>
-							<executable>${java.home}/bin/jextract</executable>
+							<executable>C:\Program Files\JDK\jextract-19\bin\jextract.bat</executable>
 							<headerSearchPaths>${win.ucrtHeaderPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
 							<targetPackage>org.cryptomator.jfuse.win.amd64.extr</targetPackage>

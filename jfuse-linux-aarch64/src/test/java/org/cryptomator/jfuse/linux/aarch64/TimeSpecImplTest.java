@@ -1,12 +1,12 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
-import jdk.incubator.foreign.ResourceScope;
 import org.cryptomator.jfuse.linux.aarch64.extr.stat_h;
 import org.cryptomator.jfuse.linux.aarch64.extr.timespec;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.lang.foreign.MemorySession;
 import java.time.Instant;
 
 public class TimeSpecImplTest {
@@ -14,7 +14,7 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test get()")
 	public void testGet() {
-		try (ResourceScope scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			var timeSpec = new TimeSpecImpl(timespec.allocate(scope));
 			timespec.tv_sec$set(timeSpec.segment(), 123L);
 			timespec.tv_nsec$set(timeSpec.segment(), 456L);
@@ -29,7 +29,7 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test set()")
 	public void testSet() {
-		try (ResourceScope scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			var timeSpec = new TimeSpecImpl(timespec.allocate(scope));
 			timespec.tv_sec$set(timeSpec.segment(), 0L);
 			timespec.tv_nsec$set(timeSpec.segment(), 0L);
@@ -44,7 +44,7 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test isUtimeOmit()")
 	public void testIsUtimeOmit() {
-		try (ResourceScope scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			var timeSpec = new TimeSpecImpl(timespec.allocate(scope));
 			timespec.tv_sec$set(timeSpec.segment(), 123L);
 			timespec.tv_nsec$set(timeSpec.segment(), stat_h.UTIME_OMIT());
@@ -57,7 +57,7 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test isUtimeNow()")
 	public void testIsUtimeNow() {
-		try (ResourceScope scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			var timeSpec = new TimeSpecImpl(timespec.allocate(scope));
 			timespec.tv_sec$set(timeSpec.segment(), 123L);
 			timespec.tv_nsec$set(timeSpec.segment(), stat_h.UTIME_NOW());

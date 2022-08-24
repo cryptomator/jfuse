@@ -1,12 +1,11 @@
 package org.cryptomator.jfuse.api;
 
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.SegmentAllocator;
-import jdk.incubator.foreign.ValueLayout;
 import org.jetbrains.annotations.Blocking;
 import org.jetbrains.annotations.BlockingExecutor;
 
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.ValueLayout;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +20,13 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * Represents a FUSE file system. Instances of this class are stateful and can not be reused.
- *
+ * <p>
  * The lifecycle starts by creating an instance using the {@link #builder() builder},
  * then {@link #mount(String, Path, String...) mounting} the file system and {@link #close() closing} it when done.
  */
 public abstract class Fuse implements AutoCloseable {
 
-	protected final ResourceScope fuseScope = ResourceScope.newSharedScope();
+	protected final MemorySession fuseScope = MemorySession.openShared();
 	@BlockingExecutor
 	private final ExecutorService executor;
 
@@ -86,12 +85,12 @@ public abstract class Fuse implements AutoCloseable {
 
 	@Blocking
 	protected int fuseMain(List<String> flags) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			var allocator = SegmentAllocator.nativeAllocator(scope);
+		try (var scope = MemorySession.openConfined()) {
+			//var allocator =  SegmentAllocator.nativeAllocator(scope);
 			var argc = flags.size();
-			var argv = allocator.allocateArray(ValueLayout.ADDRESS, argc);
+			var argv = scope.allocateArray(ValueLayout.ADDRESS, argc);
 			for (int i = 0; i < argc; i++) {
-				var cString = allocator.allocateUtf8String(flags.get(i));
+				var cString = scope.allocateUtf8String(flags.get(i));
 				argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
 			}
 			return fuseMain(argc, argv);

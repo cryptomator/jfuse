@@ -56,7 +56,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<argLine>@{surefire.jacoco.args} -Djava.library.path=@{fuse.lib.path} --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.foreign</argLine>
+					<argLine>@{surefire.jacoco.args} -Djava.library.path=@{fuse.lib.path} --enable-native-access=ALL-UNNAMED --enable-preview</argLine>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -72,7 +72,7 @@
 							<includes>
 								<include>**/*IT.java</include>
 							</includes>
-							<argLine>@{failsafe.jacoco.args} -Djava.library.path=@{fuse.lib.path} --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.foreign</argLine>
+							<argLine>@{failsafe.jacoco.args} -Djava.library.path=@{fuse.lib.path} --enable-native-access=ALL-UNNAMED --enable-preview</argLine>
 						</configuration>
 					</execution>
 				</executions>

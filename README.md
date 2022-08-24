@@ -3,11 +3,11 @@
 
 # jFUSE
 
-Zero-Dependency Java bindings for FUSE using [JEP 419](https://openjdk.java.net/jeps/419).
+Zero-Dependency Java bindings for FUSE using [JEP 424](https://openjdk.org/jeps/424).
 
 ## Status
 
-This is currently an experimental library requiring JDK 18. As long as the [Foreign Function & Memory API](https://openjdk.java.net/jeps/419) is incubating, the required JDK will increase.
+This is currently an experimental library requiring JDK 19. As long as the [Foreign Function & Memory API](https://openjdk.org/jeps/424) is incubating, the required JDK will increase.
 
 Currently, it only provides bindings for [libfuse 2.x](https://github.com/libfuse/libfuse/). Once stable, a new branch for libfuse 3.x will be added.
 

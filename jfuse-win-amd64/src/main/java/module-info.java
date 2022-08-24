@@ -4,7 +4,6 @@ import org.cryptomator.jfuse.win.amd64.WinFuseBuilder;
 @SuppressWarnings("JavaModuleNaming") // 64 is not a "version", see https://bugs.openjdk.java.net/browse/JDK-8264488
 module org.cryptomator.jfuse.win.amd64 {
 	requires org.cryptomator.jfuse.api;
-	requires jdk.incubator.foreign;
 
 	provides FuseBuilder with WinFuseBuilder;
 }
