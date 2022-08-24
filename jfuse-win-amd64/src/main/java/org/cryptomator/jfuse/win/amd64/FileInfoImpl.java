@@ -59,7 +59,7 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 		} else if ((flags & O_CREAT) == O_CREAT) {
 			result.add(StandardOpenOption.CREATE);
 		}
-		// append / truncate / sync / dsync:
+		// append / truncate
 		if ((flags & O_APPEND) == O_APPEND) {
 			result.add(StandardOpenOption.APPEND);
 		}

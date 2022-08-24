@@ -61,17 +61,17 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 		} else if ((flags & O_CREAT) == O_CREAT) {
 			result.add(StandardOpenOption.CREATE);
 		}
-		// append / truncate / sync / dsync:
+		// append / truncate
 		if ((flags & O_APPEND) == O_APPEND) {
 			result.add(StandardOpenOption.APPEND);
 		}
 		if ((flags & O_TRUNC) == O_TRUNC) {
 			result.add(StandardOpenOption.TRUNCATE_EXISTING);
 		}
+		// sync / dsync
 		if ((flags & O_SYNC) == O_SYNC) {
 			result.add(StandardOpenOption.SYNC);
-		}
-		if ((flags & O_DSYNC) == O_DSYNC) {
+		} else if ((flags & O_DSYNC) == O_DSYNC) {
 			result.add(StandardOpenOption.DSYNC);
 		}
 		return result;
