@@ -1,19 +1,19 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.linux.aarch64.extr.fcntl_h;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_file_info;
 
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import java.nio.file.StandardOpenOption;
 import java.util.EnumSet;
 import java.util.Set;
 
 record FileInfoImpl(MemorySegment segment) implements FileInfo {
 
-	public FileInfoImpl(MemoryAddress address, ResourceScope scope) {
+	public FileInfoImpl(MemoryAddress address, MemorySession scope) {
 		this(fuse_file_info.ofAddress(address, scope));
 	}
 

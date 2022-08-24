@@ -74,9 +74,9 @@
 					<plugin>
 						<groupId>io.github.coffeelibs</groupId>
 						<artifactId>jextract-maven-plugin</artifactId>
-						<version>0.1.0</version>
+						<version>0.2.0</version>
 						<configuration>
-							<executable>${java.home}/bin/jextract</executable>
+							<executable>${user.home}/.sdkman/candidates/java/19.ea.jextract/bin/jextract</executable>
 							<headerSearchPaths>${linux.headerSearchPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
 							<targetPackage>org.cryptomator.jfuse.linux.aarch64.extr</targetPackage>
@@ -90,10 +90,10 @@
 								<configuration>
 									<headerFile>${project.parent.basedir}/libfuse/include/fuse.h</headerFile>
 									<headerClassName>fuse_h</headerClassName>
-									<clangArgs>
-										<clangArg>-D_FILE_OFFSET_BITS=64</clangArg>
-										<clangArg>-DFUSE_USE_VERSION=29</clangArg>
-									</clangArgs>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=29</cPreprocessorMacro>
+									</cPreprocessorMacros>
 									<includeFunctions>
 										<includeFunction>fuse_main_real</includeFunction>
 										<includeFunction>fuse_get_context</includeFunction>
