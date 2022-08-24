@@ -13,6 +13,14 @@ import java.util.Set;
 
 record FileInfoImpl(MemorySegment segment) implements FileInfo {
 
+	private static final int O_RDONLY = fcntl_h.O_RDONLY();
+	private static final int O_WRONLY = fcntl_h.O_WRONLY();
+	private static final int O_RDWR = fcntl_h.O_RDWR();
+	private static final int O_APPEND = fcntl_h.O_APPEND();
+	private static final int O_CREAT = fcntl_h.O_CREAT();
+	private static final int O_TRUNC = fcntl_h.O_TRUNC();
+	private static final int O_EXCL = fcntl_h.O_EXCL();
+
 	public FileInfoImpl(MemoryAddress address, ResourceScope scope) {
 		this(fuse_file_info.ofAddress(address, scope));
 	}
@@ -35,19 +43,30 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 	@Override
 	public Set<StandardOpenOption> getOpenFlags() {
 		Set<StandardOpenOption> result = EnumSet.noneOf(StandardOpenOption.class);
-		int read = fcntl_h.O_RDONLY() | fcntl_h.O_RDWR();
-		int write = fcntl_h.O_WRONLY() | fcntl_h.O_RDWR();
-		int createNew = fcntl_h.O_WRONLY() | fcntl_h.O_EXCL();
 		int flags = getFlags();
-		// @formatter:off
-		if ((flags & read) != 0)               result.add(StandardOpenOption.READ);
-		if ((flags & write) != 0)              result.add(StandardOpenOption.WRITE);
-		if ((flags & fcntl_h.O_APPEND()) != 0) result.add(StandardOpenOption.APPEND);
-		if ((flags & fcntl_h.O_CREAT()) != 0)  result.add(StandardOpenOption.CREATE);
-		if ((flags & createNew) != 0)          result.add(StandardOpenOption.CREATE_NEW);
-		if ((flags & fcntl_h.O_TRUNC()) != 0)  result.add(StandardOpenOption.TRUNCATE_EXISTING);
+		// read / write / readwrite are mutually exclusive:
+		if ((flags & O_RDWR) == O_RDWR) {
+			result.add(StandardOpenOption.READ);
+			result.add(StandardOpenOption.WRITE);
+		} else if ((flags & O_WRONLY) == O_WRONLY) {
+			result.add(StandardOpenOption.WRITE);
+		} else if ((flags & O_RDONLY) == O_RDONLY) {
+			result.add(StandardOpenOption.READ);
+		}
+		// create / create new:
+		if ((flags & O_CREAT) == O_CREAT && (flags & O_EXCL) == O_EXCL) {
+			result.add(StandardOpenOption.CREATE_NEW);
+		} else if ((flags & O_CREAT) == O_CREAT) {
+			result.add(StandardOpenOption.CREATE);
+		}
+		// append / truncate / sync / dsync:
+		if ((flags & O_APPEND) == O_APPEND) {
+			result.add(StandardOpenOption.APPEND);
+		}
+		if ((flags & O_TRUNC) == O_TRUNC) {
+			result.add(StandardOpenOption.TRUNCATE_EXISTING);
+		}
 		// no O_SYNC or O_DSYNC support on windows
-		// @formatter:on
 		return result;
 	}
 
