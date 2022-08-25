@@ -2,10 +2,11 @@
 
 package org.cryptomator.jfuse.win.amd64.extr;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
-
-import jdk.incubator.foreign.*;
-
+import java.nio.ByteOrder;
+import java.lang.foreign.*;
+import static java.lang.foreign.ValueLayout.*;
 public class fuse_statvfs {
 
     static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
@@ -205,11 +206,7 @@ public class fuse_statvfs {
     public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment allocate(ResourceScope scope) { return allocate(SegmentAllocator.nativeAllocator(scope)); }
-    public static MemorySegment allocateArray(int len, ResourceScope scope) {
-        return allocateArray(len, SegmentAllocator.nativeAllocator(scope));
-    }
-    public static MemorySegment ofAddress(MemoryAddress addr, ResourceScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
+    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
 }
 
 

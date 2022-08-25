@@ -5,8 +5,8 @@ package org.cryptomator.jfuse.linux.amd64.extr;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
-import jdk.incubator.foreign.*;
-import static jdk.incubator.foreign.ValueLayout.*;
+import java.lang.foreign.*;
+import static java.lang.foreign.ValueLayout.*;
 public class fuse_context {
 
     static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
@@ -27,13 +27,13 @@ public class fuse_context {
         return fuse_context.fuse$VH;
     }
     public static MemoryAddress fuse$get(MemorySegment seg) {
-        return (jdk.incubator.foreign.MemoryAddress)fuse_context.fuse$VH.get(seg);
+        return (java.lang.foreign.MemoryAddress)fuse_context.fuse$VH.get(seg);
     }
     public static void fuse$set( MemorySegment seg, MemoryAddress x) {
         fuse_context.fuse$VH.set(seg, x);
     }
     public static MemoryAddress fuse$get(MemorySegment seg, long index) {
-        return (jdk.incubator.foreign.MemoryAddress)fuse_context.fuse$VH.get(seg.asSlice(index*sizeof()));
+        return (java.lang.foreign.MemoryAddress)fuse_context.fuse$VH.get(seg.asSlice(index*sizeof()));
     }
     public static void fuse$set(MemorySegment seg, long index, MemoryAddress x) {
         fuse_context.fuse$VH.set(seg.asSlice(index*sizeof()), x);
@@ -91,13 +91,13 @@ public class fuse_context {
         return fuse_context.private_data$VH;
     }
     public static MemoryAddress private_data$get(MemorySegment seg) {
-        return (jdk.incubator.foreign.MemoryAddress)fuse_context.private_data$VH.get(seg);
+        return (java.lang.foreign.MemoryAddress)fuse_context.private_data$VH.get(seg);
     }
     public static void private_data$set( MemorySegment seg, MemoryAddress x) {
         fuse_context.private_data$VH.set(seg, x);
     }
     public static MemoryAddress private_data$get(MemorySegment seg, long index) {
-        return (jdk.incubator.foreign.MemoryAddress)fuse_context.private_data$VH.get(seg.asSlice(index*sizeof()));
+        return (java.lang.foreign.MemoryAddress)fuse_context.private_data$VH.get(seg.asSlice(index*sizeof()));
     }
     public static void private_data$set(MemorySegment seg, long index, MemoryAddress x) {
         fuse_context.private_data$VH.set(seg.asSlice(index*sizeof()), x);
@@ -123,11 +123,7 @@ public class fuse_context {
     public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment allocate(ResourceScope scope) { return allocate(SegmentAllocator.nativeAllocator(scope)); }
-    public static MemorySegment allocateArray(int len, ResourceScope scope) {
-        return allocateArray(len, SegmentAllocator.nativeAllocator(scope));
-    }
-    public static MemorySegment ofAddress(MemoryAddress addr, ResourceScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
+    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
 }
 
 

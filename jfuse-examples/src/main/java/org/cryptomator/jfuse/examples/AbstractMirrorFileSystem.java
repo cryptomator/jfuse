@@ -54,7 +54,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	protected final ConcurrentMap<Long, FileChannel> openFiles = new ConcurrentHashMap<>();
 	protected final AtomicLong fileHandleGen = new AtomicLong(1L);
 
-	public AbstractMirrorFileSystem(Path root, Errno errno, FileStore fileStore) {
+	protected AbstractMirrorFileSystem(Path root, Errno errno, FileStore fileStore) {
 		this.root = root;
 		this.errno = errno;
 		this.fileStore = fileStore;
@@ -344,7 +344,9 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 			return -errno.ebadf();
 		}
 		try {
-			return fc.read(buf, offset);
+			// TODO restrict to `size` bytes!
+			int read = fc.read(buf, offset);
+			return read == -1 ? 0 : read; // there is no "-1" in fuse
 		} catch (IOException e) {
 			return -errno.eio();
 		}

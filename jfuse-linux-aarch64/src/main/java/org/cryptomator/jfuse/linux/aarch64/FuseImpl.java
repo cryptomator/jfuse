@@ -1,11 +1,5 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemoryLayout;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.SegmentAllocator;
-import jdk.incubator.foreign.ValueLayout;
 import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseArgs;
 import org.cryptomator.jfuse.api.FuseOperations;
@@ -16,6 +10,10 @@ import org.cryptomator.jfuse.linux.aarch64.extr.fuse_operations;
 import org.cryptomator.jfuse.linux.aarch64.extr.stat_h;
 import org.cryptomator.jfuse.linux.aarch64.extr.timespec;
 
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemoryLayout;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.util.List;
@@ -37,7 +35,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	private MemoryAddress init(MemoryAddress conn) {
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			if (delegate.supportedOperations().contains(FuseOperations.Operation.INIT)) {
 				delegate.init(new FuseConnInfoImpl(conn, scope));
 			}
@@ -157,7 +155,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	private int create(MemoryAddress path, int mode, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			return delegate.create(path.getUtf8String(0), mode, new FileInfoImpl(fi, scope));
 		}
 	}
@@ -167,7 +165,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	private int getattr(MemoryAddress path, MemoryAddress stat) {
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope));
 		}
 	}
@@ -177,45 +175,45 @@ public final class FuseImpl extends Fuse {
 	}
 
 	private int open(MemoryAddress path, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			return delegate.open(path.getUtf8String(0), new FileInfoImpl(fi, scope));
 		}
 	}
 
 	private int opendir(MemoryAddress path, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			return delegate.opendir(path.getUtf8String(0), new FileInfoImpl(fi, scope));
 		}
 	}
 
 	private int read(MemoryAddress path, MemoryAddress buf, long size, long offset, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			var buffer = MemorySegment.ofAddress(buf, size, scope).asByteBuffer();
 			return delegate.read(path.getUtf8String(0), buffer, size, offset, new FileInfoImpl(fi, scope));
 		}
 	}
 
 	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope));
 		}
 	}
 
 	private int readlink(MemoryAddress path, MemoryAddress buf, long len) {
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			var buffer = MemorySegment.ofAddress(buf, len, scope).asByteBuffer();
 			return delegate.readlink(path.getUtf8String(0), buffer, len);
 		}
 	}
 
 	private int release(MemoryAddress path, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			return delegate.release(path.getUtf8String(0), new FileInfoImpl(fi, scope));
 		}
 	}
 
 	private int releasedir(MemoryAddress path, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			return delegate.releasedir(path.getUtf8String(0), new FileInfoImpl(fi, scope));
 		}
 	}
@@ -229,7 +227,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	private int statfs(MemoryAddress path, MemoryAddress statvfs) {
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			return delegate.statfs(path.getUtf8String(0), new StatvfsImpl(statvfs, scope));
 		}
 	}
@@ -249,13 +247,13 @@ public final class FuseImpl extends Fuse {
 	private int utimens(MemoryAddress path, MemoryAddress times) {
 		if (MemoryAddress.NULL.equals(times)) {
 			// set both times to current time (using on-heap memory segments)
-			var segment = MemorySegment.ofByteBuffer(ByteBuffer.allocate((int) timespec.$LAYOUT().byteSize()));
+			var segment = MemorySegment.ofBuffer(ByteBuffer.allocate((int) timespec.$LAYOUT().byteSize()));
 			timespec.tv_sec$set(segment, 0);
 			timespec.tv_nsec$set(segment, stat_h.UTIME_NOW());
 			var time = new TimeSpecImpl(segment);
 			return delegate.utimens(path.getUtf8String(0), time, time);
 		} else {
-			try (var scope = ResourceScope.newConfinedScope()) {
+			try (var scope = MemorySession.openConfined()) {
 				var seq = MemoryLayout.sequenceLayout(2, timespec.$LAYOUT());
 				var segment = MemorySegment.ofAddress(times, seq.byteSize(), scope);
 				var time0 = segment.asSlice(0, timespec.$LAYOUT().byteSize());
@@ -267,7 +265,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	private int write(MemoryAddress path, MemoryAddress buf, long size, long offset, MemoryAddress fi) {
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			var buffer = MemorySegment.ofAddress(buf, size, scope).asByteBuffer();
 			return delegate.write(path.getUtf8String(0), buffer, size, offset, new FileInfoImpl(fi, scope));
 		}

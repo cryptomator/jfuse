@@ -70,166 +70,98 @@
 							</filesets>
 						</configuration>
 					</plugin>
+
 					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
+						<groupId>io.github.coffeelibs</groupId>
+						<artifactId>jextract-maven-plugin</artifactId>
+						<version>0.2.0</version>
+						<configuration>
+							<executable>C:\Program Files\JDK\jextract-19\bin\jextract.bat</executable>
+							<headerSearchPaths>${win.ucrtHeaderPath}</headerSearchPaths>
+							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
+							<targetPackage>org.cryptomator.jfuse.win.amd64.extr</targetPackage>
+						</configuration>
 						<executions>
 							<execution>
 								<id>jextract-fuse</id>
 								<goals>
-									<goal>exec</goal>
+									<goal>sources</goal>
 								</goals>
-								<phase>generate-sources</phase>
 								<configuration>
-									<executable>${java.home}/bin/jextract</executable>
-									<workingDirectory>${project.basedir}</workingDirectory>
-									<arguments>
-										<argument>--source</argument>
-										<argument>-l</argument>
-										<argument>fuse</argument>
-										<argument>-d</argument>
-										<argument>${project.build.sourceDirectory}</argument>
-										<argument>-t</argument>
-										<argument>org.cryptomator.jfuse.win.amd64.extr</argument>
-										<argument>-I</argument>
-										<argument>${win.ucrtHeaderPath}</argument>
-										<!-- structs: -->
-										<argument>--include-struct</argument>
-										<argument>fuse_operations</argument>
-										<argument>--include-struct</argument>
-										<argument>fuse_file_info</argument>
-										<argument>--include-struct</argument>
-										<argument>fuse_context</argument>
-										<argument>--include-struct</argument>
-										<argument>fuse_conn_info</argument>
-										<!-- typedefs: -->
-										<argument>--include-typedef</argument>
-										<argument>fuse_fill_dir_t</argument>
-										<!-- functions: -->
-										<argument>--include-function</argument>
-										<argument>fuse_main_real</argument>
-										<argument>--include-function</argument>
-										<argument>fuse_get_context</argument>
-										<argument>--include-function</argument>
-										<argument>fuse_exit</argument>
-										<!-- extract fuse.h header: -->
-										<argument>${project.parent.basedir}/winfsp/inc/fuse/fuse.h</argument>
-									</arguments>
+									<headerFile>${project.parent.basedir}/winfsp/inc/fuse/fuse.h</headerFile>
+									<headerClassName>fuse_h</headerClassName>
+									<includeFunctions>
+										<includeFunction>fuse_main_real</includeFunction>
+										<includeFunction>fuse_get_context</includeFunction>
+										<includeFunction>fuse_exit</includeFunction>
+									</includeFunctions>
+									<includeTypedefs>
+										<includeTypedef>fuse_fill_dir_t</includeTypedef>
+									</includeTypedefs>
+									<includeStructs>
+										<includeStruct>fuse_operations</includeStruct>
+										<includeStruct>fuse_file_info</includeStruct>
+										<includeStruct>fuse_context</includeStruct>
+										<includeStruct>fuse_conn_info</includeStruct>
+									</includeStructs>
 								</configuration>
 							</execution>
 							<execution>
 								<id>jextract-winfsp-fuse</id>
 								<goals>
-									<goal>exec</goal>
+									<goal>sources</goal>
 								</goals>
-								<phase>generate-sources</phase>
 								<configuration>
-									<executable>${java.home}/bin/jextract</executable>
-									<workingDirectory>${project.basedir}</workingDirectory>
-									<arguments>
-										<argument>--source</argument>
-										<argument>-l</argument>
-										<argument>fuse</argument>
-										<argument>-d</argument>
-										<argument>${project.build.sourceDirectory}</argument>
-										<argument>-t</argument>
-										<argument>org.cryptomator.jfuse.win.amd64.extr</argument>
-										<argument>-I</argument>
-										<argument>${win.ucrtHeaderPath}</argument>
-										<!-- structs -->
-										<argument>--include-struct</argument>
-										<argument>fuse_stat</argument>
-										<argument>--include-struct</argument>
-										<argument>fuse_statvfs</argument>
-										<argument>--include-struct</argument>
-										<argument>fuse_timespec</argument>
-										<!-- extract winfsp_fuse.h header: -->
-										<argument>${project.parent.basedir}/winfsp/inc/fuse/winfsp_fuse.h</argument>
-									</arguments>
+									<headerFile>${project.parent.basedir}/winfsp/inc/fuse/winfsp_fuse.h</headerFile>
+									<headerClassName>winfsp_fuse_h</headerClassName>
+									<includeStructs>
+										<includeStruct>fuse_stat</includeStruct>
+										<includeStruct>fuse_statvfs</includeStruct>
+										<includeStruct>fuse_timespec</includeStruct>
+									</includeStructs>
 								</configuration>
 							</execution>
 							<execution>
 								<id>jextract-errno</id>
 								<goals>
-									<goal>exec</goal>
+									<goal>sources</goal>
 								</goals>
-								<phase>generate-sources</phase>
 								<configuration>
-									<executable>${java.home}/bin/jextract</executable>
-									<workingDirectory>${project.basedir}</workingDirectory>
-									<arguments>
-										<argument>--source</argument>
-										<argument>-d</argument>
-										<argument>${project.build.sourceDirectory}</argument>
-										<argument>-t</argument>
-										<argument>org.cryptomator.jfuse.win.amd64.extr</argument>
-										<argument>-I</argument>
-										<argument>${win.ucrtHeaderPath}</argument>
-										<!-- constants -->
-										<argument>--include-macro</argument>
-										<argument>ENOENT</argument>
-										<argument>--include-macro</argument>
-										<argument>ENOSYS</argument>
-										<argument>--include-macro</argument>
-										<argument>ENOMEM</argument>
-										<argument>--include-macro</argument>
-										<argument>EACCES</argument>
-										<argument>--include-macro</argument>
-										<argument>EIO</argument>
-										<argument>--include-macro</argument>
-										<argument>EROFS</argument>
-										<argument>--include-macro</argument>
-										<argument>EBADF</argument>
-										<argument>--include-macro</argument>
-										<argument>EEXIST</argument>
-										<argument>--include-macro</argument>
-										<argument>ENOTDIR</argument>
-										<argument>--include-macro</argument>
-										<argument>EISDIR</argument>
-										<argument>--include-macro</argument>
-										<argument>ENOTEMPTY</argument>
-										<argument>--include-macro</argument>
-										<argument>EINVAL</argument>
-										<!-- extract errno.h header: -->
-										<argument>${win.ucrtHeaderPath}\errno.h</argument>
-									</arguments>
+									<headerFile>${win.ucrtHeaderPath}/errno.h</headerFile>
+									<headerClassName>errno_h</headerClassName>
+									<includeMacros>
+										<includeMacro>ENOENT</includeMacro>
+										<includeMacro>ENOSYS</includeMacro>
+										<includeMacro>ENOMEM</includeMacro>
+										<includeMacro>EACCES</includeMacro>
+										<includeMacro>EIO</includeMacro>
+										<includeMacro>EROFS</includeMacro>
+										<includeMacro>EBADF</includeMacro>
+										<includeMacro>EEXIST</includeMacro>
+										<includeMacro>ENOTDIR</includeMacro>
+										<includeMacro>EISDIR</includeMacro>
+										<includeMacro>ENOTEMPTY</includeMacro>
+										<includeMacro>EINVAL</includeMacro>
+									</includeMacros>
 								</configuration>
 							</execution>
 							<execution>
 								<id>jextract-fcntl</id>
 								<goals>
-									<goal>exec</goal>
+									<goal>sources</goal>
 								</goals>
-								<phase>generate-sources</phase>
 								<configuration>
-									<executable>${java.home}/bin/jextract</executable>
-									<workingDirectory>${project.basedir}</workingDirectory>
-									<arguments>
-										<argument>--source</argument>
-										<argument>-d</argument>
-										<argument>${project.build.sourceDirectory}</argument>
-										<argument>-t</argument>
-										<argument>org.cryptomator.jfuse.win.amd64.extr</argument>
-										<argument>-I</argument>
-										<argument>${win.ucrtHeaderPath}</argument>
-										<!-- open flags -->
-										<argument>--include-macro</argument>
-										<argument>O_RDONLY</argument>
-										<argument>--include-macro</argument>
-										<argument>O_WRONLY</argument>
-										<argument>--include-macro</argument>
-										<argument>O_RDWR</argument>
-										<argument>--include-macro</argument>
-										<argument>O_APPEND</argument>
-										<argument>--include-macro</argument>
-										<argument>O_CREAT</argument>
-										<argument>--include-macro</argument>
-										<argument>O_TRUNC</argument>
-										<argument>--include-macro</argument>
-										<argument>O_EXCL</argument>
-										<!-- extract fcntl.h header: -->
-										<argument>${win.ucrtHeaderPath}\fcntl.h</argument>
-									</arguments>
+									<headerFile>${win.ucrtHeaderPath}/fcntl.h</headerFile>
+									<headerClassName>fcntl_h</headerClassName>
+									<includeMacros>
+										<includeMacro>O_RDONLY</includeMacro>
+										<includeMacro>O_WRONLY</includeMacro>
+										<includeMacro>O_RDWR</includeMacro>
+										<includeMacro>O_APPEND</includeMacro>
+										<includeMacro>O_CREAT</includeMacro>
+										<includeMacro>O_TRUNC</includeMacro>
+										<includeMacro>O_EXCL</includeMacro>
+									</includeMacros>
 								</configuration>
 							</execution>
 						</executions>

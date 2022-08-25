@@ -46,33 +46,26 @@
 		<module>jfuse-tests</module>
 	</modules>
 
-	<!-- snapshots required until jacoco supports Java 18 -->
-	<pluginRepositories>
-		<pluginRepository>
-			<id>snapshots</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.jetbrains</groupId>
-				<artifactId>annotations</artifactId>
-				<version>23.0.0</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter</artifactId>
-				<version>5.8.1</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>23.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.9.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>4.7.0</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<pluginManagement>
@@ -80,31 +73,25 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.9.0</version>
+					<version>3.10.1</version>
 					<configuration>
-						<release>18</release>
+						<release>19</release>
 						<encoding>UTF-8</encoding>
 						<showWarnings>true</showWarnings>
 						<compilerArgs>
-							<arg>--add-modules</arg>
-							<arg>jdk.incubator.foreign</arg>
+							<compilerArg>--enable-preview</compilerArg>
 						</compilerArgs>
 					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.1.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.1.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>exec-maven-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.2.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -119,17 +106,17 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.3.1</version>
+					<version>3.4.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M5</version>
+					<version>3.0.0-M7</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>3.0.0-M5</version>
+					<version>3.0.0-M7</version>
 				</plugin>
 				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
@@ -139,7 +126,7 @@
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.8-SNAPSHOT</version>
+					<version>0.8.8</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -165,6 +152,10 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
+						<configuration>
+							<release>19</release>
+							<additionalOptions>--enable-preview</additionalOptions>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -187,7 +178,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<argLine>${surefire.jacoco.args}</argLine>
+					<argLine>@{surefire.jacoco.args} --enable-preview</argLine>
 				</configuration>
 			</plugin>
 		</plugins>

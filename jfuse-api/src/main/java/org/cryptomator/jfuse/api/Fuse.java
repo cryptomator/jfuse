@@ -1,12 +1,13 @@
 package org.cryptomator.jfuse.api;
 
-import jdk.incubator.foreign.ResourceScope;
 
 import org.jetbrains.annotations.Blocking;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import org.jetbrains.annotations.BlockingExecutor;
 
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.ValueLayout;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import java.util.concurrent.TimeoutException;
  */
 public abstract class Fuse implements AutoCloseable {
 
-	protected final ResourceScope fuseScope = ResourceScope.newSharedScope();
+	protected final MemorySession fuseScope = MemorySession.openShared();
 	private final AtomicReference<FuseSession> session = new AtomicReference<>();
 	@BlockingExecutor
 	private final ExecutorService executor;
@@ -74,7 +75,7 @@ public abstract class Fuse implements AutoCloseable {
 		args.add("-f"); // always stay in foreground. don't fork & kill this process via `fuse_daemonize`
 		args.add(mountPoint.toString());
 
-		try (var scope = ResourceScope.newConfinedScope()) {
+		try (var scope = MemorySession.openConfined()) {
 			var fuseArgs = parseCmdLine(args, scope);
 			var fuseSession = mount(fuseArgs, mountPoint); // TODO: specific exception
 			var isOnlySession = session.compareAndSet(lock, fuseSession);
@@ -106,7 +107,7 @@ public abstract class Fuse implements AutoCloseable {
 	 * @return Parsed flags ready to use for mounting
 	 * @throws IllegalArgumentException If {@code fuse_parse_cmdline} returns -1.
 	 */
-	protected abstract FuseArgs parseCmdLine(List<String> args, ResourceScope scope) throws IllegalArgumentException;
+	protected abstract FuseArgs parseCmdLine(List<String> args, MemorySession scope) throws IllegalArgumentException;
 
 	/**
 	 * Invokes {@code fuse_mount} and {@code fuse_new} to mount a new fuse file system.
@@ -116,6 +117,19 @@ public abstract class Fuse implements AutoCloseable {
 	 * @return A new fuse session
 	 */
 	protected abstract FuseSession mount(FuseArgs args, Path mountPoint);
+//	@Blocking
+//	protected int fuseMain(List<String> flags) {
+//		try (var scope = MemorySession.openConfined()) {
+//			//var allocator =  SegmentAllocator.nativeAllocator(scope);
+//			var argc = flags.size();
+//			var argv = scope.allocateArray(ValueLayout.ADDRESS, argc);
+//			for (int i = 0; i < argc; i++) {
+//				var cString = scope.allocateUtf8String(flags.get(i));
+//				argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
+//			}
+//			return fuseMain(argc, argv);
+//		}
+//	}
 
 	/**
 	 * Invokes {@code fuse_loop} or {@code fuse_loop_mt}, depending on {@code multithreaded}.
