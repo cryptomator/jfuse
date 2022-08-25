@@ -15,7 +15,7 @@ jobs:
           ref: "refs/tags/${{ github.event.inputs.tag }}"
       - uses: actions/setup-java@v2
         with:
-          java-version: 18-ea
+          java-version: 19-ea
           distribution: 'zulu'
           cache: 'maven'
           server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml

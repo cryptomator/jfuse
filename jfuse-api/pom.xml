@@ -17,11 +17,4 @@
 		<maven.deploy.skip>false</maven.deploy.skip>
 	</properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.jetbrains</groupId>
-			<artifactId>annotations</artifactId>
-		</dependency>
-	</dependencies>
-
 </project>

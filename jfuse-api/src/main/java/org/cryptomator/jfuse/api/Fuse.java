@@ -1,23 +1,42 @@
 package org.cryptomator.jfuse.api;
 
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.SegmentAllocator;
-import jdk.incubator.foreign.ValueLayout;
+import org.jetbrains.annotations.Blocking;
+import org.jetbrains.annotations.BlockingExecutor;
 
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.ValueLayout;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
+/**
+ * Represents a FUSE file system. Instances of this class are stateful and can not be reused.
+ * <p>
+ * The lifecycle starts by creating an instance using the {@link #builder() builder},
+ * then {@link #mount(String, Path, String...) mounting} the file system and {@link #close() closing} it when done.
+ */
 public abstract class Fuse implements AutoCloseable {
 
-	protected final ResourceScope fuseScope = ResourceScope.newSharedScope();
-	private final CountDownLatch mainExited = new CountDownLatch(1);
+	protected final MemorySession fuseScope = MemorySession.openShared();
+	@BlockingExecutor
+	private final ExecutorService executor;
 
 	protected Fuse() {
+		this.executor = Executors.newSingleThreadExecutor(runnable -> {
+			var thread = new Thread(runnable);
+			thread.setName("jfuse-main"); // TODO append id
+			thread.setDaemon(true);
+			return thread;
+		});
 	}
 
 	public static FuseBuilder builder() {
@@ -35,50 +54,62 @@ public abstract class Fuse implements AutoCloseable {
 	 * @return 0 if mounted successfully, or the result of <code>fuse_main_real()</code> in case of errors
 	 * @throws CompletionException wrapping exceptions thrown during <code>init()</code> or <code>fuse_main_real()</code>
 	 */
-	public int mount(String progName, Path mountPoint, String... flags) throws CompletionException {
+	public int mount(String progName, Path mountPoint, String... flags) throws CompletionException, TimeoutException {
 		List<String> args = new ArrayList<>();
 		args.add(progName);
-		args.addAll(List.of(flags));
 		args.add("-f"); // foreground mode required, so fuse_main_real() blocks
 		args.add(mountPoint.toString());
+		args.addAll(List.of(flags));
 		return mount(args);
 	}
 
-	protected int mount(List<String> args) throws CompletionException {
-		// fuseMain() will block (unless failing with return code != 0), therefore we need to wait for init()
-		// if any of these two completes, we know that mounting succeeded of failed.
-		var mountResult = CompletableFuture.supplyAsync(() -> fuseMain(args));
-		var result = CompletableFuture.anyOf(mountResult, initialized()).join();
-		if (result instanceof Integer i) {
-			return i;
-		} else {
-			throw new IllegalStateException("Expected Future<Integer>");
+	protected int mount(List<String> args) throws TimeoutException {
+		// keep reference in field and cancel during close()?
+		var mountResult = CompletableFuture.supplyAsync(() -> fuseMain(args), executor);
+		try {
+			// fuseMain() will block (unless failing with return code != 0), therefore we need to wait for init()
+			// if any of these two completes, we know that mounting succeeded of failed.
+			var result = CompletableFuture.anyOf(mountResult, initialized()).get(10, TimeUnit.SECONDS);
+			if (result instanceof Integer i) {
+				return i;
+			} else {
+				throw new IllegalStateException("Expected Future<Integer>");
+			}
+		} catch (CancellationException | ExecutionException e) {
+			return 1;
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			return 1;
 		}
 	}
 
+	@Blocking
 	protected int fuseMain(List<String> flags) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			var allocator = SegmentAllocator.nativeAllocator(scope);
+		try (var scope = MemorySession.openConfined()) {
+			//var allocator =  SegmentAllocator.nativeAllocator(scope);
 			var argc = flags.size();
-			var argv = allocator.allocateArray(ValueLayout.ADDRESS, argc);
+			var argv = scope.allocateArray(ValueLayout.ADDRESS, argc);
 			for (int i = 0; i < argc; i++) {
-				var cString = allocator.allocateUtf8String(flags.get(i));
+				var cString = scope.allocateUtf8String(flags.get(i));
 				argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
 			}
 			return fuseMain(argc, argv);
-		} finally {
-			mainExited.countDown(); // make sure fuse_main finished before allowing to release fuseScope
 		}
 	}
 
+	@Blocking
 	protected abstract int fuseMain(int argc, MemorySegment argv);
 
 	protected abstract CompletableFuture<Integer> initialized();
 
 	@Override
-	public void close() {
+	public void close() throws TimeoutException {
 		try {
-			mainExited.await(); // TODO: check if main has been started first?
+			executor.shutdown();
+			boolean exited = executor.awaitTermination(10, TimeUnit.SECONDS);
+			if (!exited) {
+				throw new TimeoutException("fuse main loop continued runn");
+			}
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		} finally {

@@ -4,7 +4,6 @@ import org.cryptomator.jfuse.api.DirFiller;
 import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.FileModes;
-import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.Statvfs;
@@ -25,62 +24,43 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.NotDirectoryException;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.DosFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.EnumSet;
 import java.util.Set;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class MirrorPosixFileSystem implements FuseOperations {
+public abstract sealed class AbstractMirrorFileSystem implements FuseOperations permits PosixMirrorFileSystem, WindowsMirrorFileSystem {
 
-	private static final Logger LOG = LoggerFactory.getLogger(HelloWorldFileSystem.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractMirrorFileSystem.class);
 
-	private final Path root;
-	private final Errno errno;
-	private final ConcurrentMap<Long, FileChannel> openFiles;
-	private final AtomicLong fileHandleGen = new AtomicLong(1L);
-	private final FileStore fileStore;
+	protected final Path root;
+	protected final Errno errno;
+	protected final FileStore fileStore;
+	protected final ConcurrentMap<Long, FileChannel> openFiles = new ConcurrentHashMap<>();
+	protected final AtomicLong fileHandleGen = new AtomicLong(1L);
 
-	public static void main(String[] args) {
-		Path mirrored = Path.of("/Users/sebastian/Desktop/TMP");
-		Path mountPoint = Path.of("/Volumes/foo");
-		var builder = Fuse.builder();
-		try (var fuse = builder.build(new MirrorPosixFileSystem(mirrored, builder.errno()))) {
-			LOG.info("Mounting at {}...", mountPoint);
-			int result = fuse.mount("jfuse", mountPoint, "-s", "-ovolname=mirror");
-			if (result == 0) {
-				LOG.info("Mounted to {}. Unmount to terminate this process", mountPoint);
-			} else {
-				LOG.error("Failed to mount to {}. Exit code: {}", mountPoint, result);
-			}
-		} catch (CompletionException e) {
-			LOG.error("Un/Mounting failed. ", e);
-			System.exit(1);
-		} catch (IOException e) {
-			LOG.error("Failed to create mirror", e);
-			System.exit(1);
-		}
-	}
-
-	public MirrorPosixFileSystem(Path root, Errno errno) throws IOException {
+	protected AbstractMirrorFileSystem(Path root, Errno errno, FileStore fileStore) {
 		this.root = root;
 		this.errno = errno;
-		this.fileStore = Files.getFileStore(root);
-		this.openFiles = new ConcurrentHashMap<>();
+		this.fileStore = fileStore;
 	}
 
-	private Path resolvePath(String absolutePath) {
+	protected Path resolvePath(String absolutePath) {
 		var relativePath = new StringBuilder(absolutePath);
 		while (relativePath.length() > 0 && relativePath.charAt(0) == '/') {
 			relativePath.deleteCharAt(0);
@@ -89,29 +69,29 @@ public class MirrorPosixFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public Set<Operation> supportedOperations() {
+	public Set<FuseOperations.Operation> supportedOperations() {
 		return EnumSet.of(
-				Operation.ACCESS,
-				Operation.CHMOD,
-				Operation.CREATE,
-				Operation.DESTROY,
-				Operation.GET_ATTR,
-				Operation.MKDIR,
-				Operation.OPEN_DIR,
-				Operation.READ_DIR,
-				Operation.RELEASE_DIR,
-				Operation.RENAME,
-				Operation.RMDIR,
-				Operation.OPEN,
-				Operation.READ,
-				Operation.READLINK,
-				Operation.RELEASE,
-				Operation.STATFS,
-				Operation.SYMLINK,
-				Operation.TRUNCATE,
-				Operation.UNLINK,
-				Operation.UTIMENS,
-				Operation.WRITE
+				FuseOperations.Operation.ACCESS,
+				FuseOperations.Operation.CHMOD,
+				FuseOperations.Operation.CREATE,
+				FuseOperations.Operation.DESTROY,
+				FuseOperations.Operation.GET_ATTR,
+				FuseOperations.Operation.MKDIR,
+				FuseOperations.Operation.OPEN_DIR,
+				FuseOperations.Operation.READ_DIR,
+				FuseOperations.Operation.RELEASE_DIR,
+				FuseOperations.Operation.RENAME,
+				FuseOperations.Operation.RMDIR,
+				FuseOperations.Operation.OPEN,
+				FuseOperations.Operation.READ,
+				FuseOperations.Operation.READLINK,
+				FuseOperations.Operation.RELEASE,
+				FuseOperations.Operation.STATFS,
+				FuseOperations.Operation.SYMLINK,
+				FuseOperations.Operation.TRUNCATE,
+				FuseOperations.Operation.UNLINK,
+				FuseOperations.Operation.UTIMENS,
+				FuseOperations.Operation.WRITE
 		);
 	}
 
@@ -187,13 +167,21 @@ public class MirrorPosixFileSystem implements FuseOperations {
 		}
 	}
 
+	@SuppressWarnings("OctalInteger")
 	@Override
 	public int getattr(String path, Stat stat) {
 		LOG.trace("getattr {}", path);
 		Path node = resolvePath(path);
 		try {
-			var attrs = Files.readAttributes(node, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
-			stat.setPermissions(attrs.permissions());
+			var attrs = readAttributes(node);
+			if (attrs instanceof PosixFileAttributes posixAttrs) {
+				stat.setPermissions(posixAttrs.permissions());
+			} else if (attrs instanceof DosFileAttributes dosAttrs) {
+				int mode = 0444;
+				mode |= dosAttrs.isReadOnly() ? 0000 : 0200; // add write access for owner
+				mode |= attrs.isDirectory() ? 0111 : 0000; // add execute access for directories
+				stat.setMode(mode);
+			}
 			stat.setSize(attrs.size());
 			stat.setNLink((short) 1);
 			if (attrs.isDirectory()) {
@@ -215,6 +203,8 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			return -errno.eio();
 		}
 	}
+
+	protected abstract BasicFileAttributes readAttributes(Path node) throws IOException;
 
 	private long countSubDirs(Path dir) throws IOException {
 		try (var ds = Files.newDirectoryStream(dir)) {
@@ -255,7 +245,7 @@ public class MirrorPosixFileSystem implements FuseOperations {
 		Path node = resolvePath(path);
 		var attr = PosixFilePermissions.asFileAttribute(FileModes.toPermissions(mode));
 		try {
-			Files.createDirectory(node, attr);
+			createDir(node, attr);
 			return 0;
 		} catch (FileAlreadyExistsException e) {
 			return -errno.eexist();
@@ -263,6 +253,8 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			return -errno.eio();
 		}
 	}
+
+	protected abstract void createDir(Path node, FileAttribute<Set<PosixFilePermission>> permissions) throws IOException;
 
 	@Override
 	public int opendir(String path, FileInfo fi) {
@@ -327,10 +319,10 @@ public class MirrorPosixFileSystem implements FuseOperations {
 		return createOrOpen(path, fi);
 	}
 
-	private int createOrOpen(String path, FileInfo fi, FileAttribute<?>... attr) {
+	private int createOrOpen(String path, FileInfo fi, FileAttribute<?>... attrs) {
 		Path node = resolvePath(path);
 		try {
-			var fc = FileChannel.open(node, fi.getOpenFlags(), attr);
+			var fc = openFileChannel(node, fi.getOpenFlags(), attrs);
 			var fh = fileHandleGen.incrementAndGet();
 			fi.setFh(fh);
 			openFiles.put(fh, fc);
@@ -342,6 +334,8 @@ public class MirrorPosixFileSystem implements FuseOperations {
 		}
 	}
 
+	protected abstract FileChannel openFileChannel(Path node, Set<? extends OpenOption> openOptions, FileAttribute<?>... attrs) throws IOException;
+
 	@Override
 	public int read(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
 		LOG.trace("read {} at pos {}", path, offset);
@@ -350,7 +344,9 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			return -errno.ebadf();
 		}
 		try {
-			return fc.read(buf, offset);
+			// TODO restrict to `size` bytes!
+			int read = fc.read(buf, offset);
+			return read == -1 ? 0 : read; // there is no "-1" in fuse
 		} catch (IOException e) {
 			return -errno.eio();
 		}
@@ -442,4 +438,5 @@ public class MirrorPosixFileSystem implements FuseOperations {
 			}
 		});
 	}
+
 }

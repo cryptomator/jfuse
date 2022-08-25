@@ -3,8 +3,8 @@ package org.cryptomator.jfuse.linux.amd64;
 import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.linux.amd64.extr.stat_h;
 import org.cryptomator.jfuse.linux.amd64.extr.timespec;
-import jdk.incubator.foreign.MemorySegment;
 
+import java.lang.foreign.MemorySegment;
 import java.time.Instant;
 
 record TimeSpecImpl(MemorySegment segment) implements TimeSpec {

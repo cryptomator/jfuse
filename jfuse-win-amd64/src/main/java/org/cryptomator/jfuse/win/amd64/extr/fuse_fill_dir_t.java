@@ -2,19 +2,22 @@
 
 package org.cryptomator.jfuse.win.amd64.extr;
 
-import jdk.incubator.foreign.*;
-
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
+import java.lang.foreign.*;
+import static java.lang.foreign.ValueLayout.*;
 public interface fuse_fill_dir_t {
 
-    int apply(jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1, jdk.incubator.foreign.MemoryAddress x2, long x3);
-    static NativeSymbol allocate(fuse_fill_dir_t fi, ResourceScope scope) {
-        return RuntimeHelper.upcallStub(fuse_fill_dir_t.class, fi, constants$0.fuse_fill_dir_t$FUNC, "(Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;Ljdk/incubator/foreign/MemoryAddress;J)I", scope);
+    int apply(java.lang.foreign.MemoryAddress buf, java.lang.foreign.MemoryAddress name, java.lang.foreign.MemoryAddress stbuf, long off);
+    static MemorySegment allocate(fuse_fill_dir_t fi, MemorySession session) {
+        return RuntimeHelper.upcallStub(fuse_fill_dir_t.class, fi, constants$0.fuse_fill_dir_t$FUNC, session);
     }
-    static fuse_fill_dir_t ofAddress(MemoryAddress addr, ResourceScope scope) {
-        NativeSymbol symbol = NativeSymbol.ofAddress("fuse_fill_dir_t::" + Long.toHexString(addr.toRawLongValue()), addr, scope);
-return (jdk.incubator.foreign.MemoryAddress x0, jdk.incubator.foreign.MemoryAddress x1, jdk.incubator.foreign.MemoryAddress x2, long x3) -> {
+    static fuse_fill_dir_t ofAddress(MemoryAddress addr, MemorySession session) {
+        MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
+        return (java.lang.foreign.MemoryAddress _buf, java.lang.foreign.MemoryAddress _name, java.lang.foreign.MemoryAddress _stbuf, long _off) -> {
             try {
-                return (int)constants$0.fuse_fill_dir_t$MH.invokeExact(symbol, (jdk.incubator.foreign.Addressable)x0, (jdk.incubator.foreign.Addressable)x1, (jdk.incubator.foreign.Addressable)x2, x3);
+                return (int)constants$0.fuse_fill_dir_t$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)_buf, (java.lang.foreign.Addressable)_name, (java.lang.foreign.Addressable)_stbuf, _off);
             } catch (Throwable ex$) {
                 throw new AssertionError("should not reach here", ex$);
             }

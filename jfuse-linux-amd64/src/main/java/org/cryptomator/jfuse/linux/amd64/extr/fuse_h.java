@@ -3,9 +3,10 @@
 package org.cryptomator.jfuse.linux.amd64.extr;
 
 import java.lang.invoke.MethodHandle;
-
-import jdk.incubator.foreign.*;
-import static jdk.incubator.foreign.ValueLayout.*;
+import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
+import java.lang.foreign.*;
+import static java.lang.foreign.ValueLayout.*;
 public class fuse_h  {
 
     /* package-private */ fuse_h() {}
@@ -21,7 +22,7 @@ public class fuse_h  {
         return RuntimeHelper.requireNonNull(constants$0.fuse_exit$MH,"fuse_exit");
     }
     public static void fuse_exit ( Addressable f) {
-        var mh$ = RuntimeHelper.requireNonNull(constants$0.fuse_exit$MH, "fuse_exit");
+        var mh$ = fuse_exit$MH();
         try {
             mh$.invokeExact(f);
         } catch (Throwable ex$) {
@@ -32,9 +33,9 @@ public class fuse_h  {
         return RuntimeHelper.requireNonNull(constants$0.fuse_get_context$MH,"fuse_get_context");
     }
     public static MemoryAddress fuse_get_context () {
-        var mh$ = RuntimeHelper.requireNonNull(constants$0.fuse_get_context$MH, "fuse_get_context");
+        var mh$ = fuse_get_context$MH();
         try {
-            return (jdk.incubator.foreign.MemoryAddress)mh$.invokeExact();
+            return (java.lang.foreign.MemoryAddress)mh$.invokeExact();
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }
@@ -43,7 +44,7 @@ public class fuse_h  {
         return RuntimeHelper.requireNonNull(constants$0.fuse_main_real$MH,"fuse_main_real");
     }
     public static int fuse_main_real ( int argc,  Addressable argv,  Addressable op,  long op_size,  Addressable user_data) {
-        var mh$ = RuntimeHelper.requireNonNull(constants$0.fuse_main_real$MH, "fuse_main_real");
+        var mh$ = fuse_main_real$MH();
         try {
             return (int)mh$.invokeExact(argc, argv, op, op_size, user_data);
         } catch (Throwable ex$) {

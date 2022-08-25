@@ -10,14 +10,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-tests</artifactId>
 	<name>jFUSE Tests</name>
+	<description>Benchmark and Integration Tests</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.cryptomator</groupId>
 			<artifactId>jfuse-api</artifactId>
 			<version>${project.version}</version>
-			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.cryptomator</groupId>
+			<artifactId>jfuse-examples</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.github.serceman</groupId>
 			<artifactId>jnr-fuse</artifactId>
@@ -28,12 +34,6 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>2.0.0-alpha6</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>5.8.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -50,6 +50,72 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>@{surefire.jacoco.args} -Djava.library.path=@{fuse.lib.path} --enable-native-access=ALL-UNNAMED --enable-preview</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>**/*IT.java</include>
+							</includes>
+							<argLine>@{failsafe.jacoco.args} -Djava.library.path=@{fuse.lib.path} --enable-native-access=ALL-UNNAMED --enable-preview</argLine>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>prepare-agent-integration</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>prepare-agent-integration</goal>
+						</goals>
+						<configuration>
+							<propertyName>failsafe.jacoco.args</propertyName>
+							<includes>
+								<include>org.cryptomator.*</include>
+							</includes>
+							<excludes>
+								<exclude>org.cryptomator.jfuse.tests.*</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>report-integration</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report-integration</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report-aggregate</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report-aggregate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 	<profiles>
 		<profile>
 			<id>mac</id>
@@ -59,12 +125,14 @@
 					<arch>x86_64</arch>
 				</os>
 			</activation>
+			<properties>
+				<fuse.lib.path>/usr/local/lib</fuse.lib.path>
+			</properties>
 			<dependencies>
 				<dependency>
 					<groupId>org.cryptomator</groupId>
 					<artifactId>jfuse-mac</artifactId>
 					<version>${project.version}</version>
-					<scope>test</scope>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -83,7 +151,24 @@
 					<groupId>org.cryptomator</groupId>
 					<artifactId>jfuse-linux-amd64</artifactId>
 					<version>${project.version}</version>
-					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<profile>
+			<id>linux-aarch64</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<name>Linux</name>
+					<arch>aarch64</arch>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.cryptomator</groupId>
+					<artifactId>jfuse-linux-aarch64</artifactId>
+					<version>${project.version}</version>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -101,7 +186,6 @@
 					<groupId>org.cryptomator</groupId>
 					<artifactId>jfuse-win-amd64</artifactId>
 					<version>${project.version}</version>
-					<scope>test</scope>
 				</dependency>
 			</dependencies>
 		</profile>

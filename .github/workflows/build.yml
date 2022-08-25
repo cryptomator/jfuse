@@ -1,18 +1,85 @@
 name: Build
 on:
   [push]
+
 jobs:
-  build:
-    name: Build and Test
+
+  linux-amd64:
+    name: Test jfuse-linux-amd64
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          java-version: 19-ea
+          distribution: 'zulu'
+          cache: 'maven'
+      - name: Setup fuse
+        run: |
+          sudo apt-get update
+          sudo apt-get install fuse libfuse-dev
+      - name: Maven build
+        run: mvn -B verify -Plinux-amd64
+      - uses: actions/upload-artifact@v2
+        with:
+          name: coverage-linux-amd64
+          path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
+          retention-days: 3
+
+  mac:
+    name: Test jfuse-mac
+    runs-on: macos-10.15
+    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          java-version: 19-ea
+          distribution: 'zulu'
+          cache: 'maven'
+      - name: Setup fuse
+        run: brew install macfuse
+      - name: Maven build
+        run: mvn -B verify -Pmac
+      - uses: actions/upload-artifact@v2
+        with:
+          name: coverage-mac
+          path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
+          retention-days: 3
+
+  win-amd64:
+    name: Test jfuse-win-amd64
+    runs-on: windows-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          java-version: 19-ea
+          distribution: 'zulu'
+          cache: 'maven'
+      - name: Setup fuse
+        run: choco install winfsp --version 1.10.22006 -y
+      - name: Maven build
+        run: mvn -B verify -Pwin-amd64
+      - uses: actions/upload-artifact@v2
+        with:
+          name: coverage-win-amd64
+          path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
+          retention-days: 3
+
+  sonarcloud:
+    name: Run SonarCloud Analysis
+    needs: [linux-amd64, mac, win-amd64]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
            fetch-depth: 0
       - uses: actions/setup-java@v2
         with:
-          java-version: 18-ea
+          java-version: 19-ea
           distribution: 'zulu'
           cache: 'maven'
       - name: Cache SonarCloud packages
@@ -21,31 +88,38 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-      - name: Ensure to use tagged version
-        if: startsWith(github.ref, 'refs/tags/')
-        run: mvn versions:set --file ./pom.xml -DnewVersion=${GITHUB_REF##*/}
-      - name: Build and Test
+      - uses: actions/download-artifact@v2
+        with:
+          name: coverage-linux-amd64
+          path: coverage/linux-amd64
+      - uses: actions/download-artifact@v2
+        with:
+          name: coverage-mac
+          path: coverage/mac
+      - uses: actions/download-artifact@v2
+        with:
+          name: coverage-win-amd64
+          path: coverage/win-amd64
+      - name: Analyze
         run: >
-          mvn -B verify
+          mvn -B compile -DskipTests
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-          -Plinux-amd64,mac,win-amd64
+          -Plinux-amd64,linux-aarch64,mac,win-amd64
           -Dsonar.projectKey=cryptomator_jfuse
+          -Dsonar.coverage.jacoco.xmlReportPaths=${GITHUB_WORKSPACE}/coverage/**/jacoco.xml
           -Dsonar.organization=cryptomator
           -Dsonar.host.url=https://sonarcloud.io
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - uses: actions/upload-artifact@v2
-        with:
-          name: artifacts
-          path: |
-            jfuse-api/target/*.jar
-            jfuse-linux-amd64/target/*.jar
-            jfuse-mac/target/*.jar
-            jfuse-win-amd64/target/*.jar
+
+  release:
+    needs: [ sonarcloud ]
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
       - name: Create Release
         uses: actions/create-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.CRYPTOBOT_RELEASE_TOKEN }} # release as "cryptobot"
         with:
