@@ -109,8 +109,8 @@ public final class FuseImpl extends Fuse {
 		try (var scope = ResourceScope.newConfinedScope()) {
 			var allocator = SegmentAllocator.nativeAllocator(scope);
 			var mountPointStr = allocator.allocateUtf8String(session.mountPoint().toString());
-			fuse_h.fuse_unmount(mountPointStr, session.ch());
 			fuse_h.fuse_exit(session.fuse());
+			fuse_h.fuse_unmount(mountPointStr, session.ch());
 		}
 	}
 

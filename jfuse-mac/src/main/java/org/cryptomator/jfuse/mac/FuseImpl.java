@@ -109,8 +109,8 @@ public final class FuseImpl extends Fuse {
 			var mountPointStr = scope.allocateUtf8String(session.mountPoint().toString());
 			//var s = fuse_h.fuse_get_session(session.fuse());
 			//fuse_lowlevel_h.fuse_session_exit(s);
-			fuse_h.fuse_unmount(mountPointStr, session.ch());
 			fuse_h.fuse_exit(session.fuse());
+			fuse_h.fuse_unmount(mountPointStr, session.ch());
 		}
 	}
 
