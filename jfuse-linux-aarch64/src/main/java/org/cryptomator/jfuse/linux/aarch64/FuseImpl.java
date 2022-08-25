@@ -14,12 +14,13 @@ import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import java.lang.foreign.ValueLayout;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static jdk.incubator.foreign.ValueLayout.JAVA_INT;
+import static java.lang.foreign.ValueLayout.JAVA_INT;
 
 public final class FuseImpl extends Fuse {
 
@@ -52,21 +53,20 @@ public final class FuseImpl extends Fuse {
 	}
 
 	@Override
-	protected FuseArgs parseCmdLine(List<String> args, ResourceScope scope) {
-		var allocator = SegmentAllocator.nativeAllocator(scope);
-		var multithreaded = allocator.allocate(JAVA_INT, 1);
-		var foreground = allocator.allocate(JAVA_INT, 1);
-		var fuseArgs = fuse_args.allocate(allocator);
+	protected FuseArgs parseCmdLine(List<String> args, MemorySession scope) {
+		var multithreaded = scope.allocate(JAVA_INT, 1);
+		var foreground = scope.allocate(JAVA_INT, 1);
+		var fuseArgs = fuse_args.allocate(scope);
 		var argc = args.size();
-		var argv = allocator.allocateArray(ValueLayout.ADDRESS, argc);
+		var argv = scope.allocateArray(ValueLayout.ADDRESS, argc);
 		for (int i = 0; i < argc; i++) {
-			var cString = allocator.allocateUtf8String(args.get(i));
+			var cString = scope.allocateUtf8String(args.get(i));
 			argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
 		}
 		fuse_args.argc$set(fuseArgs, argc);
 		fuse_args.argv$set(fuseArgs, argv.address());
 		fuse_args.allocated$set(fuseArgs, 0);
-		var mountPointPtr = allocator.allocate(ValueLayout.ADDRESS);
+		var mountPointPtr = scope.allocate(ValueLayout.ADDRESS);
 		int parseResult = fuse_h.fuse_parse_cmdline(fuseArgs, mountPointPtr, multithreaded, foreground);
 		if (parseResult != 0) {
 			throw new IllegalArgumentException("fuse_parse_cmdline failed to parse " + String.join(" ", args));
@@ -79,9 +79,8 @@ public final class FuseImpl extends Fuse {
 
 	@Override
 	protected FuseSession mount(FuseArgs args, Path mountPoint) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			var allocator = SegmentAllocator.nativeAllocator(scope);
-			var mountPointStr = allocator.allocateUtf8String(mountPoint.toString());
+		try (var scope = MemorySession.openConfined()) {
+			var mountPointStr = scope.allocateUtf8String(mountPoint.toString());
 			var ch  = fuse_h.fuse_mount(mountPointStr, args.args());
 			if (MemoryAddress.NULL.equals(ch)) {
 				// TODO any cleanup needed?
@@ -106,9 +105,8 @@ public final class FuseImpl extends Fuse {
 
 	@Override
 	protected void unmount(FuseSession session) {
-		try (var scope = ResourceScope.newConfinedScope()) {
-			var allocator = SegmentAllocator.nativeAllocator(scope);
-			var mountPointStr = allocator.allocateUtf8String(session.mountPoint().toString());
+		try (var scope = MemorySession.openConfined()) {
+			var mountPointStr = scope.allocateUtf8String(session.mountPoint().toString());
 			fuse_h.fuse_exit(session.fuse());
 			fuse_h.fuse_unmount(mountPointStr, session.ch());
 		}

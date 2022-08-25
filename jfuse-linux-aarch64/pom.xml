@@ -117,6 +117,7 @@
 										<includeStruct>statvfs</includeStruct>
 										<includeStruct>timespec</includeStruct>
 										<includeStruct>fuse_conn_info</includeStruct>
+										<includeStruct>fuse_args</includeStruct>
 									</includeStructs>
 								</configuration>
 							</execution>

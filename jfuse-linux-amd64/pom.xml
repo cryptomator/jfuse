@@ -101,6 +101,7 @@
 										<includeFunction>fuse_exit</includeFunction>
 										<!-- manual session lifecycle control: -->
 										<includeFunction>fuse_parse_cmdline</includeFunction>
+										<includeFunction>fuse_opt_add_arg</includeFunction>
 										<includeFunction>fuse_mount</includeFunction>
 										<includeFunction>fuse_new</includeFunction>
 										<includeFunction>fuse_loop</includeFunction>
@@ -118,6 +119,7 @@
 										<includeStruct>statvfs</includeStruct>
 										<includeStruct>timespec</includeStruct>
 										<includeStruct>fuse_conn_info</includeStruct>
+										<includeStruct>fuse_args</includeStruct>
 									</includeStructs>
 								</configuration>
 							</execution>
