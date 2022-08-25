@@ -98,13 +98,17 @@ public final class FuseImpl extends Fuse {
 	protected FuseSession mount(FuseArgs args, Path mountPoint) {
 		try (var scope = MemorySession.openConfined()) {
 			var mountPointStr = scope.allocateUtf8String(mountPoint.toString());
-			var ch  = fuse_h.fuse_mount(mountPointStr, args.args());
+			var argsCopy1 = MemorySegment.allocateNative(args.args().byteSize(), scope);
+			var argsCopy2 = MemorySegment.allocateNative(args.args().byteSize(), scope);
+			MemorySegment.copy(args.args(), 0, argsCopy1, 0, args.args().byteSize());
+			MemorySegment.copy(args.args(), 0, argsCopy2, 0, args.args().byteSize());
+			var ch  = fuse_h.fuse_mount(mountPointStr, argsCopy1);
 			if (MemoryAddress.NULL.equals(ch)) {
 				// TODO any cleanup needed?
 				// TODO use explicit exception type
 				throw new IllegalArgumentException("Failed to mount to " + mountPoint + " with given args.");
 			}
-			var fuse = fuse_h.fuse_new(ch, args.args(), fuseOps, fuseOps.byteSize(), MemoryAddress.NULL);
+			var fuse = fuse_h.fuse_new(ch, argsCopy2, fuseOps, fuseOps.byteSize(), MemoryAddress.NULL);
 			if (MemoryAddress.NULL.equals(fuse)) {
 				fuse_h.fuse_unmount(mountPointStr, ch);
 				// TODO use explicit exception type
