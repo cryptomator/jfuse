@@ -81,7 +81,7 @@ During runtime, you will need to add allow native access from platform-specific 
 java -p path/to/mods \
   -m com.example.mymodule/com.example.mymodule \
   --enable-native-access=org.cryptomator.jfuse.mac \
-  --add-modules jdk.incubator.foreign
+  --enable-preview
 ```
 
 ## Supported Platforms
