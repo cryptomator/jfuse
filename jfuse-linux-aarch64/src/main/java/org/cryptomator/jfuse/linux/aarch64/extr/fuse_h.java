@@ -18,6 +18,12 @@ public class fuse_h  {
     public static OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
     public static OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
     public static OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
+    public static int FUSE_READDIR_PLUS() {
+        return (int)1L;
+    }
+    public static int FUSE_FILL_DIR_PLUS() {
+        return (int)2L;
+    }
     public static MethodHandle fuse_exit$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse_exit$MH,"fuse_exit");
     }
@@ -43,10 +49,10 @@ public class fuse_h  {
     public static MethodHandle fuse_main_real$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse_main_real$MH,"fuse_main_real");
     }
-    public static int fuse_main_real ( int argc,  Addressable argv,  Addressable op,  long op_size,  Addressable user_data) {
+    public static int fuse_main_real ( int argc,  Addressable argv,  Addressable op,  long op_size,  Addressable private_data) {
         var mh$ = fuse_main_real$MH();
         try {
-            return (int)mh$.invokeExact(argc, argv, op, op_size, user_data);
+            return (int)mh$.invokeExact(argc, argv, op, op_size, private_data);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }
