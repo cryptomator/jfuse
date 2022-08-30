@@ -73,7 +73,7 @@ public class HelloWorldFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public int getattr(String path, Stat stat) {
+	public int getattr(String path, Stat stat, FileInfo fi) {
 		LOG.debug("getattr() {}", path);
 		if ("/".equals(path)) {
 			stat.setMode(S_IFDIR | 0755);

@@ -3,6 +3,11 @@
 	url = https://github.com/libfuse/libfuse.git
 	branch = fuse_2_9_bugfix
 
+[submodule "libfuse3"]
+	path = libfuse3
+	url = https://github.com/libfuse/libfuse.git
+	branch = master
+
 [submodule "winfsp"]
 	path = winfsp
 	url = https://github.com/billziss-gh/winfsp.git

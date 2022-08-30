@@ -1,6 +1,7 @@
 package org.cryptomator.jfuse.examples;
 
 import org.cryptomator.jfuse.api.Errno;
+import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.FileModes;
 import org.cryptomator.jfuse.api.Fuse;
 import org.slf4j.Logger;
@@ -66,7 +67,7 @@ public final class PosixMirrorFileSystem extends AbstractMirrorFileSystem {
 	}
 
 	@Override
-	public int chmod(String path, int mode) {
+	public int chmod(String path, int mode, FileInfo fi) {
 		LOG.trace("chmod {}", path);
 		Path node = resolvePath(path);
 		try {

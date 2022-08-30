@@ -169,7 +169,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 
 	@SuppressWarnings("OctalInteger")
 	@Override
-	public int getattr(String path, Stat stat) {
+	public int getattr(String path, Stat stat, FileInfo fi) {
 		LOG.trace("getattr {}", path);
 		Path node = resolvePath(path);
 		try {
@@ -213,7 +213,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	}
 
 	@Override
-	public int chmod(String path, int mode) {
+	public int chmod(String path, int mode, FileInfo fi) {
 		LOG.trace("chmod {}", path);
 		Path node = resolvePath(path);
 		try {
@@ -225,7 +225,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	}
 
 	@Override
-	public int utimens(String path, TimeSpec atime, TimeSpec mtime) {
+	public int utimens(String path, TimeSpec atime, TimeSpec mtime, FileInfo fi) {
 		LOG.trace("utimens {}", path);
 		Path node = resolvePath(path);
 		var view = Files.getFileAttributeView(node, BasicFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
@@ -367,7 +367,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	}
 
 	@Override
-	public int truncate(String path, long size) {
+	public int truncate(String path, long size, FileInfo fi) {
 		LOG.trace("truncate {} to size {}", path, size);
 		Path node = resolvePath(path);
 		try (FileChannel fc = FileChannel.open(node, StandardOpenOption.WRITE)) {
@@ -413,7 +413,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	}
 
 	@Override
-	public int rename(String oldpath, String newpath) {
+	public int rename(String oldpath, String newpath, int flags) {
 		LOG.trace("rename {} -> {}", oldpath, newpath);
 		Path nodeOld = resolvePath(oldpath);
 		Path nodeNew = resolvePath(newpath);
