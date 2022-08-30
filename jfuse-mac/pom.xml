@@ -87,7 +87,7 @@
 									<goal>sources</goal>
 								</goals>
 								<configuration>
-									<headerFile>${project.parent.basedir}/libfuse/include/fuse.h</headerFile>
+									<headerFile>${project.parent.basedir}/libfuse2/include/fuse.h</headerFile>
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
