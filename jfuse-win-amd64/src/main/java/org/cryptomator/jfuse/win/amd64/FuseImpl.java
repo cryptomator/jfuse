@@ -109,7 +109,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	private int chmod(MemoryAddress path, int mode) {
-		return delegate.chmod(path.getUtf8String(0), mode);
+		return delegate.chmod(path.getUtf8String(0), mode, null);
 	}
 
 	private int create(MemoryAddress path, int mode, MemoryAddress fi) {
@@ -124,7 +124,7 @@ public final class FuseImpl extends Fuse {
 
 	private int getattr(MemoryAddress path, MemoryAddress stat) {
 		try (var scope = MemorySession.openConfined()) {
-			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope));
+			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope), null);
 		}
 	}
 
@@ -177,7 +177,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	private int rename(MemoryAddress oldpath, MemoryAddress newpath) {
-		return delegate.rename(oldpath.getUtf8String(0), newpath.getUtf8String(0));
+		return delegate.rename(oldpath.getUtf8String(0), newpath.getUtf8String(0), 0);
 	}
 
 	private int rmdir(MemoryAddress path) {
@@ -195,7 +195,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	private int truncate(MemoryAddress path, long size) {
-		return delegate.truncate(path.getUtf8String(0), size);
+		return delegate.truncate(path.getUtf8String(0), size, null);
 	}
 
 	private int unlink(MemoryAddress path) {
@@ -209,14 +209,14 @@ public final class FuseImpl extends Fuse {
 			fuse_timespec.tv_sec$set(segment, 0);
 			fuse_timespec.tv_nsec$set(segment, 0); // FIXME use hard-coded UTIME_NOW
 			var time = new TimeSpecImpl(segment);
-			return delegate.utimens(path.getUtf8String(0), time, time);
+			return delegate.utimens(path.getUtf8String(0), time, time, null);
 		} else {
 			try (var scope = MemorySession.openConfined()) {
 				var seq = MemoryLayout.sequenceLayout(2, fuse_timespec.$LAYOUT());
 				var segment = MemorySegment.ofAddress(times, seq.byteSize(), scope);
 				var time0 = segment.asSlice(0, fuse_timespec.$LAYOUT().byteSize());
 				var time1 = segment.asSlice(fuse_timespec.$LAYOUT().byteSize(), fuse_timespec.$LAYOUT().byteSize());
-				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1));
+				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), null);
 			}
 		}
 	}
