@@ -12,6 +12,10 @@
 	<name>jFUSE Tests</name>
 	<description>Benchmark and Integration Tests</description>
 
+	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.cryptomator</groupId>

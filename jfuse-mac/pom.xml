@@ -14,7 +14,6 @@
 	<url>https://github.com/cryptomator/jfuse/tree/develop/jfuse-mac</url>
 
 	<properties>
-		<maven.deploy.skip>false</maven.deploy.skip>
 		<mac.headerSearchPath>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/</mac.headerSearchPath>
 	</properties>
 

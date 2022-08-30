@@ -14,7 +14,6 @@
 	<url>https://github.com/cryptomator/jfuse/tree/develop/jfuse-linux-amd64</url>
 
 	<properties>
-		<maven.deploy.skip>false</maven.deploy.skip>
 		<linux.headerSearchPath>/usr/x86_64-linux-gnu/include/</linux.headerSearchPath> <!-- debian package libc6-dev-amd64-cross -->
 	</properties>
 

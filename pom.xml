@@ -36,7 +36,6 @@
 	</scm>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
 		<jextract.path>${java.home}/bin/jextract</jextract.path>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -206,7 +205,7 @@
 			<activation>
 				<os>
 					<family>unix</family>
-					<name>Linux</name>
+					<name>linux</name>
 					<arch>x86_64</arch>
 				</os>
 			</activation>
@@ -220,7 +219,7 @@
 			<activation>
 				<os>
 					<family>unix</family>
-					<name>Linux</name>
+					<name>linux</name>
 					<arch>aarch64</arch>
 				</os>
 			</activation>
@@ -257,6 +256,7 @@
 									<goal>sign</goal>
 								</goals>
 								<configuration>
+									<keyname>E6E6A235</keyname>
 									<gpgArguments>
 										<arg>--pinentry-mode</arg>
 										<arg>loopback</arg>
