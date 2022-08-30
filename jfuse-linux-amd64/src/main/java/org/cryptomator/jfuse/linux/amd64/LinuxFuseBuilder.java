@@ -11,7 +11,7 @@ import org.cryptomator.jfuse.api.SupportedPlatform;
 @SupportedPlatform(os = OperatingSystem.LINUX, arch = Architecture.AMD64)
 public class LinuxFuseBuilder implements FuseBuilder {
 
-	private static final String DEFAULT_LIB_PATH = "/lib/x86_64-linux-gnu/libfuse.so.2.9.9";
+	private static final String DEFAULT_LIB_PATH = "/lib/x86_64-linux-gnu/libfuse3.so.3";
 	private static final Errno ERRNO = new LinuxErrno();
 	private String libraryPath;
 
