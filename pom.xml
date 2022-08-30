@@ -36,14 +36,13 @@
 	</scm>
 
 	<properties>
+		<maven.deploy.skip>false</maven.deploy.skip>
 		<jextract.path>${java.home}/bin/jextract</jextract.path>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<modules>
 		<module>jfuse-api</module>
-		<module>jfuse-examples</module>
-		<module>jfuse-tests</module>
 	</modules>
 
 	<dependencies>
@@ -121,7 +120,7 @@
 				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<version>1.6.8</version>
+					<version>1.6.13</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -243,6 +242,19 @@
 			</activation>
 			<modules>
 				<module>jfuse-win-amd64</module>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>test</id>
+			<activation>
+				<property>
+					<name>!skipTests</name>
+				</property>
+			</activation>
+			<modules>
+				<module>jfuse-examples</module>
+				<module>jfuse-tests</module>
 			</modules>
 		</profile>
 
