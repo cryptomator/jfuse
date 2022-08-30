@@ -11,19 +11,23 @@ public class fuse_file_info {
 
     static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_INT$LAYOUT.withName("flags"),
-        MemoryLayout.paddingLayout(32),
-        Constants$root.C_LONG_LONG$LAYOUT.withName("fh_old"),
-        Constants$root.C_INT$LAYOUT.withName("writepage"),
         MemoryLayout.structLayout(
+            MemoryLayout.paddingLayout(1).withName("writepage"),
             MemoryLayout.paddingLayout(1).withName("direct_io"),
             MemoryLayout.paddingLayout(1).withName("keep_cache"),
             MemoryLayout.paddingLayout(1).withName("flush"),
             MemoryLayout.paddingLayout(1).withName("nonseekable"),
             MemoryLayout.paddingLayout(1).withName("flock_release"),
-            MemoryLayout.paddingLayout(27).withName("padding")
+            MemoryLayout.paddingLayout(1).withName("cache_readdir"),
+            MemoryLayout.paddingLayout(1).withName("noflush"),
+            MemoryLayout.paddingLayout(24).withName("padding"),
+            MemoryLayout.paddingLayout(32).withName("padding2"),
+            MemoryLayout.paddingLayout(32)
         ),
         Constants$root.C_LONG_LONG$LAYOUT.withName("fh"),
-        Constants$root.C_LONG_LONG$LAYOUT.withName("lock_owner")
+        Constants$root.C_LONG_LONG$LAYOUT.withName("lock_owner"),
+        Constants$root.C_INT$LAYOUT.withName("poll_events"),
+        MemoryLayout.paddingLayout(32)
     ).withName("fuse_file_info");
     public static MemoryLayout $LAYOUT() {
         return fuse_file_info.$struct$LAYOUT;
@@ -43,38 +47,6 @@ public class fuse_file_info {
     }
     public static void flags$set(MemorySegment seg, long index, int x) {
         fuse_file_info.flags$VH.set(seg.asSlice(index*sizeof()), x);
-    }
-    static final VarHandle fh_old$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("fh_old"));
-    public static VarHandle fh_old$VH() {
-        return fuse_file_info.fh_old$VH;
-    }
-    public static long fh_old$get(MemorySegment seg) {
-        return (long)fuse_file_info.fh_old$VH.get(seg);
-    }
-    public static void fh_old$set( MemorySegment seg, long x) {
-        fuse_file_info.fh_old$VH.set(seg, x);
-    }
-    public static long fh_old$get(MemorySegment seg, long index) {
-        return (long)fuse_file_info.fh_old$VH.get(seg.asSlice(index*sizeof()));
-    }
-    public static void fh_old$set(MemorySegment seg, long index, long x) {
-        fuse_file_info.fh_old$VH.set(seg.asSlice(index*sizeof()), x);
-    }
-    static final VarHandle writepage$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("writepage"));
-    public static VarHandle writepage$VH() {
-        return fuse_file_info.writepage$VH;
-    }
-    public static int writepage$get(MemorySegment seg) {
-        return (int)fuse_file_info.writepage$VH.get(seg);
-    }
-    public static void writepage$set( MemorySegment seg, int x) {
-        fuse_file_info.writepage$VH.set(seg, x);
-    }
-    public static int writepage$get(MemorySegment seg, long index) {
-        return (int)fuse_file_info.writepage$VH.get(seg.asSlice(index*sizeof()));
-    }
-    public static void writepage$set(MemorySegment seg, long index, int x) {
-        fuse_file_info.writepage$VH.set(seg.asSlice(index*sizeof()), x);
     }
     static final VarHandle fh$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("fh"));
     public static VarHandle fh$VH() {
@@ -107,6 +79,22 @@ public class fuse_file_info {
     }
     public static void lock_owner$set(MemorySegment seg, long index, long x) {
         fuse_file_info.lock_owner$VH.set(seg.asSlice(index*sizeof()), x);
+    }
+    static final VarHandle poll_events$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("poll_events"));
+    public static VarHandle poll_events$VH() {
+        return fuse_file_info.poll_events$VH;
+    }
+    public static int poll_events$get(MemorySegment seg) {
+        return (int)fuse_file_info.poll_events$VH.get(seg);
+    }
+    public static void poll_events$set( MemorySegment seg, int x) {
+        fuse_file_info.poll_events$VH.set(seg, x);
+    }
+    public static int poll_events$get(MemorySegment seg, long index) {
+        return (int)fuse_file_info.poll_events$VH.get(seg.asSlice(index*sizeof()));
+    }
+    public static void poll_events$set(MemorySegment seg, long index, int x) {
+        fuse_file_info.poll_events$VH.set(seg.asSlice(index*sizeof()), x);
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }

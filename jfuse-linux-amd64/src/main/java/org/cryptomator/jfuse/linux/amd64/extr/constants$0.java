@@ -13,7 +13,8 @@ class constants$0 {
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_LONG_LONG$LAYOUT
+        Constants$root.C_LONG_LONG$LAYOUT,
+        Constants$root.C_INT$LAYOUT
     );
     static final MethodHandle fuse_fill_dir_t$MH = RuntimeHelper.downcallHandle(
         constants$0.fuse_fill_dir_t$FUNC

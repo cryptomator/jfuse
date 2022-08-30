@@ -92,7 +92,7 @@
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=29</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
 										<includeFunction>fuse_main_real</includeFunction>
@@ -111,6 +111,10 @@
 										<includeStruct>timespec</includeStruct>
 										<includeStruct>fuse_conn_info</includeStruct>
 									</includeStructs>
+									<includeMacros>
+										<includeMacro>FUSE_FILL_DIR_PLUS</includeMacro>
+										<includeMacro>FUSE_READDIR_PLUS</includeMacro>
+									</includeMacros>
 								</configuration>
 							</execution>
 							<execution>
@@ -172,6 +176,25 @@
 										<includeMacro>O_EXCL</includeMacro>
 										<includeMacro>O_DSYNC</includeMacro>
 										<includeMacro>O_SYNC</includeMacro>
+									</includeMacros>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-stdio</id>
+								<goals>
+									<goal>sources</goal>
+								</goals>
+								<configuration>
+									<headerFile>${linux.headerSearchPath}/stdio.h</headerFile>
+									<headerClassName>stdio_h</headerClassName>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>_GNU_SOURCE=1</cPreprocessorMacro>
+									</cPreprocessorMacros>
+									<includeMacros>
+										<!-- GNU-specific flags for rename: -->
+										<includeMacro>RENAME_NOREPLACE</includeMacro>
+										<includeMacro>RENAME_EXCHANGE</includeMacro>
+										<includeMacro>RENAME_WHITEOUT</includeMacro>
 									</includeMacros>
 								</configuration>
 							</execution>
