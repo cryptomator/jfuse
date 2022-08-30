@@ -6,7 +6,7 @@
 	<groupId>org.cryptomator</groupId>
 	<artifactId>jfuse</artifactId>
 	<packaging>pom</packaging>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<name>jFUSE</name>
 	<description>Java bindings for FUSE using foreign functions &amp; memory API</description>
 	<url>https://github.com/cryptomator/jfuse</url>
@@ -36,14 +36,13 @@
 	</scm>
 
 	<properties>
+		<maven.deploy.skip>false</maven.deploy.skip>
 		<jextract.path>${java.home}/bin/jextract</jextract.path>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<modules>
 		<module>jfuse-api</module>
-		<module>jfuse-examples</module>
-		<module>jfuse-tests</module>
 	</modules>
 
 	<dependencies>
@@ -121,7 +120,12 @@
 				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<version>1.6.8</version>
+					<version>1.6.13</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>3.0.0-M2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.jacoco</groupId>
@@ -158,6 +162,9 @@
 						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<excludePackageNames>*.extr</excludePackageNames>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
@@ -202,7 +209,7 @@
 			<activation>
 				<os>
 					<family>unix</family>
-					<name>Linux</name>
+					<name>linux</name>
 					<arch>x86_64</arch>
 				</os>
 			</activation>
@@ -216,7 +223,7 @@
 			<activation>
 				<os>
 					<family>unix</family>
-					<name>Linux</name>
+					<name>linux</name>
 					<arch>aarch64</arch>
 				</os>
 			</activation>
@@ -239,6 +246,19 @@
 		</profile>
 
 		<profile>
+			<id>test</id>
+			<activation>
+				<property>
+					<name>!skipTests</name>
+				</property>
+			</activation>
+			<modules>
+				<module>jfuse-examples</module>
+				<module>jfuse-tests</module>
+			</modules>
+		</profile>
+
+		<profile>
 			<id>sign</id>
 			<build>
 				<plugins>
@@ -253,6 +273,7 @@
 									<goal>sign</goal>
 								</goals>
 								<configuration>
+									<keyname>E6E6A235</keyname>
 									<gpgArguments>
 										<arg>--pinentry-mode</arg>
 										<arg>loopback</arg>
@@ -284,6 +305,7 @@
 							<serverId>ossrh</serverId>
 							<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
 							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+							<skipNexusStagingDeployMojo>${maven.deploy.skip}</skipNexusStagingDeployMojo>
 						</configuration>
 					</plugin>
 				</plugins>
