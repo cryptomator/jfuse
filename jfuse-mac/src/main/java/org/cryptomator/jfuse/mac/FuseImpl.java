@@ -6,12 +6,12 @@ import org.cryptomator.jfuse.mac.extr.fuse_h;
 import org.cryptomator.jfuse.mac.extr.fuse_operations;
 import org.cryptomator.jfuse.mac.extr.stat_h;
 import org.cryptomator.jfuse.mac.extr.timespec;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
-import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
 
 public final class FuseImpl extends Fuse {
@@ -182,21 +182,21 @@ public final class FuseImpl extends Fuse {
 		return delegate.unlink(path.getUtf8String(0));
 	}
 
-	private int utimens(MemoryAddress path, MemoryAddress times) {
-		if (MemoryAddress.NULL.equals(times)) {
-			// set both times to current time (using on-heap memory segments)
-			var segment = MemorySegment.ofBuffer(ByteBuffer.allocate((int) timespec.$LAYOUT().byteSize()));
-			timespec.tv_sec$set(segment, 0);
-			timespec.tv_nsec$set(segment, stat_h.UTIME_NOW());
-			var time = new TimeSpecImpl(segment);
-			return delegate.utimens(path.getUtf8String(0), time, time, null);
-		} else {
-			try (var scope = MemorySession.openConfined()) {
+	@VisibleForTesting
+	int utimens(MemoryAddress path, MemoryAddress times) {
+		try (var scope = MemorySession.openConfined()) {
+			if (MemoryAddress.NULL.equals(times)) {
+				// set both times to current time (using on-heap memory segments)
+				var segment = MemorySegment.allocateNative(timespec.$LAYOUT().byteSize(), scope);
+				timespec.tv_sec$set(segment, 0);
+				timespec.tv_nsec$set(segment, stat_h.UTIME_NOW());
+				var time = new TimeSpecImpl(segment);
+				return delegate.utimens(path.getUtf8String(0), time, time, null);
+			} else {
 				var seq = MemoryLayout.sequenceLayout(2, timespec.$LAYOUT());
 				var segment = MemorySegment.ofAddress(times, seq.byteSize(), scope);
 				var time0 = segment.asSlice(0, timespec.$LAYOUT().byteSize());
 				var time1 = segment.asSlice(timespec.$LAYOUT().byteSize(), timespec.$LAYOUT().byteSize());
-//				var timeSpecs = segment.elements(seq.elementLayout()).map(MacTimeSpec::new).toArray(MacTimeSpec[]::new);
 				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), null);
 			}
 		}
