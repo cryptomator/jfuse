@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse</artifactId>
-		<version>0.1.0-SNAPSHOT</version>
+		<version>0.2.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-linux-amd64</artifactId>
@@ -14,15 +14,14 @@
 	<url>https://github.com/cryptomator/jfuse/tree/develop/jfuse-linux-amd64</url>
 
 	<properties>
-		<linux.headerSearchPath>/usr/x86_64-linux-gnu/include/</linux.headerSearchPath> <!-- debian package libc6-dev-amd64-cross -->
+		<linux.headerSearchPath>/Users/sebastian/Documents/inc/x86_64-linux-gnu/include</linux.headerSearchPath> <!-- debian package libc6-dev-amd64-cross -->
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.cryptomator</groupId>
 			<artifactId>jfuse-api</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
-			<scope>compile</scope>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -44,7 +43,6 @@
 									<rules>
 										<requireOS>
 											<family>unix</family>
-											<name>linux</name>
 											<message>This build configuration requires Linux.</message>
 										</requireOS>
 										<requireFilesExist>
@@ -89,22 +87,22 @@
 									<goal>sources</goal>
 								</goals>
 								<configuration>
-									<headerFile>${project.parent.basedir}/libfuse/include/fuse.h</headerFile>
+									<headerFile>${project.parent.basedir}/libfuse3/include/fuse.h</headerFile>
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=29</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
 										<includeFunction>fuse_main_real</includeFunction>
 										<includeFunction>fuse_get_context</includeFunction>
 										<includeFunction>fuse_exit</includeFunction>
 										<!-- manual session lifecycle control: -->
-										<includeFunction>fuse_parse_cmdline</includeFunction>
-										<includeFunction>fuse_opt_add_arg</includeFunction>
-										<includeFunction>fuse_mount</includeFunction>
 										<includeFunction>fuse_new</includeFunction>
+										<includeFunction>fuse_mount</includeFunction>
+										<includeFunction>fuse_get_session</includeFunction>
 										<includeFunction>fuse_loop</includeFunction>
+										<includeFunction>fuse_loop_mt</includeFunction>
 										<includeFunction>fuse_unmount</includeFunction>
 										<includeFunction>fuse_destroy</includeFunction>
 									</includeFunctions>
@@ -121,6 +119,10 @@
 										<includeStruct>fuse_conn_info</includeStruct>
 										<includeStruct>fuse_args</includeStruct>
 									</includeStructs>
+									<includeMacros>
+										<includeMacro>FUSE_FILL_DIR_PLUS</includeMacro>
+										<includeMacro>FUSE_READDIR_PLUS</includeMacro>
+									</includeMacros>
 								</configuration>
 							</execution>
 							<execution>
@@ -182,6 +184,25 @@
 										<includeMacro>O_EXCL</includeMacro>
 										<includeMacro>O_DSYNC</includeMacro>
 										<includeMacro>O_SYNC</includeMacro>
+									</includeMacros>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-stdio</id>
+								<goals>
+									<goal>sources</goal>
+								</goals>
+								<configuration>
+									<headerFile>${linux.headerSearchPath}/stdio.h</headerFile>
+									<headerClassName>stdio_h</headerClassName>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>_GNU_SOURCE=1</cPreprocessorMacro>
+									</cPreprocessorMacros>
+									<includeMacros>
+										<!-- GNU-specific flags for rename: -->
+										<includeMacro>RENAME_NOREPLACE</includeMacro>
+										<includeMacro>RENAME_EXCHANGE</includeMacro>
+										<includeMacro>RENAME_WHITEOUT</includeMacro>
 									</includeMacros>
 								</configuration>
 							</execution>

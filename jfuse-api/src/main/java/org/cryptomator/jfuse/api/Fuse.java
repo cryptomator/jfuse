@@ -64,7 +64,7 @@ public abstract class Fuse implements AutoCloseable {
 	 */
 	@Blocking
 	public int mount(String progName, Path mountPoint, String... flags) throws CompletionException, TimeoutException {
-		final FuseSession lock = new FuseSession(null, null, null);
+		final FuseSession lock = new FuseSession(null, null);
 		if (!session.compareAndSet(null, lock)) {
 			throw new IllegalStateException("Already mounted");
 		}
@@ -76,7 +76,7 @@ public abstract class Fuse implements AutoCloseable {
 		args.add(mountPoint.toString());
 
 		try (var scope = MemorySession.openConfined()) {
-			var fuseArgs = parseCmdLine(args, MemorySession.global());
+			var fuseArgs = parseCmdLine(args, scope);
 			var fuseSession = mount(fuseArgs, mountPoint); // TODO: specific exception
 			var isOnlySession = session.compareAndSet(lock, fuseSession);
 			assert isOnlySession : "unreachable code, as no other method can set this.session to SESSION_LOCK";

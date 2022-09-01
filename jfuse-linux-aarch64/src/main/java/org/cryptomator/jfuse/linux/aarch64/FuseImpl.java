@@ -9,13 +9,13 @@ import org.cryptomator.jfuse.linux.aarch64.extr.fuse_h;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_operations;
 import org.cryptomator.jfuse.linux.aarch64.extr.stat_h;
 import org.cryptomator.jfuse.linux.aarch64.extr.timespec;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.ValueLayout;
-import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -35,7 +35,7 @@ public final class FuseImpl extends Fuse {
 		fuseOperations.supportedOperations().forEach(this::bind);
 	}
 
-	private MemoryAddress init(MemoryAddress conn) {
+	private MemoryAddress init(MemoryAddress conn, MemoryAddress fuseConfig) {
 		try (var scope = MemorySession.openConfined()) {
 			if (delegate.supportedOperations().contains(FuseOperations.Operation.INIT)) {
 				delegate.init(new FuseConnInfoImpl(conn, scope));
@@ -54,8 +54,6 @@ public final class FuseImpl extends Fuse {
 
 	@Override
 	protected FuseArgs parseCmdLine(List<String> args, MemorySession scope) {
-		var multithreaded = scope.allocate(JAVA_INT, 1);
-		var foreground = scope.allocate(JAVA_INT, 1);
 		var fuseArgs = fuse_args.allocate(scope);
 		var argc = args.size();
 		var argv = scope.allocateArray(ValueLayout.ADDRESS, argc);
@@ -66,34 +64,35 @@ public final class FuseImpl extends Fuse {
 		fuse_args.argc$set(fuseArgs, argc);
 		fuse_args.argv$set(fuseArgs, argv.address());
 		fuse_args.allocated$set(fuseArgs, 0);
-		var mountPointPtr = scope.allocate(ValueLayout.ADDRESS);
-		int parseResult = fuse_h.fuse_parse_cmdline(fuseArgs, mountPointPtr, multithreaded, foreground);
-		if (parseResult != 0) {
-			throw new IllegalArgumentException("fuse_parse_cmdline failed to parse " + String.join(" ", args));
+		System.out.println("args: " + String.join(" ", args));
+		{
+			var parsedArgc = fuse_args.argc$get(fuseArgs);
+			var parsedArgv = fuse_args.argv$get(fuseArgs);
+			for (int i = 0; i < parsedArgc; i++) {
+				var cString = parsedArgv.getAtIndex(ValueLayout.ADDRESS, i).getUtf8String(0);
+				System.out.println("arg[" + i + "]: " + cString);
+			}
 		}
-		var mountPoint = mountPointPtr.get(ValueLayout.ADDRESS, 0).getUtf8String(0);
-		var isMultiThreaded = multithreaded.get(JAVA_INT, 0) == 1;
-		var isForeground = foreground.get(JAVA_INT, 0) == 1;
-		return new FuseArgs(fuseArgs, isMultiThreaded, isForeground);
+		return new FuseArgs(fuseArgs, false, true);
 	}
 
 	@Override
 	protected FuseSession mount(FuseArgs args, Path mountPoint) {
 		try (var scope = MemorySession.openConfined()) {
 			var mountPointStr = scope.allocateUtf8String(mountPoint.toString());
-			var ch  = fuse_h.fuse_mount(mountPointStr, args.args());
-			if (MemoryAddress.NULL.equals(ch)) {
+			var fuse = fuse_h.fuse_new(args.args(), fuseOps, fuseOps.byteSize(), MemoryAddress.NULL);
+			var session = fuse_h.fuse_get_session(fuse);
+			if (MemoryAddress.NULL.equals(fuse)) {
+				fuse_h.fuse_unmount(session);
+				// TODO use explicit exception type
+				throw new IllegalArgumentException("fuse_new failed");
+			}
+			if (fuse_h.fuse_mount(session, mountPointStr) != 0) {
 				// TODO any cleanup needed?
 				// TODO use explicit exception type
 				throw new IllegalArgumentException("Failed to mount to " + mountPoint + " with given args.");
 			}
-			var fuse = fuse_h.fuse_new(ch, args.args(), fuseOps, fuseOps.byteSize(), MemoryAddress.NULL);
-			if (MemoryAddress.NULL.equals(fuse)) {
-				fuse_h.fuse_unmount(mountPointStr, ch);
-				// TODO use explicit exception type
-				throw new IllegalArgumentException("fuse_new failed");
-			}
-			return new FuseSession(mountPoint, ch, fuse);
+			return new FuseSession(fuse, session);
 		}
 	}
 
@@ -105,11 +104,7 @@ public final class FuseImpl extends Fuse {
 
 	@Override
 	protected void unmount(FuseSession session) {
-		try (var scope = MemorySession.openConfined()) {
-			var mountPointStr = scope.allocateUtf8String(session.mountPoint().toString());
-			fuse_h.fuse_exit(session.fuse());
-			fuse_h.fuse_unmount(mountPointStr, session.ch());
-		}
+		fuse_h.fuse_unmount(session.session());
 	}
 
 	@Override
@@ -148,8 +143,10 @@ public final class FuseImpl extends Fuse {
 		return delegate.access(path.getUtf8String(0), mask);
 	}
 
-	private int chmod(MemoryAddress path, int mode) {
-		return delegate.chmod(path.getUtf8String(0), mode);
+	private int chmod(MemoryAddress path, int mode, MemoryAddress fi) {
+		try (var scope = MemorySession.openConfined()) {
+			return delegate.chmod(path.getUtf8String(0), mode, new FileInfoImpl(fi, scope));
+		}
 	}
 
 	private int create(MemoryAddress path, int mode, MemoryAddress fi) {
@@ -162,9 +159,9 @@ public final class FuseImpl extends Fuse {
 		delegate.destroy();
 	}
 
-	private int getattr(MemoryAddress path, MemoryAddress stat) {
+	private int getattr(MemoryAddress path, MemoryAddress stat, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
-			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope));
+			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
 		}
 	}
 
@@ -191,7 +188,7 @@ public final class FuseImpl extends Fuse {
 		}
 	}
 
-	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi) {
+	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi, int flags) { // TODO: readdir plus
 		try (var scope = MemorySession.openConfined()) {
 			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope));
 		}
@@ -216,8 +213,8 @@ public final class FuseImpl extends Fuse {
 		}
 	}
 
-	private int rename(MemoryAddress oldpath, MemoryAddress newpath) {
-		return delegate.rename(oldpath.getUtf8String(0), newpath.getUtf8String(0));
+	private int rename(MemoryAddress oldpath, MemoryAddress newpath, int flags) {
+		return delegate.rename(oldpath.getUtf8String(0), newpath.getUtf8String(0), flags);
 	}
 
 	private int rmdir(MemoryAddress path) {
@@ -234,30 +231,33 @@ public final class FuseImpl extends Fuse {
 		return delegate.symlink(linkname.getUtf8String(0), target.getUtf8String(0));
 	}
 
-	private int truncate(MemoryAddress path, long size) {
-		return delegate.truncate(path.getUtf8String(0), size);
+	private int truncate(MemoryAddress path, long size, MemoryAddress fi) {
+		try (var scope = MemorySession.openConfined()) {
+			return delegate.truncate(path.getUtf8String(0), size, new FileInfoImpl(fi, scope));
+		}
 	}
+
 
 	private int unlink(MemoryAddress path) {
 		return delegate.unlink(path.getUtf8String(0));
 	}
 
-	private int utimens(MemoryAddress path, MemoryAddress times) {
-		if (MemoryAddress.NULL.equals(times)) {
-			// set both times to current time (using on-heap memory segments)
-			var segment = MemorySegment.ofBuffer(ByteBuffer.allocate((int) timespec.$LAYOUT().byteSize()));
-			timespec.tv_sec$set(segment, 0);
-			timespec.tv_nsec$set(segment, stat_h.UTIME_NOW());
-			var time = new TimeSpecImpl(segment);
-			return delegate.utimens(path.getUtf8String(0), time, time);
-		} else {
-			try (var scope = MemorySession.openConfined()) {
+	@VisibleForTesting
+	int utimens(MemoryAddress path, MemoryAddress times, MemoryAddress fi) {
+		try (var scope = MemorySession.openConfined()) {
+			if (MemoryAddress.NULL.equals(times)) {
+				// set both times to current time (using on-heap memory segments)
+				var segment = MemorySegment.allocateNative(timespec.$LAYOUT().byteSize(), scope);
+				timespec.tv_sec$set(segment, 0);
+				timespec.tv_nsec$set(segment, stat_h.UTIME_NOW());
+				var time = new TimeSpecImpl(segment);
+				return delegate.utimens(path.getUtf8String(0), time, time, new FileInfoImpl(fi, scope));
+			} else {
 				var seq = MemoryLayout.sequenceLayout(2, timespec.$LAYOUT());
 				var segment = MemorySegment.ofAddress(times, seq.byteSize(), scope);
 				var time0 = segment.asSlice(0, timespec.$LAYOUT().byteSize());
 				var time1 = segment.asSlice(timespec.$LAYOUT().byteSize(), timespec.$LAYOUT().byteSize());
-//				var timeSpecs = segment.elements(seq.elementLayout()).map(MacTimeSpec::new).toArray(MacTimeSpec[]::new);
-				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1));
+				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), new FileInfoImpl(fi, scope));
 			}
 		}
 	}

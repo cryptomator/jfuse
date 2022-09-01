@@ -9,13 +9,13 @@ import org.cryptomator.jfuse.mac.extr.fuse_h;
 import org.cryptomator.jfuse.mac.extr.fuse_operations;
 import org.cryptomator.jfuse.mac.extr.stat_h;
 import org.cryptomator.jfuse.mac.extr.timespec;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.ValueLayout;
-import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -151,7 +151,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	private int chmod(MemoryAddress path, short mode) {
-		return delegate.chmod(path.getUtf8String(0), mode);
+		return delegate.chmod(path.getUtf8String(0), mode, null);
 	}
 
 	private int create(MemoryAddress path, short mode, MemoryAddress fi) {
@@ -166,7 +166,7 @@ public final class FuseImpl extends Fuse {
 
 	private int getattr(MemoryAddress path, MemoryAddress stat) {
 		try (var scope = MemorySession.openConfined()) {
-			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope));
+			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope), null);
 		}
 	}
 
@@ -219,7 +219,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	private int rename(MemoryAddress oldpath, MemoryAddress newpath) {
-		return delegate.rename(oldpath.getUtf8String(0), newpath.getUtf8String(0));
+		return delegate.rename(oldpath.getUtf8String(0), newpath.getUtf8String(0), 0);
 	}
 
 	private int rmdir(MemoryAddress path) {
@@ -237,29 +237,29 @@ public final class FuseImpl extends Fuse {
 	}
 
 	private int truncate(MemoryAddress path, long size) {
-		return delegate.truncate(path.getUtf8String(0), size);
+		return delegate.truncate(path.getUtf8String(0), size, null);
 	}
 
 	private int unlink(MemoryAddress path) {
 		return delegate.unlink(path.getUtf8String(0));
 	}
 
-	private int utimens(MemoryAddress path, MemoryAddress times) {
-		if (MemoryAddress.NULL.equals(times)) {
-			// set both times to current time (using on-heap memory segments)
-			var segment = MemorySegment.ofBuffer(ByteBuffer.allocate((int) timespec.$LAYOUT().byteSize()));
-			timespec.tv_sec$set(segment, 0);
-			timespec.tv_nsec$set(segment, stat_h.UTIME_NOW());
-			var time = new TimeSpecImpl(segment);
-			return delegate.utimens(path.getUtf8String(0), time, time);
-		} else {
-			try (var scope = MemorySession.openConfined()) {
+	@VisibleForTesting
+	int utimens(MemoryAddress path, MemoryAddress times) {
+		try (var scope = MemorySession.openConfined()) {
+			if (MemoryAddress.NULL.equals(times)) {
+				// set both times to current time (using on-heap memory segments)
+				var segment = MemorySegment.allocateNative(timespec.$LAYOUT().byteSize(), scope);
+				timespec.tv_sec$set(segment, 0);
+				timespec.tv_nsec$set(segment, stat_h.UTIME_NOW());
+				var time = new TimeSpecImpl(segment);
+				return delegate.utimens(path.getUtf8String(0), time, time, null);
+			} else {
 				var seq = MemoryLayout.sequenceLayout(2, timespec.$LAYOUT());
 				var segment = MemorySegment.ofAddress(times, seq.byteSize(), scope);
 				var time0 = segment.asSlice(0, timespec.$LAYOUT().byteSize());
 				var time1 = segment.asSlice(timespec.$LAYOUT().byteSize(), timespec.$LAYOUT().byteSize());
-//				var timeSpecs = segment.elements(seq.elementLayout()).map(MacTimeSpec::new).toArray(MacTimeSpec[]::new);
-				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1));
+				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), null);
 			}
 		}
 	}

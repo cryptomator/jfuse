@@ -1,5 +1,7 @@
 package org.cryptomator.jfuse.api;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.nio.ByteBuffer;
 import java.util.Set;
 
@@ -54,7 +56,7 @@ public interface FuseOperations {
 	 * ignored.	 The 'st_ino' field is ignored except if the 'use_ino'
 	 * mount option is given.
 	 */
-	default int getattr(String path, Stat stat) {
+	default int getattr(String path, Stat stat, @Nullable FileInfo fi) {
 		return -errno().enosys();
 	}
 
@@ -125,7 +127,7 @@ public interface FuseOperations {
 	/**
 	 * Rename a file
 	 */
-	default int rename(String oldpath, String newpath) {
+	default int rename(String oldpath, String newpath, int flags) {
 		return -errno().enosys();
 	}
 
@@ -139,7 +141,7 @@ public interface FuseOperations {
 	/**
 	 * Change the permission bits of a file
 	 */
-	default int chmod(String path, int mode) {
+	default int chmod(String path, int mode, @Nullable FileInfo fi) {
 		return -errno().enosys();
 	}
 
@@ -153,7 +155,7 @@ public interface FuseOperations {
 	/**
 	 * Change the size of a file
 	 */
-	default int truncate(String path, long size) {
+	default int truncate(String path, long size, @Nullable FileInfo fi) {
 		return -errno().enosys();
 	}
 
@@ -514,7 +516,7 @@ public interface FuseOperations {
 	 * <p>
 	 * Introduced in version 2.6
 	 */
-	default int utimens(String path, TimeSpec atime, TimeSpec mtime) {
+	default int utimens(String path, TimeSpec atime, TimeSpec mtime, @Nullable FileInfo fi) {
 		return -errno().enosys();
 	}
 
