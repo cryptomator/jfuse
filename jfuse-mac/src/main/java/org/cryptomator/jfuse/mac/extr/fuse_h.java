@@ -95,6 +95,17 @@ public class fuse_h  {
             throw new AssertionError("should not reach here", ex$);
         }
     }
+    public static MethodHandle fuse_loop_mt$MH() {
+        return RuntimeHelper.requireNonNull(constants$1.fuse_loop_mt$MH,"fuse_loop_mt");
+    }
+    public static int fuse_loop_mt ( Addressable f) {
+        var mh$ = fuse_loop_mt$MH();
+        try {
+            return (int)mh$.invokeExact(f);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
     public static MethodHandle fuse_get_context$MH() {
         return RuntimeHelper.requireNonNull(constants$1.fuse_get_context$MH,"fuse_get_context");
     }
@@ -113,17 +124,6 @@ public class fuse_h  {
         var mh$ = fuse_main_real$MH();
         try {
             return (int)mh$.invokeExact(argc, argv, op, op_size, user_data);
-        } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
-        }
-    }
-    public static MethodHandle fuse_get_session$MH() {
-        return RuntimeHelper.requireNonNull(constants$1.fuse_get_session$MH,"fuse_get_session");
-    }
-    public static MemoryAddress fuse_get_session ( Addressable f) {
-        var mh$ = fuse_get_session$MH();
-        try {
-            return (java.lang.foreign.MemoryAddress)mh$.invokeExact(f);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }

@@ -28,4 +28,7 @@ public record FuseArgs(MemorySegment args, MemorySegment cmdLineOpts) {
 		return fuse_cmdline_opts.mountpoint$get(cmdLineOpts);
 	}
 
+	public boolean multithreaded() {
+		return fuse_cmdline_opts.singlethread$get(cmdLineOpts) == 0;
+	}
 }

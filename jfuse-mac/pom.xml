@@ -102,6 +102,7 @@
 										<includeFunction>fuse_mount</includeFunction>
 										<includeFunction>fuse_new</includeFunction>
 										<includeFunction>fuse_loop</includeFunction>
+										<includeFunction>fuse_loop_mt</includeFunction>
 										<includeFunction>fuse_unmount</includeFunction>
 										<includeFunction>fuse_destroy</includeFunction>
 									</includeFunctions>

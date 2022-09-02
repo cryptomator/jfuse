@@ -118,6 +118,7 @@
 										<includeStruct>timespec</includeStruct>
 										<includeStruct>fuse_conn_info</includeStruct>
 										<includeStruct>fuse_args</includeStruct>
+										<includeStruct>fuse_loop_config</includeStruct>
 									</includeStructs>
 									<includeMacros>
 										<includeMacro>FUSE_FILL_DIR_PLUS</includeMacro>
