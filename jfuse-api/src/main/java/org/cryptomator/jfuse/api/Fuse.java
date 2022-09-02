@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -57,7 +58,8 @@ public abstract class Fuse implements AutoCloseable {
 	 * @throws CompletionException wrapping exceptions thrown during <code>init()</code> or <code>fuse_main_real()</code>
 	 */
 	@Blocking
-	public int mount(String progName, Path mountPoint, String... flags) throws CompletionException, TimeoutException {
+	@MustBeInvokedByOverriders
+	public void mount(String progName, Path mountPoint, String... flags) throws CompletionException, TimeoutException {
 		FuseMount lock = new UnmountedFuseMount();
 		if (!mount.compareAndSet(UNMOUNTED, lock)) {
 			throw new IllegalStateException("Already mounted");
@@ -73,13 +75,27 @@ public abstract class Fuse implements AutoCloseable {
 			var fuseMount = this.mount(args);
 			var isOnlySession = mount.compareAndSet(lock, fuseMount);
 			assert isOnlySession : "unreachable code, as no other method can set this.mount to lock";
-			executor.submit(fuseMount::loop); // TODO keep reference of future?
+			executor.submit(this::fuseLoop); // TODO keep reference of future and report result
 		} finally {
 			mount.compareAndSet(lock, UNMOUNTED); // if value is still `lock`, mount has failed.
 		}
-		return 0; // TODO make this void and use proper exceptions
 	}
 
+	@Blocking
+	private int fuseLoop() {
+		AtomicInteger result = new AtomicInteger();
+		fuseScope.whileAlive(() -> {
+			var mount = this.mount.get();
+			try {
+				result.set(mount.loop());
+			} finally {
+				System.out.println("fuse_loop finished with result " + result.get());
+			}
+		});
+		return result.get();
+	}
+
+	@Blocking
 	protected abstract FuseMount mount(List<String> args);
 
 	/**
@@ -88,19 +104,18 @@ public abstract class Fuse implements AutoCloseable {
 	 * <strong>Important:</strong> Before closing, a graceful unmount via system tools (e.g. {@code fusermount -u}) should be attempted.
 	 */
 	@Override
+	@Blocking
 	@MustBeInvokedByOverriders
 	public void close() throws TimeoutException {
 		try {
-			var mount = this.mount.getAndSet(null);
-			if (mount != null) {
-				mount.unmount();
-				executor.shutdown();
-				boolean exited = executor.awaitTermination(10, TimeUnit.SECONDS);
-				if (!exited) {
-					throw new TimeoutException("fuse main loop continued runn");
-				}
-				mount.destroy();
+			var mount = this.mount.getAndSet(UNMOUNTED);
+			mount.unmount();
+			executor.shutdown();
+			boolean exited = executor.awaitTermination(10, TimeUnit.SECONDS);
+			if (!exited) {
+				throw new TimeoutException("fuse main loop continued runn");
 			}
+			mount.destroy();
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		} finally {

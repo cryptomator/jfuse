@@ -61,15 +61,14 @@ public class MirrorIT {
 			fs = new PosixMirrorFileSystem(orig, builder.errno());
 		}
 		fuse = builder.build(fs);
-		int result = fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));
-		Assertions.assertEquals(0, result, "mount failed");
+		fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));
 	}
 
 	@AfterAll
 	public void teardown() throws IOException, InterruptedException {
 		// attempt graceful unmount before closing
 		if (OS.MAC.isCurrentOs()) {
-			ProcessBuilder command = new ProcessBuilder("umount", "-f", "--", mirror.getFileName().toString());
+			ProcessBuilder command = new ProcessBuilder("umount", "--", mirror.getFileName().toString());
 			command.directory(mirror.getParent().toFile());
 			Process p = command.start();
 			p.waitFor(10, TimeUnit.SECONDS);

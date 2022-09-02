@@ -33,13 +33,13 @@ public final class FuseImpl extends Fuse {
 	}
 
 	@Override
-	public int mount(String progName, Path mountPoint, String... flags) throws TimeoutException {
+	public void mount(String progName, Path mountPoint, String... flags) throws TimeoutException {
 		var adjustedMP = mountPoint;
 		if (mountPoint.compareTo(mountPoint.getRoot()) == 0 && mountPoint.isAbsolute()) {
 			//winfsp accepts only drive letters written in drive relative notation
 			adjustedMP = Path.of(mountPoint.toString().charAt(0) + ":");
 		}
-		return super.mount(progName, adjustedMP, flags);
+		super.mount(progName, adjustedMP, flags);
 	}
 
 	@Override

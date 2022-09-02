@@ -11,6 +11,7 @@ import org.cryptomator.jfuse.api.Statvfs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -20,6 +21,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
 
+@SuppressWarnings("OctalInteger")
 public class HelloWorldFileSystem implements FuseOperations {
 
 	private static final int S_IFDIR = 0040000;
@@ -40,14 +42,15 @@ public class HelloWorldFileSystem implements FuseOperations {
 		var fuseOps = new HelloWorldFileSystem(builder.errno());
 		try (var fuse = builder.build(fuseOps)) {
 			LOG.info("Mounting at {}...", mountPoint);
-			int result = fuse.mount("jfuse", mountPoint, "-s");
-			if (result == 0) {
-				LOG.info("Mounted to {}. Unmount to terminate this process", mountPoint);
-			} else {
-				LOG.error("Failed to mount to {}. Exit code: {}", mountPoint, result);
-			}
+			fuse.mount("jfuse", mountPoint, "-s");
+			LOG.info("Mounted to {}.", mountPoint);
+			LOG.info("Enter a anything to unmount...");
+			System.in.read();
 		} catch (TimeoutException | CompletionException e) {
 			LOG.error("Un/Mounting failed. ", e);
+			System.exit(1);
+		} catch (IOException e) {
+			LOG.error("Failed to create mirror", e);
 			System.exit(1);
 		}
 	}

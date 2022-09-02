@@ -7,10 +7,9 @@ import java.lang.foreign.MemoryAddress;
 
 record FuseMountImpl(MemoryAddress fuse, FuseArgs fuseArgs) implements FuseMount {
 	@Override
-	public void loop() {
+	public int loop() {
 		// TODO support fuse_loop_mt if args.multiThreaded()
-		fuse_h.fuse_loop(fuse);
-		System.out.println("fuse_loop finished"); // TODO remove
+		return fuse_h.fuse_loop(fuse);
 	}
 
 	@Override

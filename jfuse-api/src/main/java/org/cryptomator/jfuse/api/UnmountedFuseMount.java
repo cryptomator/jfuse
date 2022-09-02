@@ -2,8 +2,8 @@ package org.cryptomator.jfuse.api;
 
 class UnmountedFuseMount implements FuseMount {
 	@Override
-	public void loop() {
-		// no-op
+	public int loop() {
+		return 0;
 	}
 
 	@Override
