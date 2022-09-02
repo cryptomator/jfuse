@@ -12,7 +12,6 @@ import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
-import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
 
 public final class FuseImpl extends Fuse {
@@ -28,7 +27,7 @@ public final class FuseImpl extends Fuse {
 		fuseOperations.supportedOperations().forEach(this::bind);
 	}
 
-	private MemoryAddress init(MemoryAddress conn) {
+	private MemoryAddress init(MemoryAddress conn, MemoryAddress fuseConfig) {
 		try (var scope = MemorySession.openConfined()) {
 			if (delegate.supportedOperations().contains(FuseOperations.Operation.INIT)) {
 				delegate.init(new FuseConnInfoImpl(conn, scope));
@@ -89,8 +88,10 @@ public final class FuseImpl extends Fuse {
 		return delegate.access(path.getUtf8String(0), mask);
 	}
 
-	private int chmod(MemoryAddress path, int mode) {
-		return delegate.chmod(path.getUtf8String(0), mode);
+	private int chmod(MemoryAddress path, int mode, MemoryAddress fi) {
+		try (var scope = MemorySession.openConfined()) {
+			return delegate.chmod(path.getUtf8String(0), mode, new FileInfoImpl(fi, scope));
+		}
 	}
 
 	private int create(MemoryAddress path, int mode, MemoryAddress fi) {
@@ -103,9 +104,9 @@ public final class FuseImpl extends Fuse {
 		delegate.destroy();
 	}
 
-	private int getattr(MemoryAddress path, MemoryAddress stat) {
+	private int getattr(MemoryAddress path, MemoryAddress stat, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
-			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope));
+			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
 		}
 	}
 
@@ -132,7 +133,7 @@ public final class FuseImpl extends Fuse {
 		}
 	}
 
-	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi) {
+	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi, int flags) { // TODO: readdir plus
 		try (var scope = MemorySession.openConfined()) {
 			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope));
 		}
@@ -157,8 +158,8 @@ public final class FuseImpl extends Fuse {
 		}
 	}
 
-	private int rename(MemoryAddress oldpath, MemoryAddress newpath) {
-		return delegate.rename(oldpath.getUtf8String(0), newpath.getUtf8String(0));
+	private int rename(MemoryAddress oldpath, MemoryAddress newpath, int flags) {
+		return delegate.rename(oldpath.getUtf8String(0), newpath.getUtf8String(0), flags);
 	}
 
 	private int rmdir(MemoryAddress path) {
@@ -175,8 +176,10 @@ public final class FuseImpl extends Fuse {
 		return delegate.symlink(linkname.getUtf8String(0), target.getUtf8String(0));
 	}
 
-	private int truncate(MemoryAddress path, long size) {
-		return delegate.truncate(path.getUtf8String(0), size);
+	private int truncate(MemoryAddress path, long size, MemoryAddress fi) {
+		try (var scope = MemorySession.openConfined()) {
+			return delegate.truncate(path.getUtf8String(0), size, new FileInfoImpl(fi, scope));
+		}
 	}
 
 	private int unlink(MemoryAddress path) {
@@ -184,7 +187,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	@VisibleForTesting
-	int utimens(MemoryAddress path, MemoryAddress times) {
+	int utimens(MemoryAddress path, MemoryAddress times, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
 			if (MemoryAddress.NULL.equals(times)) {
 				// set both times to current time (using on-heap memory segments)
@@ -192,13 +195,13 @@ public final class FuseImpl extends Fuse {
 				timespec.tv_sec$set(segment, 0);
 				timespec.tv_nsec$set(segment, stat_h.UTIME_NOW());
 				var time = new TimeSpecImpl(segment);
-				return delegate.utimens(path.getUtf8String(0), time, time);
+				return delegate.utimens(path.getUtf8String(0), time, time, new FileInfoImpl(fi, scope));
 			} else {
 				var seq = MemoryLayout.sequenceLayout(2, timespec.$LAYOUT());
 				var segment = MemorySegment.ofAddress(times, seq.byteSize(), scope);
 				var time0 = segment.asSlice(0, timespec.$LAYOUT().byteSize());
 				var time1 = segment.asSlice(timespec.$LAYOUT().byteSize(), timespec.$LAYOUT().byteSize());
-				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1));
+				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), new FileInfoImpl(fi, scope));
 			}
 		}
 	}

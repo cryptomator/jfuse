@@ -16,7 +16,7 @@ record DirFillerImpl(MemoryAddress buf, fuse_fill_dir_t callback, MemorySession 
 	@Override
 	public int fill(String name, Stat stat, long offset) {
 		var statAddr = stat instanceof StatImpl s ? s.segment().address() : MemoryAddress.NULL;
-		return callback.apply(buf, scope.allocateUtf8String(name).address(), statAddr, offset);
+		return callback.apply(buf, scope.allocateUtf8String(name).address(), statAddr, offset, 0); // TODO readdir plus
 	}
 
 }

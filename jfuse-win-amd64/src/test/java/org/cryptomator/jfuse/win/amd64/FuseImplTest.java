@@ -30,7 +30,7 @@ public class FuseImplTest {
 			try (var scope = MemorySession.openConfined()) {
 				var path = scope.allocateUtf8String("/foo");
 				var times = MemoryAddress.NULL;
-				Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(t -> t.get().getNano() == 0L), Mockito.argThat(t -> t.get().getNano() == 0L));
+				Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(t -> t.get().getNano() == 0L), Mockito.argThat(t -> t.get().getNano() == 0L), Mockito.isNull());
 
 				var result = fuseImpl.utimens(path.address(), times);
 
@@ -54,7 +54,7 @@ public class FuseImplTest {
 				fuse_timespec.tv_nsec$set(times, 0, nsec0);
 				fuse_timespec.tv_sec$set(times, 1, sec1);
 				fuse_timespec.tv_nsec$set(times, 1, nsec1);
-				Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(t -> expectedATime.equals(t.get())), Mockito.argThat(t -> expectedMTime.equals(t.get())));
+				Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(t -> expectedATime.equals(t.get())), Mockito.argThat(t -> expectedMTime.equals(t.get())), Mockito.isNull());
 
 				var result = fuseImpl.utimens(path.address(), times.address());
 
