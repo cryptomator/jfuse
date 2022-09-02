@@ -4,24 +4,22 @@ import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_h;
 
 import java.lang.foreign.MemoryAddress;
-import java.util.concurrent.atomic.AtomicReference;
 
-record FuseMountImpl(AtomicReference<MemoryAddress> fuseHandle) implements FuseMount {
-	@Override
+record FuseMountImpl(MemoryAddress fuse, MemoryAddress ch, FuseArgs args) implements FuseMount {
+
 	public void loop() {
-		// no-op
+		// TODO support fuse_loop_mt if args.multiThreaded()
+		fuse_h.fuse_loop(fuse);
+		System.out.println("fuse_loop finished"); // TODO remove
 	}
 
-	@Override
 	public void unmount() {
-		var actualHandle = fuseHandle.getAndSet(null);
-		if (actualHandle != null) {
-			fuse_h.fuse_exit(actualHandle);
-		}
+		fuse_h.fuse_exit(fuse);
+		fuse_h.fuse_unmount(args.mountPoint(), ch);
 	}
 
-	@Override
 	public void destroy() {
-		// no-op
+		fuse_h.fuse_destroy(fuse);
 	}
+
 }
