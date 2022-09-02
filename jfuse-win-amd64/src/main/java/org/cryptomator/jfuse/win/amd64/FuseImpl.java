@@ -1,6 +1,7 @@
 package org.cryptomator.jfuse.win.amd64;
 
 import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_context;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_h;
@@ -12,10 +13,16 @@ import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import java.lang.foreign.ValueLayout;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static java.lang.foreign.ValueLayout.JAVA_INT;
 
 public final class FuseImpl extends Fuse {
 
@@ -60,21 +67,36 @@ public final class FuseImpl extends Fuse {
 	}
 
 	@Override
-	protected CompletableFuture<Integer> initialized() {
-		return initialized;
-	}
-
-	@Override
-	protected int fuseMain(int argc, MemorySegment argv) {
-		return fuse_h.fuse_main_real(argc, argv, struct, struct.byteSize(), MemoryAddress.NULL);
-	}
-
-	//TODO: subject to change
-	private void fuseExit() {
-		var actualHandle = fuseHandle.getAndSet(null);
-		if (actualHandle != null) {
-			fuse_h.fuse_exit(actualHandle);
+	protected FuseMount mount(List<String> args) {
+		var argc = args.size();
+		var argv = fuseScope.allocateArray(ValueLayout.ADDRESS, argc);
+		for (int i = 0; i < argc; i++) {
+			var cString = fuseScope.allocateUtf8String(args.get(i));
+			argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
 		}
+
+		try {
+			var mountResult = CompletableFuture.supplyAsync(() -> fuse_h.fuse_main_real(argc, argv, struct, struct.byteSize(), MemoryAddress.NULL));
+			var result = CompletableFuture.anyOf(mountResult, initialized).get(10, TimeUnit.SECONDS);
+			if (result instanceof Integer i) {
+				if (i != 0) {
+					// TODO use explicit exception type
+					throw new IllegalArgumentException("fuse_main_real returned with exit code " + i);
+				} else {
+					// good
+				}
+			} else {
+				throw new IllegalStateException("Expected result to be an Integer");
+			}
+		} catch (ExecutionException | TimeoutException e) {
+			// TODO use explicit exception type
+			throw new IllegalArgumentException("failed to mount");
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new IllegalArgumentException("mounting interrupted");
+		}
+
+		return new FuseMountImpl(fuseHandle);
 	}
 
 	private void bind(FuseOperations.Operation operation) {
@@ -227,13 +249,6 @@ public final class FuseImpl extends Fuse {
 			var buffer = MemorySegment.ofAddress(buf, size, scope).asByteBuffer();
 			return delegate.write(path.getUtf8String(0), buffer, size, offset, new FileInfoImpl(fi, scope));
 		}
-	}
-
-	//TODO: subject to change
-	@Override
-	public void close() throws TimeoutException {
-		fuseExit();
-		super.close();
 	}
 
 }

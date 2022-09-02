@@ -2,27 +2,19 @@ package org.cryptomator.jfuse.api;
 
 
 import org.jetbrains.annotations.Blocking;
+import org.jetbrains.annotations.BlockingExecutor;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-import org.jetbrains.annotations.BlockingExecutor;
-
 import java.lang.foreign.MemorySession;
-import java.lang.foreign.ValueLayout;
-
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicReference;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -33,8 +25,10 @@ import java.util.concurrent.TimeoutException;
  */
 public abstract class Fuse implements AutoCloseable {
 
+	private static final FuseMount UNMOUNTED = new UnmountedFuseMount();
+
 	protected final MemorySession fuseScope = MemorySession.openShared();
-	private final AtomicReference<FuseSession> session = new AtomicReference<>();
+	private final AtomicReference<FuseMount> mount = new AtomicReference<>(UNMOUNTED);
 	@BlockingExecutor
 	private final ExecutorService executor;
 
@@ -64,8 +58,8 @@ public abstract class Fuse implements AutoCloseable {
 	 */
 	@Blocking
 	public int mount(String progName, Path mountPoint, String... flags) throws CompletionException, TimeoutException {
-		final FuseSession lock = new FuseSession(null, null);
-		if (!session.compareAndSet(null, lock)) {
+		FuseMount lock = new UnmountedFuseMount();
+		if (!mount.compareAndSet(UNMOUNTED, lock)) {
 			throw new IllegalStateException("Already mounted");
 		}
 
@@ -75,92 +69,18 @@ public abstract class Fuse implements AutoCloseable {
 		args.add("-f"); // always stay in foreground. don't fork & kill this process via `fuse_daemonize`
 		args.add(mountPoint.toString());
 
-		try (var scope = MemorySession.openConfined()) {
-			var fuseArgs = parseCmdLine(args, scope);
-			var fuseSession = mount(fuseArgs, mountPoint); // TODO: specific exception
-			var isOnlySession = session.compareAndSet(lock, fuseSession);
-			assert isOnlySession : "unreachable code, as no other method can set this.session to SESSION_LOCK";
-
-			// TODO get multithreaded flag from fuseSession
-			var mountResult = CompletableFuture.supplyAsync(() -> loop(fuseSession, false), executor);
-			var result = CompletableFuture.anyOf(mountResult, initialized()).get(10, TimeUnit.SECONDS);
-			if (result instanceof Integer i) {
-				return i;
-			} else {
-				throw new IllegalStateException("Expected Future<Integer>");
-			}
-		} catch (CancellationException | ExecutionException e) {
-			return 1;
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-			return 1;
+		try {
+			var fuseMount = this.mount(args);
+			var isOnlySession = mount.compareAndSet(lock, fuseMount);
+			assert isOnlySession : "unreachable code, as no other method can set this.mount to lock";
+			executor.submit(fuseMount::loop); // TODO keep reference of future?
 		} finally {
-			session.compareAndSet(lock, null); // reset in case of error
+			mount.compareAndSet(lock, UNMOUNTED); // if value is still `lock`, mount has failed.
 		}
+		return 0; // TODO make this void and use proper exceptions
 	}
 
-	/**
-	 * Invokes {@code fuse_parse_cmdline}.
-	 *
-	 * @param args  fuse flags
-	 * @param scope memory session that the returned result is bound to
-	 * @return Parsed flags ready to use for mounting
-	 * @throws IllegalArgumentException If {@code fuse_parse_cmdline} returns -1.
-	 */
-	protected abstract FuseArgs parseCmdLine(List<String> args, MemorySession scope) throws IllegalArgumentException;
-
-	/**
-	 * Invokes {@code fuse_mount} and {@code fuse_new} to mount a new fuse file system.
-	 *
-	 * @param args       The mount args
-	 * @param mountPoint The mount point
-	 * @return A new fuse session
-	 */
-	protected abstract FuseSession mount(FuseArgs args, Path mountPoint);
-//	@Blocking
-//	protected int fuseMain(List<String> flags) {
-//		try (var scope = MemorySession.openConfined()) {
-//			//var allocator =  SegmentAllocator.nativeAllocator(scope);
-//			var argc = flags.size();
-//			var argv = scope.allocateArray(ValueLayout.ADDRESS, argc);
-//			for (int i = 0; i < argc; i++) {
-//				var cString = scope.allocateUtf8String(flags.get(i));
-//				argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
-//			}
-//			return fuseMain(argc, argv);
-//		}
-//	}
-
-	/**
-	 * Invokes {@code fuse_loop} or {@code fuse_loop_mt}, depending on {@code multithreaded}.
-	 *
-	 * @param session       The fuse session
-	 * @param multithreaded multi-threaded mode
-	 * @return result passed through by {@code fuse_loop} or {@code fuse_loop_mt}
-	 */
-	@Blocking
-	protected abstract int loop(FuseSession session, boolean multithreaded);
-
-	/**
-	 * Unmounts the file system and exits any running loops.
-	 * <p>
-	 * The implementation needs to be idempotent, i.e. repeated invokations must be no-ops.
-	 *
-	 * @param session The fuse session
-	 */
-	protected abstract void unmount(FuseSession session);
-
-	/**
-	 * Invokes {@code fuse_destroy}.
-	 *
-	 * @param session The fuse session
-	 */
-	protected abstract void destroy(FuseSession session);
-
-	/**
-	 * @return A future that completes with {@code 0} as soon as {@link FuseOperations#init(FuseConnInfo) init} has been called.
-	 */
-	protected abstract CompletableFuture<Integer> initialized();
+	protected abstract FuseMount mount(List<String> args);
 
 	/**
 	 * Unmounts (if needed) this fuse file system and frees up system resources.
@@ -171,15 +91,15 @@ public abstract class Fuse implements AutoCloseable {
 	@MustBeInvokedByOverriders
 	public void close() throws TimeoutException {
 		try {
-			var session = this.session.getAndSet(null);
-			if (session != null) {
-				unmount(session);
+			var mount = this.mount.getAndSet(null);
+			if (mount != null) {
+				mount.unmount();
 				executor.shutdown();
 				boolean exited = executor.awaitTermination(10, TimeUnit.SECONDS);
 				if (!exited) {
 					throw new TimeoutException("fuse main loop continued runn");
 				}
-				destroy(session);
+				mount.destroy();
 			}
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();

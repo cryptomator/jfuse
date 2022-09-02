@@ -391,7 +391,7 @@ public interface FuseOperations {
 	 * Introduced in version 2.3
 	 * Changed in version 2.6
 	 */
-	default void init(FuseConnInfo conn) {
+	default void init(FuseConnInfo conn) { // TODO: add @Nullable FuseConfig for libfuse3
 		// no-op
 	}
 

@@ -1,9 +1,8 @@
 package org.cryptomator.jfuse.linux.amd64;
 
 import org.cryptomator.jfuse.api.Fuse;
-import org.cryptomator.jfuse.api.FuseArgs;
+import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
-import org.cryptomator.jfuse.api.FuseSession;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_args;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_h;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_operations;
@@ -13,113 +12,66 @@ import org.cryptomator.jfuse.linux.amd64.extr.stat_h;
 import org.cryptomator.jfuse.linux.amd64.extr.timespec;
 import org.jetbrains.annotations.VisibleForTesting;
 
+import java.lang.foreign.Addressable;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.ValueLayout;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public final class FuseImpl extends Fuse {
 
-	private final CompletableFuture<Integer> initialized = new CompletableFuture<>();
 	private final FuseOperations delegate;
 	private final MemorySegment fuseOps;
 
 	public FuseImpl(FuseOperations fuseOperations) {
 		this.fuseOps = fuse_operations.allocate(fuseScope);
 		this.delegate = fuseOperations;
-		fuse_operations.init$set(fuseOps, fuse_operations.init.allocate(this::init, fuseScope).address());
 		fuseOperations.supportedOperations().forEach(this::bind);
 	}
 
-	private MemoryAddress init(MemoryAddress conn, MemoryAddress fuseConfig) {
-		try (var scope = MemorySession.openConfined()) {
-			if (delegate.supportedOperations().contains(FuseOperations.Operation.INIT)) {
-				delegate.init(new FuseConnInfoImpl(conn, scope));
-			}
-			initialized.complete(0);
-		} catch (Exception e) {
-			initialized.completeExceptionally(e);
+	@Override
+	protected FuseMount mount(List<String> args) {
+		var fuseArgs = parseArgs(args);
+		var fuse = fuse_h.fuse_new(fuseArgs.args(), fuseOps, fuseOps.byteSize(), MemoryAddress.NULL);
+		if (MemoryAddress.NULL.equals(fuse)) {
+			// TODO use explicit exception type
+			throw new IllegalArgumentException("fuse_new failed");
 		}
-		return MemoryAddress.NULL;
+		//var session = fuse_h.fuse_get_session(fuse);
+		//var mountPointStr = fuse_cmdline_opts.mountpoint$get(args.opts());
+		if (fuse_h.fuse_mount(fuse, fuseArgs.mountPoint()) != 0) {
+			// TODO use explicit exception type
+			throw new IllegalArgumentException("fuse_mount failed ");
+		}
+		return new FuseMountImpl(fuse, fuseArgs);
 	}
 
-	@Override
-	protected CompletableFuture<Integer> initialized() {
-		return initialized;
-	}
-
-	@Override
-	protected FuseArgs parseCmdLine(List<String> args, MemorySession scope) {
-		var fuseArgs = fuse_args.allocate(scope);
-		var argc = args.size();
-		var argv = scope.allocateArray(ValueLayout.ADDRESS, argc + 1);
+	private FuseArgs parseArgs(List<String> cmdLineArgs) throws IllegalArgumentException {
+		var args = fuse_args.allocate(fuseScope);
+		var argc = cmdLineArgs.size();
+		var argv = fuseScope.allocateArray(ValueLayout.ADDRESS, argc + 1);
 		for (int i = 0; i < argc; i++) {
-			var cString = scope.allocateUtf8String(args.get(i));
+			var cString = fuseScope.allocateUtf8String(cmdLineArgs.get(i));
 			argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
 		}
 		argv.setAtIndex(ValueLayout.ADDRESS, argc, MemoryAddress.NULL);
-		fuse_args.argc$set(fuseArgs, argc);
-		fuse_args.argv$set(fuseArgs, argv.address());
-		fuse_args.allocated$set(fuseArgs, 0);
+		fuse_args.argc$set(args, argc);
+		fuse_args.argv$set(args, argv.address());
+		fuse_args.allocated$set(args, 0);
 
-		var opts = fuse_cmdline_opts.allocate(scope);
-		fuse_lowlevel_h.fuse_parse_cmdline(fuseArgs.address(), opts.address());
-
-		System.out.println("args: " + String.join(" ", args));
-		{
-			var parsedArgc = fuse_args.argc$get(fuseArgs);
-			var parsedArgv = fuse_args.argv$get(fuseArgs);
-			for (int i = 0; i < parsedArgc; i++) {
-				var cString = parsedArgv.getAtIndex(ValueLayout.ADDRESS, i).getUtf8String(0);
-				System.out.println("arg[" + i + "]: " + cString);
-			}
+		var opts = fuse_cmdline_opts.allocate(fuseScope);
+		int parseResult = fuse_lowlevel_h.fuse_parse_cmdline(args, opts);
+		if (parseResult != 0) {
+			throw new IllegalArgumentException("fuse_parse_cmdline failed to parse " + String.join(" ", cmdLineArgs));
 		}
-		return new FuseArgs(fuseArgs, opts);
-	}
-
-	@Override
-	protected FuseSession mount(FuseArgs args, Path mountPoint) {
-		try (var scope = MemorySession.openConfined()) {
-			var mountPointStr = scope.allocateUtf8String(mountPoint.toString());
-			var fuse = fuse_h.fuse_new(args.args(), fuseOps, fuseOps.byteSize(), MemoryAddress.NULL);
-			if (MemoryAddress.NULL.equals(fuse)) {
-				// TODO use explicit exception type
-				throw new IllegalArgumentException("fuse_new failed");
-			}
-			var session = fuse_h.fuse_get_session(fuse);
-			//var mountPointStr = fuse_cmdline_opts.mountpoint$get(args.opts());
-			if (fuse_h.fuse_mount(fuse, mountPointStr) != 0) {
-				// TODO any cleanup needed?
-				// TODO use explicit exception type
-				throw new IllegalArgumentException("fuse_mount failed for mount point " + mountPoint);
-			}
-			return new FuseSession(fuse, session);
-		}
-	}
-
-	@Override
-	protected int loop(FuseSession session, boolean multithreaded) {
-		// TODO support fuse_loop_mt
-		return fuse_h.fuse_loop(session.fuse());
-	}
-
-	@Override
-	protected void unmount(FuseSession session) {
-		fuse_h.fuse_unmount(session.fuse());
-	}
-
-	@Override
-	protected void destroy(FuseSession session) {
-		fuse_h.fuse_destroy(session.fuse());
+		return new FuseArgs(args, opts);
 	}
 
 	private void bind(FuseOperations.Operation operation) {
 		switch (operation) {
-			case INIT -> { /* handled already */ }
+			case INIT -> fuse_operations.access$set(fuseOps, fuse_operations.init.allocate(this::init, fuseScope).address());
 			case ACCESS -> fuse_operations.access$set(fuseOps, fuse_operations.access.allocate(this::access, fuseScope).address());
 			case CHMOD -> fuse_operations.chmod$set(fuseOps, fuse_operations.chmod.allocate(this::chmod, fuseScope).address());
 			case CREATE -> fuse_operations.create$set(fuseOps, fuse_operations.create.allocate(this::create, fuseScope).address());
@@ -142,6 +94,13 @@ public final class FuseImpl extends Fuse {
 			case UTIMENS -> fuse_operations.utimens$set(fuseOps, fuse_operations.utimens.allocate(this::utimens, fuseScope).address());
 			case WRITE -> fuse_operations.write$set(fuseOps, fuse_operations.write.allocate(this::write, fuseScope).address());
 		}
+	}
+
+	private Addressable init(MemoryAddress conn, MemoryAddress fuseConfig) {
+		try (var scope = MemorySession.openConfined()) {
+			delegate.init(new FuseConnInfoImpl(conn, scope));
+		}
+		return MemoryAddress.NULL;
 	}
 
 	private int access(MemoryAddress path, int mask) {
