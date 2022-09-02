@@ -7,6 +7,8 @@ import org.cryptomator.jfuse.api.FuseSession;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_args;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_h;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_operations;
+import org.cryptomator.jfuse.linux.amd64.extr.ll.fuse_cmdline_opts;
+import org.cryptomator.jfuse.linux.amd64.extr.ll.fuse_lowlevel_h;
 import org.cryptomator.jfuse.linux.amd64.extr.stat_h;
 import org.cryptomator.jfuse.linux.amd64.extr.timespec;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -19,8 +21,6 @@ import java.lang.foreign.ValueLayout;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-
-import static java.lang.foreign.ValueLayout.JAVA_INT;
 
 public final class FuseImpl extends Fuse {
 
@@ -56,14 +56,19 @@ public final class FuseImpl extends Fuse {
 	protected FuseArgs parseCmdLine(List<String> args, MemorySession scope) {
 		var fuseArgs = fuse_args.allocate(scope);
 		var argc = args.size();
-		var argv = scope.allocateArray(ValueLayout.ADDRESS, argc);
+		var argv = scope.allocateArray(ValueLayout.ADDRESS, argc + 1);
 		for (int i = 0; i < argc; i++) {
 			var cString = scope.allocateUtf8String(args.get(i));
 			argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
 		}
+		argv.setAtIndex(ValueLayout.ADDRESS, argc, MemoryAddress.NULL);
 		fuse_args.argc$set(fuseArgs, argc);
 		fuse_args.argv$set(fuseArgs, argv.address());
 		fuse_args.allocated$set(fuseArgs, 0);
+
+		var opts = fuse_cmdline_opts.allocate(scope);
+		fuse_lowlevel_h.fuse_parse_cmdline(fuseArgs.address(), opts.address());
+
 		System.out.println("args: " + String.join(" ", args));
 		{
 			var parsedArgc = fuse_args.argc$get(fuseArgs);
@@ -73,7 +78,7 @@ public final class FuseImpl extends Fuse {
 				System.out.println("arg[" + i + "]: " + cString);
 			}
 		}
-		return new FuseArgs(fuseArgs, false, true);
+		return new FuseArgs(fuseArgs, opts);
 	}
 
 	@Override
@@ -81,16 +86,16 @@ public final class FuseImpl extends Fuse {
 		try (var scope = MemorySession.openConfined()) {
 			var mountPointStr = scope.allocateUtf8String(mountPoint.toString());
 			var fuse = fuse_h.fuse_new(args.args(), fuseOps, fuseOps.byteSize(), MemoryAddress.NULL);
-			var session = fuse_h.fuse_get_session(fuse);
 			if (MemoryAddress.NULL.equals(fuse)) {
-				fuse_h.fuse_unmount(session);
 				// TODO use explicit exception type
 				throw new IllegalArgumentException("fuse_new failed");
 			}
-			if (fuse_h.fuse_mount(session, mountPointStr) != 0) {
+			var session = fuse_h.fuse_get_session(fuse);
+			//var mountPointStr = fuse_cmdline_opts.mountpoint$get(args.opts());
+			if (fuse_h.fuse_mount(fuse, mountPointStr) != 0) {
 				// TODO any cleanup needed?
 				// TODO use explicit exception type
-				throw new IllegalArgumentException("Failed to mount to " + mountPoint + " with given args.");
+				throw new IllegalArgumentException("fuse_mount failed for mount point " + mountPoint);
 			}
 			return new FuseSession(fuse, session);
 		}
@@ -104,7 +109,7 @@ public final class FuseImpl extends Fuse {
 
 	@Override
 	protected void unmount(FuseSession session) {
-		fuse_h.fuse_unmount(session.session());
+		fuse_h.fuse_unmount(session.fuse());
 	}
 
 	@Override

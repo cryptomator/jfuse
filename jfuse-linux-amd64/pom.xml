@@ -126,6 +126,27 @@
 								</configuration>
 							</execution>
 							<execution>
+								<id>jextract-fuse-lowlevel</id>
+								<goals>
+									<goal>sources</goal>
+								</goals>
+								<configuration>
+									<headerFile>${project.parent.basedir}/libfuse3/include/fuse_lowlevel.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.ll</targetPackage>
+									<headerClassName>fuse_lowlevel_h</headerClassName>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
+									</cPreprocessorMacros>
+									<includeFunctions>
+										<includeFunction>fuse_parse_cmdline</includeFunction>
+									</includeFunctions>
+									<includeStructs>
+										<includeStruct>fuse_cmdline_opts</includeStruct>
+									</includeStructs>
+								</configuration>
+							</execution>
+							<execution>
 								<id>jextract-errno</id>
 								<goals>
 									<goal>sources</goal>
