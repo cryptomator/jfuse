@@ -7,6 +7,7 @@ import java.lang.foreign.MemoryAddress;
 
 record FuseMountImpl(MemoryAddress fuse, MemoryAddress ch, FuseArgs args) implements FuseMount {
 
+	@Override
 	public int loop() {
 		if (args.multiThreaded()) {
 			return fuse_h.fuse_loop_mt(fuse);
@@ -15,11 +16,13 @@ record FuseMountImpl(MemoryAddress fuse, MemoryAddress ch, FuseArgs args) implem
 		}
 	}
 
+	@Override
 	public void unmount() {
 		fuse_h.fuse_exit(fuse);
 		fuse_h.fuse_unmount(args.mountPoint(), ch);
 	}
 
+	@Override
 	public void destroy() {
 		fuse_h.fuse_destroy(fuse);
 	}

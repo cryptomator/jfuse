@@ -8,6 +8,8 @@ import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySession;
 
 record FuseMountImpl(MemoryAddress fuse, FuseArgs fuseArgs) implements FuseMount {
+
+	@Override
 	public int loop() {
 		if (fuseArgs.multithreaded()) {
 			try (var scope = MemorySession.openConfined()) {
