@@ -9,7 +9,6 @@ import java.lang.foreign.MemorySession;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -54,12 +53,10 @@ public abstract class Fuse implements AutoCloseable {
 	 * @param progName   The program name used to construct a usage message and to derive a fallback for <code>-ofsname=...</code>
 	 * @param mountPoint mount point
 	 * @param flags      Additional flags. Use flag <code>-help</code> to get a list of available flags
-	 * @return 0 if mounted successfully, or the result of <code>fuse_main_real()</code> in case of errors
-	 * @throws CompletionException wrapping exceptions thrown during <code>init()</code> or <code>fuse_main_real()</code>
 	 */
 	@Blocking
 	@MustBeInvokedByOverriders
-	public void mount(String progName, Path mountPoint, String... flags) throws CompletionException, TimeoutException {
+	public void mount(String progName, Path mountPoint, String... flags) {
 		FuseMount lock = new UnmountedFuseMount();
 		if (!mount.compareAndSet(UNMOUNTED, lock)) {
 			throw new IllegalStateException("Already mounted");

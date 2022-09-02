@@ -17,7 +17,6 @@ import java.lang.foreign.MemorySession;
 import java.lang.foreign.ValueLayout;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
@@ -33,7 +32,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	@Override
-	public void mount(String progName, Path mountPoint, String... flags) throws TimeoutException {
+	public void mount(String progName, Path mountPoint, String... flags) {
 		var adjustedMP = mountPoint;
 		if (mountPoint.compareTo(mountPoint.getRoot()) == 0 && mountPoint.isAbsolute()) {
 			//winfsp accepts only drive letters written in drive relative notation
