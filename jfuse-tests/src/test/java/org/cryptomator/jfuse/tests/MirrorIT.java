@@ -44,7 +44,7 @@ public class MirrorIT {
 	private Fuse fuse;
 
 	@BeforeAll
-	public void setup(@TempDir Path tmpDir) throws IOException, TimeoutException {
+	public void setup(@TempDir Path tmpDir) throws IOException, InterruptedException {
 		var builder = Fuse.builder();
 		orig = tmpDir.resolve("orig");
 		Files.createDirectories(orig);
@@ -62,6 +62,7 @@ public class MirrorIT {
 		}
 		fuse = builder.build(fs);
 		fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));
+		Thread.sleep(100); // give the file system some time to accept the mounted volume
 	}
 
 	@AfterAll
@@ -82,6 +83,7 @@ public class MirrorIT {
 		if (fuse != null) {
 			Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), fuse::close, "file system still active");
 		}
+		Thread.sleep(100); // give the file system some time before cleaning up the @TempDir
 	}
 
 	@Nested
