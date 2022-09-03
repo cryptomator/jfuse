@@ -7,7 +7,7 @@ import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
-public record FuseArgs(MemorySegment args, MemorySegment cmdLineOpts) {
+record FuseArgs(MemorySegment args, MemorySegment cmdLineOpts) {
 
 	@Override
 	public String toString() {
@@ -20,7 +20,7 @@ public record FuseArgs(MemorySegment args, MemorySegment cmdLineOpts) {
 		}
 		sb.append("mountPoint = ").append(mountPoint().getUtf8String(0));
 		sb.append("debug = ").append(fuse_cmdline_opts.debug$get(cmdLineOpts));
-		sb.append("singlethreaded = ").append(fuse_cmdline_opts.singlethread$get(cmdLineOpts));
+		sb.append("singlethreaded = ").append(!multithreaded());
 		return sb.toString();
 	}
 

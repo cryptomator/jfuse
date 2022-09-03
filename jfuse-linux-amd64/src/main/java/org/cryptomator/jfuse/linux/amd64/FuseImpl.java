@@ -48,7 +48,8 @@ public final class FuseImpl extends Fuse {
 		return new FuseMountImpl(fuse, fuseArgs);
 	}
 
-	private FuseArgs parseArgs(List<String> cmdLineArgs) throws IllegalArgumentException {
+	@VisibleForTesting
+	FuseArgs parseArgs(List<String> cmdLineArgs) throws IllegalArgumentException {
 		var args = fuse_args.allocate(fuseScope);
 		var argc = cmdLineArgs.size();
 		var argv = fuseScope.allocateArray(ValueLayout.ADDRESS, argc + 1L);

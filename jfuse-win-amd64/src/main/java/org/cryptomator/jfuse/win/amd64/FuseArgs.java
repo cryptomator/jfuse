@@ -6,7 +6,7 @@ import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
-public record FuseArgs(MemorySegment args, MemoryAddress mountPoint, boolean multiThreaded) {
+record FuseArgs(MemorySegment args, MemoryAddress mountPoint, boolean multiThreaded) {
 
 	@Override
 	public String toString() {

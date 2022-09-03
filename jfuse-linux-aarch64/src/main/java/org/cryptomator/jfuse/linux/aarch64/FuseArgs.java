@@ -7,7 +7,7 @@ import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
-public record FuseArgs(MemorySegment args, MemorySegment cmdLineOpts) {
+record FuseArgs(MemorySegment args, MemorySegment cmdLineOpts) {
 
 	@Override
 	public String toString() {

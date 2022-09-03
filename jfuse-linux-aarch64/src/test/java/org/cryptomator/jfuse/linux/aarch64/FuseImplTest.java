@@ -3,6 +3,8 @@ package org.cryptomator.jfuse.linux.aarch64;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_file_info;
+import org.cryptomator.jfuse.linux.aarch64.extr.ll.fuse_cmdline_opts;
+import org.cryptomator.jfuse.linux.aarch64.extr.ll.fuse_lowlevel_h;
 import org.cryptomator.jfuse.linux.aarch64.extr.timespec;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -13,13 +15,39 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 
 import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.time.Instant;
+import java.util.List;
 
 public class FuseImplTest {
 
 	private FuseOperations fuseOps = Mockito.mock(FuseOperations.class);
 	private FuseImpl fuseImpl = new FuseImpl(fuseOps);
+
+	@Test
+	public void testParseArgs() {
+		try (var fuseLowlevelH = Mockito.mockStatic(fuse_lowlevel_h.class);
+			 var scope = MemorySession.openConfined()) {
+			fuseLowlevelH.when(() -> fuse_lowlevel_h.fuse_parse_cmdline(Mockito.any(), Mockito.any())).then(invocation -> {
+				MemorySegment opts = invocation.getArgument(1);
+				fuse_cmdline_opts.singlethread$set(opts, 0);
+				fuse_cmdline_opts.debug$set(opts, 1);
+				fuse_cmdline_opts.mountpoint$set(opts, scope.allocateUtf8String("/mount/point").address());
+				return 0;
+			});
+
+			var fuseArgs = fuseImpl.parseArgs(List.of("fusefs", "-foo", "-bar", "/mount/point"));
+
+			Assertions.assertTrue(fuseArgs.multithreaded());
+			Assertions.assertTrue(fuseArgs.toString().contains("arg[0] = fusefs"));
+			Assertions.assertTrue(fuseArgs.toString().contains("arg[1] = -foo"));
+			Assertions.assertTrue(fuseArgs.toString().contains("arg[2] = -bar"));
+			Assertions.assertTrue(fuseArgs.toString().contains("singlethreaded = false"));
+			Assertions.assertTrue(fuseArgs.toString().contains("debug = 1"));
+			Assertions.assertTrue(fuseArgs.toString().contains("mountPoint = /mount/point"));
+		}
+	}
 
 	@Nested
 	@DisplayName("utimens")
