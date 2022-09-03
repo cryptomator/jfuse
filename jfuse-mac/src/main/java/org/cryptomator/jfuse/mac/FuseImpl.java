@@ -52,7 +52,7 @@ public final class FuseImpl extends Fuse {
 	private FuseArgs parseArgs(List<String> cmdLineArgs) throws IllegalArgumentException {
 		var args = fuse_args.allocate(fuseScope);
 		var argc = cmdLineArgs.size();
-		var argv = fuseScope.allocateArray(ValueLayout.ADDRESS, argc + 1);
+		var argv = fuseScope.allocateArray(ValueLayout.ADDRESS, argc + 1L);
 		for (int i = 0; i < argc; i++) {
 			var cString = fuseScope.allocateUtf8String(cmdLineArgs.get(i));
 			argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
