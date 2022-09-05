@@ -18,7 +18,7 @@ Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operat
 |                 | Status             |
 |-----------------|--------------------|
 | getattr         | :white_check_mark: |
-| fgetattr        | :x:                |
+| ~fgetattr~      | use getattr        |
 | readlink        | :white_check_mark: |
 | ~getdir~        | use readdir        |
 | ~mknod~         | use create         |
@@ -31,7 +31,7 @@ Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operat
 | chmod           | :white_check_mark: |
 | chown           | :x:                |
 | truncate        | :white_check_mark: |
-| ftruncate       | :x:                |
+| ~ftruncate~     | use truncate       |
 | ~utime~         | use utimens        |
 | open            | :white_check_mark: |
 | read            | :white_check_mark: |

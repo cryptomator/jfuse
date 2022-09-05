@@ -3,7 +3,9 @@ package org.cryptomator.jfuse.mac;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.api.TimeSpec;
+import org.cryptomator.jfuse.mac.extr.fuse_file_info;
 import org.cryptomator.jfuse.mac.extr.fuse_h;
+import org.cryptomator.jfuse.mac.extr.stat;
 import org.cryptomator.jfuse.mac.extr.timespec;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -140,6 +142,74 @@ public class FuseImplTest {
 				Assertions.assertEquals(42, result);
 			}
 		}
+	}
+
+	@Nested
+	@DisplayName("getattr")
+	public class GetAttr {
+
+		@Test
+		@DisplayName("getattr")
+		public void testGetattr() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var attr = stat.allocate(scope);
+				Mockito.doReturn(42).when(fuseOps).getattr(Mockito.eq("/foo"), Mockito.any(), Mockito.isNull());
+
+				var result = fuseImpl.getattr(path.address(), attr.address());
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
+		@Test
+		@DisplayName("fgetattr")
+		public void testFgetattr() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var attr = stat.allocate(scope);
+				var fi = fuse_file_info.allocate(scope);
+				Mockito.doReturn(42).when(fuseOps).getattr(Mockito.eq("/foo"), Mockito.any(), Mockito.notNull());
+
+				var result = fuseImpl.fgetattr(path.address(), attr.address(), fi.address());
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
+	}
+
+	@Nested
+	@DisplayName("truncate")
+	public class Truncate {
+
+		@Test
+		@DisplayName("truncate")
+		public void testTruncate() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				Mockito.doReturn(42).when(fuseOps).truncate(Mockito.eq("/foo"), Mockito.eq(1337L), Mockito.isNull());
+
+				var result = fuseImpl.truncate(path.address(), 1337L);
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
+		@Test
+		@DisplayName("ftruncate")
+		public void testFtruncate() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var fi = fuse_file_info.allocate(scope);
+				Mockito.doReturn(42).when(fuseOps).truncate(Mockito.eq("/foo"), Mockito.eq(1337L), Mockito.notNull());
+
+				var result = fuseImpl.ftruncate(path.address(), 1337L, fi.address());
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
 	}
 
 }

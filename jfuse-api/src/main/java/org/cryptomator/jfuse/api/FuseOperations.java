@@ -53,8 +53,18 @@ public interface FuseOperations {
 	 * Get file attributes.
 	 * <p>
 	 * Similar to stat().  The 'st_dev' and 'st_blksize' fields are
-	 * ignored.	 The 'st_ino' field is ignored except if the 'use_ino'
-	 * mount option is given.
+	 * ignored. The 'st_ino' field is ignored except if the 'use_ino'
+	 * mount option is given. In that case it is passed to userspace,
+	 * but libfuse and the kernel will still assign a different
+	 * inode for internal use (called the "nodeid").
+	 * <p>
+	 * This method doubles as <code>fgetattr</code> in libfuse2
+	 *
+	 * @param path file path
+	 * @param stat file information
+	 * @param fi   will always be <code>null</code> if the file is not currently open,
+	 *             but may also be <code>null</code> if the file is open.
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int getattr(String path, Stat stat, @Nullable FileInfo fi) {
 		return -errno().enosys();
@@ -153,21 +163,22 @@ public interface FuseOperations {
 	}
 
 	/**
-	 * Change the size of a file
+	 * Change the size of a file.
+	 * <p>
+	 * Unless FUSE_CAP_HANDLE_KILLPRIV is disabled, this method is
+	 * expected to reset the setuid and setgid bits.
+	 * <p>
+	 * This method doubles as <code>ftruncate</code> in libfuse2
+	 *
+	 * @param path file path
+	 * @param size new size of the file
+	 * @param fi   will always be <code>null</code> if the file is not currently open,
+	 *             but may also be <code>null</code> if the file is open.
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int truncate(String path, long size, @Nullable FileInfo fi) {
 		return -errno().enosys();
 	}
-
-//	/**
-//	 * Change the access and/or modification times of a file
-//	 *
-//	 * @deprecated use {@link #utimens(String, TimeSpec) utimens()} instead.
-//	 */
-//	@Deprecated
-//	default int utime(String path, Pointer<utime_h.utimbuf> utimbufPointer) {
-//		return -errno().enosys();
-//	}
 
 	/**
 	 * File open operation
@@ -434,38 +445,6 @@ public interface FuseOperations {
 	 * Introduced in version 2.5
 	 */
 	default int create(String path, int mode, FileInfo fi) {
-		return -errno().enosys();
-	}
-
-	/**
-	 * Change the size of an open file
-	 * <p>
-	 * This method is called instead of the truncate() method if the
-	 * truncation was invoked from an ftruncate() system call.
-	 * <p>
-	 * If this method is not implemented or under Linux kernel
-	 * versions earlier than 2.6.15, the truncate() method will be
-	 * called instead.
-	 * <p>
-	 * Introduced in version 2.5
-	 */
-	default int ftruncate(String path, long size, FileInfo fi) {
-		return -errno().enosys();
-	}
-
-	/**
-	 * Get attributes from an open file
-	 * <p>
-	 * This method is called instead of the getattr() method if the
-	 * file information is available.
-	 * <p>
-	 * Currently this is only called after the create() method if that
-	 * is implemented (see above).  Later it may be called for
-	 * invocations of fstat() too.
-	 * <p>
-	 * Introduced in version 2.5
-	 */
-	default int fgetattr(String path, Stat stat, FileInfo fi) {
 		return -errno().enosys();
 	}
 
