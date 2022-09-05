@@ -2,6 +2,7 @@ package org.cryptomator.jfuse.examples;
 
 import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.MountFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,6 @@ import java.nio.file.attribute.DosFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeoutException;
 
 public final class WindowsMirrorFileSystem extends AbstractMirrorFileSystem {
@@ -35,7 +35,7 @@ public final class WindowsMirrorFileSystem extends AbstractMirrorFileSystem {
 			LOG.info("Mounted to {}.", mountPoint);
 			LOG.info("Enter a anything to unmount...");
 			System.in.read();
-		} catch (TimeoutException | CompletionException e) {
+		} catch (MountFailedException | TimeoutException e) {
 			LOG.error("Un/Mounting failed. ", e);
 			System.exit(1);
 		} catch (IOException e) {

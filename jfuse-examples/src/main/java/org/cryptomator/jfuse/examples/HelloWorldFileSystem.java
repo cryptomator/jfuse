@@ -6,6 +6,7 @@ import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
+import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.Statvfs;
 import org.slf4j.Logger;
@@ -17,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Set;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
 
@@ -46,7 +46,7 @@ public class HelloWorldFileSystem implements FuseOperations {
 			LOG.info("Mounted to {}.", mountPoint);
 			LOG.info("Enter a anything to unmount...");
 			System.in.read();
-		} catch (TimeoutException | CompletionException e) {
+		} catch (MountFailedException | TimeoutException e) {
 			LOG.error("Un/Mounting failed. ", e);
 			System.exit(1);
 		} catch (IOException e) {

@@ -53,10 +53,12 @@ public abstract class Fuse implements AutoCloseable {
 	 * @param progName   The program name used to construct a usage message and to derive a fallback for <code>-ofsname=...</code>
 	 * @param mountPoint mount point
 	 * @param flags      Additional flags. Use flag <code>-help</code> to get a list of available flags
+	 * @throws MountFailedException If mounting failed
+	 * @throws IllegalArgumentException If providing unsupported mount flags
 	 */
 	@Blocking
 	@MustBeInvokedByOverriders
-	public void mount(String progName, Path mountPoint, String... flags) {
+	public void mount(String progName, Path mountPoint, String... flags) throws MountFailedException, IllegalArgumentException {
 		FuseMount lock = new UnmountedFuseMount();
 		if (!mount.compareAndSet(UNMOUNTED, lock)) {
 			throw new IllegalStateException("Already mounted");
@@ -93,7 +95,7 @@ public abstract class Fuse implements AutoCloseable {
 	}
 
 	@Blocking
-	protected abstract FuseMount mount(List<String> args);
+	protected abstract FuseMount mount(List<String> args) throws MountFailedException, IllegalArgumentException;
 
 	/**
 	 * Unmounts (if needed) this fuse file system and frees up system resources.

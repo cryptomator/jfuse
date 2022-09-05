@@ -3,6 +3,7 @@ package org.cryptomator.jfuse.win.amd64;
 import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
+import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_args;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_h;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_operations;
@@ -32,7 +33,7 @@ public final class FuseImpl extends Fuse {
 	}
 
 	@Override
-	public void mount(String progName, Path mountPoint, String... flags) {
+	public void mount(String progName, Path mountPoint, String... flags) throws MountFailedException {
 		var adjustedMP = mountPoint;
 		if (mountPoint.compareTo(mountPoint.getRoot()) == 0 && mountPoint.isAbsolute()) {
 			//winfsp accepts only drive letters written in drive relative notation
@@ -42,19 +43,17 @@ public final class FuseImpl extends Fuse {
 	}
 
 	@Override
-	protected FuseMount mount(List<String> args) {
+	protected FuseMount mount(List<String> args) throws MountFailedException {
 		var fuseArgs = parseArgs(args);
 		var ch  = fuse_h.fuse_mount(fuseArgs.mountPoint(), fuseArgs.args());
 		if (MemoryAddress.NULL.equals(ch)) {
 			// TODO any cleanup needed?
-			// TODO use explicit exception type
-			throw new IllegalArgumentException("fuse_mount failed");
+			throw new MountFailedException("fuse_mount failed");
 		}
 		var fuse = fuse_h.fuse_new(ch, fuseArgs.args(), fuseOps, fuseOps.byteSize(), MemoryAddress.NULL);
 		if (MemoryAddress.NULL.equals(fuse)) {
 			fuse_h.fuse_unmount(fuseArgs.mountPoint(), ch);
-			// TODO use explicit exception type
-			throw new IllegalArgumentException("fuse_new failed");
+			throw new MountFailedException("fuse_new failed");
 		}
 		return new FuseMountImpl(fuse, ch, fuseArgs);
 	}

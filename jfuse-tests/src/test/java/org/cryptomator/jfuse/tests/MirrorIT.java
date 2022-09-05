@@ -1,6 +1,7 @@
 package org.cryptomator.jfuse.tests;
 
 import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.examples.AbstractMirrorFileSystem;
 import org.cryptomator.jfuse.examples.PosixMirrorFileSystem;
 import org.cryptomator.jfuse.examples.WindowsMirrorFileSystem;
@@ -30,7 +31,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MirrorIT {
@@ -44,7 +44,7 @@ public class MirrorIT {
 	private Fuse fuse;
 
 	@BeforeAll
-	public void setup(@TempDir Path tmpDir) throws IOException, InterruptedException {
+	public void setup(@TempDir Path tmpDir) throws IOException, InterruptedException, MountFailedException {
 		var builder = Fuse.builder();
 		orig = tmpDir.resolve("orig");
 		Files.createDirectories(orig);
