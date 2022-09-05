@@ -1,13 +1,16 @@
 package org.cryptomator.jfuse.linux.amd64;
 
 import org.cryptomator.jfuse.api.FuseOperations;
+import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_file_info;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_h;
 import org.cryptomator.jfuse.linux.amd64.extr.ll.fuse_cmdline_opts;
 import org.cryptomator.jfuse.linux.amd64.extr.ll.fuse_lowlevel_h;
 import org.cryptomator.jfuse.linux.amd64.extr.timespec;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,6 +18,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Answers;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.lang.foreign.MemoryAddress;
@@ -27,6 +31,49 @@ public class FuseImplTest {
 
 	private FuseOperations fuseOps = Mockito.mock(FuseOperations.class);
 	private FuseImpl fuseImpl = new FuseImpl(fuseOps);
+
+	@Nested
+	@DisplayName("mount()")
+	public class Mount {
+
+		private List<String> args = List.of("foo", "bar");
+		private FuseImpl fuseImplSpy = Mockito.spy(fuseImpl);
+		private MockedStatic<fuse_h> fuseH;
+
+		@BeforeEach
+		public void setup() {
+			Mockito.doReturn(Mockito.mock(FuseArgs.class)).when(fuseImplSpy).parseArgs(args);
+			fuseH = Mockito.mockStatic(fuse_h.class);
+		}
+
+		@AfterEach
+		public void teardown() {
+			fuseH.close();
+		}
+
+		@Test
+		@DisplayName("MountFailedException when fuse_new fails")
+		public void testFuseNewFails() {
+			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemoryAddress.NULL);
+
+			var thrown = Assertions.assertThrows(MountFailedException.class, () -> fuseImplSpy.mount(args));
+
+			fuseH.verify(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any()), Mockito.never());
+			Assertions.assertEquals("fuse_new failed", thrown.getMessage());
+		}
+
+		@Test
+		@DisplayName("MountFailedException when fuse_mount fails")
+		public void testFuseMountFails() {
+			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemoryAddress.ofLong(42L));
+			fuseH.when(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any())).thenReturn(1);
+
+			var thrown = Assertions.assertThrows(MountFailedException.class, () -> fuseImplSpy.mount(args));
+
+			Assertions.assertEquals("fuse_mount failed", thrown.getMessage());
+		}
+
+	}
 
 	@ParameterizedTest(name = "fusefs {0}")
 	@DisplayName("parseArgs with -h/--help")

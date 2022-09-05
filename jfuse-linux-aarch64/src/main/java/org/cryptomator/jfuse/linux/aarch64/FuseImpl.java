@@ -40,7 +40,7 @@ public final class FuseImpl extends Fuse {
 			throw new MountFailedException("fuse_new failed");
 		}
 		if (fuse_h.fuse_mount(fuse, fuseArgs.mountPoint()) != 0) {
-			throw new MountFailedException("fuse_mount failed ");
+			throw new MountFailedException("fuse_mount failed");
 		}
 		return new FuseMountImpl(fuse, fuseArgs);
 	}
