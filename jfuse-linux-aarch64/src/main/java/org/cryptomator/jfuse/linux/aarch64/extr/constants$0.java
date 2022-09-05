@@ -51,13 +51,6 @@ class constants$0 {
         "fuse_unmount",
         constants$0.fuse_unmount$FUNC
     );
-    static final FunctionDescriptor fuse_destroy$FUNC = FunctionDescriptor.ofVoid(
-        Constants$root.C_POINTER$LAYOUT
-    );
-    static final MethodHandle fuse_destroy$MH = RuntimeHelper.downcallHandle(
-        "fuse_destroy",
-        constants$0.fuse_destroy$FUNC
-    );
 }
 
 

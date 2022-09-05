@@ -94,16 +94,13 @@
 										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
-										<includeFunction>fuse_main_real</includeFunction>
-										<includeFunction>fuse_get_context</includeFunction>
-										<includeFunction>fuse_exit</includeFunction>
-										<!-- manual session lifecycle control: -->
 										<includeFunction>fuse_lib_help</includeFunction>
 										<includeFunction>fuse_new</includeFunction>
 										<includeFunction>fuse_mount</includeFunction>
 										<includeFunction>fuse_get_session</includeFunction>
 										<includeFunction>fuse_loop</includeFunction>
 										<includeFunction>fuse_loop_mt</includeFunction>
+										<includeFunction>fuse_exit</includeFunction>
 										<includeFunction>fuse_unmount</includeFunction>
 										<includeFunction>fuse_destroy</includeFunction>
 									</includeFunctions>
@@ -113,7 +110,6 @@
 									<includeStructs>
 										<includeStruct>fuse_operations</includeStruct>
 										<includeStruct>fuse_file_info</includeStruct>
-										<includeStruct>fuse_context</includeStruct>
 										<includeStruct>stat</includeStruct>
 										<includeStruct>statvfs</includeStruct>
 										<includeStruct>timespec</includeStruct>

@@ -9,6 +9,13 @@ import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
 class constants$1 {
 
+    static final FunctionDescriptor fuse_destroy$FUNC = FunctionDescriptor.ofVoid(
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle fuse_destroy$MH = RuntimeHelper.downcallHandle(
+        "fuse_destroy",
+        constants$1.fuse_destroy$FUNC
+    );
     static final FunctionDescriptor fuse_loop$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
@@ -30,22 +37,6 @@ class constants$1 {
     static final MethodHandle fuse_loop_mt$MH = RuntimeHelper.downcallHandle(
         "fuse_loop_mt",
         constants$1.fuse_loop_mt$FUNC
-    );
-    static final FunctionDescriptor fuse_get_context$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT);
-    static final MethodHandle fuse_get_context$MH = RuntimeHelper.downcallHandle(
-        "fuse_get_context",
-        constants$1.fuse_get_context$FUNC
-    );
-    static final FunctionDescriptor fuse_main_real$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
-        Constants$root.C_INT$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_LONG_LONG$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT
-    );
-    static final MethodHandle fuse_main_real$MH = RuntimeHelper.downcallHandle(
-        "fuse_main_real",
-        constants$1.fuse_main_real$FUNC
     );
     static final FunctionDescriptor fuse_get_session$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT

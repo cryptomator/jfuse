@@ -106,28 +106,6 @@ public class fuse_h  {
             throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_get_context$MH() {
-        return RuntimeHelper.requireNonNull(constants$1.fuse_get_context$MH,"fuse_get_context");
-    }
-    public static MemoryAddress fuse_get_context () {
-        var mh$ = fuse_get_context$MH();
-        try {
-            return (java.lang.foreign.MemoryAddress)mh$.invokeExact();
-        } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
-        }
-    }
-    public static MethodHandle fuse_main_real$MH() {
-        return RuntimeHelper.requireNonNull(constants$1.fuse_main_real$MH,"fuse_main_real");
-    }
-    public static int fuse_main_real ( int argc,  Addressable argv,  Addressable op,  long op_size,  Addressable user_data) {
-        var mh$ = fuse_main_real$MH();
-        try {
-            return (int)mh$.invokeExact(argc, argv, op, op_size, user_data);
-        } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
-        }
-    }
 }
 
 
