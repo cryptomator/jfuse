@@ -29,7 +29,6 @@ public abstract class Fuse implements AutoCloseable {
 
 	protected final MemorySession fuseScope = MemorySession.openShared();
 	private final AtomicReference<FuseMount> mount = new AtomicReference<>(UNMOUNTED);
-	@BlockingExecutor
 	private final ExecutorService executor;
 
 	protected Fuse() {
@@ -88,6 +87,7 @@ public abstract class Fuse implements AutoCloseable {
 			try {
 				result.set(mount.loop());
 			} finally {
+				// TODO remove
 				System.out.println("fuse_loop finished with result " + result.get());
 			}
 		});
@@ -107,14 +107,14 @@ public abstract class Fuse implements AutoCloseable {
 	@MustBeInvokedByOverriders
 	public void close() throws TimeoutException {
 		try {
-			var mount = this.mount.getAndSet(UNMOUNTED);
-			mount.unmount();
+			var fuseMount = this.mount.getAndSet(UNMOUNTED);
+			fuseMount.unmount();
 			executor.shutdown();
 			boolean exited = executor.awaitTermination(10, TimeUnit.SECONDS);
 			if (!exited) {
 				throw new TimeoutException("fuse main loop continued runn");
 			}
-			mount.destroy();
+			fuseMount.destroy();
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		} finally {

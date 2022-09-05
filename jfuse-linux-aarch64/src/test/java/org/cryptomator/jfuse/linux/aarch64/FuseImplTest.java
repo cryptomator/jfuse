@@ -32,6 +32,7 @@ public class FuseImplTest {
 	@DisplayName("parseArgs with -h/--help")
 	@ValueSource(strings = {"--help", "-h"})
 	public void testParseArgsHelp(String arg) {
+		var args = List.of("fusefs", arg);
 		try (var fuseLowlevelH = Mockito.mockStatic(fuse_lowlevel_h.class);
 			 var fuseH = Mockito.mockStatic(fuse_h.class)) {
 			fuseLowlevelH.when(() -> fuse_lowlevel_h.fuse_parse_cmdline(Mockito.any(), Mockito.any())).then(invocation -> {
@@ -41,7 +42,7 @@ public class FuseImplTest {
 			});
 			fuseH.when(() -> fuse_h.fuse_lib_help(Mockito.any())).thenAnswer(Answers.RETURNS_DEFAULTS);
 
-			Assertions.assertThrows(IllegalArgumentException.class, () -> fuseImpl.parseArgs(List.of("fusefs", arg)));
+			Assertions.assertThrows(IllegalArgumentException.class, () -> fuseImpl.parseArgs(args));
 			fuseH.verify(() -> fuse_h.fuse_lib_help(Mockito.any()));
 		}
 	}
