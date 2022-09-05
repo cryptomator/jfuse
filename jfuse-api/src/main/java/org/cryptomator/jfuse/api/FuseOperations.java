@@ -71,43 +71,44 @@ public interface FuseOperations {
 	}
 
 	/**
-	 * Read the target of a symbolic link
-	 * <p>
-	 * The buffer should be filled with a null terminated string.  The
-	 * buffer size argument includes the space for the terminating
-	 * null character.	If the linkname is too long to fit in the
-	 * buffer, it should be truncated.	The return value should be 0
-	 * for success.
+	 * Read the target of a symbolic link.
+	 *
+	 * @param path file path
+	 * @param buf  The buffer should be filled with a null terminated string.
+	 * @param len  The buffer size (including the terminating null character). If the linkname is too long to fit in the
+	 *             buffer, it should be truncated.
+	 * @return The return value should be 0
 	 */
 	default int readlink(String path, ByteBuffer buf, long len) {
 		return -errno().enosys();
 	}
 
-//	/**
-//	 * @deprecated use {@link #readdir(String, Pointer, Callback, long, Pointer)} instead
-//	 */
-//	@Deprecated
-//	default int getdir(String path, Pointer<fuse_h.fuse_dirhandle> fuse_dirhandlePointer, Callback<fuse_h.FI2> fi2Callback) {
-//		return -errno().enosys();
-//	}
-
 	/**
-	 * Create a file node
+	 * Create a file node.
 	 * <p>
 	 * This is called for creation of all non-directory, non-symlink
 	 * nodes.  If the filesystem defines a create() method, then for
 	 * regular files that will be called instead.
+	 *
+	 * @param path file path
+	 * @param mode file mode and type of node to create (using bitwise OR)
+	 * @param rdev ignored if mode does not contain <code>S_IFCHR</code> or <code>S_IFBLK</code>
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int mknod(String path, short mode, int rdev) {
 		return -errno().enosys();
 	}
 
 	/**
-	 * Create a directory
+	 * Create a directory.
 	 * <p>
 	 * Note that the mode argument may not have the type specification
 	 * bits set, i.e. S_ISDIR(mode) can be false.  To obtain the
 	 * correct directory type bits use  mode|S_IFDIR
+	 *
+	 * @param path file path
+	 * @param mode file mode (using bitwise OR)
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int mkdir(String path, int mode) {
 		return -errno().enosys();
@@ -115,6 +116,9 @@ public interface FuseOperations {
 
 	/**
 	 * Remove a file
+	 *
+	 * @param path file path
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int unlink(String path) {
 		return -errno().enosys();
@@ -122,6 +126,9 @@ public interface FuseOperations {
 
 	/**
 	 * Remove a directory
+	 *
+	 * @param path file path
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int rmdir(String path) {
 		return -errno().enosys();
@@ -129,6 +136,10 @@ public interface FuseOperations {
 
 	/**
 	 * Create a symbolic link
+	 *
+	 * @param linkname file path
+	 * @param target   content of the link
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int symlink(String linkname, String target) {
 		return -errno().enosys();
@@ -136,13 +147,28 @@ public interface FuseOperations {
 
 	/**
 	 * Rename a file
+	 *
+	 * @param oldpath old file path
+	 * @param newpath new file path
+	 * @param flags   may be `RENAME_EXCHANGE` or `RENAME_NOREPLACE`. If
+	 *                RENAME_NOREPLACE is specified, the filesystem must not
+	 *                overwrite *newname* if it exists and return an error
+	 *                instead. If `RENAME_EXCHANGE` is specified, the filesystem
+	 *                must atomically exchange the two files, i.e. both must
+	 *                exist and neither may be deleted.
+	 * @return 0 on success or negated error code (-errno)
 	 */
+	// TODO create enum for flags
 	default int rename(String oldpath, String newpath, int flags) {
 		return -errno().enosys();
 	}
 
 	/**
 	 * Create a hard link to a file
+	 *
+	 * @param linkname file path
+	 * @param target   content of the link
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int link(String linkname, String target) {
 		return -errno().enosys();
@@ -150,6 +176,12 @@ public interface FuseOperations {
 
 	/**
 	 * Change the permission bits of a file
+	 *
+	 * @param path file path
+	 * @param mode file mode (using bitwise OR)
+	 * @param fi   will always be <code>null</code> if the file is not currently open,
+	 *             but may also be <code>null</code> if the file is open.
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int chmod(String path, int mode, @Nullable FileInfo fi) {
 		return -errno().enosys();
@@ -157,8 +189,15 @@ public interface FuseOperations {
 
 	/**
 	 * Change the owner and group of a file
+	 *
+	 * @param path file path
+	 * @param uid  user id
+	 * @param gid  group id
+	 * @param fi   will always be <code>null</code> if the file is not currently open,
+	 *             but may also be <code>null</code> if the file is open.
+	 * @return 0 on success or negated error code (-errno)
 	 */
-	default int chown(String path, int uid, int gid) {
+	default int chown(String path, int uid, int gid, @Nullable FileInfo fi) {
 		return -errno().enosys();
 	}
 
@@ -181,29 +220,45 @@ public interface FuseOperations {
 	}
 
 	/**
-	 * File open operation
+	 * Open a file.
 	 * <p>
-	 * No creation (O_CREAT, O_EXCL) and by default also no
-	 * truncation (O_TRUNC) flags will be passed to open(). If an
-	 * application specifies O_TRUNC, fuse first calls truncate()
-	 * and then open(). Only if 'atomic_o_trunc' has been
-	 * specified and kernel version is 2.6.24 or later, O_TRUNC is
-	 * passed on to open.
+	 * Open flags are available in fi->flags. The following rules apply.
+	 * <ul>
+	 *     <li>Creation (O_CREAT, O_EXCL, O_NOCTTY) flags will be filtered out / handled by the kernel.</li>
+	 *     <li>Access modes (O_RDONLY, O_WRONLY, O_RDWR, O_EXEC, O_SEARCH) should be used by the filesystem to check if
+	 *     the operation is permitted.  If the ``-o default_permissions`` mount option is given, this check is already
+	 *     done by the kernel before calling open() and may thus be omitted by the filesystem.</li>
+	 * 	  <li>When writeback caching is enabled, the kernel may send read requests even for files opened with O_WRONLY.
+	 * 	  Thefilesystem should be prepared to handle this.</li>
+	 * 	  <li>When writeback caching is disabled, the filesystem is expected to properly handle the O_APPEND flag and
+	 * 	  ensurethat each write is appending to the end of the file.</li>
+	 * 	  <li>When writeback caching is enabled, the kernel will handle O_APPEND. However, unless all changes to the
+	 * 	  file come through the kernel this will not work reliably. The filesystem should thus either ignore the
+	 * 	  O_APPEND flag (and let the kernel handle it), or return an error (indicating that reliably O_APPEND is
+	 * 	  not available).</li>
+	 * </ul>
+	 * Filesystem may store an arbitrary file handle (pointer, index, etc) in {@link FileInfo#setFh(long) fi->fh},
+	 * and use this in other all other file operations (read, write, flush, release, fsync).
 	 * <p>
-	 * Unless the 'default_permissions' mount option is given,
-	 * open should check if the operation is permitted for the
-	 * given flags. Optionally open may also return an arbitrary
-	 * filehandle in the fuse_file_info structure, which will be
-	 * passed to all file operations.
+	 * Filesystem may also implement stateless file I/O and not store anything in {@link FileInfo#setFh(long) fi->fh}.
 	 * <p>
-	 * Changed in version 2.2
+	 * There are also some flags (direct_io, keep_cache) which the filesystem may set in fi, to change the way the file
+	 * is opened. See fuse_file_info structure in <fuse_common.h> for more details.
+	 * <p>
+	 * If this request is answered with an error code of ENOSYS and FUSE_CAP_NO_OPEN_SUPPORT is set in
+	 * `fuse_conn_info.capable`, this is treated as success and future calls to open will also succeed without being
+	 * send to the filesystem process.
+	 *
+	 * @param path file path
+	 * @param fi   file info, which may be used to store a file handle
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int open(String path, FileInfo fi) {
 		return -errno().enosys();
 	}
 
 	/**
-	 * Read data from an open file
+	 * Read data from an open file.
 	 * <p>
 	 * Read should return exactly the number of bytes requested except
 	 * on EOF or error, otherwise the rest of the data will be
@@ -211,80 +266,103 @@ public interface FuseOperations {
 	 * 'direct_io' mount option is specified, in which case the return
 	 * value of the read system call will reflect the return value of
 	 * this operation.
-	 * <p>
-	 * Changed in version 2.2
+	 *
+	 * @param path   file path
+	 * @param buf    the buffer to read into
+	 * @param count  number of bytes to read
+	 * @param offset position in the file to start reading
+	 * @param fi     file info
+	 * @return number of bytes read or negated error code (-errno)
 	 */
-	default int read(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
+	default int read(String path, ByteBuffer buf, long count, long offset, FileInfo fi) {
 		return -errno().enosys();
 	}
 
 	/**
-	 * Write data to an open file
+	 * Write data to an open file.
 	 * <p>
 	 * Write should return exactly the number of bytes requested
 	 * except on error.	 An exception to this is when the 'direct_io'
 	 * mount option is specified (see read operation).
 	 * <p>
-	 * Changed in version 2.2
+	 * Unless FUSE_CAP_HANDLE_KILLPRIV is disabled, this method is
+	 * expected to reset the setuid and setgid bits.
+	 *
+	 * @param path   file path
+	 * @param buf    the buffer containing the data to be written
+	 * @param count  number of bytes to write
+	 * @param offset position in the file to write to
+	 * @param fi     file info
+	 * @return number of bytes written or negated error code (-errno)
 	 */
-	default int write(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
+	default int write(String path, ByteBuffer buf, long count, long offset, FileInfo fi) {
 		return -errno().enosys();
 	}
 
 	/**
-	 * Get file system statistics
+	 * Get file system statistics.
 	 * <p>
-	 * The 'f_frsize', 'f_favail', 'f_fsid' and 'f_flag' fields are ignored
-	 * <p>
-	 * Replaced 'struct statfs' parameter with 'struct statvfs' in
-	 * version 2.5
+	 * The 'f_favail', 'f_fsid' and 'f_flag' fields are ignored
+	 *
+	 * @param path    file path of any file within the file system
+	 * @param statvfs The statistics object to be filled with data
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int statfs(String path, Statvfs statvfs) {
 		return -errno().enosys();
 	}
 
 	/**
-	 * Possibly flush cached data
+	 * Possibly flush cached data.
 	 * <p>
 	 * BIG NOTE: This is not equivalent to fsync().  It's not a
 	 * request to sync dirty data.
 	 * <p>
-	 * Flush is called on each close() of a file descriptor.  So if a
-	 * filesystem wants to return write errors in close() and the file
-	 * has cached dirty data, this is a good place to write back data
-	 * and return any errors.  Since many applications ignore close()
-	 * errors this is not always useful.
+	 * Flush is called on each close() of a file descriptor, as opposed to
+	 * release which is called on the close of the last file descriptor for
+	 * a file.  Under Linux, errors returned by flush() will be passed to
+	 * userspace as errors from close(), so flush() is a good place to write
+	 * back any cached dirty data. However, many applications ignore errors
+	 * on close(), and on non-Linux systems, close() may succeed even if flush()
+	 * returns an error. For these reasons, filesystems should not assume
+	 * that errors returned by flush will ever be noticed or even
+	 * delivered.
 	 * <p>
 	 * NOTE: The flush() method may be called more than once for each
-	 * open().	This happens if more than one file descriptor refers
-	 * to an opened file due to dup(), dup2() or fork() calls.	It is
-	 * not possible to determine if a flush is final, so each flush
-	 * should be treated equally.  Multiple write-flush sequences are
-	 * relatively rare, so this shouldn't be a problem.
+	 * open().  This happens if more than one file descriptor refers to an
+	 * open file handle, e.g. due to dup(), dup2() or fork() calls.  It is
+	 * not possible to determine if a flush is final, so each flush should
+	 * be treated equally.  Multiple write-flush sequences are relatively
+	 * rare, so this shouldn't be a problem.
 	 * <p>
-	 * Filesystems shouldn't assume that flush will always be called
-	 * after some writes, or that if will be called at all.
-	 * <p>
-	 * Changed in version 2.2
+	 * Filesystems shouldn't assume that flush will be called at any
+	 * particular point.  It may be called more times than expected, or not
+	 * at all.
+	 *
+	 * @param path file path
+	 * @param fi   file info
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int flush(String path, FileInfo fi) {
 		return -errno().enosys();
 	}
 
 	/**
-	 * Release an open file
+	 * Release an open file.
 	 * <p>
 	 * Release is called when there are no more references to an open
 	 * file: all file descriptors are closed and all memory mappings
 	 * are unmapped.
 	 * <p>
 	 * For every open() call there will be exactly one release() call
-	 * with the same flags and file descriptor.	 It is possible to
+	 * with the same flags and file handle.  It is possible to
 	 * have a file opened more than once, in which case only the last
 	 * release will mean, that no more reads/writes will happen on the
 	 * file.  The return value of release is ignored.
-	 * <p>
-	 * Changed in version 2.2
+	 *
+	 * @param path file path
+	 * @param fi   file info
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int release(String path, FileInfo fi) {
 		return 0;
@@ -292,11 +370,11 @@ public interface FuseOperations {
 
 	/**
 	 * Synchronize file contents
-	 * <p>
-	 * If the datasync parameter is non-zero, then only the user data
-	 * should be flushed, not the meta data.
-	 * <p>
-	 * Changed in version 2.2
+	 *
+	 * @param path     file path
+	 * @param datasync if non-zero, then only the user data should be flushed, not the meta data.
+	 * @param fi       file info
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int fsync(String path, int datasync, FileInfo fi) {
 		return -errno().enosys();
@@ -304,6 +382,14 @@ public interface FuseOperations {
 
 	/**
 	 * Set extended attributes
+	 *
+	 * @param path  file path
+	 * @param name  attribute name
+	 * @param value attribute value
+	 * @param size  number of bytes of the value TODO: can this be combined with the value buffer?
+	 * @param flags defaults to zero, which creates <em>or</em> replaces the attribute. For fine-grained atomic control,
+	 *              <code>XATTR_CREATE</code> or <code>XATTR_REPLACE</code> may be used.
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int setxattr(String path, String name, ByteBuffer value, long size, int flags) {
 		return -errno().enosys();
@@ -311,6 +397,12 @@ public interface FuseOperations {
 
 	/**
 	 * Get extended attributes
+	 *
+	 * @param path  file path
+	 * @param name  attribute name
+	 * @param value attribute value
+	 * @param size  size of the value buffer TODO: can this be combined with the value buffer?
+	 * @return the non-negative value size or negated error code (-errno)
 	 */
 	default int getxattr(String path, String name, ByteBuffer value, long size) {
 		return -errno().enosys();
@@ -318,6 +410,11 @@ public interface FuseOperations {
 
 	/**
 	 * List extended attributes
+	 *
+	 * @param path file path
+	 * @param list consecutive list of null-terminated attribute names (as many as fit into the buffer)
+	 * @param size size of the list buffer TODO: can this be combined with the value buffer?
+	 * @return the non-negative list size or negated error code (-errno)
 	 */
 	default int listxattr(String path, ByteBuffer list, long size) {
 		return -errno().enosys();
@@ -325,47 +422,59 @@ public interface FuseOperations {
 
 	/**
 	 * Remove extended attributes
+	 *
+	 * @param path file path
+	 * @param name attribute name
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int removexattr(String path, String name) {
 		return -errno().enosys();
 	}
 
 	/**
-	 * Open directory
+	 * Open directory.
 	 * <p>
 	 * Unless the 'default_permissions' mount option is given,
 	 * this method should check if opendir is permitted for this
 	 * directory. Optionally opendir may also return an arbitrary
-	 * filehandle in the fuse_file_info structure, which will be
-	 * passed to readdir, closedir and fsyncdir.
-	 * <p>
-	 * Introduced in version 2.3
+	 * {@link FileInfo#setFh(long) filehandle in the fuse_file_info structure},
+	 * which will be passed to readdir, releasedir and fsyncdir.
+	 *
+	 * @param path directory path
+	 * @param fi   file info, which may be used to store a file handle
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int opendir(String path, FileInfo fi) {
 		return -errno().enosys();
 	}
 
 	/**
-	 * Read directory
-	 * <p>
-	 * This supersedes the old getdir interface.
-	 * New applications should use this.
+	 * Read directory.
 	 * <p>
 	 * The filesystem may choose between two modes of operation:
-	 * <p>
-	 * 1) The readdir implementation ignores the offset parameter, and
-	 * passes zero to the filler function's offset.  The filler
-	 * function will not return '1' (unless an error happens), so the
-	 * whole directory is read in a single readdir operation.  This
-	 * works just like the old getdir() method.
-	 * <p>
-	 * 2) The readdir implementation keeps track of the offsets of the
-	 * directory entries.  It uses the offset parameter and always
-	 * passes non-zero offset to the filler function.  When the buffer
-	 * is full (or an error happens) the filler function will return
-	 * '1'.
-	 * <p>
-	 * Introduced in version 2.3
+	 * <ol>
+	 *     <li>The readdir implementation ignores the offset parameter, and
+	 * 	  passes zero to the filler function's offset.  The filler
+	 * 	  function will not return '1' (unless an error happens), so the
+	 * 	  whole directory is read in a single readdir operation.</li>
+	 *     <li>The readdir implementation keeps track of the offsets of the
+	 * 	  directory entries.  It uses the offset parameter and always
+	 * 	  passes non-zero offset to the filler function.  When the buffer
+	 * 	  is full (or an error happens) the filler function will return
+	 * 	  '1'.</li>
+	 * </ol>
+	 * When FUSE_READDIR_PLUS is not set, only some parameters of the
+	 * fill function (the fuse_fill_dir_t parameter) are actually used:
+	 * The file type (which is part of stat::st_mode) is used. And if
+	 * fuse_config::use_ino is set, the inode (stat::st_ino) is also
+	 * used. The other fields are ignored when FUSE_READDIR_PLUS is not
+	 * set.
+	 *
+	 * @param path   directory path
+	 * @param filler the fill function
+	 * @param offset the offset
+	 * @param fi     file info
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int readdir(String path, DirFiller filler, long offset, FileInfo fi) {
 		return -errno().enosys();
@@ -373,34 +482,33 @@ public interface FuseOperations {
 
 	/**
 	 * Release directory
-	 * <p>
-	 * Introduced in version 2.3
+	 *
+	 * @param path directory path. If the directory has been removed after the call to opendir, the
+	 *             path parameter will be <code>null</code>
+	 * @param fi   file info
+	 * @return 0 on success or negated error code (-errno)
 	 */
-	default int releasedir(String path, FileInfo fi) {
+	default int releasedir(@Nullable String path, FileInfo fi) {
 		return 0;
 	}
 
 	/**
 	 * Synchronize directory contents
-	 * <p>
-	 * If the datasync parameter is non-zero, then only the user data
-	 * should be flushed, not the meta data
-	 * <p>
-	 * Introduced in version 2.3
+	 *
+	 * @param path     directory path. If the directory has been removed after the call to opendir, the
+	 *                 path parameter will be <code>null</code>
+	 * @param datasync if non-zero, then only the user data should be flushed, not the meta data
+	 * @param fi       file info
+	 * @return 0 on success or negated error code (-errno)
 	 */
-	default int fsyncdir(String path, int datasync, FileInfo fi) {
+	default int fsyncdir(@Nullable String path, int datasync, FileInfo fi) {
 		return -errno().enosys();
 	}
 
 	/**
 	 * Initialize filesystem
-	 * <p>
-	 * The return value will passed in the private_data field of
-	 * fuse_context to all file operations and as a parameter to the
-	 * destroy() method.
-	 * <p>
-	 * Introduced in version 2.3
-	 * Changed in version 2.6
+	 *
+	 * @param conn FUSE information
 	 */
 	default void init(FuseConnInfo conn) { // TODO: add @Nullable FuseConfig for libfuse3
 		// no-op
@@ -410,30 +518,30 @@ public interface FuseOperations {
 	 * Clean up filesystem
 	 * <p>
 	 * Called on filesystem exit.
-	 * <p>
-	 * Introduced in version 2.3
 	 */
 	default void destroy() {
 		// no-op
 	}
 
 	/**
-	 * Check file access permissions
+	 * Check file access permissions.
 	 * <p>
 	 * This will be called for the access() system call.  If the
 	 * 'default_permissions' mount option is given, this method is not
 	 * called.
 	 * <p>
 	 * This method is not called under Linux kernel versions 2.4.x
-	 * <p>
-	 * Introduced in version 2.5
+	 *
+	 * @param path file path
+	 * @param mask bitwise OR of file access checks
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int access(String path, int mask) {
 		return -errno().enosys();
 	}
 
 	/**
-	 * Create and open a file
+	 * Create and open a file.
 	 * <p>
 	 * If the file does not exist, first create it with the specified
 	 * mode, and then open it.
@@ -441,8 +549,11 @@ public interface FuseOperations {
 	 * If this method is not implemented or under Linux kernel
 	 * versions earlier than 2.6.15, the mknod() and open() methods
 	 * will be called instead.
-	 * <p>
-	 * Introduced in version 2.5
+	 *
+	 * @param path file path
+	 * @param mode mode used to create the file if it does not exist yet
+	 * @param fi   file info, which may be used to store a file handle
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int create(String path, int mode, FileInfo fi) {
 		return -errno().enosys();
@@ -486,14 +597,19 @@ public interface FuseOperations {
 
 	/**
 	 * Change the access and modification times of a file with
-	 * nanosecond resolution
+	 * nanosecond resolution.
 	 * <p>
 	 * This supersedes the old utime() interface.  New applications
 	 * should use this.
 	 * <p>
 	 * See the utimensat(2) man page for details.
-	 * <p>
-	 * Introduced in version 2.6
+	 *
+	 * @param path  file path
+	 * @param atime last access time
+	 * @param mtime last modified time
+	 * @param fi    will always be <code>null</code> if the file is not currently open,
+	 *              but may also be <code>null</code> if the file is open.
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int utimens(String path, TimeSpec atime, TimeSpec mtime, @Nullable FileInfo fi) {
 		return -errno().enosys();
@@ -521,12 +637,18 @@ public interface FuseOperations {
 	 * _IOC_READ in area and if both are set in/out area.  In all
 	 * non-NULL cases, the area is of _IOC_SIZE(cmd) bytes.
 	 * <p>
-	 * If flags has FUSE_IOCTL_DIR then the fuse_file_info refers to a
-	 * directory file handle.
-	 * <p>
-	 * Introduced in version 2.8
+	 * Note: the unsigned long request submitted by the application
+	 * is truncated to 32 bits.
+	 *
+	 * @param path  file path
+	 * @param cmd   the request
+	 * @param arg   any arguments
+	 * @param fi    file info
+	 * @param flags if containing FUSE_IOCTL_DIR then the <code>fi</code> refers to a directory file handle.
+	 * @param data  data (depends on <code>cmd</code> and may be <code>null</code>)
+	 * @return 0 on success or negated error code (-errno)
 	 */
-	default int ioctl(String path, int cmd, ByteBuffer arg, FileInfo fi, int flags, ByteBuffer data) {
+	default int ioctl(String path, int cmd, ByteBuffer arg, FileInfo fi, int flags, @Nullable ByteBuffer data) {
 		return -errno().enosys();
 	}
 
@@ -586,7 +708,7 @@ public interface FuseOperations {
 //	}
 
 	/**
-	 * Perform BSD file locking operation
+	 * Perform BSD file locking operation.
 	 * <p>
 	 * The op argument will be either LOCK_SH, LOCK_EX or LOCK_UN
 	 * <p>
@@ -602,22 +724,30 @@ public interface FuseOperations {
 	 * Note: if this method is not implemented, the kernel will still
 	 * allow file locking to work locally.  Hence it is only
 	 * interesting for network filesystems and similar.
-	 * <p>
-	 * Introduced in version 2.9
+	 *
+	 * @param path file path
+	 * @param fi   file info
+	 * @param op   one of <code>LOCK_SH</code>, <code>LOCK_EX</code> or <code>LOCK_UN</code>
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int flock(String path, FileInfo fi, int op) {
 		return -errno().enosys();
 	}
 
 	/**
-	 * Allocates space for an open file
+	 * Allocates space for an open file.
 	 * <p>
 	 * This function ensures that required space is allocated for specified
 	 * file.  If this function returns success then any subsequent write
 	 * request to specified range is guaranteed not to fail because of lack
 	 * of space on the file system media.
-	 * <p>
-	 * Introduced in version 2.9.1
+	 *
+	 * @param path   file path
+	 * @param mode   the operation to be performed
+	 * @param offset start of the allocated region
+	 * @param length number of bytes to allocate in this file
+	 * @param fi     file info
+	 * @return 0 on success or negated error code (-errno)
 	 */
 	default int fallocate(String path, int mode, long offset, long length, FileInfo fi) {
 		return -errno().enosys();
