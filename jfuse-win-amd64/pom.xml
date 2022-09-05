@@ -91,14 +91,11 @@
 									<headerFile>${project.parent.basedir}/winfsp/inc/fuse/fuse.h</headerFile>
 									<headerClassName>fuse_h</headerClassName>
 									<includeFunctions>
-										<includeFunction>fuse_main_real</includeFunction>
-										<includeFunction>fuse_get_context</includeFunction>
-										<includeFunction>fuse_exit</includeFunction>
-										<!-- manual session lifecycle control: -->
 										<includeFunction>fuse_parse_cmdline</includeFunction>
 										<includeFunction>fuse_mount</includeFunction>
 										<includeFunction>fuse_new</includeFunction>
 										<includeFunction>fuse_loop</includeFunction>
+										<includeFunction>fuse_exit</includeFunction>
 										<includeFunction>fuse_unmount</includeFunction>
 										<includeFunction>fuse_destroy</includeFunction>
 									</includeFunctions>
@@ -108,7 +105,6 @@
 									<includeStructs>
 										<includeStruct>fuse_operations</includeStruct>
 										<includeStruct>fuse_file_info</includeStruct>
-										<includeStruct>fuse_context</includeStruct>
 										<includeStruct>fuse_stat</includeStruct>
 										<includeStruct>fuse_statvfs</includeStruct>
 										<includeStruct>fuse_timespec</includeStruct>

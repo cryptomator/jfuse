@@ -44,16 +44,16 @@ class constants$0 {
     static final MethodHandle fuse_fill_dir_t$MH = RuntimeHelper.downcallHandle(
         constants$0.fuse_fill_dir_t$FUNC
     );
-    static final FunctionDescriptor fuse_main_real$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
-        Constants$root.C_LONG$LAYOUT,
+    static final FunctionDescriptor fuse_new$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
-    static final MethodHandle fuse_main_real$MH = RuntimeHelper.downcallHandle(
-        "fuse_main_real",
-        constants$0.fuse_main_real$FUNC
+    static final MethodHandle fuse_new$MH = RuntimeHelper.downcallHandle(
+        "fuse_new",
+        constants$0.fuse_new$FUNC
     );
 }
 
