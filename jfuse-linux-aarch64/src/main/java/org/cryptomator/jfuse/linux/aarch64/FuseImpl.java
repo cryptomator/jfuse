@@ -64,6 +64,10 @@ public final class FuseImpl extends Fuse {
 		if (parseResult != 0) {
 			throw new IllegalArgumentException("fuse_parse_cmdline failed to parse " + String.join(" ", cmdLineArgs));
 		}
+		if (fuse_cmdline_opts.show_help$get(opts) == 1) {
+			fuse_h.fuse_lib_help(args);
+			throw new IllegalArgumentException("Flags contained -h or --help. Processing cancelled after printing help");
+		}
 		return new FuseArgs(args, opts);
 	}
 

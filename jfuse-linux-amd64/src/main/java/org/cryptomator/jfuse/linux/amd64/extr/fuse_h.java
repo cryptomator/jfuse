@@ -24,6 +24,17 @@ public class fuse_h  {
     public static int FUSE_FILL_DIR_PLUS() {
         return (int)2L;
     }
+    public static MethodHandle fuse_lib_help$MH() {
+        return RuntimeHelper.requireNonNull(constants$0.fuse_lib_help$MH,"fuse_lib_help");
+    }
+    public static void fuse_lib_help ( Addressable args) {
+        var mh$ = fuse_lib_help$MH();
+        try {
+            mh$.invokeExact(args);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
     public static MethodHandle fuse_new$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse_new$MH,"fuse_new");
     }

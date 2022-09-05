@@ -19,6 +19,13 @@ class constants$0 {
     static final MethodHandle fuse_fill_dir_t$MH = RuntimeHelper.downcallHandle(
         constants$0.fuse_fill_dir_t$FUNC
     );
+    static final FunctionDescriptor fuse_lib_help$FUNC = FunctionDescriptor.ofVoid(
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle fuse_lib_help$MH = RuntimeHelper.downcallHandle(
+        "fuse_lib_help",
+        constants$0.fuse_lib_help$FUNC
+    );
     static final FunctionDescriptor fuse_new$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,

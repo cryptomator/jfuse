@@ -3,6 +3,7 @@ package org.cryptomator.jfuse.linux.amd64;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_file_info;
+import org.cryptomator.jfuse.linux.amd64.extr.fuse_h;
 import org.cryptomator.jfuse.linux.amd64.extr.ll.fuse_cmdline_opts;
 import org.cryptomator.jfuse.linux.amd64.extr.ll.fuse_lowlevel_h;
 import org.cryptomator.jfuse.linux.amd64.extr.timespec;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Answers;
 import org.mockito.Mockito;
 
 import java.lang.foreign.MemoryAddress;
@@ -24,7 +27,27 @@ public class FuseImplTest {
 
 	private FuseOperations fuseOps = Mockito.mock(FuseOperations.class);
 	private FuseImpl fuseImpl = new FuseImpl(fuseOps);
+
+	@ParameterizedTest(name = "fusefs {0}")
+	@DisplayName("parseArgs with -h/--help")
+	@ValueSource(strings = {"--help", "-h"})
+	public void testParseArgsHelp(String arg) {
+		try (var fuseLowlevelH = Mockito.mockStatic(fuse_lowlevel_h.class);
+			 var fuseH = Mockito.mockStatic(fuse_h.class)) {
+			fuseLowlevelH.when(() -> fuse_lowlevel_h.fuse_parse_cmdline(Mockito.any(), Mockito.any())).then(invocation -> {
+				MemorySegment opts = invocation.getArgument(1);
+				fuse_cmdline_opts.show_help$set(opts, 1);
+				return 0;
+			});
+			fuseH.when(() -> fuse_h.fuse_lib_help(Mockito.any())).thenAnswer(Answers.RETURNS_DEFAULTS);
+
+			Assertions.assertThrows(IllegalArgumentException.class, () -> fuseImpl.parseArgs(List.of("fusefs", arg)));
+			fuseH.verify(() -> fuse_h.fuse_lib_help(Mockito.any()));
+		}
+	}
+
 	@Test
+	@DisplayName("parseArgs")
 	public void testParseArgs() {
 		try (var fuseLowlevelH = Mockito.mockStatic(fuse_lowlevel_h.class);
 			 var scope = MemorySession.openConfined()) {
