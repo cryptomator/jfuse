@@ -1,7 +1,9 @@
 package org.cryptomator.jfuse.api;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Blocking;
 
+@ApiStatus.Internal
 public interface FuseMount {
 
 	/**
