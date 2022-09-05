@@ -76,7 +76,7 @@
 						<artifactId>jextract-maven-plugin</artifactId>
 						<version>0.2.0</version>
 						<configuration>
-							<executable>C:\Program Files\JDK\jextract-19\bin\jextract.bat</executable>
+							<executable>C:\Users\Arbeit\Programs\jextract-19\bin\jextract.bat</executable>
 							<headerSearchPaths>${win.ucrtHeaderPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
 							<targetPackage>org.cryptomator.jfuse.win.amd64.extr</targetPackage>
@@ -91,9 +91,13 @@
 									<headerFile>${project.parent.basedir}/winfsp/inc/fuse/fuse.h</headerFile>
 									<headerClassName>fuse_h</headerClassName>
 									<includeFunctions>
-										<includeFunction>fuse_main_real</includeFunction>
-										<includeFunction>fuse_get_context</includeFunction>
+										<includeFunction>fuse_parse_cmdline</includeFunction>
+										<includeFunction>fuse_mount</includeFunction>
+										<includeFunction>fuse_new</includeFunction>
+										<includeFunction>fuse_loop</includeFunction>
 										<includeFunction>fuse_exit</includeFunction>
+										<includeFunction>fuse_unmount</includeFunction>
+										<includeFunction>fuse_destroy</includeFunction>
 									</includeFunctions>
 									<includeTypedefs>
 										<includeTypedef>fuse_fill_dir_t</includeTypedef>
@@ -101,23 +105,11 @@
 									<includeStructs>
 										<includeStruct>fuse_operations</includeStruct>
 										<includeStruct>fuse_file_info</includeStruct>
-										<includeStruct>fuse_context</includeStruct>
-										<includeStruct>fuse_conn_info</includeStruct>
-									</includeStructs>
-								</configuration>
-							</execution>
-							<execution>
-								<id>jextract-winfsp-fuse</id>
-								<goals>
-									<goal>sources</goal>
-								</goals>
-								<configuration>
-									<headerFile>${project.parent.basedir}/winfsp/inc/fuse/winfsp_fuse.h</headerFile>
-									<headerClassName>winfsp_fuse_h</headerClassName>
-									<includeStructs>
 										<includeStruct>fuse_stat</includeStruct>
 										<includeStruct>fuse_statvfs</includeStruct>
 										<includeStruct>fuse_timespec</includeStruct>
+										<includeStruct>fuse_conn_info</includeStruct>
+										<includeStruct>fuse_args</includeStruct>
 									</includeStructs>
 								</configuration>
 							</execution>

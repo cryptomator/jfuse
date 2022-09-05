@@ -14,7 +14,7 @@
 	<url>https://github.com/cryptomator/jfuse/tree/develop/jfuse-linux-amd64</url>
 
 	<properties>
-		<linux.headerSearchPath>/usr/x86_64-linux-gnu/include/</linux.headerSearchPath> <!-- debian package libc6-dev-amd64-cross -->
+		<linux.headerSearchPath>/Users/sebastian/Documents/inc/x86_64-linux-gnu/include</linux.headerSearchPath> <!-- debian package libc6-dev-amd64-cross -->
 	</properties>
 
 	<dependencies>
@@ -43,7 +43,6 @@
 									<rules>
 										<requireOS>
 											<family>unix</family>
-											<name>linux</name>
 											<message>This build configuration requires Linux.</message>
 										</requireOS>
 										<requireFilesExist>
@@ -95,9 +94,15 @@
 										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
-										<includeFunction>fuse_main_real</includeFunction>
-										<includeFunction>fuse_get_context</includeFunction>
+										<includeFunction>fuse_lib_help</includeFunction>
+										<includeFunction>fuse_new</includeFunction>
+										<includeFunction>fuse_mount</includeFunction>
+										<includeFunction>fuse_get_session</includeFunction>
+										<includeFunction>fuse_loop</includeFunction>
+										<includeFunction>fuse_loop_mt</includeFunction>
 										<includeFunction>fuse_exit</includeFunction>
+										<includeFunction>fuse_unmount</includeFunction>
+										<includeFunction>fuse_destroy</includeFunction>
 									</includeFunctions>
 									<includeTypedefs>
 										<includeTypedef>fuse_fill_dir_t</includeTypedef>
@@ -105,16 +110,38 @@
 									<includeStructs>
 										<includeStruct>fuse_operations</includeStruct>
 										<includeStruct>fuse_file_info</includeStruct>
-										<includeStruct>fuse_context</includeStruct>
 										<includeStruct>stat</includeStruct>
 										<includeStruct>statvfs</includeStruct>
 										<includeStruct>timespec</includeStruct>
 										<includeStruct>fuse_conn_info</includeStruct>
+										<includeStruct>fuse_args</includeStruct>
+										<includeStruct>fuse_loop_config</includeStruct>
 									</includeStructs>
 									<includeMacros>
 										<includeMacro>FUSE_FILL_DIR_PLUS</includeMacro>
 										<includeMacro>FUSE_READDIR_PLUS</includeMacro>
 									</includeMacros>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-fuse-lowlevel</id>
+								<goals>
+									<goal>sources</goal>
+								</goals>
+								<configuration>
+									<headerFile>${project.parent.basedir}/libfuse3/include/fuse_lowlevel.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.ll</targetPackage>
+									<headerClassName>fuse_lowlevel_h</headerClassName>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
+									</cPreprocessorMacros>
+									<includeFunctions>
+										<includeFunction>fuse_parse_cmdline</includeFunction>
+									</includeFunctions>
+									<includeStructs>
+										<includeStruct>fuse_cmdline_opts</includeStruct>
+									</includeStructs>
 								</configuration>
 							</execution>
 							<execution>

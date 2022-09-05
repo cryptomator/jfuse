@@ -1,6 +1,7 @@
 package org.cryptomator.jfuse.tests;
 
 import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.examples.AbstractMirrorFileSystem;
 import org.cryptomator.jfuse.examples.PosixMirrorFileSystem;
 import org.cryptomator.jfuse.examples.WindowsMirrorFileSystem;
@@ -30,17 +31,20 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MirrorIT {
+
+	static {
+		System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "TRACE");
+	}
 
 	private Path orig;
 	private Path mirror;
 	private Fuse fuse;
 
 	@BeforeAll
-	public void setup(@TempDir Path tmpDir) throws IOException, TimeoutException {
+	public void setup(@TempDir Path tmpDir) throws IOException, InterruptedException, MountFailedException {
 		var builder = Fuse.builder();
 		orig = tmpDir.resolve("orig");
 		Files.createDirectories(orig);
@@ -57,14 +61,15 @@ public class MirrorIT {
 			fs = new PosixMirrorFileSystem(orig, builder.errno());
 		}
 		fuse = builder.build(fs);
-		int result = fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));
-		Assertions.assertEquals(0, result, "mount failed");
+		fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));
+		Thread.sleep(100); // give the file system some time to accept the mounted volume
 	}
 
 	@AfterAll
 	public void teardown() throws IOException, InterruptedException {
+		// attempt graceful unmount before closing
 		if (OS.MAC.isCurrentOs()) {
-			ProcessBuilder command = new ProcessBuilder("umount", "-f", "--", mirror.getFileName().toString());
+			ProcessBuilder command = new ProcessBuilder("umount", "--", mirror.getFileName().toString());
 			command.directory(mirror.getParent().toFile());
 			Process p = command.start();
 			p.waitFor(10, TimeUnit.SECONDS);
@@ -74,10 +79,11 @@ public class MirrorIT {
 			Process p = command.start();
 			p.waitFor(10, TimeUnit.SECONDS);
 		}
-		// for Windows we call internally fuse_exit
+		// TODO add win-specific unmount code?
 		if (fuse != null) {
 			Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), fuse::close, "file system still active");
 		}
+		Thread.sleep(100); // give the file system some time before cleaning up the @TempDir
 	}
 
 	@Nested

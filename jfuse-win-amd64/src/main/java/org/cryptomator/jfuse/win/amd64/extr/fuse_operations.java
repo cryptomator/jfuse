@@ -61,7 +61,7 @@ public class fuse_operations {
         Constants$root.C_POINTER$LAYOUT.withName("read_buf"),
         Constants$root.C_POINTER$LAYOUT.withName("flock"),
         Constants$root.C_POINTER$LAYOUT.withName("fallocate"),
-        Constants$root.C_POINTER$LAYOUT.withName("reserved00"),
+        Constants$root.C_POINTER$LAYOUT.withName("getpath"),
         Constants$root.C_POINTER$LAYOUT.withName("reserved01"),
         Constants$root.C_POINTER$LAYOUT.withName("reserved02"),
         Constants$root.C_POINTER$LAYOUT.withName("statfs_x"),
@@ -2052,21 +2052,26 @@ public class fuse_operations {
     public static fallocate fallocate (MemorySegment segment, MemorySession session) {
         return fallocate.ofAddress(fallocate$get(segment), session);
     }
-    static final FunctionDescriptor reserved00$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT);
-    static final MethodHandle reserved00$MH = RuntimeHelper.downcallHandle(
-        fuse_operations.reserved00$FUNC
+    static final FunctionDescriptor getpath$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_LONG_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
     );
-    public interface reserved00 {
+    static final MethodHandle getpath$MH = RuntimeHelper.downcallHandle(
+        fuse_operations.getpath$FUNC
+    );
+    public interface getpath {
 
-        int apply();
-        static MemorySegment allocate(reserved00 fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(reserved00.class, fi, fuse_operations.reserved00$FUNC, session);
+        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, long _x2, java.lang.foreign.MemoryAddress _x3);
+        static MemorySegment allocate(getpath fi, MemorySession session) {
+            return RuntimeHelper.upcallStub(getpath.class, fi, fuse_operations.getpath$FUNC, session);
         }
-        static reserved00 ofAddress(MemoryAddress addr, MemorySession session) {
+        static getpath ofAddress(MemoryAddress addr, MemorySession session) {
             MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return () -> {
+            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, long __x2, java.lang.foreign.MemoryAddress __x3) -> {
                 try {
-                    return (int)fuse_operations.reserved00$MH.invokeExact((Addressable)symbol);
+                    return (int)fuse_operations.getpath$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, __x2, (java.lang.foreign.Addressable)__x3);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -2074,24 +2079,24 @@ public class fuse_operations {
         }
     }
 
-    static final VarHandle reserved00$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("reserved00"));
-    public static VarHandle reserved00$VH() {
-        return fuse_operations.reserved00$VH;
+    static final VarHandle getpath$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("getpath"));
+    public static VarHandle getpath$VH() {
+        return fuse_operations.getpath$VH;
     }
-    public static MemoryAddress reserved00$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.reserved00$VH.get(seg);
+    public static MemoryAddress getpath$get(MemorySegment seg) {
+        return (java.lang.foreign.MemoryAddress)fuse_operations.getpath$VH.get(seg);
     }
-    public static void reserved00$set( MemorySegment seg, MemoryAddress x) {
-        fuse_operations.reserved00$VH.set(seg, x);
+    public static void getpath$set( MemorySegment seg, MemoryAddress x) {
+        fuse_operations.getpath$VH.set(seg, x);
     }
-    public static MemoryAddress reserved00$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.reserved00$VH.get(seg.asSlice(index*sizeof()));
+    public static MemoryAddress getpath$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemoryAddress)fuse_operations.getpath$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void reserved00$set(MemorySegment seg, long index, MemoryAddress x) {
-        fuse_operations.reserved00$VH.set(seg.asSlice(index*sizeof()), x);
+    public static void getpath$set(MemorySegment seg, long index, MemoryAddress x) {
+        fuse_operations.getpath$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static reserved00 reserved00 (MemorySegment segment, MemorySession session) {
-        return reserved00.ofAddress(reserved00$get(segment), session);
+    public static getpath getpath (MemorySegment segment, MemorySession session) {
+        return getpath.ofAddress(getpath$get(segment), session);
     }
     static final FunctionDescriptor reserved01$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT);
     static final MethodHandle reserved01$MH = RuntimeHelper.downcallHandle(
