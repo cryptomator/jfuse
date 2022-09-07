@@ -243,7 +243,7 @@ public interface FuseOperations {
 	 * Filesystem may also implement stateless file I/O and not store anything in {@link FileInfo#setFh(long) fi->fh}.
 	 * <p>
 	 * There are also some flags (direct_io, keep_cache) which the filesystem may set in fi, to change the way the file
-	 * is opened. See fuse_file_info structure in <fuse_common.h> for more details.
+	 * is opened. See fuse_file_info structure in fuse_common.h for more details.
 	 * <p>
 	 * If this request is answered with an error code of ENOSYS and FUSE_CAP_NO_OPEN_SUPPORT is set in
 	 * `fuse_conn_info.capable`, this is treated as success and future calls to open will also succeed without being
