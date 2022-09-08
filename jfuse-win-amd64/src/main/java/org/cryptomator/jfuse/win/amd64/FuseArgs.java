@@ -1,6 +1,6 @@
 package org.cryptomator.jfuse.win.amd64;
 
-import org.cryptomator.jfuse.win.amd64.extr.fuse_args;
+import org.cryptomator.jfuse.win.amd64.extr_fuse2.fuse_args;
 
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
