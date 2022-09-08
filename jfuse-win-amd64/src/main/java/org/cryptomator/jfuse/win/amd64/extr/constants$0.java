@@ -9,43 +9,24 @@ import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
 class constants$0 {
 
-    static final FunctionDescriptor fuse_mount$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT
-    );
-    static final MethodHandle fuse_mount$MH = RuntimeHelper.downcallHandle(
-        "fuse_mount",
-        constants$0.fuse_mount$FUNC
-    );
-    static final FunctionDescriptor fuse_unmount$FUNC = FunctionDescriptor.ofVoid(
-        Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT
-    );
-    static final MethodHandle fuse_unmount$MH = RuntimeHelper.downcallHandle(
-        "fuse_unmount",
-        constants$0.fuse_unmount$FUNC
-    );
-    static final FunctionDescriptor fuse_parse_cmdline$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT
-    );
-    static final MethodHandle fuse_parse_cmdline$MH = RuntimeHelper.downcallHandle(
-        "fuse_parse_cmdline",
-        constants$0.fuse_parse_cmdline$FUNC
-    );
     static final FunctionDescriptor fuse_fill_dir_t$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_LONG_LONG$LAYOUT
+        Constants$root.C_LONG_LONG$LAYOUT,
+        Constants$root.C_LONG$LAYOUT
     );
     static final MethodHandle fuse_fill_dir_t$MH = RuntimeHelper.downcallHandle(
         constants$0.fuse_fill_dir_t$FUNC
     );
+    static final FunctionDescriptor fuse_lib_help$FUNC = FunctionDescriptor.ofVoid(
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle fuse_lib_help$MH = RuntimeHelper.downcallHandle(
+        "fuse_lib_help",
+        constants$0.fuse_lib_help$FUNC
+    );
     static final FunctionDescriptor fuse_new$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_LONG_LONG$LAYOUT,
@@ -54,6 +35,21 @@ class constants$0 {
     static final MethodHandle fuse_new$MH = RuntimeHelper.downcallHandle(
         "fuse_new",
         constants$0.fuse_new$FUNC
+    );
+    static final FunctionDescriptor fuse_destroy$FUNC = FunctionDescriptor.ofVoid(
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle fuse_destroy$MH = RuntimeHelper.downcallHandle(
+        "fuse_destroy",
+        constants$0.fuse_destroy$FUNC
+    );
+    static final FunctionDescriptor fuse_mount$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle fuse_mount$MH = RuntimeHelper.downcallHandle(
+        "fuse_mount",
+        constants$0.fuse_mount$FUNC
     );
 }
 
