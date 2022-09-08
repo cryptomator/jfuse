@@ -17,8 +17,8 @@ record FuseArgs(MemorySegment args, MemoryAddress mountPoint, boolean multiThrea
 			var cString = argv.getAtIndex(ValueLayout.ADDRESS, i);
 			sb.append("arg[").append(i).append("] = ").append(cString.getUtf8String(0)).append(", ");
 		}
-		sb.append("mountPoint = ").append(mountPoint.getUtf8String(0)).append(", ");
-		sb.append("multiThreaded = ").append(multiThreaded);
+		sb.append("mountPoint = ").append(mountPoint().getUtf8String(0));
+		sb.append("singlethreaded = ").append(!multiThreaded);
 		return sb.toString();
 	}
 }
