@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.win.amd64;
 
 import org.cryptomator.jfuse.win.amd64.extr.fcntl_h;
-import org.cryptomator.jfuse.win.amd64.extr.fuse_file_info;
+import org.cryptomator.jfuse.win.amd64.extr.fuse3_file_info;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,8 +21,8 @@ public class FileInfoImplTest {
 	@DisplayName("test getOpenFlags()")
 	public void testGetOpenFlags(int flags, Set<OpenOption> expectedResult) {
 		try (var scope = MemorySession.openConfined()) {
-			var fi = new FileInfoImpl(fuse_file_info.allocate(scope));
-			fuse_file_info.flags$set(fi.segment(), flags);
+			var fi = new FileInfoImpl(fuse3_file_info.allocate(scope));
+			fuse3_file_info.flags$set(fi.segment(), flags);
 
 			var result = fi.getOpenFlags();
 

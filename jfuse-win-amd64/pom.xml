@@ -91,32 +91,31 @@
 									<headerFile>${project.parent.basedir}/winfsp/inc/fuse3/fuse.h</headerFile>
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
-										<!--cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro-->
+										<cPreprocessorMacro>WINFSP_DLL_INTERNAL</cPreprocessorMacro>
 										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
-										<includeFunction>fuse_lib_help</includeFunction>
-										<includeFunction>fuse_new</includeFunction>
-										<includeFunction>fuse_mount</includeFunction>
-										<includeFunction>fuse_get_session</includeFunction>
-										<includeFunction>fuse_loop</includeFunction>
-										<includeFunction>fuse_loop_mt</includeFunction>
-										<includeFunction>fuse_exit</includeFunction>
-										<includeFunction>fuse_unmount</includeFunction>
-										<includeFunction>fuse_destroy</includeFunction>
+										<includeFunction>fuse3_lib_help</includeFunction>
+										<includeFunction>fuse3_new</includeFunction>
+										<includeFunction>fuse3_mount</includeFunction>
+										<includeFunction>fuse3_get_session</includeFunction>
+										<includeFunction>fuse3_loop</includeFunction>
+										<includeFunction>fuse3_loop_mt</includeFunction>
+										<includeFunction>fuse3_exit</includeFunction>
+										<includeFunction>fuse3_unmount</includeFunction>
+										<includeFunction>fuse3_destroy</includeFunction>
 									</includeFunctions>
 									<includeTypedefs>
-										<includeTypedef>fuse_fill_dir_t</includeTypedef>
+										<includeTypedef>fuse3_fill_dir_t</includeTypedef>
 									</includeTypedefs>
 									<includeStructs>
-										<includeStruct>fuse_operations</includeStruct>
-										<includeStruct>fuse_file_info</includeStruct>
+										<includeStruct>fuse3_operations</includeStruct>
+										<includeStruct>fuse3_file_info</includeStruct>
 										<includeStruct>fuse_stat</includeStruct>
 										<includeStruct>fuse_statvfs</includeStruct>
 										<includeStruct>fuse_timespec</includeStruct>
-										<includeStruct>fuse_conn_info</includeStruct>
-										<includeStruct>fuse_args</includeStruct>
-										<includeStruct>fuse_loop_config</includeStruct>
+										<includeStruct>fuse3_conn_info</includeStruct>
+										<includeStruct>fuse3_loop_config</includeStruct>
 									</includeStructs>
 									<includeMacros>
 										<includeMacro>FUSE_FILL_DIR_PLUS</includeMacro>
