@@ -90,13 +90,13 @@ public class fuse_h  {
             throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse3_loop_mt$MH() {
-        return RuntimeHelper.requireNonNull(constants$1.fuse3_loop_mt$MH,"fuse3_loop_mt");
+    public static MethodHandle fuse3_loop_mt_31$MH() {
+        return RuntimeHelper.requireNonNull(constants$1.fuse3_loop_mt_31$MH,"fuse3_loop_mt_31");
     }
-    public static int fuse3_loop_mt ( Addressable f,  Addressable config) {
-        var mh$ = fuse3_loop_mt$MH();
+    public static int fuse3_loop_mt_31 ( Addressable f,  int clone_fd) {
+        var mh$ = fuse3_loop_mt_31$MH();
         try {
-            return (int)mh$.invokeExact(f, config);
+            return (int)mh$.invokeExact(f, clone_fd);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }
