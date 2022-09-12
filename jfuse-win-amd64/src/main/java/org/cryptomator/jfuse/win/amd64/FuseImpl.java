@@ -241,7 +241,7 @@ public final class FuseImpl extends Fuse {
 				// set both times to current time (using on-heap memory segments)
 				var segment = MemorySegment.allocateNative(fuse_timespec.$LAYOUT().byteSize(), scope);
 				fuse_timespec.tv_sec$set(segment, 0);
-				fuse_timespec.tv_nsec$set(segment, 0); //TODO: use something like stat_h.UTIME_NOW())
+				fuse_timespec.tv_nsec$set(segment, 0); //FIXME: use hardcoded UTIME_NOW
 				var time = new TimeSpecImpl(segment);
 				return delegate.utimens(path.getUtf8String(0), time, time, new FileInfoImpl(fi, scope));
 			} else {
