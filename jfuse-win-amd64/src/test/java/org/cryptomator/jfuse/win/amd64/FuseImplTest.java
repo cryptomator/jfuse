@@ -1,8 +1,10 @@
 package org.cryptomator.jfuse.win.amd64;
 
+import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
-import org.cryptomator.jfuse.win.amd64.extr.fuse_file_info;
+import org.cryptomator.jfuse.win.amd64.extr.fuse2.fuse2_h;
+import org.cryptomator.jfuse.win.amd64.extr.fuse3_file_info;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_h;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_stat;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_timespec;
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.ArgumentMatcher;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -53,23 +56,22 @@ public class FuseImplTest {
 		@Test
 		@DisplayName("MountFailedException when fuse_new fails")
 		public void testFuseNewFails() {
-			fuseH.when(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any())).thenReturn(MemoryAddress.ofLong(42L));
-			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemoryAddress.NULL);
+			fuseH.when(() -> fuse_h.fuse3_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemoryAddress.NULL);
 
 			var thrown = Assertions.assertThrows(MountFailedException.class, () -> fuseImplSpy.mount(args));
 
-			fuseH.verify(() -> fuse_h.fuse_unmount(Mockito.any(), Mockito.any()));
+			fuseH.verify(() -> fuse_h.fuse3_mount(Mockito.any(), Mockito.any()), Mockito.never());
 			Assertions.assertEquals("fuse_new failed", thrown.getMessage());
 		}
 
 		@Test
 		@DisplayName("MountFailedException when fuse_mount fails")
 		public void testFuseMountFails() {
-			fuseH.when(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any())).thenReturn(MemoryAddress.NULL);
+			fuseH.when(() -> fuse_h.fuse3_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemoryAddress.ofLong(42L));
+			fuseH.when(() -> fuse_h.fuse3_mount(Mockito.any(), Mockito.any())).thenReturn(1);
 
 			var thrown = Assertions.assertThrows(MountFailedException.class, () -> fuseImplSpy.mount(args));
 
-			fuseH.verify(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any()), Mockito.never());
 			Assertions.assertEquals("fuse_mount failed", thrown.getMessage());
 		}
 	}
@@ -77,9 +79,9 @@ public class FuseImplTest {
 	@Test
 	@DisplayName("parseArgs")
 	public void testParseArgs() {
-		try (var fuseH = Mockito.mockStatic(fuse_h.class);
+		try (var fuseH = Mockito.mockStatic(fuse2_h.class);
 			 var scope = MemorySession.openConfined()) {
-			fuseH.when(() -> fuse_h.fuse_parse_cmdline(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).then(invocation -> {
+			fuseH.when(() -> fuse2_h.fuse_parse_cmdline(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).then(invocation -> {
 				MemorySegment mp = invocation.getArgument(1);
 				MemorySegment mt = invocation.getArgument(2);
 				MemorySegment fg = invocation.getArgument(3);
@@ -109,9 +111,10 @@ public class FuseImplTest {
 			try (var scope = MemorySession.openConfined()) {
 				var path = scope.allocateUtf8String("/foo");
 				var times = MemoryAddress.NULL;
-				Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(t -> t.get().getNano() == 0L), Mockito.argThat(t -> t.get().getNano() == 0L), Mockito.isNull());
+				var fi = scope.allocate(fuse3_file_info.$LAYOUT());
+				Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(t -> t.get().getNano() == 0L), Mockito.argThat(t -> t.get().getNano() == 0L), Mockito.argThat(usesSameMemorySegement(fi)));
 
-				var result = fuseImpl.utimens(path.address(), times);
+				var result = fuseImpl.utimens(path.address(), times, fi.address());
 
 				Assertions.assertEquals(42, result);
 			}
@@ -129,13 +132,14 @@ public class FuseImplTest {
 			try (var scope = MemorySession.openConfined()) {
 				var path = scope.allocateUtf8String("/foo");
 				var times = fuse_timespec.allocateArray(2, scope);
+				var fi = scope.allocate(fuse3_file_info.$LAYOUT());
 				fuse_timespec.tv_sec$set(times, 0, sec0);
 				fuse_timespec.tv_nsec$set(times, 0, nsec0);
 				fuse_timespec.tv_sec$set(times, 1, sec1);
 				fuse_timespec.tv_nsec$set(times, 1, nsec1);
-				Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(t -> expectedATime.equals(t.get())), Mockito.argThat(t -> expectedMTime.equals(t.get())), Mockito.isNull());
+				Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(t -> expectedATime.equals(t.get())), Mockito.argThat(t -> expectedMTime.equals(t.get())), Mockito.argThat(usesSameMemorySegement(fi)));
 
-				var result = fuseImpl.utimens(path.address(), times.address());
+				var result = fuseImpl.utimens(path.address(), times.address(), fi.address());
 
 				Assertions.assertEquals(42, result);
 			}
@@ -153,9 +157,10 @@ public class FuseImplTest {
 			try (var scope = MemorySession.openConfined()) {
 				var path = scope.allocateUtf8String("/foo");
 				var attr = fuse_stat.allocate(scope);
-				Mockito.doReturn(42).when(fuseOps).getattr(Mockito.eq("/foo"), Mockito.any(), Mockito.isNull());
+				var fi = scope.allocate(fuse3_file_info.$LAYOUT());
+				Mockito.doReturn(42).when(fuseOps).getattr(Mockito.eq("/foo"), Mockito.any(), Mockito.argThat(usesSameMemorySegement(fi)));
 
-				var result = fuseImpl.getattr(path.address(), attr.address());
+				var result = fuseImpl.getattr(path.address(), attr.address(), fi.address());
 
 				Assertions.assertEquals(42, result);
 			}
@@ -167,8 +172,8 @@ public class FuseImplTest {
 			try (var scope = MemorySession.openConfined()) {
 				var path = scope.allocateUtf8String("/foo");
 				var attr = fuse_stat.allocate(scope);
-				var fi = fuse_file_info.allocate(scope);
-				Mockito.doReturn(42).when(fuseOps).getattr(Mockito.eq("/foo"), Mockito.any(), Mockito.notNull());
+				var fi = fuse3_file_info.allocate(scope);
+				Mockito.doReturn(42).when(fuseOps).getattr(Mockito.eq("/foo"), Mockito.any(), Mockito.argThat(usesSameMemorySegement(fi)));
 
 				var result = fuseImpl.fgetattr(path.address(), attr.address(), fi.address());
 
@@ -187,9 +192,10 @@ public class FuseImplTest {
 		public void testTruncate() {
 			try (var scope = MemorySession.openConfined()) {
 				var path = scope.allocateUtf8String("/foo");
-				Mockito.doReturn(42).when(fuseOps).truncate(Mockito.eq("/foo"), Mockito.eq(1337L), Mockito.isNull());
+				var fi = scope.allocate(fuse3_file_info.$LAYOUT());
+				Mockito.doReturn(42).when(fuseOps).truncate(Mockito.eq("/foo"), Mockito.eq(1337L), Mockito.argThat(usesSameMemorySegement(fi)));
 
-				var result = fuseImpl.truncate(path.address(), 1337L);
+				var result = fuseImpl.truncate(path.address(), 1337L, fi.address());
 
 				Assertions.assertEquals(42, result);
 			}
@@ -200,8 +206,8 @@ public class FuseImplTest {
 		public void testFtruncate() {
 			try (var scope = MemorySession.openConfined()) {
 				var path = scope.allocateUtf8String("/foo");
-				var fi = fuse_file_info.allocate(scope);
-				Mockito.doReturn(42).when(fuseOps).truncate(Mockito.eq("/foo"), Mockito.eq(1337L), Mockito.notNull());
+				var fi = fuse3_file_info.allocate(scope);
+				Mockito.doReturn(42).when(fuseOps).truncate(Mockito.eq("/foo"), Mockito.eq(1337L), Mockito.argThat(usesSameMemorySegement(fi)));
 
 				var result = fuseImpl.ftruncate(path.address(), 1337L, fi.address());
 
@@ -210,5 +216,14 @@ public class FuseImplTest {
 		}
 
 	}
+
+	private static ArgumentMatcher<FileInfo> usesSameMemorySegement(MemorySegment expected) {
+		return obj -> {
+				if (obj instanceof FileInfoImpl fiImpl) {
+					return fiImpl.segment().address().equals(expected.address()) && fiImpl.segment().byteSize() == expected.byteSize();
+				}
+				return false;
+			};
+		}
 
 }

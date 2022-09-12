@@ -15,54 +15,54 @@ We attempt to support libfuse 3.x on Linux while also remaining compatible with 
 
 Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operations.html) are supported yet. 
 
-|                 | Status             |
-|-----------------|--------------------|
-| getattr         | :white_check_mark: |
-| ~fgetattr~      | use getattr        |
-| readlink        | :white_check_mark: |
-| ~getdir~        | use readdir        |
-| ~mknod~         | use create         |
-| mkdir           | :white_check_mark: |
-| unlink          | :white_check_mark: |
-| rmdir           | :white_check_mark: |
-| symlink         | :white_check_mark: |
-| rename          | :white_check_mark: |
-| link            | :x:                |
-| chmod           | :white_check_mark: |
-| chown           | :x:                |
-| truncate        | :white_check_mark: |
-| ~ftruncate~     | use truncate       |
-| ~utime~         | use utimens        |
-| open            | :white_check_mark: |
-| read            | :white_check_mark: |
-| write           | :white_check_mark: |
-| statfs          | :white_check_mark: |
-| flush           | :x:                |
-| release         | :white_check_mark: |
-| fsync           | :x:                |
-| setxattr        | :x:                |
-| getxattr        | :x:                |
-| listxattr       | :x:                |
-| removexattr     | :x:                |
-| opendir         | :white_check_mark: |
-| readdir         | :white_check_mark: |
-| releasedir      | :white_check_mark: |
-| fsyncdir        | :x:                |
-| init            | :white_check_mark: |
-| destroy         | :white_check_mark: |
-| access          | :white_check_mark: |
-| create          | :white_check_mark: |
-| lock            | :x:                |
-| utimens         | :white_check_mark: |
-| bmap            | :x:                |
-| ioctl           | :x:                |
-| poll            | :x:                |
-| write_buf       | :x:                |
-| read_buf        | :x:                |
-| flock           | :x:                |
-| fallocate       | :x:                |
-| copy_file_range | :x:                |
-| lseek           | :x:                |
+|                 | Status                                  |
+|-----------------|-----------------------------------------|
+| getattr         | :white_check_mark:                      |
+| ~fgetattr~      | use getattr                             |
+| readlink        | :white_check_mark:                      |
+| ~getdir~        | use readdir                             |
+| ~mknod~         | use create                              |
+| mkdir           | :white_check_mark:                      |
+| unlink          | :white_check_mark:                      |
+| rmdir           | :white_check_mark:                      |
+| symlink         | :white_check_mark:                      |
+| rename          | :white_check_mark:                      |
+| link            | :x:                                     |
+| chmod           | :white_check_mark:                      |
+| chown           | :x:                                     |
+| truncate        | :white_check_mark:                      |
+| ~ftruncate~     | use truncate                            |
+| ~utime~         | use utimens                             |
+| open            | :white_check_mark:                      |
+| read            | :white_check_mark:                      |
+| write           | :white_check_mark:                      |
+| statfs          | :white_check_mark:                      |
+| flush           | :x:                                     |
+| release         | :white_check_mark:                      |
+| fsync           | :x:                                     |
+| setxattr        | :x:                                     |
+| getxattr        | :x:                                     |
+| listxattr       | :x:                                     |
+| removexattr     | :x:                                     |
+| opendir         | :white_check_mark:                      |
+| readdir         | :white_check_mark:                      |
+| releasedir      | :white_check_mark:                      |
+| fsyncdir        | :x:                                     |
+| init            | :white_check_mark:                      |
+| destroy         | :white_check_mark:                      |
+| access          | :white_check_mark: (ignored on Windows) |
+| create          | :white_check_mark:                      |
+| lock            | :x:                                     |
+| utimens         | :white_check_mark:                      |
+| bmap            | :x:                                     |
+| ioctl           | :x:                                     |
+| poll            | :x:                                     |
+| write_buf       | :x:                                     |
+| read_buf        | :x:                                     |
+| flock           | :x:                                     |
+| fallocate       | :x:                                     |
+| copy_file_range | :x:                                     |
+| lseek           | :x:                                     |
 
 ## Usage
 

@@ -4,9 +4,10 @@ import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
-import org.cryptomator.jfuse.win.amd64.extr.fuse_args;
+import org.cryptomator.jfuse.win.amd64.extr.fuse2.fuse2_h;
+import org.cryptomator.jfuse.win.amd64.extr.fuse2.fuse_args;
+import org.cryptomator.jfuse.win.amd64.extr.fuse3_operations;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_h;
-import org.cryptomator.jfuse.win.amd64.extr.fuse_operations;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_timespec;
 import org.jetbrains.annotations.VisibleForTesting;
 
@@ -27,7 +28,7 @@ public final class FuseImpl extends Fuse {
 	private final MemorySegment fuseOps;
 
 	public FuseImpl(FuseOperations fuseOperations) {
-		this.fuseOps = fuse_operations.allocate(fuseScope);
+		this.fuseOps = fuse3_operations.allocate(fuseScope);
 		this.delegate = fuseOperations;
 		fuseOperations.supportedOperations().forEach(this::bind);
 	}
@@ -45,17 +46,14 @@ public final class FuseImpl extends Fuse {
 	@Override
 	protected FuseMount mount(List<String> args) throws MountFailedException {
 		var fuseArgs = parseArgs(args);
-		var ch  = fuse_h.fuse_mount(fuseArgs.mountPoint(), fuseArgs.args());
-		if (MemoryAddress.NULL.equals(ch)) {
-			// TODO any cleanup needed?
-			throw new MountFailedException("fuse_mount failed");
-		}
-		var fuse = fuse_h.fuse_new(ch, fuseArgs.args(), fuseOps, fuseOps.byteSize(), MemoryAddress.NULL);
+		var fuse = fuse_h.fuse3_new(fuseArgs.args(), fuseOps, fuseOps.byteSize(), MemoryAddress.NULL);
 		if (MemoryAddress.NULL.equals(fuse)) {
-			fuse_h.fuse_unmount(fuseArgs.mountPoint(), ch);
 			throw new MountFailedException("fuse_new failed");
 		}
-		return new FuseMountImpl(fuse, ch, fuseArgs);
+		if (fuse_h.fuse3_mount(fuse, fuseArgs.mountPoint()) != 0) {
+			throw new MountFailedException("fuse_mount failed");
+		}
+		return new FuseMountImpl(fuse, fuseArgs);
 	}
 
 	@VisibleForTesting
@@ -75,7 +73,7 @@ public final class FuseImpl extends Fuse {
 		var multithreaded = fuseScope.allocate(JAVA_INT, 1);
 		var foreground = fuseScope.allocate(JAVA_INT, 1);
 		var mountPointPtr = fuseScope.allocate(ValueLayout.ADDRESS);
-		int parseResult = fuse_h.fuse_parse_cmdline(args, mountPointPtr, multithreaded, foreground);
+		int parseResult = fuse2_h.fuse_parse_cmdline(args, mountPointPtr, multithreaded, foreground); //winfsp pecularity due to unsupportd fuse_lowlevel.h
 		if (parseResult != 0) {
 			throw new IllegalArgumentException("fuse_parse_cmdline failed to parse " + String.join(" ", cmdLineArgs));
 		}
@@ -84,52 +82,48 @@ public final class FuseImpl extends Fuse {
 		return new FuseArgs(args, mountPoint, isMultiThreaded);
 	}
 
+	/**
+	 * Sets a fuse callback. For supported callbacks, see winfsp/inc/fuse3/fuse_h
+	 * @param operation The fuse operation enum, indicating which operation to set.
+	 */
 	private void bind(FuseOperations.Operation operation) {
 		switch (operation) {
-			case INIT -> fuse_operations.access$set(fuseOps, fuse_operations.init.allocate(this::init, fuseScope).address());
-			case ACCESS -> fuse_operations.access$set(fuseOps, fuse_operations.access.allocate(this::access, fuseScope).address());
-			case CHMOD -> fuse_operations.chmod$set(fuseOps, fuse_operations.chmod.allocate(this::chmod, fuseScope).address());
-			case CREATE -> fuse_operations.create$set(fuseOps, fuse_operations.create.allocate(this::create, fuseScope).address());
-			case DESTROY -> fuse_operations.destroy$set(fuseOps, fuse_operations.destroy.allocate(this::destroy, fuseScope).address());
-			case GET_ATTR -> {
-				fuse_operations.getattr$set(fuseOps, fuse_operations.getattr.allocate(this::getattr, fuseScope).address());
-				fuse_operations.fgetattr$set(fuseOps, fuse_operations.fgetattr.allocate(this::fgetattr, fuseScope).address());
-			}
-			case MKDIR -> fuse_operations.mkdir$set(fuseOps, fuse_operations.mkdir.allocate(this::mkdir, fuseScope).address());
-			case OPEN -> fuse_operations.open$set(fuseOps, fuse_operations.open.allocate(this::open, fuseScope).address());
-			case OPEN_DIR -> fuse_operations.opendir$set(fuseOps, fuse_operations.opendir.allocate(this::opendir, fuseScope).address());
-			case READ -> fuse_operations.read$set(fuseOps, fuse_operations.read.allocate(this::read, fuseScope).address());
-			case READ_DIR -> fuse_operations.readdir$set(fuseOps, fuse_operations.readdir.allocate(this::readdir, fuseScope).address());
-			case READLINK -> fuse_operations.readlink$set(fuseOps, fuse_operations.readlink.allocate(this::readlink, fuseScope).address());
-			case RELEASE -> fuse_operations.release$set(fuseOps, fuse_operations.release.allocate(this::release, fuseScope).address());
-			case RELEASE_DIR -> fuse_operations.releasedir$set(fuseOps, fuse_operations.releasedir.allocate(this::releasedir, fuseScope).address());
-			case RENAME -> fuse_operations.rename$set(fuseOps, fuse_operations.rename.allocate(this::rename, fuseScope).address());
-			case RMDIR -> fuse_operations.rmdir$set(fuseOps, fuse_operations.rmdir.allocate(this::rmdir, fuseScope).address());
-			case STATFS -> fuse_operations.statfs$set(fuseOps, fuse_operations.statfs.allocate(this::statfs, fuseScope).address());
-			case SYMLINK -> fuse_operations.symlink$set(fuseOps, fuse_operations.symlink.allocate(this::symlink, fuseScope).address());
-			case TRUNCATE -> {
-				fuse_operations.truncate$set(fuseOps, fuse_operations.truncate.allocate(this::truncate, fuseScope).address());
-				fuse_operations.ftruncate$set(fuseOps, fuse_operations.ftruncate.allocate(this::ftruncate, fuseScope).address());
-			}
-			case UNLINK -> fuse_operations.unlink$set(fuseOps, fuse_operations.unlink.allocate(this::unlink, fuseScope).address());
-			case UTIMENS -> fuse_operations.utimens$set(fuseOps, fuse_operations.utimens.allocate(this::utimens, fuseScope).address());
-			case WRITE -> fuse_operations.write$set(fuseOps, fuse_operations.write.allocate(this::write, fuseScope).address());
+			case INIT -> fuse3_operations.access$set(fuseOps, fuse3_operations.init.allocate(this::init, fuseScope).address());
+			case ACCESS -> fuse3_operations.access$set(fuseOps, MemoryAddress.NULL);
+			case CHMOD -> fuse3_operations.chmod$set(fuseOps, fuse3_operations.chmod.allocate(this::chmod, fuseScope).address());
+			case CREATE -> fuse3_operations.create$set(fuseOps, fuse3_operations.create.allocate(this::create, fuseScope).address());
+			case DESTROY -> fuse3_operations.destroy$set(fuseOps, fuse3_operations.destroy.allocate(this::destroy, fuseScope).address());
+			case GET_ATTR -> fuse3_operations.getattr$set(fuseOps, fuse3_operations.getattr.allocate(this::getattr, fuseScope).address());
+			case MKDIR -> fuse3_operations.mkdir$set(fuseOps, fuse3_operations.mkdir.allocate(this::mkdir, fuseScope).address());
+			case OPEN -> fuse3_operations.open$set(fuseOps, fuse3_operations.open.allocate(this::open, fuseScope).address());
+			case OPEN_DIR -> fuse3_operations.opendir$set(fuseOps, fuse3_operations.opendir.allocate(this::opendir, fuseScope).address());
+			case READ -> fuse3_operations.read$set(fuseOps, fuse3_operations.read.allocate(this::read, fuseScope).address());
+			case READ_DIR -> fuse3_operations.readdir$set(fuseOps, fuse3_operations.readdir.allocate(this::readdir, fuseScope).address());
+			case READLINK -> fuse3_operations.readlink$set(fuseOps, fuse3_operations.readlink.allocate(this::readlink, fuseScope).address());
+			case RELEASE -> fuse3_operations.release$set(fuseOps, fuse3_operations.release.allocate(this::release, fuseScope).address());
+			case RELEASE_DIR -> fuse3_operations.releasedir$set(fuseOps, fuse3_operations.releasedir.allocate(this::releasedir, fuseScope).address());
+			case RENAME -> fuse3_operations.rename$set(fuseOps, fuse3_operations.rename.allocate(this::rename, fuseScope).address());
+			case RMDIR -> fuse3_operations.rmdir$set(fuseOps, fuse3_operations.rmdir.allocate(this::rmdir, fuseScope).address());
+			case STATFS -> fuse3_operations.statfs$set(fuseOps, fuse3_operations.statfs.allocate(this::statfs, fuseScope).address());
+			case SYMLINK -> fuse3_operations.symlink$set(fuseOps, fuse3_operations.symlink.allocate(this::symlink, fuseScope).address());
+			case TRUNCATE -> fuse3_operations.truncate$set(fuseOps, fuse3_operations.truncate.allocate(this::truncate, fuseScope).address());
+			case UNLINK -> fuse3_operations.unlink$set(fuseOps, fuse3_operations.unlink.allocate(this::unlink, fuseScope).address());
+			case UTIMENS -> fuse3_operations.utimens$set(fuseOps, fuse3_operations.utimens.allocate(this::utimens, fuseScope).address());
+			case WRITE -> fuse3_operations.write$set(fuseOps, fuse3_operations.write.allocate(this::write, fuseScope).address());
 		}
 	}
 
-	private Addressable init(MemoryAddress conn) {
+	private Addressable init(MemoryAddress conn, MemoryAddress fuseConfig) {
 		try (var scope = MemorySession.openConfined()) {
 			delegate.init(new FuseConnInfoImpl(conn, scope));
 		}
 		return MemoryAddress.NULL;
 	}
 
-	private int access(MemoryAddress path, int mask) {
-		return delegate.access(path.getUtf8String(0), mask);
-	}
-
-	private int chmod(MemoryAddress path, int mode) {
-		return delegate.chmod(path.getUtf8String(0), mode, null);
+	private int chmod(MemoryAddress path, int mode, MemoryAddress fi) {
+		try (var scope = MemorySession.openConfined()) {
+			return delegate.chmod(path.getUtf8String(0), mode, new FileInfoImpl(fi, scope));
+		}
 	}
 
 	private int create(MemoryAddress path, int mode, MemoryAddress fi) {
@@ -143,9 +137,9 @@ public final class FuseImpl extends Fuse {
 	}
 
 	@VisibleForTesting
-	int getattr(MemoryAddress path, MemoryAddress stat) {
+	int getattr(MemoryAddress path, MemoryAddress stat, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
-			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope), null);
+			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
 		}
 	}
 
@@ -179,7 +173,7 @@ public final class FuseImpl extends Fuse {
 		}
 	}
 
-	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi) {
+	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi, int flags) { // TODO: readdir plus
 		try (var scope = MemorySession.openConfined()) {
 			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope));
 		}
@@ -204,8 +198,8 @@ public final class FuseImpl extends Fuse {
 		}
 	}
 
-	private int rename(MemoryAddress oldpath, MemoryAddress newpath) {
-		return delegate.rename(oldpath.getUtf8String(0), newpath.getUtf8String(0), 0);
+	private int rename(MemoryAddress oldpath, MemoryAddress newpath, int flags) {
+		return delegate.rename(oldpath.getUtf8String(0), newpath.getUtf8String(0), flags);
 	}
 
 	private int rmdir(MemoryAddress path) {
@@ -223,8 +217,10 @@ public final class FuseImpl extends Fuse {
 	}
 
 	@VisibleForTesting
-	int truncate(MemoryAddress path, long size) {
-		return delegate.truncate(path.getUtf8String(0), size, null);
+	int truncate(MemoryAddress path, long size, MemoryAddress fi) {
+		try (var scope = MemorySession.openConfined()) {
+			return delegate.truncate(path.getUtf8String(0), size, new FileInfoImpl(fi, scope));
+		}
 	}
 
 	@VisibleForTesting
@@ -239,21 +235,21 @@ public final class FuseImpl extends Fuse {
 	}
 
 	@VisibleForTesting
-	int utimens(MemoryAddress path, MemoryAddress times) {
+	int utimens(MemoryAddress path, MemoryAddress times, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
 			if (MemoryAddress.NULL.equals(times)) {
 				// set both times to current time (using on-heap memory segments)
 				var segment = MemorySegment.allocateNative(fuse_timespec.$LAYOUT().byteSize(), scope);
 				fuse_timespec.tv_sec$set(segment, 0);
-				fuse_timespec.tv_nsec$set(segment, 0); // FIXME use hard-coded UTIME_NOW
+				fuse_timespec.tv_nsec$set(segment, 0); //FIXME: use hardcoded UTIME_NOW
 				var time = new TimeSpecImpl(segment);
-				return delegate.utimens(path.getUtf8String(0), time, time, null);
+				return delegate.utimens(path.getUtf8String(0), time, time, new FileInfoImpl(fi, scope));
 			} else {
 				var seq = MemoryLayout.sequenceLayout(2, fuse_timespec.$LAYOUT());
 				var segment = MemorySegment.ofAddress(times, seq.byteSize(), scope);
 				var time0 = segment.asSlice(0, fuse_timespec.$LAYOUT().byteSize());
 				var time1 = segment.asSlice(fuse_timespec.$LAYOUT().byteSize(), fuse_timespec.$LAYOUT().byteSize());
-				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), null);
+				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), new FileInfoImpl(fi, scope));
 			}
 		}
 	}

@@ -18,79 +18,107 @@ public class fuse_h  {
     public static OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
     public static OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
     public static OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
-    public static MethodHandle fuse_mount$MH() {
-        return RuntimeHelper.requireNonNull(constants$0.fuse_mount$MH,"fuse_mount");
+    public static int FUSE_READDIR_PLUS() {
+        return (int)1L;
     }
-    public static MemoryAddress fuse_mount ( Addressable mountpoint,  Addressable args) {
-        var mh$ = fuse_mount$MH();
+    public static int FUSE_FILL_DIR_PLUS() {
+        return (int)2L;
+    }
+    public static MethodHandle fuse3_lib_help$MH() {
+        return RuntimeHelper.requireNonNull(constants$0.fuse3_lib_help$MH,"fuse3_lib_help");
+    }
+    public static void fuse3_lib_help ( Addressable args) {
+        var mh$ = fuse3_lib_help$MH();
         try {
-            return (java.lang.foreign.MemoryAddress)mh$.invokeExact(mountpoint, args);
+            mh$.invokeExact(args);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_unmount$MH() {
-        return RuntimeHelper.requireNonNull(constants$0.fuse_unmount$MH,"fuse_unmount");
+    public static MethodHandle fuse3_new$MH() {
+        return RuntimeHelper.requireNonNull(constants$0.fuse3_new$MH,"fuse3_new");
     }
-    public static void fuse_unmount ( Addressable mountpoint,  Addressable ch) {
-        var mh$ = fuse_unmount$MH();
+    public static MemoryAddress fuse3_new ( Addressable args,  Addressable ops,  long opsize,  Addressable data) {
+        var mh$ = fuse3_new$MH();
         try {
-            mh$.invokeExact(mountpoint, ch);
+            return (java.lang.foreign.MemoryAddress)mh$.invokeExact(args, ops, opsize, data);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_parse_cmdline$MH() {
-        return RuntimeHelper.requireNonNull(constants$0.fuse_parse_cmdline$MH,"fuse_parse_cmdline");
+    public static MethodHandle fuse3_destroy$MH() {
+        return RuntimeHelper.requireNonNull(constants$0.fuse3_destroy$MH,"fuse3_destroy");
     }
-    public static int fuse_parse_cmdline ( Addressable args,  Addressable mountpoint,  Addressable multithreaded,  Addressable foreground) {
-        var mh$ = fuse_parse_cmdline$MH();
-        try {
-            return (int)mh$.invokeExact(args, mountpoint, multithreaded, foreground);
-        } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
-        }
-    }
-    public static MethodHandle fuse_new$MH() {
-        return RuntimeHelper.requireNonNull(constants$0.fuse_new$MH,"fuse_new");
-    }
-    public static MemoryAddress fuse_new ( Addressable ch,  Addressable args,  Addressable ops,  long opsize,  Addressable data) {
-        var mh$ = fuse_new$MH();
-        try {
-            return (java.lang.foreign.MemoryAddress)mh$.invokeExact(ch, args, ops, opsize, data);
-        } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
-        }
-    }
-    public static MethodHandle fuse_destroy$MH() {
-        return RuntimeHelper.requireNonNull(constants$1.fuse_destroy$MH,"fuse_destroy");
-    }
-    public static void fuse_destroy ( Addressable f) {
-        var mh$ = fuse_destroy$MH();
+    public static void fuse3_destroy ( Addressable f) {
+        var mh$ = fuse3_destroy$MH();
         try {
             mh$.invokeExact(f);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_loop$MH() {
-        return RuntimeHelper.requireNonNull(constants$1.fuse_loop$MH,"fuse_loop");
+    public static MethodHandle fuse3_mount$MH() {
+        return RuntimeHelper.requireNonNull(constants$0.fuse3_mount$MH,"fuse3_mount");
     }
-    public static int fuse_loop ( Addressable f) {
-        var mh$ = fuse_loop$MH();
+    public static int fuse3_mount ( Addressable f,  Addressable mountpoint) {
+        var mh$ = fuse3_mount$MH();
+        try {
+            return (int)mh$.invokeExact(f, mountpoint);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
+    public static MethodHandle fuse3_unmount$MH() {
+        return RuntimeHelper.requireNonNull(constants$1.fuse3_unmount$MH,"fuse3_unmount");
+    }
+    public static void fuse3_unmount ( Addressable f) {
+        var mh$ = fuse3_unmount$MH();
+        try {
+            mh$.invokeExact(f);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
+    public static MethodHandle fuse3_loop$MH() {
+        return RuntimeHelper.requireNonNull(constants$1.fuse3_loop$MH,"fuse3_loop");
+    }
+    public static int fuse3_loop ( Addressable f) {
+        var mh$ = fuse3_loop$MH();
         try {
             return (int)mh$.invokeExact(f);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_exit$MH() {
-        return RuntimeHelper.requireNonNull(constants$1.fuse_exit$MH,"fuse_exit");
+    public static MethodHandle fuse3_loop_mt_31$MH() {
+        return RuntimeHelper.requireNonNull(constants$1.fuse3_loop_mt_31$MH,"fuse3_loop_mt_31");
     }
-    public static void fuse_exit ( Addressable f) {
-        var mh$ = fuse_exit$MH();
+    public static int fuse3_loop_mt_31 ( Addressable f,  int clone_fd) {
+        var mh$ = fuse3_loop_mt_31$MH();
+        try {
+            return (int)mh$.invokeExact(f, clone_fd);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
+    public static MethodHandle fuse3_exit$MH() {
+        return RuntimeHelper.requireNonNull(constants$1.fuse3_exit$MH,"fuse3_exit");
+    }
+    public static void fuse3_exit ( Addressable f) {
+        var mh$ = fuse3_exit$MH();
         try {
             mh$.invokeExact(f);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
+    public static MethodHandle fuse3_get_session$MH() {
+        return RuntimeHelper.requireNonNull(constants$1.fuse3_get_session$MH,"fuse3_get_session");
+    }
+    public static MemoryAddress fuse3_get_session ( Addressable f) {
+        var mh$ = fuse3_get_session$MH();
+        try {
+            return (java.lang.foreign.MemoryAddress)mh$.invokeExact(f);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }

@@ -9,26 +9,41 @@ import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
 class constants$1 {
 
-    static final FunctionDescriptor fuse_destroy$FUNC = FunctionDescriptor.ofVoid(
+    static final FunctionDescriptor fuse3_unmount$FUNC = FunctionDescriptor.ofVoid(
         Constants$root.C_POINTER$LAYOUT
     );
-    static final MethodHandle fuse_destroy$MH = RuntimeHelper.downcallHandle(
-        "fuse_destroy",
-        constants$1.fuse_destroy$FUNC
+    static final MethodHandle fuse3_unmount$MH = RuntimeHelper.downcallHandle(
+        "fuse3_unmount",
+        constants$1.fuse3_unmount$FUNC
     );
-    static final FunctionDescriptor fuse_loop$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+    static final FunctionDescriptor fuse3_loop$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
-    static final MethodHandle fuse_loop$MH = RuntimeHelper.downcallHandle(
-        "fuse_loop",
-        constants$1.fuse_loop$FUNC
+    static final MethodHandle fuse3_loop$MH = RuntimeHelper.downcallHandle(
+        "fuse3_loop",
+        constants$1.fuse3_loop$FUNC
     );
-    static final FunctionDescriptor fuse_exit$FUNC = FunctionDescriptor.ofVoid(
+    static final FunctionDescriptor fuse3_loop_mt_31$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_LONG$LAYOUT
+    );
+    static final MethodHandle fuse3_loop_mt_31$MH = RuntimeHelper.downcallHandle(
+        "fuse3_loop_mt_31",
+        constants$1.fuse3_loop_mt_31$FUNC
+    );
+    static final FunctionDescriptor fuse3_exit$FUNC = FunctionDescriptor.ofVoid(
         Constants$root.C_POINTER$LAYOUT
     );
-    static final MethodHandle fuse_exit$MH = RuntimeHelper.downcallHandle(
-        "fuse_exit",
-        constants$1.fuse_exit$FUNC
+    static final MethodHandle fuse3_exit$MH = RuntimeHelper.downcallHandle(
+        "fuse3_exit",
+        constants$1.fuse3_exit$FUNC
+    );
+    static final FunctionDescriptor fuse3_get_session$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT,
+        Constants$root.C_POINTER$LAYOUT
+    );
+    static final MethodHandle fuse3_get_session$MH = RuntimeHelper.downcallHandle(
+        "fuse3_get_session",
+        constants$1.fuse3_get_session$FUNC
     );
 }
 

@@ -2,7 +2,7 @@ package org.cryptomator.jfuse.win.amd64;
 
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.win.amd64.extr.fcntl_h;
-import org.cryptomator.jfuse.win.amd64.extr.fuse_file_info;
+import org.cryptomator.jfuse.win.amd64.extr.fuse3_file_info;
 
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
@@ -22,22 +22,22 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 	private static final int O_EXCL = fcntl_h.O_EXCL();
 
 	public FileInfoImpl(MemoryAddress address, MemorySession scope) {
-		this(fuse_file_info.ofAddress(address, scope));
+		this(fuse3_file_info.ofAddress(address, scope));
 	}
 
 	@Override
 	public long getFh() {
-		return fuse_file_info.fh$get(segment);
+		return fuse3_file_info.fh$get(segment);
 	}
 
 	@Override
 	public void setFh(long fh) {
-		fuse_file_info.fh$set(segment, fh);
+		fuse3_file_info.fh$set(segment, fh);
 	}
 
 	@Override
 	public int getFlags() {
-		return fuse_file_info.flags$get(segment);
+		return fuse3_file_info.flags$get(segment);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 
 	@Override
 	public long getLockOwner() {
-		return fuse_file_info.lock_owner$get(segment);
+		return fuse3_file_info.lock_owner$get(segment);
 	}
 
 }

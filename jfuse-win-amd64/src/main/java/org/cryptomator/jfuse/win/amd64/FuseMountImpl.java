@@ -5,23 +5,26 @@ import org.cryptomator.jfuse.win.amd64.extr.fuse_h;
 
 import java.lang.foreign.MemoryAddress;
 
-record FuseMountImpl(MemoryAddress fuse, MemoryAddress ch, FuseArgs args) implements FuseMount {
+record FuseMountImpl(MemoryAddress fuse, FuseArgs fuseArgs) implements FuseMount {
 
 	@Override
 	public int loop() {
-		// TODO support fuse_loop_mt if args.multiThreaded()
-		return fuse_h.fuse_loop(fuse);
+		if (fuseArgs.multiThreaded()) {
+			return fuse_h.fuse3_loop_mt_31(fuse, 0);
+		} else {
+			return fuse_h.fuse3_loop(fuse);
+		}
 	}
 
 	@Override
 	public void unmount() {
-		fuse_h.fuse_exit(fuse);
-		fuse_h.fuse_unmount(args.mountPoint(), ch);
+		fuse_h.fuse3_exit(fuse);
+		fuse_h.fuse3_unmount(fuse);
 	}
 
 	@Override
 	public void destroy() {
-		fuse_h.fuse_destroy(fuse);
+		fuse_h.fuse3_destroy(fuse);
 	}
 
 }
