@@ -4,11 +4,11 @@ import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
+import org.cryptomator.jfuse.win.amd64.extr.fuse2.fuse2_h;
+import org.cryptomator.jfuse.win.amd64.extr.fuse2.fuse_args;
 import org.cryptomator.jfuse.win.amd64.extr.fuse3_operations;
-import org.cryptomator.jfuse.win.amd64.extr_fuse2.fuse_args;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_h;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_timespec;
-import org.cryptomator.jfuse.win.amd64.extr_fuse2.fuse_2_h;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.lang.foreign.Addressable;
@@ -73,7 +73,7 @@ public final class FuseImpl extends Fuse {
 		var multithreaded = fuseScope.allocate(JAVA_INT, 1);
 		var foreground = fuseScope.allocate(JAVA_INT, 1);
 		var mountPointPtr = fuseScope.allocate(ValueLayout.ADDRESS);
-		int parseResult = fuse_2_h.fuse_parse_cmdline(args, mountPointPtr, multithreaded, foreground);
+		int parseResult = fuse2_h.fuse_parse_cmdline(args, mountPointPtr, multithreaded, foreground); //winfsp pecularity due to unsupportd fuse_lowlevel.h
 		if (parseResult != 0) {
 			throw new IllegalArgumentException("fuse_parse_cmdline failed to parse " + String.join(" ", cmdLineArgs));
 		}
@@ -82,10 +82,13 @@ public final class FuseImpl extends Fuse {
 		return new FuseArgs(args, mountPoint, isMultiThreaded);
 	}
 
+	/**
+	 * Sets a fuse callback. For supported callbacks, see winfsp/inc/fuse3/fuse_h
+	 * @param operation The fuse operation enum, indicating which operation to set.
+	 */
 	private void bind(FuseOperations.Operation operation) {
 		switch (operation) {
 			case INIT -> fuse3_operations.access$set(fuseOps, fuse3_operations.init.allocate(this::init, fuseScope).address());
-			//case ACCESS -> fuse3_operations.access$set(fuseOps, fuse3_operations.access.allocate(this::access, fuseScope).address());
 			case ACCESS -> fuse3_operations.access$set(fuseOps, MemoryAddress.NULL);
 			case CHMOD -> fuse3_operations.chmod$set(fuseOps, fuse3_operations.chmod.allocate(this::chmod, fuseScope).address());
 			case CREATE -> fuse3_operations.create$set(fuseOps, fuse3_operations.create.allocate(this::create, fuseScope).address());
@@ -115,10 +118,6 @@ public final class FuseImpl extends Fuse {
 			delegate.init(new FuseConnInfoImpl(conn, scope));
 		}
 		return MemoryAddress.NULL;
-	}
-
-	private int access(MemoryAddress path, int mask) {
-		return delegate.access(path.getUtf8String(0), mask);
 	}
 
 	private int chmod(MemoryAddress path, int mode, MemoryAddress fi) {

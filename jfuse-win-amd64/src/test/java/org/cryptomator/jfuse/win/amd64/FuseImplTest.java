@@ -3,11 +3,11 @@ package org.cryptomator.jfuse.win.amd64;
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
+import org.cryptomator.jfuse.win.amd64.extr.fuse2.fuse2_h;
 import org.cryptomator.jfuse.win.amd64.extr.fuse3_file_info;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_h;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_stat;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_timespec;
-import org.cryptomator.jfuse.win.amd64.extr_fuse2.fuse_2_h;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,9 +79,9 @@ public class FuseImplTest {
 	@Test
 	@DisplayName("parseArgs")
 	public void testParseArgs() {
-		try (var fuseH = Mockito.mockStatic(fuse_2_h.class);
+		try (var fuseH = Mockito.mockStatic(fuse2_h.class);
 			 var scope = MemorySession.openConfined()) {
-			fuseH.when(() -> fuse_2_h.fuse_parse_cmdline(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).then(invocation -> {
+			fuseH.when(() -> fuse2_h.fuse_parse_cmdline(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).then(invocation -> {
 				MemorySegment mp = invocation.getArgument(1);
 				MemorySegment mt = invocation.getArgument(2);
 				MemorySegment fg = invocation.getArgument(3);
