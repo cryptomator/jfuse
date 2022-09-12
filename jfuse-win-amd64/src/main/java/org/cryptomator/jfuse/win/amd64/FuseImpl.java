@@ -17,8 +17,10 @@ import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.ValueLayout;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
@@ -41,7 +43,20 @@ public final class FuseImpl extends Fuse {
 			adjustedMP = Path.of(mountPoint.toString().charAt(0) + ":");
 		}
 		super.mount(progName, adjustedMP, flags);
+		try {
+			waitForMountingToComplete(mountPoint);
+		} catch (InterruptedException e) {
+			throw new MountFailedException("Interrupted while waiting for mounting to finish");
+		}
 	}
+
+	private void waitForMountingToComplete(Path mountPoint) throws InterruptedException {
+		var probe = mountPoint.resolve(".");
+		while (!Files.exists(probe)) {
+			Thread.sleep(333);
+		}
+	}
+
 
 	@Override
 	protected FuseMount mount(List<String> args) throws MountFailedException {
