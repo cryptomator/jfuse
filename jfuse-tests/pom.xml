@@ -61,6 +61,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<argLine>@{surefire.jacoco.args} -Djava.library.path=@{fuse.lib.path} --enable-native-access=ALL-UNNAMED --enable-preview</argLine>
+					<forkedProcessTimeoutInSeconds>240</forkedProcessTimeoutInSeconds>
 				</configuration>
 			</plugin>
 			<plugin>
