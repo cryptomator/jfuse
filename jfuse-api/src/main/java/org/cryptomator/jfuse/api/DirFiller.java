@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public interface DirFiller {
@@ -46,61 +47,37 @@ public interface DirFiller {
 	 *
 	 * @param name   the file name of the directory entry
 	 * @param stat   file attributes, can be NULL
-	 * @param offset offset of the next entry or zero
+	 * @param offset offset of the next entry or zero when ignoring the offset parameter
 	 * @param flags  fill flags
-	 * @return 1 if buffer is full, zero otherwise
+	 * @return 1 if buffer is full or an error occured, zero otherwise
 	 * @see <a href="https://libfuse.github.io/doxygen/structfuse__operations.html#adc01d3622754fc7de8e643249e73268d">official readdir docs</a>
 	 * @see <a href="https://www.cs.hmc.edu/~geoff/classes/hmc.cs135.201001/homework/fuse/fuse_doc.html#readdir-details">readdir explanation from Geoff Kuenning</a>
 	 */
-	int fill(String name, @Nullable Stat stat, long offset, Set<FillDirFlags> flags);
+	int fill(String name, Consumer<Stat> stat, long offset, Set<FillDirFlags> flags);
 
 	/**
-	 * Convenience wrapper for {@link #fill(String, Stat, long, Set)}, ignoring the offset parameter.
+	 * Convenience wrapper for {@link #fill(String, Consumer, long, Set)}, ignoring the offset parameter.
 	 *
-	 * @param name The file name
-	 * @param stat Currently ignored, future use.
-	 * @throws IOException If {@link #fill(String, Stat, long, Set) fuse_fill_dir_t} returns 1, which indicates an error.
+	 * @param name  The file name
+	 * @param stat  A method to pre-fill the stats of this node
+	 * @param flags fill flags
+	 * @throws IOException If {@link #fill(String, Consumer, long, Set) fuse_fill_dir_t} returns 1, which indicates an error.
 	 */
-	default void fill(String name, @Nullable Stat stat) throws IOException {
-		var plusMode = stat != null ? FILL_DIR_PLUS_FLAGS : Set.<FillDirFlags>of();
-		if (fill(name, stat, 0, plusMode) != 0) {
+	default void fill(String name, Consumer<Stat> stat, Set<FillDirFlags> flags) throws IOException {
+		if (fill(name, stat, 0, flags) != 0) {
 			throw new IOException("fuse_fill_dir_t unexpectedly returned 1");
 		}
 	}
 
 	/**
-	 * Convenience wrapper for {@link #fill(String, Stat, long, Set)}, using the offset parameter.
-	 * <p>
-	 * <strong>Important:</strong> Note that the complete set of directors entries must contain <code>.</code> and <code>..</code>.
+	 * Convenienve wrapper for {@link #fill(String, Consumer, long, Set)}, just filling in the name, ignoring stats.
 	 *
-	 * @param children A stream of directory entries offset by the given <code>offset</code>
-	 * @param offset   The offset of the stream (as requested by <code>readdir</code>)
+	 * @param name The file name
+	 * @throws IOException If {@link #fill(String, Consumer, long, Set) fuse_fill_dir_t} returns 1, which indicates an error.
 	 */
-	default void fillChildrenFromOffset(Stream<Child> children, long offset) {
-		var iterator = children.iterator();
-		for (long i = offset; iterator.hasNext(); i++) {
-			var child = iterator.next();
-			var plusMode = child.stat != null ? FILL_DIR_PLUS_FLAGS : Set.<FillDirFlags>of();
-			if (fill(child.name, child.stat, i + 1, plusMode) != 0) {
-				return;
-			}
-		}
-	}
-
-	/**
-	 * Convenience wrapper for {@link #fill(String, Stat, long, Set)}, using the offset parameter.
-	 * <p>
-	 * <strong>Important:</strong> Note that the complete set of directors entries must contain <code>.</code> and <code>..</code>.
-	 *
-	 * @param childNames A stream of the names of directory entries offset by the given <code>offset</code>
-	 * @param offset     The offset of the stream (as requested by <code>readdir</code>)
-	 */
-	default void fillNamesFromOffset(Stream<String> childNames, long offset) {
-		var children = childNames.map(name -> new Child(name, null));
-		fillChildrenFromOffset(children, offset);
-	}
-
-	record Child(String name, @Nullable Stat stat) {
+	default void fill(String name) throws IOException {
+		fill(name, __ -> {
+		}, Set.of());
 	}
 
 }

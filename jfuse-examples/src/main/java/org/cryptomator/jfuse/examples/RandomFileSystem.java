@@ -74,17 +74,22 @@ public class RandomFileSystem implements FuseOperations {
 		var node = rfs.getNode(path);
 		if (node == null) {
 			return -errno.enoent();
-		} else if (node.isDir()) {
+		} else {
+			fillStats(node, stat);
+			return 0;
+		}
+	}
+
+	private void fillStats(RandomFileStructure.Node node, Stat stat){
+		if (node.isDir()) {
 			stat.setMode(S_IFDIR | 0755);
 			stat.setNLink((short) (2 + node.children().size()));
 			stat.mTime().set(node.lastModified());
-			return 0;
 		} else {
 			stat.setMode(S_IFREG | 0444);
 			stat.setNLink((short) 1);
 			stat.setSize(0);
 			stat.mTime().set(node.lastModified());
-			return 0;
 		}
 	}
 
@@ -104,10 +109,10 @@ public class RandomFileSystem implements FuseOperations {
 			return -errno.enotdir();
 		} else {
 			try {
-				filler.fill(".", null);
-				filler.fill("..", null);
-				for (var name : node.children().keySet()) {
-					filler.fill(name, null);
+				filler.fill(".", stat -> fillStats(node, stat), DirFiller.FILL_DIR_PLUS_FLAGS);
+				filler.fill("..");
+				for (var child : node.children().values()) {
+					filler.fill(child.name(), stat -> fillStats(child, stat), DirFiller.FILL_DIR_PLUS_FLAGS);
 				}
 				return 0;
 			} catch (IOException e) {

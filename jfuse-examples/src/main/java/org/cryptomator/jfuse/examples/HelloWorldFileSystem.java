@@ -146,19 +146,21 @@ public class HelloWorldFileSystem implements FuseOperations {
 	@Override
 	public int readdir(String path, DirFiller filler, long offset, FileInfo fi, Set<ReadDirFlags> flags) {
 		LOG.debug("readdir() {} {}", path, offset);
-		var entries = Stream.of( //
-				".", //
-				"..", //
-				HELLO_PATH.substring(1), //
-				"aaa", //
-				"bbb", //
-				"ccc", //
-				"ddd", //
-				"xxx", //
-				"yyy", //
-				"zzz").skip(offset);
-		filler.fillNamesFromOffset(entries, offset);
-		return 0;
+		try {
+			filler.fill(".");
+			filler.fill("..");
+			filler.fill(HELLO_PATH.substring(1));
+			filler.fill("aaa");
+			filler.fill("bbb");
+			filler.fill("ccc");
+			filler.fill("ddd");
+			filler.fill("xxx");
+			filler.fill("yyy");
+			filler.fill("zzz");
+			return 0;
+		} catch (IOException e) {
+			return -errno.eio();
+		}
 	}
 
 	@Override

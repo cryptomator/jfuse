@@ -20,12 +20,15 @@ import java.nio.file.AccessDeniedException;
 import java.nio.file.AccessMode;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileStore;
+import java.nio.file.FileVisitOption;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributeView;
@@ -174,34 +177,39 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		Path node = resolvePath(path);
 		try {
 			var attrs = readAttributes(node);
-			if (attrs instanceof PosixFileAttributes posixAttrs) {
-				stat.setPermissions(posixAttrs.permissions());
-			} else if (attrs instanceof DosFileAttributes dosAttrs) {
-				int mode = 0444;
-				mode |= dosAttrs.isReadOnly() ? 0000 : 0200; // add write access for owner
-				mode |= attrs.isDirectory() ? 0111 : 0000; // add execute access for directories
-				stat.setMode(mode);
-			}
-			stat.setSize(attrs.size());
-			stat.setNLink((short) 1);
-			if (attrs.isDirectory()) {
-				stat.toggleDir(true);
-				stat.setNLink((short) (2 + countSubDirs(node)));
-			} else if (attrs.isSymbolicLink()) {
-				stat.toggleLnk(true);
-			} else if (attrs.isRegularFile()){
-				stat.toggleReg(true);
-			}
-			stat.aTime().set(attrs.lastAccessTime().toInstant());
-			stat.mTime().set(attrs.lastModifiedTime().toInstant());
-			stat.cTime().set(attrs.lastAccessTime().toInstant());
-			stat.birthTime().set(attrs.creationTime().toInstant());
+			copyAttrsToStat(attrs, stat);
 			return 0;
 		} catch (NoSuchFileException e) {
 			return -errno.enoent();
 		} catch (IOException e) {
 			return -errno.eio();
 		}
+	}
+
+	@SuppressWarnings("OctalInteger")
+	protected void copyAttrsToStat(BasicFileAttributes attrs, Stat stat) {
+		if (attrs instanceof PosixFileAttributes posixAttrs) {
+			stat.setPermissions(posixAttrs.permissions());
+		} else if (attrs instanceof DosFileAttributes dosAttrs) {
+			int mode = 0444;
+			mode |= dosAttrs.isReadOnly() ? 0000 : 0200; // add write access for owner
+			mode |= attrs.isDirectory() ? 0111 : 0000; // add execute access for directories
+			stat.setMode(mode);
+		}
+		stat.setSize(attrs.size());
+		stat.setNLink((short) 1);
+		if (attrs.isDirectory()) {
+			stat.toggleDir(true);
+			stat.setNLink((short) 2); // FIXME subdir count?
+		} else if (attrs.isSymbolicLink()) {
+			stat.toggleLnk(true);
+		} else if (attrs.isRegularFile()){
+			stat.toggleReg(true);
+		}
+		stat.aTime().set(attrs.lastAccessTime().toInstant());
+		stat.mTime().set(attrs.lastModifiedTime().toInstant());
+		stat.cTime().set(attrs.lastAccessTime().toInstant());
+		stat.birthTime().set(attrs.creationTime().toInstant());
 	}
 
 	protected abstract BasicFileAttributes readAttributes(Path node) throws IOException;
@@ -273,10 +281,29 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	public int readdir(String path, DirFiller filler, long offset, FileInfo fi, Set<ReadDirFlags> flags) {
 		LOG.trace("readdir {}", path);
 		Path node = resolvePath(path);
-		try (var ds = Files.newDirectoryStream(node)) {
-			var childNames = StreamSupport.stream(ds.spliterator(), false).map(Path::getFileName).map(Path::toString);
-			var allNames = Stream.concat(Stream.of(".", ".."), childNames);
-			filler.fillNamesFromOffset(allNames.skip(offset), offset);
+
+
+		try {
+			// The file walker might use cached file attributes, which might be more efficient (not tested though)
+			Files.walkFileTree(node, EnumSet.noneOf(FileVisitOption.class), 1, new SimpleFileVisitor<>() {
+
+				@Override
+				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+					if (node.equals(dir)) {
+						filler.fill(".", stat -> copyAttrsToStat(attrs, stat), DirFiller.FILL_DIR_PLUS_FLAGS);
+						filler.fill("..", stat -> {}, Set.of());
+					} else {
+						filler.fill(dir.getFileName().toString(), stat -> copyAttrsToStat(attrs, stat), DirFiller.FILL_DIR_PLUS_FLAGS);
+					}
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+					filler.fill(file.getFileName().toString(), stat -> copyAttrsToStat(attrs, stat), DirFiller.FILL_DIR_PLUS_FLAGS);
+					return FileVisitResult.CONTINUE;
+				}
+			});
 			return 0;
 		} catch (NotDirectoryException e) {
 			return -errno.enotdir();
