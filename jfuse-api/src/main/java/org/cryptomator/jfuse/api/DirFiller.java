@@ -1,12 +1,9 @@
 package org.cryptomator.jfuse.api;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 public interface DirFiller {
 
@@ -60,11 +57,10 @@ public interface DirFiller {
 	 *
 	 * @param name  The file name
 	 * @param stat  A method to pre-fill the stats of this node
-	 * @param flags fill flags
 	 * @throws IOException If {@link #fill(String, Consumer, long, Set) fuse_fill_dir_t} returns 1, which indicates an error.
 	 */
-	default void fill(String name, Consumer<Stat> stat, Set<FillDirFlags> flags) throws IOException {
-		if (fill(name, stat, 0, flags) != 0) {
+	default void fill(String name, Consumer<Stat> stat) throws IOException {
+		if (fill(name, stat, 0, Set.of()) != 0) {
 			throw new IOException("fuse_fill_dir_t unexpectedly returned 1");
 		}
 	}
@@ -76,8 +72,7 @@ public interface DirFiller {
 	 * @throws IOException If {@link #fill(String, Consumer, long, Set) fuse_fill_dir_t} returns 1, which indicates an error.
 	 */
 	default void fill(String name) throws IOException {
-		fill(name, __ -> {
-		}, Set.of());
+		fill(name, stat -> {});
 	}
 
 }

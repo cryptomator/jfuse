@@ -36,19 +36,19 @@ public class RandomFileStructure {
 		var bytes = new byte[15];
 		rng.nextBytes(bytes);
 		var name = Base64.getUrlEncoder().encodeToString(bytes);
-		var isDir = rng.nextInt(10) < 2; // 20% directories
+		var isDir = rng.nextInt(10) < 1; // 10% directories
 		var lastModified = Instant.ofEpochSecond(rng.nextLong(0, 32503676399L));
 		if (isDir) {
 			var children = new TreeMap<String, Node>();
 			var nChildren = rng.nextInt(maxChildren);
 			for (int i = 0; i < nChildren; i++) {
-				var child = genNode(rng, maxChildren / 2);
+				var child = genNode(rng, maxChildren / 4);
 				children.put(child.name, child);
 			}
-			return new Node(name, isDir, lastModified, 0, children);
+			return new Node(name, true, lastModified, 0, children);
 		} else {
-			var size = isDir ? 0 : rng.nextInt(0, 500_000_000);
-			return new Node(name, isDir, lastModified, size, NO_CHILDREN);
+			var size = rng.nextInt(0, 500_000_000);
+			return new Node(name, false, lastModified, size, NO_CHILDREN);
 		}
 	}
 

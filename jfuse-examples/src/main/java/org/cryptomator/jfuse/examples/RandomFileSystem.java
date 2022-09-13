@@ -4,7 +4,6 @@ import org.cryptomator.jfuse.api.DirFiller;
 import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.Fuse;
-import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.api.Stat;
@@ -13,12 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("OctalInteger")
 public class RandomFileSystem implements FuseOperations {
@@ -101,23 +99,26 @@ public class RandomFileSystem implements FuseOperations {
 
 	@Override
 	public int readdir(String path, DirFiller filler, long offset, FileInfo fi, Set<ReadDirFlags> flags) {
-		LOG.debug("readdir() {} {}", path, offset);
+		LOG.debug("readdir() {} {} {}", path, offset, flags.stream().map(ReadDirFlags::name).collect(Collectors.joining(", ")));
 		var node = rfs.getNode(path);
 		if (node == null) {
 			return -errno.enoent();
 		} else if (!node.isDir()) {
 			return -errno.enotdir();
 		} else {
-			try {
-				filler.fill(".", stat -> fillStats(node, stat), DirFiller.FILL_DIR_PLUS_FLAGS);
-				filler.fill("..");
-				for (var child : node.children().values()) {
-					filler.fill(child.name(), stat -> fillStats(child, stat), DirFiller.FILL_DIR_PLUS_FLAGS);
-				}
+			if (offset == 0 && filler.fill(".", stat -> fillStats(node, stat), ++offset, DirFiller.FILL_DIR_PLUS_FLAGS) != 0)
 				return 0;
-			} catch (IOException e) {
-				return -errno.eio();
+			if (offset == 1 && filler.fill("..", stat -> {}, ++offset, DirFiller.FILL_DIR_PLUS_FLAGS) != 0)
+				return 0;
+			assert offset > 1;
+			var childIter = node.children().values().stream().skip(offset - 2).iterator();
+			while (childIter.hasNext()) {
+				var child = childIter.next();
+				if (filler.fill(child.name(), stat -> fillStats(child, stat), ++offset, DirFiller.FILL_DIR_PLUS_FLAGS) != 0) {
+					return 0;
+				}
 			}
+			return 0;
 		}
 	}
 

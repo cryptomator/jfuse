@@ -143,6 +143,7 @@ public final class FuseImpl extends Fuse {
 		}
 	}
 
+	// TODO remove
 	@VisibleForTesting
 	int fgetattr(MemoryAddress path, MemoryAddress stat, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
@@ -224,6 +225,7 @@ public final class FuseImpl extends Fuse {
 		}
 	}
 
+	// TODO remove
 	@VisibleForTesting
 	int ftruncate(MemoryAddress path, long size, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {

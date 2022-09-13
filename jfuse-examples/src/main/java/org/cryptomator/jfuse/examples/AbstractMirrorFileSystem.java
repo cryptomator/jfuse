@@ -20,15 +20,12 @@ import java.nio.file.AccessDeniedException;
 import java.nio.file.AccessMode;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileStore;
-import java.nio.file.FileVisitOption;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributeView;
@@ -44,7 +41,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public abstract sealed class AbstractMirrorFileSystem implements FuseOperations permits PosixMirrorFileSystem, WindowsMirrorFileSystem {
@@ -282,28 +278,12 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		LOG.trace("readdir {}", path);
 		Path node = resolvePath(path);
 
-
-		try {
-			// The file walker might use cached file attributes, which might be more efficient (not tested though)
-			Files.walkFileTree(node, EnumSet.noneOf(FileVisitOption.class), 1, new SimpleFileVisitor<>() {
-
-				@Override
-				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-					if (node.equals(dir)) {
-						filler.fill(".", stat -> copyAttrsToStat(attrs, stat), DirFiller.FILL_DIR_PLUS_FLAGS);
-						filler.fill("..", stat -> {}, Set.of());
-					} else {
-						filler.fill(dir.getFileName().toString(), stat -> copyAttrsToStat(attrs, stat), DirFiller.FILL_DIR_PLUS_FLAGS);
-					}
-					return FileVisitResult.CONTINUE;
-				}
-
-				@Override
-				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-					filler.fill(file.getFileName().toString(), stat -> copyAttrsToStat(attrs, stat), DirFiller.FILL_DIR_PLUS_FLAGS);
-					return FileVisitResult.CONTINUE;
-				}
-			});
+		try (var ds = Files.newDirectoryStream(node)) {
+			filler.fill(".");
+			filler.fill("..");
+			for (var child : ds) {
+				filler.fill(child.getFileName().toString());
+			}
 			return 0;
 		} catch (NotDirectoryException e) {
 			return -errno.enotdir();
