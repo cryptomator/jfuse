@@ -31,14 +31,14 @@ public final class FileModes {
 	public static int fromPermissions(Set<PosixFilePermission> permissions) {
 		int mode = 0;
 		// @formatter:off
-		if (permissions.contains(PosixFilePermission.OWNER_READ)) mode |= 0400;
-		if (permissions.contains(PosixFilePermission.OWNER_WRITE)) mode |= 0200;
-		if (permissions.contains(PosixFilePermission.OWNER_EXECUTE)) mode |= 0100;
-		if (permissions.contains(PosixFilePermission.GROUP_READ)) mode |= 0040;
-		if (permissions.contains(PosixFilePermission.GROUP_WRITE)) mode |= 0020;
-		if (permissions.contains(PosixFilePermission.GROUP_EXECUTE)) mode |= 0010;
-		if (permissions.contains(PosixFilePermission.OTHERS_READ)) mode |= 0004;
-		if (permissions.contains(PosixFilePermission.OTHERS_WRITE)) mode |= 0002;
+		if (permissions.contains(PosixFilePermission.OWNER_READ))     mode |= 0400;
+		if (permissions.contains(PosixFilePermission.OWNER_WRITE))    mode |= 0200;
+		if (permissions.contains(PosixFilePermission.OWNER_EXECUTE))  mode |= 0100;
+		if (permissions.contains(PosixFilePermission.GROUP_READ))     mode |= 0040;
+		if (permissions.contains(PosixFilePermission.GROUP_WRITE))    mode |= 0020;
+		if (permissions.contains(PosixFilePermission.GROUP_EXECUTE))  mode |= 0010;
+		if (permissions.contains(PosixFilePermission.OTHERS_READ))    mode |= 0004;
+		if (permissions.contains(PosixFilePermission.OTHERS_WRITE))   mode |= 0002;
 		if (permissions.contains(PosixFilePermission.OTHERS_EXECUTE)) mode |= 0001;
 		// @formatter:on
 		return mode;
