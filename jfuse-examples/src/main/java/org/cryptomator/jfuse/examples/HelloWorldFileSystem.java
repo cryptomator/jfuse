@@ -144,7 +144,7 @@ public class HelloWorldFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public int readdir(String path, DirFiller filler, long offset, FileInfo fi) {
+	public int readdir(String path, DirFiller filler, long offset, FileInfo fi, Set<ReadDirFlags> flags) {
 		LOG.debug("readdir() {} {}", path, offset);
 		var entries = Stream.of( //
 				".", //

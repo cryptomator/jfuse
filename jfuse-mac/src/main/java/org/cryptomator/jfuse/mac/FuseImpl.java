@@ -18,6 +18,7 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.ValueLayout;
 import java.util.List;
+import java.util.Set;
 
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
@@ -170,7 +171,7 @@ public final class FuseImpl extends Fuse {
 
 	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
-			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope));
+			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope), Set.of());
 		}
 	}
 

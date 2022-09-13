@@ -3,6 +3,7 @@ package org.cryptomator.jfuse.api;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.ByteBuffer;
+import java.util.EnumSet;
 import java.util.Set;
 
 /**
@@ -36,6 +37,32 @@ public interface FuseOperations {
 		UNLINK,
 		UTIMENS,
 		WRITE
+	}
+
+	enum ReadDirFlags {
+
+		/**
+		 * "Plus" mode.
+		 * <p>
+		 * The kernel wants to prefill the inode cache during readdir. The filesystem may honour this by filling in the
+		 * attributes and setting FUSE_FILL_DIR_FLAGS for the filler function.
+		 * The filesystem may also just ignore this flag completely.
+		 */
+		READ_DIR_PLUS;
+
+		/**
+		 * Parses the given {@code flags}.
+		 *
+		 * @param flags       The encoded bit set
+		 * @param readDirPlus The constant value of {@code FUSE_READDIR_PLUS}
+		 * @return A set containing all the {@link ReadDirFlags} values encoded in the given bit set
+		 */
+		public static Set<ReadDirFlags> parse(int flags, int readDirPlus) {
+			// currently there is only one known flag, hence this rather trivial implementation.
+			return (flags & readDirPlus) == readDirPlus
+					? EnumSet.of(READ_DIR_PLUS)
+					: Set.of();
+		}
 	}
 
 	/**
@@ -463,20 +490,20 @@ public interface FuseOperations {
 	 * 	  is full (or an error happens) the filler function will return
 	 * 	  '1'.</li>
 	 * </ol>
-	 * When FUSE_READDIR_PLUS is not set, only some parameters of the
-	 * fill function (the fuse_fill_dir_t parameter) are actually used:
-	 * The file type (which is part of stat::st_mode) is used. And if
-	 * fuse_config::use_ino is set, the inode (stat::st_ino) is also
-	 * used. The other fields are ignored when FUSE_READDIR_PLUS is not
-	 * set.
 	 *
 	 * @param path   directory path
 	 * @param filler the fill function
 	 * @param offset the offset
 	 * @param fi     file info
+	 * @param flags  When {@link ReadDirFlags#READ_DIR_PLUS READ_DIR_PLUS} is not set, only some parameters of the
+	 *               fill function (the {@code filler} parameter) are actually used:
+	 *               The file type (which is part of {@link Stat#getMode()}) is used. And if
+	 *               fuse_config::use_ino is set, the inode (stat::st_ino) is also
+	 *               used. The other fields are ignored when {@code READ_DIR_PLUS} is not
+	 *               set.
 	 * @return 0 on success or negated error code (-errno)
 	 */
-	default int readdir(String path, DirFiller filler, long offset, FileInfo fi) {
+	default int readdir(String path, DirFiller filler, long offset, FileInfo fi, Set<ReadDirFlags> flags) {
 		return -errno().enosys();
 	}
 
