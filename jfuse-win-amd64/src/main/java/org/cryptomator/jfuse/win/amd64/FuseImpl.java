@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
-public final class FuseImpl extends Fuse {
+public class FuseImpl extends Fuse {
 
 	//Used to check, if the mounted fs is actually accessible, see https://github.com/winfsp/winfsp/discussions/440
 	private static final String MOUNT_PROBE = "/jfuse_windows_mount_probe";
@@ -58,7 +58,8 @@ public final class FuseImpl extends Fuse {
 		}
 	}
 
-	private void waitForMountingToComplete(Path mountPoint) throws InterruptedException {
+	@VisibleForTesting
+	void waitForMountingToComplete(Path mountPoint) throws InterruptedException {
 		var probe = Files.getFileAttributeView(mountPoint.resolve(MOUNT_PROBE.substring(1)), BasicFileAttributeView.class);
 		do {
 			try {
