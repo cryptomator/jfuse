@@ -45,7 +45,7 @@ public final class FuseImpl extends Fuse {
 	@Override
 	public void mount(String progName, Path mountPoint, String... flags) throws MountFailedException {
 		var adjustedMP = mountPoint;
-		if (mountPoint.compareTo(mountPoint.getRoot()) == 0 && mountPoint.isAbsolute()) {
+		if (mountPoint.equals(mountPoint.getRoot()) && mountPoint.isAbsolute()) {
 			//winfsp accepts only drive letters written in drive relative notation
 			adjustedMP = Path.of(mountPoint.toString().charAt(0) + ":");
 		}
