@@ -34,7 +34,7 @@ public final class FuseImpl extends Fuse {
 	private final FuseOperations delegate;
 	private final MemorySegment fuseOps;
 
-	private final CountDownLatch mountReturnBarrier = new CountDownLatch(1);
+	private final CountDownLatch mountProbeSucceeded = new CountDownLatch(1);
 
 	public FuseImpl(FuseOperations fuseOperations) {
 		this.fuseOps = fuse3_operations.allocate(fuseScope);
@@ -66,7 +66,7 @@ public final class FuseImpl extends Fuse {
 			} catch (IOException e) {
 				//noop
 			}
-		} while (!mountReturnBarrier.await(333, TimeUnit.MILLISECONDS));
+		} while (!mountProbeSucceeded.await(333, TimeUnit.MILLISECONDS));
 	}
 
 
@@ -167,8 +167,8 @@ public final class FuseImpl extends Fuse {
 	int getattr(MemoryAddress path, MemoryAddress stat, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
 			var pathObj = path.getUtf8String(0);
-			if(mountReturnBarrier.getCount() > 0 && pathObj.equals(MOUNT_PROBE) ) {
-				mountReturnBarrier.countDown();
+			if(mountProbeSucceeded.getCount() > 0 && pathObj.equals(MOUNT_PROBE) ) {
+				mountProbeSucceeded.countDown();
 			}
 			return delegate.getattr(pathObj, new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
 		}
