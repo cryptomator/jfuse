@@ -21,21 +21,20 @@ import java.lang.foreign.ValueLayout;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributeView;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
 public final class FuseImpl extends Fuse {
 
 	//Used to check, if the mounted fs is actually accessible, see https://github.com/winfsp/winfsp/discussions/440
-	private static final String MOUNT_PROBE = "/jfuse_windows_mount";
+	private static final String MOUNT_PROBE = "/jfuse_windows_mount_probe";
 	private final FuseOperations delegate;
 	private final MemorySegment fuseOps;
 
-	//TODO: can we use just volatile?
-	private AtomicBoolean accessProbeSuccess = new AtomicBoolean(false);
+	private final CountDownLatch mountReturnBarrier = new CountDownLatch(1);
 
 	public FuseImpl(FuseOperations fuseOperations) {
 		this.fuseOps = fuse3_operations.allocate(fuseScope);
@@ -61,15 +60,13 @@ public final class FuseImpl extends Fuse {
 
 	private void waitForMountingToComplete(Path mountPoint) throws InterruptedException {
 		var probe = Files.getFileAttributeView(mountPoint.resolve(MOUNT_PROBE.substring(1)), BasicFileAttributeView.class);
-		while (!accessProbeSuccess.get()) {
+		do {
 			try {
 				probe.readAttributes(); // we don't care about the result, we just want to trigger a getattr call
 			} catch (IOException e) {
-				//do nothing
-			} finally {
-				Thread.sleep(333);
+				//noop
 			}
-		}
+		} while (!mountReturnBarrier.await(333, TimeUnit.MILLISECONDS));
 	}
 
 
@@ -170,10 +167,10 @@ public final class FuseImpl extends Fuse {
 	int getattr(MemoryAddress path, MemoryAddress stat, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
 			var pathObj = path.getUtf8String(0);
-			if(!accessProbeSuccess.get()) {
-				this.accessProbeSuccess.set(pathObj.equals(MOUNT_PROBE));
+			if(mountReturnBarrier.getCount() > 0 && pathObj.equals(MOUNT_PROBE) ) {
+				mountReturnBarrier.countDown();
 			}
-			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
+			return delegate.getattr(pathObj, new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
 		}
 	}
 
