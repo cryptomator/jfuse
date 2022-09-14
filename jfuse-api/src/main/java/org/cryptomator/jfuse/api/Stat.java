@@ -5,6 +5,42 @@ import java.util.Set;
 
 public interface Stat {
 
+	/**
+	 * Mask value for file type socket
+	 * See man page of inode(7).
+	 */
+	int S_IFSOCK = 0140000;
+	/**
+	 * Mask value for file type symbolic link
+	 * See man page of inode(7).
+	 */
+	int S_IFLNK = 0120000;
+	/**
+	 * Mask value for file type regular file
+	 * See man page of inode(7).
+	 */
+	int S_IFREG = 0100000;
+	/**
+	 * Mask value for file type block device
+	 * See man page of inode(7).
+	 */
+	int S_IFBLK = 0060000;
+	/**
+	 * Mask value for file type directory
+	 * See man page of inode(7).
+	 */
+	int S_IFDIR = 0040000;
+	/**
+	 * Mask value for file type character device
+	 * See man page of inode(7).
+	 */
+	int S_IFCHR = 0020000;
+	/**
+	 * Mask value for file type named pipe (FIFO)
+	 * See man page of inode(7).
+	 */
+	int S_IFIFO = 0010000;
+
 	TimeSpec aTime();
 
 	TimeSpec cTime();
@@ -46,37 +82,61 @@ public interface Stat {
 	/**
 	 * @return <code>true</code> if <code>S_IFDIR</code> bit is set in {@link #getMode()}
 	 */
-	boolean isDir();
+	default boolean isDir() {
+		return (getMode() & S_IFDIR) == S_IFDIR;
+	}
 
 	/**
 	 * Sets the <code>S_IFDIR</code> bit in {@link #setMode(int)}
 	 *
 	 * @param isDir Whether to set the <code>S_IFDIR</code> bit to one.
 	 */
-	void toggleDir(boolean isDir);
+	default void toggleDir(boolean isDir) {
+		if (isDir) {
+			setMode(getMode() | S_IFDIR);
+		} else {
+			setMode(getMode() & ~S_IFDIR);
+		}
+	}
 
 	/**
 	 * @return <code>true</code> if <code>S_IFREG</code> bit is set in {@link #getMode()}
 	 */
-	boolean isReg();
+	default boolean isReg() {
+		return (getMode() & S_IFREG) == S_IFREG;
+	}
 
 	/**
 	 * Sets the <code>S_IFREG</code> bit in {@link #setMode(int)}
 	 *
 	 * @param isReg Whether to set the <code>S_IFREG</code> bit to one.
 	 */
-	void toggleReg(boolean isReg);
+	default void toggleReg(boolean isReg) {
+		if (isReg) {
+			setMode(getMode() | S_IFREG);
+		} else {
+			setMode(getMode() & ~S_IFREG);
+		}
+	}
 
 	/**
 	 * @return <code>true</code> if <code>S_IFLNK</code> bit is set in {@link #getMode()}
 	 */
-	boolean isLnk();
+	default boolean isLnk() {
+		return (getMode() & S_IFLNK) == S_IFLNK;
+	}
 
 	/**
 	 * Sets the <code>S_IFLNK</code> bit in {@link #setMode(int)}
 	 *
 	 * @param isLnk Whether to set the <code>S_IFLNK</code> bit to one.
 	 */
-	void toggleLnk(boolean isLnk);
+	default void toggleLnk(boolean isLnk) {
+		if (isLnk) {
+			setMode(getMode() | S_IFLNK);
+		} else {
+			setMode(getMode() & ~S_IFLNK);
+		}
+	}
 
 }
