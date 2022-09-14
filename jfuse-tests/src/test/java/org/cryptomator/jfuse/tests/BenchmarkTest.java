@@ -27,7 +27,7 @@ public class BenchmarkTest {
 	@Benchmark
 	@Warmup(iterations = 2)
 	@Fork(value = 1)
-	@OutputTimeUnit(TimeUnit.MICROSECONDS)
+	@OutputTimeUnit(TimeUnit.MILLISECONDS)
 	@BenchmarkMode(Mode.AverageTime)
 	public void testListDirJnrMulti(Blackhole blackhole) throws IOException {
 		try (var ds = Files.walk(Path.of("/Volumes/bar"), 5)) {
@@ -38,7 +38,7 @@ public class BenchmarkTest {
 	@Benchmark
 	@Warmup(iterations = 2)
 	@Fork(value = 1)
-	@OutputTimeUnit(TimeUnit.MICROSECONDS)
+	@OutputTimeUnit(TimeUnit.MILLISECONDS)
 	@BenchmarkMode(Mode.AverageTime)
 	public void testListDirPanamaMulti(Blackhole blackhole) throws IOException {
 		try (var ds = Files.walk(Path.of("/Volumes/foo"), 5)) {
