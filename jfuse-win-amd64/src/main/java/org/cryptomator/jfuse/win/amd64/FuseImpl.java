@@ -174,13 +174,6 @@ public final class FuseImpl extends Fuse {
 		}
 	}
 
-	@VisibleForTesting
-	int fgetattr(MemoryAddress path, MemoryAddress stat, MemoryAddress fi) {
-		try (var scope = MemorySession.openConfined()) {
-			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
-		}
-	}
-
 	private int mkdir(MemoryAddress path, int mode) {
 		return delegate.mkdir(path.getUtf8String(0), mode);
 	}
@@ -249,13 +242,6 @@ public final class FuseImpl extends Fuse {
 
 	@VisibleForTesting
 	int truncate(MemoryAddress path, long size, MemoryAddress fi) {
-		try (var scope = MemorySession.openConfined()) {
-			return delegate.truncate(path.getUtf8String(0), size, new FileInfoImpl(fi, scope));
-		}
-	}
-
-	@VisibleForTesting
-	int ftruncate(MemoryAddress path, long size, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
 			return delegate.truncate(path.getUtf8String(0), size, new FileInfoImpl(fi, scope));
 		}

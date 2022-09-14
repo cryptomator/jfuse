@@ -146,75 +146,34 @@ public class FuseImplTest {
 		}
 	}
 
-
-	@Nested
+	@Test
 	@DisplayName("getattr")
-	public class GetAttr {
+	public void testGetattr() {
+		try (var scope = MemorySession.openConfined()) {
+			var path = scope.allocateUtf8String("/foo");
+			var attr = fuse_stat.allocate(scope);
+			var fi = scope.allocate(fuse3_file_info.$LAYOUT());
+			Mockito.doReturn(42).when(fuseOps).getattr(Mockito.eq("/foo"), Mockito.any(), Mockito.argThat(usesSameMemorySegement(fi)));
 
-		@Test
-		@DisplayName("getattr")
-		public void testGetattr() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var attr = fuse_stat.allocate(scope);
-				var fi = scope.allocate(fuse3_file_info.$LAYOUT());
-				Mockito.doReturn(42).when(fuseOps).getattr(Mockito.eq("/foo"), Mockito.any(), Mockito.argThat(usesSameMemorySegement(fi)));
+			var result = fuseImpl.getattr(path.address(), attr.address(), fi.address());
 
-				var result = fuseImpl.getattr(path.address(), attr.address(), fi.address());
-
-				Assertions.assertEquals(42, result);
-			}
+			Assertions.assertEquals(42, result);
 		}
-
-		@Test
-		@DisplayName("fgetattr")
-		public void testFgetattr() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var attr = fuse_stat.allocate(scope);
-				var fi = fuse3_file_info.allocate(scope);
-				Mockito.doReturn(42).when(fuseOps).getattr(Mockito.eq("/foo"), Mockito.any(), Mockito.argThat(usesSameMemorySegement(fi)));
-
-				var result = fuseImpl.fgetattr(path.address(), attr.address(), fi.address());
-
-				Assertions.assertEquals(42, result);
-			}
-		}
-
 	}
 
-	@Nested
+
+	@Test
 	@DisplayName("truncate")
-	public class Truncate {
+	public void testTruncate() {
+		try (var scope = MemorySession.openConfined()) {
+			var path = scope.allocateUtf8String("/foo");
+			var fi = scope.allocate(fuse3_file_info.$LAYOUT());
+			Mockito.doReturn(42).when(fuseOps).truncate(Mockito.eq("/foo"), Mockito.eq(1337L), Mockito.argThat(usesSameMemorySegement(fi)));
 
-		@Test
-		@DisplayName("truncate")
-		public void testTruncate() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var fi = scope.allocate(fuse3_file_info.$LAYOUT());
-				Mockito.doReturn(42).when(fuseOps).truncate(Mockito.eq("/foo"), Mockito.eq(1337L), Mockito.argThat(usesSameMemorySegement(fi)));
+			var result = fuseImpl.truncate(path.address(), 1337L, fi.address());
 
-				var result = fuseImpl.truncate(path.address(), 1337L, fi.address());
-
-				Assertions.assertEquals(42, result);
-			}
+			Assertions.assertEquals(42, result);
 		}
-
-		@Test
-		@DisplayName("ftruncate")
-		public void testFtruncate() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var fi = fuse3_file_info.allocate(scope);
-				Mockito.doReturn(42).when(fuseOps).truncate(Mockito.eq("/foo"), Mockito.eq(1337L), Mockito.argThat(usesSameMemorySegement(fi)));
-
-				var result = fuseImpl.ftruncate(path.address(), 1337L, fi.address());
-
-				Assertions.assertEquals(42, result);
-			}
-		}
-
 	}
 
 	private static ArgumentMatcher<FileInfo> usesSameMemorySegement(MemorySegment expected) {
