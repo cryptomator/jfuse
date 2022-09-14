@@ -19,16 +19,10 @@ record DirFillerImpl(MemoryAddress buf, fuse_fill_dir_t callback, MemorySession 
 
 	@Override
 	public int fill(String name, Consumer<Stat> statFiller, long offset, Set<FillDirFlags> flags) {
-		MemoryAddress statAddr;
-		if (statFiller != null) {
-			var segment = stat.allocate(scope);
-			statFiller.accept(new StatImpl(segment));
-			statAddr = segment.address();
-		} else {
-			statAddr = MemoryAddress.NULL;
-		}
+		var statSegment = stat.allocate(scope);
+		statFiller.accept(new StatImpl(statSegment));
 		var encodedFlags = FillDirFlags.toMask(flags, fuse_h.FUSE_FILL_DIR_PLUS());
-		return callback.apply(buf, scope.allocateUtf8String(name).address(), statAddr, offset, encodedFlags);
+		return callback.apply(buf, scope.allocateUtf8String(name).address(), statSegment.address(), offset, encodedFlags);
 	}
 
 }
