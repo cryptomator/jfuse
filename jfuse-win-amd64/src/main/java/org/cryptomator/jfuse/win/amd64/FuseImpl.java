@@ -63,8 +63,7 @@ public final class FuseImpl extends Fuse {
 		var probe = Files.getFileAttributeView(mountPoint.resolve(MOUNT_PROBE.substring(1)), BasicFileAttributeView.class);
 		while (!accessProbeSuccess.get()) {
 			try {
-				probe.readAttributes();
-				Files.readAttributes(mountPoint, BasicFileAttributes.class);
+				probe.readAttributes(); // we don't care about the result, we just want to trigger a getattr call
 			} catch (IOException e) {
 				//do nothing
 			} finally {
