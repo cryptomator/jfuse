@@ -62,7 +62,6 @@ public class MirrorIT {
 		}
 		fuse = builder.build(fs);
 		fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));
-		Thread.sleep(100); // give the file system some time to accept the mounted volume
 	}
 
 	@AfterAll
