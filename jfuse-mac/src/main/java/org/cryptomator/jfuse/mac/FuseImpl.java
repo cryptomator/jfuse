@@ -75,7 +75,7 @@ public final class FuseImpl extends Fuse {
 
 	private void bind(FuseOperations.Operation operation) {
 		switch (operation) {
-			case INIT -> fuse_operations.access$set(fuseOps, fuse_operations.init.allocate(this::init, fuseScope).address());
+			case INIT -> fuse_operations.init$set(fuseOps, fuse_operations.init.allocate(this::init, fuseScope).address());
 			case ACCESS -> fuse_operations.access$set(fuseOps, fuse_operations.access.allocate(this::access, fuseScope).address());
 			case CHMOD -> fuse_operations.chmod$set(fuseOps, fuse_operations.chmod.allocate(this::chmod, fuseScope).address());
 			case CREATE -> fuse_operations.create$set(fuseOps, fuse_operations.create.allocate(this::create, fuseScope).address());
