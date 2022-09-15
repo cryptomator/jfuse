@@ -3,6 +3,7 @@ package org.cryptomator.jfuse.api;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
 
+@SuppressWarnings("OctalInteger")
 public interface Stat {
 
 	/**
@@ -83,7 +84,7 @@ public interface Stat {
 	 * @return <code>true</code> if <code>S_IFDIR</code> bit is set in {@link #getMode()}
 	 */
 	default boolean isDir() {
-		return (getMode() & S_IFDIR) == S_IFDIR;
+		return hasMode(S_IFDIR);
 	}
 
 	/**
@@ -92,18 +93,14 @@ public interface Stat {
 	 * @param isDir Whether to set the <code>S_IFDIR</code> bit to one.
 	 */
 	default void toggleDir(boolean isDir) {
-		if (isDir) {
-			setMode(getMode() | S_IFDIR);
-		} else {
-			setMode(getMode() & ~S_IFDIR);
-		}
+		toggleMode(S_IFDIR, isDir);
 	}
 
 	/**
 	 * @return <code>true</code> if <code>S_IFREG</code> bit is set in {@link #getMode()}
 	 */
 	default boolean isReg() {
-		return (getMode() & S_IFREG) == S_IFREG;
+		return hasMode(S_IFREG);
 	}
 
 	/**
@@ -112,18 +109,14 @@ public interface Stat {
 	 * @param isReg Whether to set the <code>S_IFREG</code> bit to one.
 	 */
 	default void toggleReg(boolean isReg) {
-		if (isReg) {
-			setMode(getMode() | S_IFREG);
-		} else {
-			setMode(getMode() & ~S_IFREG);
-		}
+		toggleMode(S_IFREG, isReg);
 	}
 
 	/**
 	 * @return <code>true</code> if <code>S_IFLNK</code> bit is set in {@link #getMode()}
 	 */
 	default boolean isLnk() {
-		return (getMode() & S_IFLNK) == S_IFLNK;
+		return hasMode(S_IFLNK);
 	}
 
 	/**
@@ -132,10 +125,18 @@ public interface Stat {
 	 * @param isLnk Whether to set the <code>S_IFLNK</code> bit to one.
 	 */
 	default void toggleLnk(boolean isLnk) {
-		if (isLnk) {
-			setMode(getMode() | S_IFLNK);
+		toggleMode(S_IFLNK, isLnk);
+	}
+
+	default boolean hasMode(int mask) {
+		return (getMode() & mask) == mask;
+	}
+
+	default void toggleMode(int mask, boolean set) {
+		if (set) {
+			setMode(getMode() | mask);
 		} else {
-			setMode(getMode() & ~S_IFLNK);
+			setMode(getMode() & ~mask);
 		}
 	}
 
