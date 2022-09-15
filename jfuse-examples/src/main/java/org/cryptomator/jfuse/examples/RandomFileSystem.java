@@ -23,7 +23,7 @@ public class RandomFileSystem implements FuseOperations {
 
 	private static final int S_IFDIR = 0040000;
 	private static final int S_IFREG = 0100000;
-	private static final Logger LOG = LoggerFactory.getLogger(HelloWorldFileSystem.class);
+	private static final Logger LOG = LoggerFactory.getLogger(RandomFileSystem.class);
 
 	private final Errno errno;
 	private final RandomFileStructure rfs;
