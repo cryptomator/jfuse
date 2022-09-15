@@ -11,21 +11,30 @@ import org.cryptomator.jfuse.win.amd64.extr.fuse_h;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_timespec;
 import org.jetbrains.annotations.VisibleForTesting;
 
+import java.io.IOException;
 import java.lang.foreign.Addressable;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.ValueLayout;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributeView;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
-public final class FuseImpl extends Fuse {
+public class FuseImpl extends Fuse {
 
+	//Used to check, if the mounted fs is actually accessible, see https://github.com/winfsp/winfsp/discussions/440
+	private static final String MOUNT_PROBE = "/jfuse_windows_mount_probe";
 	private final FuseOperations delegate;
 	private final MemorySegment fuseOps;
+
+	private final CountDownLatch mountProbeSucceeded = new CountDownLatch(1);
 
 	public FuseImpl(FuseOperations fuseOperations) {
 		this.fuseOps = fuse3_operations.allocate(fuseScope);
@@ -36,12 +45,31 @@ public final class FuseImpl extends Fuse {
 	@Override
 	public void mount(String progName, Path mountPoint, String... flags) throws MountFailedException {
 		var adjustedMP = mountPoint;
-		if (mountPoint.compareTo(mountPoint.getRoot()) == 0 && mountPoint.isAbsolute()) {
+		if (mountPoint.equals(mountPoint.getRoot()) && mountPoint.isAbsolute()) {
 			//winfsp accepts only drive letters written in drive relative notation
 			adjustedMP = Path.of(mountPoint.toString().charAt(0) + ":");
 		}
 		super.mount(progName, adjustedMP, flags);
+		try {
+			waitForMountingToComplete(mountPoint);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new MountFailedException("Interrupted while waiting for mounting to finish");
+		}
 	}
+
+	@VisibleForTesting
+	void waitForMountingToComplete(Path mountPoint) throws InterruptedException {
+		var probe = Files.getFileAttributeView(mountPoint.resolve(MOUNT_PROBE.substring(1)), BasicFileAttributeView.class);
+		do {
+			try {
+				probe.readAttributes(); // we don't care about the result, we just want to trigger a getattr call
+			} catch (IOException e) {
+				//noop
+			}
+		} while (!mountProbeSucceeded.await(333, TimeUnit.MILLISECONDS));
+	}
+
 
 	@Override
 	protected FuseMount mount(List<String> args) throws MountFailedException {
@@ -139,15 +167,11 @@ public final class FuseImpl extends Fuse {
 	@VisibleForTesting
 	int getattr(MemoryAddress path, MemoryAddress stat, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
-			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
-		}
-	}
-
-	// TODO remove
-	@VisibleForTesting
-	int fgetattr(MemoryAddress path, MemoryAddress stat, MemoryAddress fi) {
-		try (var scope = MemorySession.openConfined()) {
-			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
+			var pathObj = path.getUtf8String(0);
+			if(mountProbeSucceeded.getCount() > 0 && pathObj.equals(MOUNT_PROBE) ) {
+				mountProbeSucceeded.countDown();
+			}
+			return delegate.getattr(pathObj, new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
 		}
 	}
 
@@ -220,14 +244,6 @@ public final class FuseImpl extends Fuse {
 
 	@VisibleForTesting
 	int truncate(MemoryAddress path, long size, MemoryAddress fi) {
-		try (var scope = MemorySession.openConfined()) {
-			return delegate.truncate(path.getUtf8String(0), size, new FileInfoImpl(fi, scope));
-		}
-	}
-
-	// TODO remove
-	@VisibleForTesting
-	int ftruncate(MemoryAddress path, long size, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
 			return delegate.truncate(path.getUtf8String(0), size, new FileInfoImpl(fi, scope));
 		}
