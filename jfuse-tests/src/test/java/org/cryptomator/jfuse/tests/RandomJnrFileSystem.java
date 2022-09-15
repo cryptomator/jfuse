@@ -87,4 +87,18 @@ public class RandomJnrFileSystem extends FuseStubFS {
 		}
 	}
 
+	@Override
+	public int open(String path, FuseFileInfo fi) {
+		return 0;
+	}
+
+	@Override
+	public int read(String path, Pointer buf, long size, long offset, FuseFileInfo fi) {
+		return 0;
+	}
+
+	@Override
+	public int release(String path, FuseFileInfo fi) {
+		return 0;
+	}
 }

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Set;
@@ -89,6 +90,21 @@ public class RandomFileSystem implements FuseOperations {
 			stat.setSize(0);
 			stat.mTime().set(node.lastModified());
 		}
+	}
+
+	@Override
+	public int open(String path, FileInfo fi) {
+		return 0;
+	}
+
+	@Override
+	public int read(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
+		return 0;
+	}
+
+	@Override
+	public int release(String path, FileInfo fi) {
+		return 0;
 	}
 
 	@Override
