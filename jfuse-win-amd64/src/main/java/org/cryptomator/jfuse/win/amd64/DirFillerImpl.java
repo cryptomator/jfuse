@@ -18,11 +18,10 @@ record DirFillerImpl(MemoryAddress buf, fuse3_fill_dir_t callback, MemorySession
 	}
 
 	@Override
-	public int fill(String name, Consumer<Stat> statFiller, long offset, Set<FillDirFlags> flags) {
+	public int fill(String name, Consumer<Stat> statFiller, long offset, int flags) {
 		var statSegment = fuse_stat.allocate(scope);
 		statFiller.accept(new StatImpl(statSegment));
-		var encodedFlags = FillDirFlags.toMask(flags, fuse_h.FUSE_FILL_DIR_PLUS());
-		return callback.apply(buf, scope.allocateUtf8String(name).address(), statSegment.address(), offset, encodedFlags);
+		return callback.apply(buf, scope.allocateUtf8String(name).address(), statSegment.address(), offset, flags);
 	}
 
 }

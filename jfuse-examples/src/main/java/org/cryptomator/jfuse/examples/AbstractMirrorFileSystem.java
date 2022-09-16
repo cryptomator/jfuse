@@ -274,7 +274,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	}
 
 	@Override
-	public int readdir(String path, DirFiller filler, long offset, FileInfo fi, Set<ReadDirFlags> flags) {
+	public int readdir(String path, DirFiller filler, long offset, FileInfo fi, int flags) {
 		LOG.trace("readdir {}", path);
 		Path node = resolvePath(path);
 

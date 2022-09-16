@@ -156,8 +156,7 @@ public final class FuseImpl extends Fuse {
 
 	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi, int flags) {
 		try (var scope = MemorySession.openConfined()) {
-			var parsedFlags = FuseOperations.ReadDirFlags.parse(flags, fuse_h.FUSE_READDIR_PLUS());
-			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope), parsedFlags);
+			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope), flags);
 		}
 	}
 

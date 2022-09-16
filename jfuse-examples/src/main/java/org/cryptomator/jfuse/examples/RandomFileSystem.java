@@ -82,7 +82,7 @@ public class RandomFileSystem implements FuseOperations {
 	private void fillStats(RandomFileStructure.Node node, Stat stat){
 		if (node.isDir()) {
 			stat.setMode(S_IFDIR | 0755);
-			stat.setNLink((short) (2 + node.children().size()));
+			stat.setNLink((short) (2 + node.children().values().stream().filter(RandomFileStructure.Node::isDir).count()));
 			stat.mTime().set(node.lastModified());
 		} else {
 			stat.setMode(S_IFREG | 0444);
@@ -114,23 +114,23 @@ public class RandomFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public int readdir(String path, DirFiller filler, long offset, FileInfo fi, Set<ReadDirFlags> flags) {
-		LOG.debug("readdir() {} {} {}", path, offset, flags.stream().map(ReadDirFlags::name).collect(Collectors.joining(", ")));
+	public int readdir(String path, DirFiller filler, long offset, FileInfo fi, int flags) {
+		LOG.debug("readdir() {} offset={} plus={}", path, offset, (flags & FUSE_READDIR_PLUS) == flags);
 		var node = rfs.getNode(path);
 		if (node == null) {
 			return -errno.enoent();
 		} else if (!node.isDir()) {
 			return -errno.enotdir();
 		} else {
-			if (offset == 0 && filler.fill(".", stat -> fillStats(node, stat), ++offset, DirFiller.FILL_DIR_PLUS_FLAGS) != 0)
+			if (offset == 0 && filler.fill(".", stat -> fillStats(node, stat), ++offset, DirFiller.FUSE_FILL_DIR_PLUS) != 0)
 				return 0;
-			if (offset == 1 && filler.fill("..", stat -> {}, ++offset, DirFiller.FILL_DIR_PLUS_FLAGS) != 0)
+			if (offset == 1 && filler.fill("..", stat -> {}, ++offset, 0) != 0)
 				return 0;
 			assert offset > 1;
 			var childIter = node.children().values().stream().skip(offset - 2).iterator();
 			while (childIter.hasNext()) {
 				var child = childIter.next();
-				if (filler.fill(child.name(), stat -> fillStats(child, stat), ++offset, DirFiller.FILL_DIR_PLUS_FLAGS) != 0) {
+				if (filler.fill(child.name(), stat -> fillStats(child, stat), ++offset, DirFiller.FUSE_FILL_DIR_PLUS) != 0) {
 					return 0;
 				}
 			}

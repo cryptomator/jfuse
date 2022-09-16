@@ -171,7 +171,7 @@ public final class FuseImpl extends Fuse {
 
 	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
-			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope), Set.of());
+			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope), 0);
 		}
 	}
 

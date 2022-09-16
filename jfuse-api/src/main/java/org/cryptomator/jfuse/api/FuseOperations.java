@@ -2,6 +2,7 @@ package org.cryptomator.jfuse.api;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.EnumSet;
 import java.util.Set;
@@ -39,31 +40,15 @@ public interface FuseOperations {
 		WRITE
 	}
 
-	enum ReadDirFlags {
-
-		/**
-		 * "Plus" mode.
-		 * <p>
-		 * The kernel wants to prefill the inode cache during readdir. The filesystem may honour this by filling in the
-		 * attributes and setting {@link DirFiller.FillDirFlags FUSE_FILL_DIR_FLAGS} for the filler function.
-		 * The filesystem may also just ignore this flag completely.
-		 */
-		READ_DIR_PLUS;
-
-		/**
-		 * Parses the given {@code flags}.
-		 *
-		 * @param flags       The encoded bit set
-		 * @param readDirPlus The constant value of {@code FUSE_READDIR_PLUS}
-		 * @return A set containing all the {@link ReadDirFlags} values encoded in the given bit set
-		 */
-		public static Set<ReadDirFlags> parse(int flags, int readDirPlus) {
-			// currently there is only one known flag, hence this rather trivial implementation.
-			return (flags & readDirPlus) == readDirPlus
-					? EnumSet.of(READ_DIR_PLUS)
-					: Set.of();
-		}
-	}
+	/**
+	 * "Plus" mode.
+	 * <p>
+	 * The kernel wants to prefill the inode cache during readdir. The filesystem may honour this by filling in the
+	 * attributes and setting {@link DirFiller#FUSE_FILL_DIR_PLUS FUSE_FILL_DIR_PLUS} for the filler function.
+	 * The filesystem may also just ignore this flag completely.
+	 */
+	@SuppressWarnings("PointlessBitwiseExpression")
+	int FUSE_READDIR_PLUS = 1 << 0;
 
 	/**
 	 * @return The error codes from <code>errno.h</code> for the current platform.
@@ -495,7 +480,7 @@ public interface FuseOperations {
 	 * @param filler the fill function
 	 * @param offset the offset
 	 * @param fi     file info
-	 * @param flags  When {@link ReadDirFlags#READ_DIR_PLUS READ_DIR_PLUS} is not set, only some parameters of the
+	 * @param flags  When {@link #FUSE_READDIR_PLUS} is not set, only some parameters of the
 	 *               fill function (the {@code filler} parameter) are actually used:
 	 *               The file type (which is part of {@link Stat#getMode()}) is used. And if
 	 *               fuse_config::use_ino is set, the inode (stat::st_ino) is also
@@ -503,7 +488,7 @@ public interface FuseOperations {
 	 *               set.
 	 * @return 0 on success or negated error code (-errno)
 	 */
-	default int readdir(String path, DirFiller filler, long offset, FileInfo fi, Set<ReadDirFlags> flags) {
+	default int readdir(String path, DirFiller filler, long offset, FileInfo fi, int flags) {
 		return -errno().enosys();
 	}
 

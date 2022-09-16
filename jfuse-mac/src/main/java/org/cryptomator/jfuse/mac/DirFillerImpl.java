@@ -17,7 +17,7 @@ record DirFillerImpl(MemoryAddress buf, fuse_fill_dir_t callback, MemorySession 
 	}
 
 	@Override
-	public int fill(String name, Consumer<Stat> statFiller, long offset, Set<FillDirFlags> flags) {
+	public int fill(String name, Consumer<Stat> statFiller, long offset, int flags) {
 		MemoryAddress statAddr;
 		if (statFiller != null) {
 			var segment = stat.allocate(scope);
