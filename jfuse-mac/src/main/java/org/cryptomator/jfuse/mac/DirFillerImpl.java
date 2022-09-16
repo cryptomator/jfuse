@@ -7,7 +7,6 @@ import org.cryptomator.jfuse.mac.extr.stat;
 
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySession;
-import java.util.Set;
 import java.util.function.Consumer;
 
 record DirFillerImpl(MemoryAddress buf, fuse_fill_dir_t callback, MemorySession scope) implements DirFiller {
@@ -18,15 +17,9 @@ record DirFillerImpl(MemoryAddress buf, fuse_fill_dir_t callback, MemorySession 
 
 	@Override
 	public int fill(String name, Consumer<Stat> statFiller, long offset, int flags) {
-		MemoryAddress statAddr;
-		if (statFiller != null) {
-			var segment = stat.allocate(scope);
-			statFiller.accept(new StatImpl(segment));
-			statAddr = segment.address();
-		} else {
-			statAddr = MemoryAddress.NULL;
-		}
-		return callback.apply(buf, scope.allocateUtf8String(name).address(), statAddr, offset);
+		var statSegment = stat.allocate(scope);
+		statFiller.accept(new StatImpl(statSegment));
+		return callback.apply(buf, scope.allocateUtf8String(name).address(), statSegment.address(), offset);
 	}
 
 }
