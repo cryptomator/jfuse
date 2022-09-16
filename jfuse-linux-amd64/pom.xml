@@ -117,10 +117,6 @@
 										<includeStruct>fuse_args</includeStruct>
 										<includeStruct>fuse_loop_config</includeStruct>
 									</includeStructs>
-									<includeMacros>
-										<includeMacro>FUSE_FILL_DIR_PLUS</includeMacro>
-										<includeMacro>FUSE_READDIR_PLUS</includeMacro>
-									</includeMacros>
 								</configuration>
 							</execution>
 							<execution>

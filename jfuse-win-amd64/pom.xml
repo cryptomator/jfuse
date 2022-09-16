@@ -116,10 +116,6 @@
 										<includeStruct>fuse_timespec</includeStruct>
 										<includeStruct>fuse3_conn_info</includeStruct>
 									</includeStructs>
-									<includeMacros>
-										<includeMacro>FUSE_FILL_DIR_PLUS</includeMacro>
-										<includeMacro>FUSE_READDIR_PLUS</includeMacro>
-									</includeMacros>
 								</configuration>
 							</execution>
 							<!-- winfsp does not support fuse_lowlevel.h. fuse_parse_cmdline is taken from fuse2.h -->

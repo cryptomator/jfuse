@@ -18,12 +18,6 @@ public class fuse_h  {
     public static OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
     public static OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
     public static OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
-    public static int FUSE_READDIR_PLUS() {
-        return (int)1L;
-    }
-    public static int FUSE_FILL_DIR_PLUS() {
-        return (int)2L;
-    }
     public static MethodHandle fuse3_lib_help$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse3_lib_help$MH,"fuse3_lib_help");
     }
