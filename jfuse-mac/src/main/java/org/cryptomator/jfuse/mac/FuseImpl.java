@@ -18,7 +18,6 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.ValueLayout;
 import java.util.List;
-import java.util.Set;
 
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 

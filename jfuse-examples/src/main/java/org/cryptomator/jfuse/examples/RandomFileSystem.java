@@ -17,7 +17,6 @@ import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("OctalInteger")
 public class RandomFileSystem implements FuseOperations {

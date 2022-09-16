@@ -19,7 +19,6 @@ import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Stream;
 
 @SuppressWarnings("OctalInteger")
 public class HelloWorldFileSystem implements FuseOperations {

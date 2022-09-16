@@ -1,8 +1,6 @@
 package org.cryptomator.jfuse.api;
 
 import java.io.IOException;
-import java.util.EnumSet;
-import java.util.Set;
 import java.util.function.Consumer;
 
 public interface DirFiller {
