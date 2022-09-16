@@ -29,9 +29,13 @@ record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
 	}
 
 	@Override
+	public int want() {
+		return fuse_conn_info.want$get(segment);
+	}
+
+	@Override
 	public void setWant(int wanted) {
 		fuse_conn_info.want$set(segment, wanted);
-
 	}
 
 	@Override
@@ -94,8 +98,4 @@ record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
 		fuse_conn_info.time_gran$set(segment, timeGran);
 	}
 
-	@Override
-	public int want() {
-		return fuse_conn_info.want$get(segment);
-	}
 }

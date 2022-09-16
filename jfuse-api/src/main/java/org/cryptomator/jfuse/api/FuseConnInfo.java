@@ -8,6 +8,7 @@ package org.cryptomator.jfuse.api;
  */
 public interface FuseConnInfo {
 
+	@SuppressWarnings("PointlessBitwiseExpression")
 	int FUSE_CAP_ASYNC_READ = (1 << 0);
 	int FUSE_CAP_POSIX_LOCKS = (1 << 1);
 	int FUSE_CAP_ATOMIC_O_TRUNC = (1 << 3);
