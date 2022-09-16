@@ -99,7 +99,8 @@ public final class FuseImpl extends Fuse {
 		}
 	}
 
-	private Addressable init(MemoryAddress conn, MemoryAddress fuseConfig) {
+	@VisibleForTesting
+	Addressable init(MemoryAddress conn, MemoryAddress fuseConfig) {
 		try (var scope = MemorySession.openConfined()) {
 			var connInfo = new FuseConnInfoImpl(conn, scope);
 			connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
