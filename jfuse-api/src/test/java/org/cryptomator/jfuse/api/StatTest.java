@@ -1,10 +1,15 @@
 package org.cryptomator.jfuse.api;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mockito;
+
+import java.util.stream.Stream;
 
 import static org.cryptomator.jfuse.api.Stat.S_IFDIR;
 import static org.cryptomator.jfuse.api.Stat.S_IFLNK;
@@ -16,122 +21,70 @@ public class StatTest {
 
 	public Stat stat = Mockito.spy(new StubStatImpl());
 
-	@Nested
-	public class DirTest {
-
-		@Test
-		public void testIsDir() {
-			Mockito.when(stat.getMode()).thenReturn(S_IFDIR | MAGIC);
-			Assertions.assertTrue(stat.isDir());
-		}
-
-		@Test
-		public void testToggleDir1() {
-			Mockito.when(stat.getMode()).thenReturn(S_IFDIR | MAGIC);
-			stat.toggleDir(true);
-			Mockito.verify(stat).setMode(Mockito.intThat(hasBitsSet(Stat.S_IFDIR)));
-		}
-
-		@Test
-		public void testToggleDir2() {
-			Mockito.when(stat.getMode()).thenReturn(0);
-			stat.toggleDir(true);
-			Mockito.verify(stat).setMode(Mockito.intThat(hasBitsSet(Stat.S_IFDIR)));
-		}
-
-		@Test
-		public void testToggleDir3() {
-			Mockito.when(stat.getMode()).thenReturn(S_IFDIR | MAGIC);
-			stat.toggleDir(false);
-			Mockito.verify(stat).setMode(Mockito.intThat(hasBitsNotSet(Stat.S_IFDIR)));
-		}
-
-		@Test
-		public void testToggleDir4() {
-			Mockito.when(stat.getMode()).thenReturn(0);
-			stat.toggleDir(false);
-			Mockito.verify(stat).setMode(Mockito.intThat(hasBitsNotSet(Stat.S_IFDIR)));
-		}
-
+	@ParameterizedTest
+	@MethodSource("provideDataForToggle")
+	public void testToggleMode(int mode, int mask, boolean toSet) {
+		Mockito.when(stat.getMode()).thenReturn(mode);
+		stat.toggleMode(mask, toSet);
+		Mockito.verify(stat).setMode(Mockito.intThat(toSet ? hasBitsSet(mask) : hasBitsNotSet(mask)));
 	}
 
-	@Nested
-	public class RegTest {
-
-		@Test
-		public void testIsReg() {
-			Mockito.when(stat.getMode()).thenReturn(S_IFREG | MAGIC);
-			Assertions.assertTrue(stat.isReg());
-		}
-
-		@Test
-		public void testToggleReg1() {
-			Mockito.when(stat.getMode()).thenReturn(S_IFREG | MAGIC);
-			stat.toggleReg(true);
-			Mockito.verify(stat).setMode(Mockito.intThat(hasBitsSet(S_IFREG)));
-		}
-
-		@Test
-		public void testToggleReg2() {
-			Mockito.when(stat.getMode()).thenReturn(0);
-			stat.toggleReg(true);
-			Mockito.verify(stat).setMode(Mockito.intThat(hasBitsSet(S_IFREG)));
-		}
-
-		@Test
-		public void testToggleReg3() {
-			Mockito.when(stat.getMode()).thenReturn(S_IFREG | MAGIC);
-			stat.toggleReg(false);
-			Mockito.verify(stat).setMode(Mockito.intThat(hasBitsNotSet(S_IFREG)));
-		}
-
-		@Test
-		public void testToggleReg4() {
-			Mockito.when(stat.getMode()).thenReturn(0);
-			stat.toggleReg(false);
-			Mockito.verify(stat).setMode(Mockito.intThat(hasBitsNotSet(S_IFREG)));
-		}
-
+	public static Stream<Arguments> provideDataForToggle() {
+		return Stream.of(
+				Arguments.arguments(S_IFDIR, S_IFDIR, true), //
+				Arguments.arguments(S_IFDIR, S_IFDIR, false), //
+				Arguments.arguments(0, S_IFDIR, true), //
+				Arguments.arguments(0, S_IFDIR, false)
+		);
 	}
 
-	@Nested
-	public class LnkTest {
-
-		@Test
-		public void testIsLnk() {
-			Mockito.when(stat.getMode()).thenReturn(S_IFLNK | MAGIC);
-			Assertions.assertTrue(stat.isLnk());
-		}
-
-		@Test
-		public void testToggleLnk1() {
-			Mockito.when(stat.getMode()).thenReturn(S_IFLNK | MAGIC);
-			stat.toggleLnk(true);
-			Mockito.verify(stat).setMode(Mockito.intThat(hasBitsSet(S_IFLNK)));
-		}
-
-		@Test
-		public void testToggleLnk2() {
-			Mockito.when(stat.getMode()).thenReturn(0);
-			stat.toggleLnk(true);
-			Mockito.verify(stat).setMode(Mockito.intThat(hasBitsSet(S_IFLNK)));
-		}
-
-		@Test
-		public void testToggleLnk3() {
-			Mockito.when(stat.getMode()).thenReturn(S_IFLNK | MAGIC);
-			stat.toggleLnk(false);
-			Mockito.verify(stat).setMode(Mockito.intThat(hasBitsNotSet(S_IFLNK)));
-		}
-
-		@Test
-		public void testToggleLnk4() {
-			Mockito.when(stat.getMode()).thenReturn(0);
-			stat.toggleLnk(false);
-			Mockito.verify(stat).setMode(Mockito.intThat(hasBitsNotSet(S_IFLNK)));
-		}
+	@ParameterizedTest
+	@ValueSource(booleans = {true, false})
+	public void testHasMode(boolean isPresent) {
+		Mockito.when(stat.getMode()).thenReturn(isPresent ? MAGIC : ~MAGIC);
+		boolean result = stat.hasMode(MAGIC);
+		Assertions.assertEquals(isPresent, result);
 	}
 
+
+	@Test
+	public void testIsDir() {
+		stat.isDir();
+		Mockito.verify(stat).hasMode(S_IFDIR);
+	}
+
+	@ParameterizedTest
+	@ValueSource(booleans = {true, false})
+	public void testToggleDir(boolean isDir) {
+		stat.toggleDir(isDir);
+		Mockito.verify(stat).toggleMode(S_IFDIR, isDir);
+	}
+
+	@Test
+	public void testIsReg() {
+		stat.isReg();
+		Mockito.verify(stat).hasMode(S_IFREG);
+	}
+
+	@ParameterizedTest
+	@ValueSource(booleans = {true, false})
+	public void testToggleReg(boolean isReg) {
+		stat.toggleReg(isReg);
+		Mockito.verify(stat).toggleMode(S_IFREG, isReg);
+	}
+
+	@Test
+	public void testIsLnk() {
+		stat.isLnk();
+		Mockito.verify(stat).hasMode(S_IFLNK);
+	}
+
+	@ParameterizedTest
+	@ValueSource(booleans = {true, false})
+	public void testToggleLnk(boolean isLnk) {
+		stat.toggleLnk(isLnk);
+		Mockito.verify(stat).toggleMode(S_IFLNK, isLnk);
+	}
 
 	private static ArgumentMatcher<Integer> hasBitsSet(int mask) {
 		return toMatch -> (toMatch & mask) == mask;
