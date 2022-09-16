@@ -1,6 +1,7 @@
 package org.cryptomator.jfuse.win.amd64;
 
 import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
@@ -143,7 +144,9 @@ public class FuseImpl extends Fuse {
 
 	private Addressable init(MemoryAddress conn, MemoryAddress fuseConfig) {
 		try (var scope = MemorySession.openConfined()) {
-			delegate.init(new FuseConnInfoImpl(conn, scope));
+			var connInfo = new FuseConnInfoImpl(conn, scope);
+			connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
+			delegate.init(connInfo);
 		}
 		return MemoryAddress.NULL;
 	}
