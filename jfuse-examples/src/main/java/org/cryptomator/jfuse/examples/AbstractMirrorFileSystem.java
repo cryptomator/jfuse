@@ -41,7 +41,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public abstract sealed class AbstractMirrorFileSystem implements FuseOperations permits PosixMirrorFileSystem, WindowsMirrorFileSystem {
@@ -174,34 +173,39 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		Path node = resolvePath(path);
 		try {
 			var attrs = readAttributes(node);
-			if (attrs instanceof PosixFileAttributes posixAttrs) {
-				stat.setPermissions(posixAttrs.permissions());
-			} else if (attrs instanceof DosFileAttributes dosAttrs) {
-				int mode = 0444;
-				mode |= dosAttrs.isReadOnly() ? 0000 : 0200; // add write access for owner
-				mode |= attrs.isDirectory() ? 0111 : 0000; // add execute access for directories
-				stat.setMode(mode);
-			}
-			stat.setSize(attrs.size());
-			stat.setNLink((short) 1);
-			if (attrs.isDirectory()) {
-				stat.toggleDir(true);
-				stat.setNLink((short) (2 + countSubDirs(node)));
-			} else if (attrs.isSymbolicLink()) {
-				stat.toggleLnk(true);
-			} else if (attrs.isRegularFile()){
-				stat.toggleReg(true);
-			}
-			stat.aTime().set(attrs.lastAccessTime().toInstant());
-			stat.mTime().set(attrs.lastModifiedTime().toInstant());
-			stat.cTime().set(attrs.lastAccessTime().toInstant());
-			stat.birthTime().set(attrs.creationTime().toInstant());
+			copyAttrsToStat(attrs, stat);
 			return 0;
 		} catch (NoSuchFileException e) {
 			return -errno.enoent();
 		} catch (IOException e) {
 			return -errno.eio();
 		}
+	}
+
+	@SuppressWarnings("OctalInteger")
+	protected void copyAttrsToStat(BasicFileAttributes attrs, Stat stat) {
+		if (attrs instanceof PosixFileAttributes posixAttrs) {
+			stat.setPermissions(posixAttrs.permissions());
+		} else if (attrs instanceof DosFileAttributes dosAttrs) {
+			int mode = 0444;
+			mode |= dosAttrs.isReadOnly() ? 0000 : 0200; // add write access for owner
+			mode |= attrs.isDirectory() ? 0111 : 0000; // add execute access for directories
+			stat.setMode(mode);
+		}
+		stat.setSize(attrs.size());
+		stat.setNLink((short) 1);
+		if (attrs.isDirectory()) {
+			stat.toggleDir(true);
+			stat.setNLink((short) 2); // FIXME subdir count?
+		} else if (attrs.isSymbolicLink()) {
+			stat.toggleLnk(true);
+		} else if (attrs.isRegularFile()){
+			stat.toggleReg(true);
+		}
+		stat.aTime().set(attrs.lastAccessTime().toInstant());
+		stat.mTime().set(attrs.lastModifiedTime().toInstant());
+		stat.cTime().set(attrs.lastAccessTime().toInstant());
+		stat.birthTime().set(attrs.creationTime().toInstant());
 	}
 
 	protected abstract BasicFileAttributes readAttributes(Path node) throws IOException;
@@ -270,13 +274,16 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	}
 
 	@Override
-	public int readdir(String path, DirFiller filler, long offset, FileInfo fi) {
+	public int readdir(String path, DirFiller filler, long offset, FileInfo fi, int flags) {
 		LOG.trace("readdir {}", path);
 		Path node = resolvePath(path);
+
 		try (var ds = Files.newDirectoryStream(node)) {
-			var childNames = StreamSupport.stream(ds.spliterator(), false).map(Path::getFileName).map(Path::toString);
-			var allNames = Stream.concat(Stream.of(".", ".."), childNames);
-			filler.fillNamesFromOffset(allNames.skip(offset), offset);
+			filler.fill(".");
+			filler.fill("..");
+			for (var child : ds) {
+				filler.fill(child.getFileName().toString());
+			}
 			return 0;
 		} catch (NotDirectoryException e) {
 			return -errno.enotdir();

@@ -4,7 +4,6 @@ import org.cryptomator.jfuse.api.DirFiller;
 import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.Fuse;
-import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.api.Stat;
@@ -14,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Set;
@@ -23,13 +21,13 @@ import java.util.concurrent.TimeoutException;
 import static org.cryptomator.jfuse.api.Stat.S_IFDIR;
 import static org.cryptomator.jfuse.api.Stat.S_IFREG;
 
-public class HelloWorldFileSystem implements FuseOperations {
+public class RandomFileSystem implements FuseOperations {
 
-	private static final Logger LOG = LoggerFactory.getLogger(HelloWorldFileSystem.class);
+	private static final Logger LOG = LoggerFactory.getLogger(RandomFileSystem.class);
 
-	public static final String HELLO_PATH = "/hello.txt";
-	public static final String HELLO_STR = "Hello Panama!";
 	private final Errno errno;
+	private final RandomFileStructure rfs;
+
 
 	public static void main(String[] args) {
 		if (args.length != 1) {
@@ -37,7 +35,7 @@ public class HelloWorldFileSystem implements FuseOperations {
 		}
 		Path mountPoint = Path.of(args[0]);
 		var builder = Fuse.builder();
-		var fuseOps = new HelloWorldFileSystem(builder.errno());
+		var fuseOps = new RandomFileSystem(builder.errno());
 		try (var fuse = builder.build(fuseOps)) {
 			LOG.info("Mounting at {}...", mountPoint);
 			fuse.mount("jfuse", mountPoint, "-s");
@@ -53,8 +51,9 @@ public class HelloWorldFileSystem implements FuseOperations {
 		}
 	}
 
-	public HelloWorldFileSystem(Errno errno) {
+	public RandomFileSystem(Errno errno) {
 		this.errno = errno;
+		this.rfs = RandomFileStructure.init(42L, 100);
 	}
 
 	@Override
@@ -64,75 +63,47 @@ public class HelloWorldFileSystem implements FuseOperations {
 
 	@Override
 	public Set<Operation> supportedOperations() {
-		return EnumSet.of(Operation.DESTROY, Operation.GET_ATTR, Operation.INIT, Operation.OPEN, Operation.OPEN_DIR, Operation.READ, Operation.READ_DIR, Operation.RELEASE, Operation.RELEASE_DIR, Operation.STATFS);
+		return EnumSet.of(Operation.GET_ATTR, Operation.OPEN, Operation.OPEN_DIR, Operation.READ, Operation.READ_DIR, Operation.RELEASE, Operation.RELEASE_DIR, Operation.STATFS, Operation.INIT);
 	}
 
-	@Override
-	public int access(String path, int mask) {
-		LOG.debug("access() {}", path);
-		return 0;
-	}
-
-	@SuppressWarnings("OctalInteger")
 	@Override
 	public int getattr(String path, Stat stat, FileInfo fi) {
 		LOG.debug("getattr() {}", path);
-		if ("/".equals(path)) {
-			stat.setMode(S_IFDIR | 0755);
-			stat.setNLink((short) 2);
-			return 0;
-		} else if (HELLO_PATH.equals(path)) {
-			stat.setMode(S_IFREG | 0444);
-			stat.setNLink((short) 1);
-			stat.setSize(HELLO_STR.getBytes().length);
-			return 0;
-		} else if (path.length() == 4) {
-			stat.setMode(S_IFREG | 0444);
-			stat.setNLink((short) 1);
-			stat.setSize(0);
-			return 0;
-		} else {
+		var node = rfs.getNode(path);
+		if (node == null) {
 			return -errno.enoent();
+		} else {
+			fillStats(node, stat);
+			return 0;
 		}
 	}
 
-	@Override
-	public void init(FuseConnInfo conn) {
-		LOG.info("init() {}.{}", conn.protoMajor(), conn.protoMinor());
-	}
-
-	@Override
-	public void destroy() {
-		LOG.info("destroy()");
+	@SuppressWarnings("OctalInteger")
+	private void fillStats(RandomFileStructure.Node node, Stat stat){
+		if (node.isDir()) {
+			stat.setMode(S_IFDIR | 0755);
+			stat.setNLink((short) (2 + node.children().values().stream().filter(RandomFileStructure.Node::isDir).count()));
+			stat.mTime().set(node.lastModified());
+		} else {
+			stat.setMode(S_IFREG | 0444);
+			stat.setNLink((short) 1);
+			stat.setSize(0);
+			stat.mTime().set(node.lastModified());
+		}
 	}
 
 	@Override
 	public int open(String path, FileInfo fi) {
-		LOG.debug("open() {}", path);
-		if (!HELLO_PATH.equals(path)) {
-			return -errno.enoent();
-		}
 		return 0;
 	}
 
 	@Override
 	public int read(String path, ByteBuffer buf, long size, long offset, FileInfo fi) {
-		LOG.debug("read() {}", path);
-		if (!HELLO_PATH.equals(path)) {
-			return -errno.enoent();
-		}
-
-		ByteBuffer content = StandardCharsets.UTF_8.encode(HELLO_STR);
-		int pos = (int) Math.min(content.capacity(), offset);
-		int len = (int) Math.min(size, content.remaining());
-		buf.put(content.slice(pos, len));
-
-		return len;
+		return 0;
 	}
 
 	@Override
 	public int release(String path, FileInfo fi) {
-		LOG.debug("release() {}", path);
 		return 0;
 	}
 
@@ -144,21 +115,26 @@ public class HelloWorldFileSystem implements FuseOperations {
 
 	@Override
 	public int readdir(String path, DirFiller filler, long offset, FileInfo fi, int flags) {
-		LOG.debug("readdir() {} {}", path, offset);
-		try {
-			filler.fill(".");
-			filler.fill("..");
-			filler.fill(HELLO_PATH.substring(1));
-			filler.fill("aaa");
-			filler.fill("bbb");
-			filler.fill("ccc");
-			filler.fill("ddd");
-			filler.fill("xxx");
-			filler.fill("yyy");
-			filler.fill("zzz");
+		LOG.debug("readdir() {} offset={} plus={}", path, offset, (flags & FUSE_READDIR_PLUS) == flags);
+		var node = rfs.getNode(path);
+		if (node == null) {
+			return -errno.enoent();
+		} else if (!node.isDir()) {
+			return -errno.enotdir();
+		} else {
+			if (offset == 0 && filler.fill(".", stat -> fillStats(node, stat), ++offset, DirFiller.FUSE_FILL_DIR_PLUS) != 0)
+				return 0;
+			if (offset == 1 && filler.fill("..", stat -> {}, ++offset, 0) != 0)
+				return 0;
+			assert offset > 1;
+			var childIter = node.children().values().stream().skip(offset - 2).iterator();
+			while (childIter.hasNext()) {
+				var child = childIter.next();
+				if (filler.fill(child.name(), stat -> fillStats(child, stat), ++offset, DirFiller.FUSE_FILL_DIR_PLUS) != 0) {
+					return 0;
+				}
+			}
 			return 0;
-		} catch (IOException e) {
-			return -errno.eio();
 		}
 	}
 

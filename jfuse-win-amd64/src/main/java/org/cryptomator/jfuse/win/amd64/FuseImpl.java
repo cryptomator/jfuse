@@ -1,6 +1,7 @@
 package org.cryptomator.jfuse.win.amd64;
 
 import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
@@ -141,9 +142,12 @@ public class FuseImpl extends Fuse {
 		}
 	}
 
-	private Addressable init(MemoryAddress conn, MemoryAddress fuseConfig) {
+	@VisibleForTesting
+	Addressable init(MemoryAddress conn, MemoryAddress fuseConfig) {
 		try (var scope = MemorySession.openConfined()) {
-			delegate.init(new FuseConnInfoImpl(conn, scope));
+			var connInfo = new FuseConnInfoImpl(conn, scope);
+			connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
+			delegate.init(connInfo);
 		}
 		return MemoryAddress.NULL;
 	}
@@ -198,9 +202,9 @@ public class FuseImpl extends Fuse {
 		}
 	}
 
-	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi, int flags) { // TODO: readdir plus
+	private int readdir(MemoryAddress path, MemoryAddress buf, MemoryAddress filler, long offset, MemoryAddress fi, int flags) {
 		try (var scope = MemorySession.openConfined()) {
-			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope));
+			return delegate.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, scope), offset, new FileInfoImpl(fi, scope), flags);
 		}
 	}
 

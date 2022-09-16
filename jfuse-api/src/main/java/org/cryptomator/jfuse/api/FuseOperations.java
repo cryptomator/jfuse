@@ -39,6 +39,16 @@ public interface FuseOperations {
 	}
 
 	/**
+	 * "Plus" mode.
+	 * <p>
+	 * The kernel wants to prefill the inode cache during readdir. The filesystem may honour this by filling in the
+	 * attributes and setting {@link DirFiller#FUSE_FILL_DIR_PLUS FUSE_FILL_DIR_PLUS} for the filler function.
+	 * The filesystem may also just ignore this flag completely.
+	 */
+	@SuppressWarnings("PointlessBitwiseExpression")
+	int FUSE_READDIR_PLUS = 1 << 0;
+
+	/**
 	 * @return The error codes from <code>errno.h</code> for the current platform.
 	 * @see FuseBuilder#errno()
 	 */
@@ -463,20 +473,20 @@ public interface FuseOperations {
 	 * 	  is full (or an error happens) the filler function will return
 	 * 	  '1'.</li>
 	 * </ol>
-	 * When FUSE_READDIR_PLUS is not set, only some parameters of the
-	 * fill function (the fuse_fill_dir_t parameter) are actually used:
-	 * The file type (which is part of stat::st_mode) is used. And if
-	 * fuse_config::use_ino is set, the inode (stat::st_ino) is also
-	 * used. The other fields are ignored when FUSE_READDIR_PLUS is not
-	 * set.
 	 *
 	 * @param path   directory path
 	 * @param filler the fill function
 	 * @param offset the offset
 	 * @param fi     file info
+	 * @param flags  When {@link #FUSE_READDIR_PLUS} is not set, only some parameters of the
+	 *               fill function (the {@code filler} parameter) are actually used:
+	 *               The file type (which is part of {@link Stat#getMode()}) is used. And if
+	 *               fuse_config::use_ino is set, the inode (stat::st_ino) is also
+	 *               used. The other fields are ignored when {@code READ_DIR_PLUS} is not
+	 *               set.
 	 * @return 0 on success or negated error code (-errno)
 	 */
-	default int readdir(String path, DirFiller filler, long offset, FileInfo fi) {
+	default int readdir(String path, DirFiller filler, long offset, FileInfo fi, int flags) {
 		return -errno().enosys();
 	}
 

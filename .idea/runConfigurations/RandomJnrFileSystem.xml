@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="HelloJnrFileSystem" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
-    <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.tests.HelloJnrFileSystem" />
+  <configuration default="false" name="RandomJnrFileSystem" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.tests.RandomJnrFileSystem" />
     <module name="jfuse-tests" />
     <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=info" />
     <extension name="coverage">

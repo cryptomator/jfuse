@@ -1,10 +1,12 @@
 package org.cryptomator.jfuse.win.amd64;
 
 import org.cryptomator.jfuse.api.FileInfo;
+import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.win.amd64.extr.fuse2.fuse2_h;
+import org.cryptomator.jfuse.win.amd64.extr.fuse3_conn_info;
 import org.cryptomator.jfuse.win.amd64.extr.fuse3_file_info;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_h;
 import org.cryptomator.jfuse.win.amd64.extr.fuse_stat;
@@ -34,6 +36,7 @@ import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
@@ -163,6 +166,25 @@ public class FuseImplTest {
 			Assertions.assertTrue(fuseArgs.toString().contains("arg[1] = -foo"));
 			Assertions.assertTrue(fuseArgs.toString().contains("arg[2] = -bar"));
 			Assertions.assertTrue(fuseArgs.toString().contains("mountPoint = /mount/point"));
+		}
+	}
+
+	@DisplayName("init() sets fuse_conn_info.wants |= FUSE_CAP_READDIRPLUS")
+	@Test
+	public void testInit() {
+		try (var scope = MemorySession.openConfined()) {
+			var result = new AtomicInteger();
+			Mockito.doAnswer(invocation -> {
+				FuseConnInfo connInfo = invocation.getArgument(0);
+				result.set(connInfo.want());
+				return null;
+			}).when(fuseOps).init(Mockito.any());
+			var connInfo = fuse3_conn_info.allocate(scope);
+			var fuseConfig = MemoryAddress.NULL; // TODO jextract fuse_config
+
+			fuseImpl.init(connInfo.address(), fuseConfig.address());
+
+			Assertions.assertEquals(FuseConnInfo.FUSE_CAP_READDIRPLUS, result.get() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
 		}
 	}
 

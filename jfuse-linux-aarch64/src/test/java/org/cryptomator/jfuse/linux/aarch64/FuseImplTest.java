@@ -1,8 +1,10 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
+import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.api.TimeSpec;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse_conn_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_file_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_h;
 import org.cryptomator.jfuse.linux.aarch64.extr.ll.fuse_cmdline_opts;
@@ -28,6 +30,7 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FuseImplTest {
 
@@ -118,6 +121,25 @@ public class FuseImplTest {
 			Assertions.assertTrue(fuseArgs.toString().contains("singlethreaded = false"));
 			Assertions.assertTrue(fuseArgs.toString().contains("debug = 1"));
 			Assertions.assertTrue(fuseArgs.toString().contains("mountPoint = /mount/point"));
+		}
+	}
+
+	@DisplayName("init() sets fuse_conn_info.wants |= FUSE_CAP_READDIRPLUS")
+	@Test
+	public void testInit() {
+		try (var scope = MemorySession.openConfined()) {
+			var result = new AtomicInteger();
+			Mockito.doAnswer(invocation -> {
+				FuseConnInfo connInfo = invocation.getArgument(0);
+				result.set(connInfo.want());
+				return null;
+			}).when(fuseOps).init(Mockito.any());
+			var connInfo = fuse_conn_info.allocate(scope);
+			var fuseConfig = MemoryAddress.NULL; // TODO jextract fuse_config
+
+			fuseImpl.init(connInfo.address(), fuseConfig.address());
+
+			Assertions.assertEquals(FuseConnInfo.FUSE_CAP_READDIRPLUS, result.get() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
 		}
 	}
 
