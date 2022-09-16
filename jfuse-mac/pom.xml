@@ -150,9 +150,6 @@
 									<headerFile>${mac.headerSearchPath}/sys/stat.h</headerFile>
 									<headerClassName>stat_h</headerClassName>
 									<includeMacros>
-										<includeMacro>S_IFREG</includeMacro>
-										<includeMacro>S_IFDIR</includeMacro>
-										<includeMacro>S_IFLNK</includeMacro>
 										<includeMacro>UTIME_NOW</includeMacro>
 										<includeMacro>UTIME_OMIT</includeMacro>
 									</includeMacros>
