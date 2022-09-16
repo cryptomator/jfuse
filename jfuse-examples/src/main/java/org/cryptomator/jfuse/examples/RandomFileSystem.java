@@ -63,7 +63,7 @@ public class RandomFileSystem implements FuseOperations {
 
 	@Override
 	public Set<Operation> supportedOperations() {
-		return EnumSet.of(Operation.GET_ATTR, Operation.OPEN, Operation.OPEN_DIR, Operation.READ, Operation.READ_DIR, Operation.RELEASE, Operation.RELEASE_DIR, Operation.STATFS);
+		return EnumSet.of(Operation.GET_ATTR, Operation.OPEN, Operation.OPEN_DIR, Operation.READ, Operation.READ_DIR, Operation.RELEASE, Operation.RELEASE_DIR, Operation.STATFS, Operation.INIT);
 	}
 
 	@Override
