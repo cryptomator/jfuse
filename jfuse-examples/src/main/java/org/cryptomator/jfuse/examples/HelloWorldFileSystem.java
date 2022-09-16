@@ -20,11 +20,10 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
-@SuppressWarnings("OctalInteger")
-public class HelloWorldFileSystem implements FuseOperations {
+import static org.cryptomator.jfuse.api.Stat.S_IFDIR;
+import static org.cryptomator.jfuse.api.Stat.S_IFREG;
 
-	private static final int S_IFDIR = 0040000;
-	private static final int S_IFREG = 0100000;
+public class HelloWorldFileSystem implements FuseOperations {
 
 	private static final Logger LOG = LoggerFactory.getLogger(HelloWorldFileSystem.class);
 
@@ -74,6 +73,7 @@ public class HelloWorldFileSystem implements FuseOperations {
 		return 0;
 	}
 
+	@SuppressWarnings("OctalInteger")
 	@Override
 	public int getattr(String path, Stat stat, FileInfo fi) {
 		LOG.debug("getattr() {}", path);

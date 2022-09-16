@@ -18,11 +18,11 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
-@SuppressWarnings("OctalInteger")
+import static org.cryptomator.jfuse.api.Stat.S_IFDIR;
+import static org.cryptomator.jfuse.api.Stat.S_IFREG;
+
 public class RandomFileSystem implements FuseOperations {
 
-	private static final int S_IFDIR = 0040000;
-	private static final int S_IFREG = 0100000;
 	private static final Logger LOG = LoggerFactory.getLogger(RandomFileSystem.class);
 
 	private final Errno errno;
@@ -78,6 +78,7 @@ public class RandomFileSystem implements FuseOperations {
 		}
 	}
 
+	@SuppressWarnings("OctalInteger")
 	private void fillStats(RandomFileStructure.Node node, Stat stat){
 		if (node.isDir()) {
 			stat.setMode(S_IFDIR | 0755);
