@@ -196,7 +196,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		stat.setNLink((short) 1);
 		if (attrs.isDirectory()) {
 			stat.toggleDir(true);
-			stat.setNLink((short) 2); // FIXME subdir count?
+			stat.setNLink((short) 2); // quick and dirty implementation. should really be 2 + subdir count
 		} else if (attrs.isSymbolicLink()) {
 			stat.toggleLnk(true);
 		} else if (attrs.isRegularFile()){
@@ -351,8 +351,9 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 			return -errno.ebadf();
 		}
 		try {
-			// TODO restrict to `size` bytes!
-			int read = fc.read(buf, offset);
+			var dst = buf.duplicate();
+			dst.limit((int) Math.min(dst.position() + size, dst.limit())); // restrict to `size` bytes!
+			int read = fc.read(dst, offset);
 			return read == -1 ? 0 : read; // there is no "-1" in fuse
 		} catch (IOException e) {
 			return -errno.eio();

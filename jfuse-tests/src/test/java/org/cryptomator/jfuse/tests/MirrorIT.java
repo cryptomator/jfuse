@@ -77,8 +77,9 @@ public class MirrorIT {
 			command.directory(mirror.getParent().toFile());
 			Process p = command.start();
 			p.waitFor(10, TimeUnit.SECONDS);
+		} else if (OS.WINDOWS.isCurrentOs()) {
+			// there is no graceful unmount, see https://github.com/winfsp/winfsp/issues/121
 		}
-		// TODO add win-specific unmount code?
 		if (fuse != null) {
 			Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), fuse::close, "file system still active");
 		}

@@ -84,12 +84,7 @@ public abstract class Fuse implements AutoCloseable {
 		AtomicInteger result = new AtomicInteger();
 		fuseScope.whileAlive(() -> {
 			var mount = this.mount.get();
-			try {
-				result.set(mount.loop());
-			} finally {
-				// TODO remove
-				System.out.println("fuse_loop finished with result " + result.get());
-			}
+			result.set(mount.loop());
 		});
 		return result.get();
 	}
