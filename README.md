@@ -9,58 +9,62 @@ Zero-Dependency Java bindings for FUSE using [JEP 424](https://openjdk.org/jeps/
 
 This is currently an experimental library requiring JDK 19. As long as the [Foreign Function & Memory API](https://openjdk.org/jeps/424) is incubating, the required JDK will increase.
 
-Currently, it only provides bindings for [libfuse 2.x](https://github.com/libfuse/libfuse/). Once stable, a new branch for libfuse 3.x will be added.
+We attempt to support libfuse 3.x on Linux and Windows while also remaining compatible with libfuse 2.x on macOS, leading to some compromises in the API.
+
+For libfuse 3 to ensure that the `readdir` operation runs in readdirplus mode, you have to add `FuseOperations.Operation.INIT` to the set returend by `FuseOperations::supportedOperations` method to the supported operations. An implementation of `init` is not necessary.
 
 ### Supported `fuse_operations`
 
-Not all `fuse_operations` are supported yet. 
+Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operations.html) are supported yet. 
 
-|        | Status |
-|--------|-------|
-| getattr | :white_check_mark: |
-| readlink | :white_check_mark: |
-| ~getdir~ | use readdir |
-| ~mknod~ | use create |
-| mkdir | :white_check_mark: |
-| unlink | :white_check_mark: |
-| rmdir | :white_check_mark: |
-| symlink | :white_check_mark: |
-| rename | :white_check_mark: |
-| link | :x: |
-| chmod | :white_check_mark: |
-| chown | :x: |
-| truncate | :white_check_mark: |
-| ~utime~ | use utimens |
-| open | :white_check_mark: |
-| read | :white_check_mark: |
-| write | :white_check_mark: |
-| statfs | :white_check_mark: |
-| flush | :x: |
-| release | :white_check_mark: |
-| fsync | :x: |
-| setxattr | :x: |
-| getxattr | :x: |
-| listxattr | :x: |
-| removexattr | :x: |
-| opendir | :white_check_mark: |
-| readdir | :white_check_mark: |
-| releasedir | :white_check_mark: |
-| fsyncdir | :x: |
-| init | :white_check_mark: |
-| destroy | :white_check_mark: |
-| access | :white_check_mark: |
-| create | :white_check_mark: |
-| ftruncate | :x: |
-| fgetattr | :x: |
-| lock | :x: |
-| utimens | :white_check_mark: |
-| bmap | :x: |
-| ioctl | :x: |
-| poll | :x: |
-| write_buf | :x: |
-| read_buf | :x: |
-| flock | :x: |
-| fallocate | :x: |
+|                 | Status                                  |
+|-----------------|-----------------------------------------|
+| getattr         | :white_check_mark:                      |
+| ~fgetattr~      | use getattr                             |
+| readlink        | :white_check_mark:                      |
+| ~getdir~        | use readdir                             |
+| ~mknod~         | use create                              |
+| mkdir           | :white_check_mark:                      |
+| unlink          | :white_check_mark:                      |
+| rmdir           | :white_check_mark:                      |
+| symlink         | :white_check_mark:                      |
+| rename          | :white_check_mark:                      |
+| link            | :x:                                     |
+| chmod           | :white_check_mark:                      |
+| chown           | :x:                                     |
+| truncate        | :white_check_mark:                      |
+| ~ftruncate~     | use truncate                            |
+| ~utime~         | use utimens                             |
+| open            | :white_check_mark:                      |
+| read            | :white_check_mark:                      |
+| write           | :white_check_mark:                      |
+| statfs          | :white_check_mark:                      |
+| flush           | :x:                                     |
+| release         | :white_check_mark:                      |
+| fsync           | :x:                                     |
+| setxattr        | :x:                                     |
+| getxattr        | :x:                                     |
+| listxattr       | :x:                                     |
+| removexattr     | :x:                                     |
+| opendir         | :white_check_mark:                      |
+| readdir         | :white_check_mark:                      |
+| releasedir      | :white_check_mark:                      |
+| fsyncdir        | :x:                                     |
+| init            | :white_check_mark:                      |
+| destroy         | :white_check_mark:                      |
+| access          | :white_check_mark: (ignored on Windows) |
+| create          | :white_check_mark:                      |
+| lock            | :x:                                     |
+| utimens         | :white_check_mark:                      |
+| bmap            | :x:                                     |
+| ioctl           | :x:                                     |
+| poll            | :x:                                     |
+| write_buf       | :x:                                     |
+| read_buf        | :x:                                     |
+| flock           | :x:                                     |
+| fallocate       | :x:                                     |
+| copy_file_range | :x:                                     |
+| lseek           | :x:                                     |
 
 ## Usage
 
@@ -70,9 +74,9 @@ Usage examples can be found under [`/jfuse-examples/`](jfuse-examples). You basi
 var builder = Fuse.builder();
 var fs = new MyFileSystem(builder.errno());
 try (var fuse = builder.build(fs)) {
-	int result = fuse.mount("my-awesome-fs", mountPoint);
-	// thread will now block until unmounted or failed
-}
+	fuse.mount("my-awesome-fs", mountPoint);
+	// wait as long as the mounted volume is in use
+} // closing will force-unmount (previous graceful unmount recommended)
 ```
 
 During runtime, you will need to add allow native access from platform-specific implementations via `--enable-native-access`, e.g.:
@@ -88,10 +92,10 @@ java -p path/to/mods \
 
 Due to slight differences in memory layout, each platform needs its own implementation. Currently, the following operating systems and architectures are supported:
 
-|        | Linux                                    | Mac (macFUSE) | Windows (WinFSP) |
-|--------|------------------------------------------|-----|---------|
-| x86_64 | [jfuse-linux-amd64](jfuse-linux-amd64)   | [jfuse-mac](jfuse-mac) | [jfuse-win-amd64](jfuse-win-amd64) |
-| arm64  | [jfuse-linux-aarch64](jfuse-linux-aarch64) | [jfuse-mac](jfuse-mac) |         |
+|        | Linux                                      | Mac (macFUSE)            | Windows (WinFSP)                     |
+|--------|--------------------------------------------|--------------------------|--------------------------------------|
+| x86_64 | [jfuse-linux-amd64](jfuse-linux-amd64)     | [jfuse-mac](jfuse-mac)   | [jfuse-win-amd64](jfuse-win-amd64)   |
+| arm64  | [jfuse-linux-aarch64](jfuse-linux-aarch64) | [jfuse-mac](jfuse-mac)   |                                      |
 
 ## Building
 

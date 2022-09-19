@@ -1,8 +1,10 @@
 package org.cryptomator.jfuse.examples;
 
 import org.cryptomator.jfuse.api.Errno;
+import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.FileModes;
 import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.MountFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +18,6 @@ import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeoutException;
 
 public final class PosixMirrorFileSystem extends AbstractMirrorFileSystem {
@@ -32,15 +33,11 @@ public final class PosixMirrorFileSystem extends AbstractMirrorFileSystem {
 		var builder = Fuse.builder();
 		try (var fuse = builder.build(new PosixMirrorFileSystem(mirrored, builder.errno()))) {
 			LOG.info("Mounting at {}...", mountPoint);
-			int result = fuse.mount("jfuse", mountPoint, "-s", "-ovolname=mirror");
-			if (result == 0) {
-				LOG.info("Mounted to {}. Unmount to terminate this process", mountPoint);
-			} else {
-				LOG.error("Failed to mount to {}. Exit code: {}", mountPoint, result);
-			}
+			fuse.mount("jfuse", mountPoint, "-s");
+			LOG.info("Mounted to {}.", mountPoint);
 			LOG.info("Enter a anything to unmount...");
 			System.in.read();
-		} catch (TimeoutException | CompletionException e) {
+		} catch (MountFailedException | TimeoutException e) {
 			LOG.error("Un/Mounting failed. ", e);
 			System.exit(1);
 		} catch (IOException e) {
@@ -66,7 +63,7 @@ public final class PosixMirrorFileSystem extends AbstractMirrorFileSystem {
 	}
 
 	@Override
-	public int chmod(String path, int mode) {
+	public int chmod(String path, int mode, FileInfo fi) {
 		LOG.trace("chmod {}", path);
 		Path node = resolvePath(path);
 		try {

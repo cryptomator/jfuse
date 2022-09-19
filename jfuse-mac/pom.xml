@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse</artifactId>
-		<version>0.1.0</version>
+		<version>0.2.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-mac</artifactId>
@@ -87,16 +87,21 @@
 									<goal>sources</goal>
 								</goals>
 								<configuration>
-									<headerFile>${project.parent.basedir}/libfuse/include/fuse.h</headerFile>
+									<headerFile>${project.parent.basedir}/libfuse2/include/fuse.h</headerFile>
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
 										<cPreprocessorMacro>FUSE_USE_VERSION=29</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
-										<includeFunction>fuse_main_real</includeFunction>
-										<includeFunction>fuse_get_context</includeFunction>
+										<includeFunction>fuse_parse_cmdline</includeFunction>
+										<includeFunction>fuse_mount</includeFunction>
+										<includeFunction>fuse_new</includeFunction>
+										<includeFunction>fuse_loop</includeFunction>
+										<includeFunction>fuse_loop_mt</includeFunction>
 										<includeFunction>fuse_exit</includeFunction>
+										<includeFunction>fuse_unmount</includeFunction>
+										<includeFunction>fuse_destroy</includeFunction>
 									</includeFunctions>
 									<includeTypedefs>
 										<includeTypedef>fuse_fill_dir_t</includeTypedef>
@@ -104,11 +109,11 @@
 									<includeStructs>
 										<includeStruct>fuse_operations</includeStruct>
 										<includeStruct>fuse_file_info</includeStruct>
-										<includeStruct>fuse_context</includeStruct>
 										<includeStruct>stat</includeStruct>
 										<includeStruct>statvfs</includeStruct>
 										<includeStruct>timespec</includeStruct>
 										<includeStruct>fuse_conn_info</includeStruct>
+										<includeStruct>fuse_args</includeStruct>
 									</includeStructs>
 								</configuration>
 							</execution>
@@ -145,9 +150,6 @@
 									<headerFile>${mac.headerSearchPath}/sys/stat.h</headerFile>
 									<headerClassName>stat_h</headerClassName>
 									<includeMacros>
-										<includeMacro>S_IFREG</includeMacro>
-										<includeMacro>S_IFDIR</includeMacro>
-										<includeMacro>S_IFLNK</includeMacro>
 										<includeMacro>UTIME_NOW</includeMacro>
 										<includeMacro>UTIME_OMIT</includeMacro>
 									</includeMacros>

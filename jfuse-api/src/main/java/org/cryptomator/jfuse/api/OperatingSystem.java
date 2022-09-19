@@ -7,9 +7,18 @@ public enum OperatingSystem {
 	UNKNOWN;
 
 	private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
-	public static final OperatingSystem CURRENT = OS_NAME.contains("linux") ? LINUX
-			: OS_NAME.contains("mac") ? MAC
-			: OS_NAME.contains("windows") ? WINDOWS
-			: UNKNOWN;
+	public static final OperatingSystem CURRENT = getCurrent();
+
+	private static OperatingSystem getCurrent() {
+		if (OS_NAME.contains("linux")) {
+			return LINUX;
+		} else if (OS_NAME.contains("mac")) {
+			return MAC;
+		} else if (OS_NAME.contains("windows")) {
+			return WINDOWS;
+		} else {
+			return UNKNOWN;
+		}
+	}
 }
 

@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>jfuse</artifactId>
 		<groupId>org.cryptomator</groupId>
-		<version>0.1.0</version>
+		<version>0.2.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-linux-aarch64</artifactId>
@@ -14,7 +14,7 @@
 	<url>https://github.com/cryptomator/jfuse/tree/develop/jfuse-linux-aarch64</url>
 
 	<properties>
-		<linux.headerSearchPath>/usr/aarch64-linux-gnu/include/</linux.headerSearchPath> <!-- debian package libc6-dev-aarch64-cross -->
+		<linux.headerSearchPath>/Users/sebastian/Documents/inc/aarch64-linux-gnu/include</linux.headerSearchPath> <!-- debian package libc6-dev-aarch64-cross -->
 	</properties>
 
 	<dependencies>
@@ -43,7 +43,6 @@
 									<rules>
 										<requireOS>
 											<family>unix</family>
-											<name>linux</name>
 											<message>This build configuration requires Linux.</message>
 										</requireOS>
 										<requireFilesExist>
@@ -88,16 +87,22 @@
 									<goal>sources</goal>
 								</goals>
 								<configuration>
-									<headerFile>${project.parent.basedir}/libfuse/include/fuse.h</headerFile>
+									<headerFile>${project.parent.basedir}/libfuse3/include/fuse.h</headerFile>
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=29</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
-										<includeFunction>fuse_main_real</includeFunction>
-										<includeFunction>fuse_get_context</includeFunction>
+										<includeFunction>fuse_lib_help</includeFunction>
+										<includeFunction>fuse_new</includeFunction>
+										<includeFunction>fuse_mount</includeFunction>
+										<includeFunction>fuse_get_session</includeFunction>
+										<includeFunction>fuse_loop</includeFunction>
+										<includeFunction>fuse_loop_mt</includeFunction>
 										<includeFunction>fuse_exit</includeFunction>
+										<includeFunction>fuse_unmount</includeFunction>
+										<includeFunction>fuse_destroy</includeFunction>
 									</includeFunctions>
 									<includeTypedefs>
 										<includeTypedef>fuse_fill_dir_t</includeTypedef>
@@ -105,11 +110,33 @@
 									<includeStructs>
 										<includeStruct>fuse_operations</includeStruct>
 										<includeStruct>fuse_file_info</includeStruct>
-										<includeStruct>fuse_context</includeStruct>
 										<includeStruct>stat</includeStruct>
 										<includeStruct>statvfs</includeStruct>
 										<includeStruct>timespec</includeStruct>
 										<includeStruct>fuse_conn_info</includeStruct>
+										<includeStruct>fuse_args</includeStruct>
+										<includeStruct>fuse_loop_config</includeStruct>
+									</includeStructs>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-fuse-lowlevel</id>
+								<goals>
+									<goal>sources</goal>
+								</goals>
+								<configuration>
+									<headerFile>${project.parent.basedir}/libfuse3/include/fuse_lowlevel.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.linux.aarch64.extr.ll</targetPackage>
+									<headerClassName>fuse_lowlevel_h</headerClassName>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
+									</cPreprocessorMacros>
+									<includeFunctions>
+										<includeFunction>fuse_parse_cmdline</includeFunction>
+									</includeFunctions>
+									<includeStructs>
+										<includeStruct>fuse_cmdline_opts</includeStruct>
 									</includeStructs>
 								</configuration>
 							</execution>
@@ -146,9 +173,6 @@
 									<headerFile>${linux.headerSearchPath}/sys/stat.h</headerFile>
 									<headerClassName>stat_h</headerClassName>
 									<includeMacros>
-										<includeMacro>S_IFREG</includeMacro>
-										<includeMacro>S_IFDIR</includeMacro>
-										<includeMacro>S_IFLNK</includeMacro>
 										<includeMacro>UTIME_NOW</includeMacro>
 										<includeMacro>UTIME_OMIT</includeMacro>
 									</includeMacros>
@@ -172,6 +196,25 @@
 										<includeMacro>O_EXCL</includeMacro>
 										<includeMacro>O_DSYNC</includeMacro>
 										<includeMacro>O_SYNC</includeMacro>
+									</includeMacros>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-stdio</id>
+								<goals>
+									<goal>sources</goal>
+								</goals>
+								<configuration>
+									<headerFile>${linux.headerSearchPath}/stdio.h</headerFile>
+									<headerClassName>stdio_h</headerClassName>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>_GNU_SOURCE=1</cPreprocessorMacro>
+									</cPreprocessorMacros>
+									<includeMacros>
+										<!-- GNU-specific flags for rename: -->
+										<includeMacro>RENAME_NOREPLACE</includeMacro>
+										<includeMacro>RENAME_EXCHANGE</includeMacro>
+										<includeMacro>RENAME_WHITEOUT</includeMacro>
 									</includeMacros>
 								</configuration>
 							</execution>

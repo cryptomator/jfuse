@@ -2,6 +2,7 @@ package org.cryptomator.jfuse.examples;
 
 import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.MountFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,6 @@ import java.nio.file.attribute.DosFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeoutException;
 
 public final class WindowsMirrorFileSystem extends AbstractMirrorFileSystem {
@@ -31,15 +31,11 @@ public final class WindowsMirrorFileSystem extends AbstractMirrorFileSystem {
 		var builder = Fuse.builder();
 		try (var fuse = builder.build(new WindowsMirrorFileSystem(mirrored, builder.errno()))) {
 			LOG.info("Mounting at {}...", mountPoint);
-			int result = fuse.mount("jfuse", mountPoint, "-s", "-ouid=-1", "-ogid=11", "-ovolname=mirror");
-			if (result == 0) {
-				LOG.info("Mounted to {}. Unmount to terminate this process", mountPoint);
-			} else {
-				LOG.error("Failed to mount to {}. Exit code: {}", mountPoint, result);
-			}
+			fuse.mount("jfuse", mountPoint, "-s", "-ouid=-1", "-ogid=11", "-ovolname=mirror");
+			LOG.info("Mounted to {}.", mountPoint);
 			LOG.info("Enter a anything to unmount...");
 			System.in.read();
-		} catch (TimeoutException | CompletionException e) {
+		} catch (MountFailedException | TimeoutException e) {
 			LOG.error("Un/Mounting failed. ", e);
 			System.exit(1);
 		} catch (IOException e) {

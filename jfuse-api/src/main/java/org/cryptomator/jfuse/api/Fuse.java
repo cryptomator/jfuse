@@ -1,22 +1,21 @@
 package org.cryptomator.jfuse.api;
 
+
 import org.jetbrains.annotations.Blocking;
 import org.jetbrains.annotations.BlockingExecutor;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
-import java.lang.foreign.ValueLayout;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
 
 /**
  * Represents a FUSE file system. Instances of this class are stateful and can not be reused.
@@ -26,8 +25,10 @@ import java.util.concurrent.TimeoutException;
  */
 public abstract class Fuse implements AutoCloseable {
 
+	private static final FuseMount UNMOUNTED = new UnmountedFuseMount();
+
 	protected final MemorySession fuseScope = MemorySession.openShared();
-	@BlockingExecutor
+	private final AtomicReference<FuseMount> mount = new AtomicReference<>(UNMOUNTED);
 	private final ExecutorService executor;
 
 	protected Fuse() {
@@ -51,65 +52,64 @@ public abstract class Fuse implements AutoCloseable {
 	 * @param progName   The program name used to construct a usage message and to derive a fallback for <code>-ofsname=...</code>
 	 * @param mountPoint mount point
 	 * @param flags      Additional flags. Use flag <code>-help</code> to get a list of available flags
-	 * @return 0 if mounted successfully, or the result of <code>fuse_main_real()</code> in case of errors
-	 * @throws CompletionException wrapping exceptions thrown during <code>init()</code> or <code>fuse_main_real()</code>
+	 * @throws MountFailedException If mounting failed
+	 * @throws IllegalArgumentException If providing unsupported mount flags
 	 */
-	public int mount(String progName, Path mountPoint, String... flags) throws CompletionException, TimeoutException {
+	@Blocking
+	@MustBeInvokedByOverriders
+	public void mount(String progName, Path mountPoint, String... flags) throws MountFailedException, IllegalArgumentException {
+		FuseMount lock = new UnmountedFuseMount();
+		if (!mount.compareAndSet(UNMOUNTED, lock)) {
+			throw new IllegalStateException("Already mounted");
+		}
+
 		List<String> args = new ArrayList<>();
 		args.add(progName);
-		args.add("-f"); // foreground mode required, so fuse_main_real() blocks
-		args.add(mountPoint.toString());
 		args.addAll(List.of(flags));
-		return mount(args);
-	}
+		args.add("-f"); // always stay in foreground. don't fork & kill this process via `fuse_daemonize`
+		args.add(mountPoint.toString());
 
-	protected int mount(List<String> args) throws TimeoutException {
-		// keep reference in field and cancel during close()?
-		var mountResult = CompletableFuture.supplyAsync(() -> fuseMain(args), executor);
 		try {
-			// fuseMain() will block (unless failing with return code != 0), therefore we need to wait for init()
-			// if any of these two completes, we know that mounting succeeded of failed.
-			var result = CompletableFuture.anyOf(mountResult, initialized()).get(10, TimeUnit.SECONDS);
-			if (result instanceof Integer i) {
-				return i;
-			} else {
-				throw new IllegalStateException("Expected Future<Integer>");
-			}
-		} catch (CancellationException | ExecutionException e) {
-			return 1;
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-			return 1;
+			var fuseMount = this.mount(args);
+			var isOnlySession = mount.compareAndSet(lock, fuseMount);
+			assert isOnlySession : "unreachable code, as no other method can set this.mount to lock";
+			executor.submit(this::fuseLoop); // TODO keep reference of future and report result
+		} finally {
+			mount.compareAndSet(lock, UNMOUNTED); // if value is still `lock`, mount has failed.
 		}
 	}
 
 	@Blocking
-	protected int fuseMain(List<String> flags) {
-		try (var scope = MemorySession.openConfined()) {
-			//var allocator =  SegmentAllocator.nativeAllocator(scope);
-			var argc = flags.size();
-			var argv = scope.allocateArray(ValueLayout.ADDRESS, argc);
-			for (int i = 0; i < argc; i++) {
-				var cString = scope.allocateUtf8String(flags.get(i));
-				argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
-			}
-			return fuseMain(argc, argv);
-		}
+	private int fuseLoop() {
+		AtomicInteger result = new AtomicInteger();
+		fuseScope.whileAlive(() -> {
+			var mount = this.mount.get();
+			result.set(mount.loop());
+		});
+		return result.get();
 	}
 
 	@Blocking
-	protected abstract int fuseMain(int argc, MemorySegment argv);
+	protected abstract FuseMount mount(List<String> args) throws MountFailedException, IllegalArgumentException;
 
-	protected abstract CompletableFuture<Integer> initialized();
-
+	/**
+	 * Unmounts (if needed) this fuse file system and frees up system resources.
+	 * <p>
+	 * <strong>Important:</strong> Before closing, a graceful unmount via system tools (e.g. {@code fusermount -u}) should be attempted.
+	 */
 	@Override
+	@Blocking
+	@MustBeInvokedByOverriders
 	public void close() throws TimeoutException {
 		try {
+			var fuseMount = this.mount.getAndSet(UNMOUNTED);
+			fuseMount.unmount();
 			executor.shutdown();
 			boolean exited = executor.awaitTermination(10, TimeUnit.SECONDS);
 			if (!exited) {
 				throw new TimeoutException("fuse main loop continued runn");
 			}
+			fuseMount.destroy();
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		} finally {

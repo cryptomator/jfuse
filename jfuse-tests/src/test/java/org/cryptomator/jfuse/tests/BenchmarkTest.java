@@ -8,10 +8,7 @@ import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Warmup;
-import org.openjdk.jmh.runner.Runner;
-import org.openjdk.jmh.runner.RunnerException;
-import org.openjdk.jmh.runner.options.Options;
-import org.openjdk.jmh.runner.options.OptionsBuilder;
+import org.openjdk.jmh.infra.Blackhole;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,19 +27,23 @@ public class BenchmarkTest {
 	@Benchmark
 	@Warmup(iterations = 2)
 	@Fork(value = 1)
-	@OutputTimeUnit(TimeUnit.MICROSECONDS)
+	@OutputTimeUnit(TimeUnit.MILLISECONDS)
 	@BenchmarkMode(Mode.AverageTime)
-	public void testListDirJnrMulti() throws IOException {
-		Files.list(Path.of("/Volumes/bar")).close();
+	public void testListDirJnrMulti(Blackhole blackhole) throws IOException {
+		try (var ds = Files.walk(Path.of("/Volumes/bar"), 5)) {
+			ds.forEach(blackhole::consume);
+		}
 	}
 
 	@Benchmark
 	@Warmup(iterations = 2)
 	@Fork(value = 1)
-	@OutputTimeUnit(TimeUnit.MICROSECONDS)
+	@OutputTimeUnit(TimeUnit.MILLISECONDS)
 	@BenchmarkMode(Mode.AverageTime)
-	public void testListDirPanamaMulti() throws IOException {
-		Files.list(Path.of("/Volumes/foo")).close();
+	public void testListDirPanamaMulti(Blackhole blackhole) throws IOException {
+		try (var ds = Files.walk(Path.of("/Volumes/foo"), 5)) {
+			ds.forEach(blackhole::consume);
+		}
 	}
 
 //	@Benchmark

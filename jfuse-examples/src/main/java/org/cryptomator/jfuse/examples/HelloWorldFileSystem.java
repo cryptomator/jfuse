@@ -6,24 +6,24 @@ import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
+import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.Statvfs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Set;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Stream;
+
+import static org.cryptomator.jfuse.api.Stat.S_IFDIR;
+import static org.cryptomator.jfuse.api.Stat.S_IFREG;
 
 public class HelloWorldFileSystem implements FuseOperations {
-
-	private static final int S_IFDIR = 0040000;
-	private static final int S_IFREG = 0100000;
 
 	private static final Logger LOG = LoggerFactory.getLogger(HelloWorldFileSystem.class);
 
@@ -40,14 +40,15 @@ public class HelloWorldFileSystem implements FuseOperations {
 		var fuseOps = new HelloWorldFileSystem(builder.errno());
 		try (var fuse = builder.build(fuseOps)) {
 			LOG.info("Mounting at {}...", mountPoint);
-			int result = fuse.mount("jfuse", mountPoint, "-s");
-			if (result == 0) {
-				LOG.info("Mounted to {}. Unmount to terminate this process", mountPoint);
-			} else {
-				LOG.error("Failed to mount to {}. Exit code: {}", mountPoint, result);
-			}
-		} catch (TimeoutException | CompletionException e) {
+			fuse.mount("jfuse", mountPoint, "-s");
+			LOG.info("Mounted to {}.", mountPoint);
+			LOG.info("Enter a anything to unmount...");
+			System.in.read();
+		} catch (MountFailedException | TimeoutException e) {
 			LOG.error("Un/Mounting failed. ", e);
+			System.exit(1);
+		} catch (IOException e) {
+			LOG.error("Failed to create mirror", e);
 			System.exit(1);
 		}
 	}
@@ -72,8 +73,9 @@ public class HelloWorldFileSystem implements FuseOperations {
 		return 0;
 	}
 
+	@SuppressWarnings("OctalInteger")
 	@Override
-	public int getattr(String path, Stat stat) {
+	public int getattr(String path, Stat stat, FileInfo fi) {
 		LOG.debug("getattr() {}", path);
 		if ("/".equals(path)) {
 			stat.setMode(S_IFDIR | 0755);
@@ -141,21 +143,23 @@ public class HelloWorldFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public int readdir(String path, DirFiller filler, long offset, FileInfo fi) {
+	public int readdir(String path, DirFiller filler, long offset, FileInfo fi, int flags) {
 		LOG.debug("readdir() {} {}", path, offset);
-		var entries = Stream.of( //
-				".", //
-				"..", //
-				HELLO_PATH.substring(1), //
-				"aaa", //
-				"bbb", //
-				"ccc", //
-				"ddd", //
-				"xxx", //
-				"yyy", //
-				"zzz").skip(offset);
-		filler.fillNamesFromOffset(entries, offset);
-		return 0;
+		try {
+			filler.fill(".");
+			filler.fill("..");
+			filler.fill(HELLO_PATH.substring(1));
+			filler.fill("aaa");
+			filler.fill("bbb");
+			filler.fill("ccc");
+			filler.fill("ddd");
+			filler.fill("xxx");
+			filler.fill("yyy");
+			filler.fill("zzz");
+			return 0;
+		} catch (IOException e) {
+			return -errno.eio();
+		}
 	}
 
 	@Override
