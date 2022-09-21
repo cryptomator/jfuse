@@ -233,15 +233,14 @@
 		</profile>
 
 		<profile>
-			<id>win-amd64</id>
+			<id>win</id>
 			<activation>
 				<os>
 					<family>windows</family>
-					<arch>amd64</arch>
 				</os>
 			</activation>
 			<modules>
-				<module>jfuse-win-amd64</module>
+				<module>jfuse-win</module>
 			</modules>
 		</profile>
 
