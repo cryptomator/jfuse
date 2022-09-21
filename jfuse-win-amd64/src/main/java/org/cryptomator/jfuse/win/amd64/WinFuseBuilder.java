@@ -9,9 +9,11 @@ import org.cryptomator.jfuse.api.OperatingSystem;
 import org.cryptomator.jfuse.api.SupportedPlatform;
 
 @SupportedPlatform(os = OperatingSystem.WINDOWS, arch = Architecture.AMD64)
+@SupportedPlatform(os = OperatingSystem.WINDOWS, arch = Architecture.ARM64)
 public class WinFuseBuilder implements FuseBuilder {
 
-	private static final String DEFAULT_LIB_PATH = "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x64.dll";
+	private static final String DEFAULT_LIB_PATH_AMD64 = "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x64.dll";
+	private static final String DEFAULT_LIB_PATH_ARM64 = "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-a64.dll";
 	private static final Errno ERRNO = new WinErrno();
 	private String libraryPath;
 
@@ -29,8 +31,10 @@ public class WinFuseBuilder implements FuseBuilder {
 	public Fuse build(FuseOperations fuseOperations) throws UnsatisfiedLinkError {
 		if (libraryPath != null) {
 			System.load(libraryPath);
-		} else {
-			System.load(DEFAULT_LIB_PATH);
+		} else if (Architecture.CURRENT == Architecture.AMD64) {
+			System.load(DEFAULT_LIB_PATH_AMD64);
+		} else if (Architecture.CURRENT == Architecture.ARM64) {
+			System.load(DEFAULT_LIB_PATH_ARM64);
 		}
 		return new FuseImpl(fuseOperations);
 	}
