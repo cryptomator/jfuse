@@ -178,7 +178,7 @@ public class FuseImplTest {
 				FuseConnInfo connInfo = invocation.getArgument(0);
 				result.set(connInfo.want());
 				return null;
-			}).when(fuseOps).init(Mockito.any());
+			}).when(fuseOps).init(Mockito.any(), Mockito.any());
 			var connInfo = fuse3_conn_info.allocate(scope);
 			var fuseConfig = MemoryAddress.NULL; // TODO jextract fuse_config
 

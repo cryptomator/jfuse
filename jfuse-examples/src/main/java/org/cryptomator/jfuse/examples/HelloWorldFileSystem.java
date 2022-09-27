@@ -4,6 +4,7 @@ import org.cryptomator.jfuse.api.DirFiller;
 import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.FuseConfig;
 import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
@@ -97,7 +98,7 @@ public class HelloWorldFileSystem implements FuseOperations {
 	}
 
 	@Override
-	public void init(FuseConnInfo conn) {
+	public void init(FuseConnInfo conn, FuseConfig cfg) {
 		LOG.info("init() {}.{}", conn.protoMajor(), conn.protoMinor());
 	}
 

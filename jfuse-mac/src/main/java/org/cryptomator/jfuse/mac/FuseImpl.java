@@ -108,7 +108,7 @@ public final class FuseImpl extends Fuse {
 
 	private Addressable init(MemoryAddress conn) {
 		try (var scope = MemorySession.openConfined()) {
-			delegate.init(new FuseConnInfoImpl(conn, scope));
+			delegate.init(new FuseConnInfoImpl(conn, scope), null);
 		}
 		return MemoryAddress.NULL;
 	}
