@@ -13,21 +13,21 @@ class constants$1 {
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fuse_destroy$MH = RuntimeHelper.downcallHandle(
-        "fuse_destroy",
+        "fuse_destroy@FUSE_3.0",
         constants$1.fuse_destroy$FUNC
     );
     static final FunctionDescriptor fuse_loop$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fuse_loop$MH = RuntimeHelper.downcallHandle(
-        "fuse_loop",
+        "fuse_loop@FUSE_3.0",
         constants$1.fuse_loop$FUNC
     );
     static final FunctionDescriptor fuse_exit$FUNC = FunctionDescriptor.ofVoid(
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fuse_exit$MH = RuntimeHelper.downcallHandle(
-        "fuse_exit",
+        "fuse_exit@FUSE_3.0",
         constants$1.fuse_exit$FUNC
     );
     static final FunctionDescriptor fuse_loop_mt$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
@@ -35,14 +35,14 @@ class constants$1 {
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fuse_loop_mt$MH = RuntimeHelper.downcallHandle(
-        "fuse_loop_mt",
+        "fuse_loop_mt@FUSE_3.2",
         constants$1.fuse_loop_mt$FUNC
     );
     static final FunctionDescriptor fuse_get_session$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fuse_get_session$MH = RuntimeHelper.downcallHandle(
-        "fuse_get_session",
+        "fuse_get_session@FUSE_3.0",
         constants$1.fuse_get_session$FUNC
     );
 }

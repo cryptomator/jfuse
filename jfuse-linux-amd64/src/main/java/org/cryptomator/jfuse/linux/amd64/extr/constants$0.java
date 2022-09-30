@@ -23,7 +23,7 @@ class constants$0 {
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fuse_lib_help$MH = RuntimeHelper.downcallHandle(
-        "fuse_lib_help",
+        "fuse_lib_help@FUSE_3.1",
         constants$0.fuse_lib_help$FUNC
     );
     static final FunctionDescriptor fuse_new$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT,
@@ -33,7 +33,7 @@ class constants$0 {
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fuse_new$MH = RuntimeHelper.downcallHandle(
-        "fuse_new",
+        "fuse_new@FUSE_3.1",
         constants$0.fuse_new$FUNC
     );
     static final FunctionDescriptor fuse_mount$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
@@ -41,14 +41,14 @@ class constants$0 {
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fuse_mount$MH = RuntimeHelper.downcallHandle(
-        "fuse_mount",
+        "fuse_mount@FUSE_3.0",
         constants$0.fuse_mount$FUNC
     );
     static final FunctionDescriptor fuse_unmount$FUNC = FunctionDescriptor.ofVoid(
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fuse_unmount$MH = RuntimeHelper.downcallHandle(
-        "fuse_unmount",
+        "fuse_unmount@FUSE_3.0",
         constants$0.fuse_unmount$FUNC
     );
 }

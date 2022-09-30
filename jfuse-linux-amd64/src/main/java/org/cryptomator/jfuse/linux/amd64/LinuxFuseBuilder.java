@@ -8,6 +8,8 @@ import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.OperatingSystem;
 import org.cryptomator.jfuse.api.SupportedPlatform;
 
+import java.lang.foreign.MemorySession;
+
 @SupportedPlatform(os = OperatingSystem.LINUX, arch = Architecture.AMD64)
 public class LinuxFuseBuilder implements FuseBuilder {
 
@@ -27,11 +29,12 @@ public class LinuxFuseBuilder implements FuseBuilder {
 
 	@Override
 	public Fuse build(FuseOperations fuseOperations) throws UnsatisfiedLinkError {
-		if (libraryPath != null) {
+		FuseSymbolLookup.getInstance().open(libraryPath, MemorySession.global());
+		/*if (libraryPath != null) {
 			System.load(libraryPath);
 		} else {
 			System.load(DEFAULT_LIB_PATH);
-		}
+		}*/
 		return new FuseImpl(fuseOperations);
 	}
 

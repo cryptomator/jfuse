@@ -14,7 +14,7 @@ class constants$0 {
         Constants$root.C_POINTER$LAYOUT
     );
     static final MethodHandle fuse_parse_cmdline$MH = RuntimeHelper.downcallHandle(
-        "fuse_parse_cmdline",
+        "fuse_parse_cmdline@FUSE_3.0",
         constants$0.fuse_parse_cmdline$FUNC
     );
 }

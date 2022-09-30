@@ -50,7 +50,7 @@ public class MirrorIT {
 		Files.createDirectories(orig);
 		AbstractMirrorFileSystem fs;
 		List<String> flags = new ArrayList<>();
-		flags.add("-s");
+		//flags.add("-s");
 		mirror = tmpDir.resolve("mirror");
 		if (OS.WINDOWS.isCurrentOs()) {
 			flags.add("-ouid=-1");
