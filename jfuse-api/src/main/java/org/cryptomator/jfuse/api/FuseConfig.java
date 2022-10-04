@@ -2,25 +2,25 @@ package org.cryptomator.jfuse.api;
 
 public interface FuseConfig {
 
-	boolean getSetGid();
+	int getSetGid();
 
-	void setSetGid(boolean setGid);
+	void setSetGid(int setGid);
 
 	int gid();
 
 	void getSetGid(int gid);
 
-	boolean getSetUid();
+	int getSetUid();
 
-	void setSetUid(boolean setUid);
+	void setSetUid(int setUid);
 
 	int uid();
 
 	void getSetUid(int uid);
 
-	boolean getSetMode();
+	int getSetMode();
 
-	void setSetMode(boolean setMode);
+	void setSetMode(int setMode);
 
 	int umask();
 
@@ -39,10 +39,9 @@ public interface FuseConfig {
 
 	void setAttrTimeout(double attrTimeout);
 
+	int intr();
 
-	boolean intr();
-
-	void setIntr(boolean intr);
+	void setIntr(int intr);
 
 	int intrSignal();
 
@@ -52,41 +51,41 @@ public interface FuseConfig {
 
 	void setRemember(int secondsToRemember);
 
-	boolean hardRemove();
+	int hardRemove();
 
-	void setHardRemove(boolean hardRemove);
+	void setHardRemove(int hardRemove);
 
-	boolean useIno();
+	int useIno();
 
-	void setUseIno(boolean useIno);
+	void setUseIno(int useIno);
 
-	boolean readdirIno();
+	int readdirIno();
 
-	void setReaddirIno(boolean readdirIno);
+	void setReaddirIno(int readdirIno);
 
-	boolean directIo();
+	int directIo();
 
-	void setDirectIo(boolean directIo);
+	void setDirectIo(int directIo);
 
-	boolean kernelCache();
+	int kernelCache();
 
-	void setKernelCache(boolean kernelCache);
+	void setKernelCache(int kernelCache);
 
-	boolean autoCache();
+	int autoCache();
 
-	void setAutoCache(boolean autoCache);
+	void setAutoCache(int autoCache);
 
-	boolean acAttrTimeoutSet();
+	int acAttrTimeoutSet();
 
-	void setAcAttrTimeoutSet(boolean acAttrTimeoutSet);
+	void setAcAttrTimeoutSet(int acAttrTimeoutSet);
 
 	double acAttrTimeout();
 
 	void setAcAttrTimeout(double acAttrTimeout);
 
-	boolean nullpathOk();
+	int nullpathOk();
 
-	void setNullpathOk(boolean nullpathOk);
+	void setNullpathOk(int nullpathOk);
 
 	//not supported by winfsp due to being on libfuse 3.2
 	//int no_rofd_flush();
