@@ -32,4 +32,16 @@ record FuseArgs(MemorySegment args, MemorySegment cmdLineOpts) {
 		return fuse_cmdline_opts.singlethread$get(cmdLineOpts) == 0;
 	}
 
+	public int cloneFd() {
+		return fuse_cmdline_opts.clone_fd$get(cmdLineOpts);
+	}
+
+	public int maxIdleThreads() {
+		return fuse_cmdline_opts.max_idle_threads$get(cmdLineOpts);
+	}
+
+	public int maxThreads() {
+		return fuse_cmdline_opts.max_threads$get(cmdLineOpts);
+	}
+
 }

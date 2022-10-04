@@ -17,7 +17,7 @@ import static java.lang.foreign.ValueLayout.JAVA_INT;
 class FuseFunctions {
 
 	// see https://github.com/libfuse/libfuse/blob/fuse-3.12.0/include/fuse_lowlevel.h#L1892-L1923
-	private static FunctionDescriptor FUSE_PARSE_CMDLINE = FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS);
+	private static final FunctionDescriptor FUSE_PARSE_CMDLINE = FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS);
 
 	private final MethodHandle fuse_parse_cmdline;
 
