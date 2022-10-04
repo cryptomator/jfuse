@@ -3,6 +3,7 @@ package org.cryptomator.jfuse.linux.amd64;
 import java.lang.foreign.Addressable;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
+import java.lang.foreign.SymbolLookup;
 import java.lang.invoke.MethodHandle;
 
 import static java.lang.foreign.ValueLayout.ADDRESS;
@@ -21,8 +22,9 @@ class FuseFunctions {
 	private final MethodHandle fuse_parse_cmdline;
 
 	private FuseFunctions() {
-		Linker linker = Linker.nativeLinker();
-		this.fuse_parse_cmdline = linker.defaultLookup().lookup("fuse_parse_cmdline")
+		var lookup = SymbolLookup.loaderLookup();
+		var linker = Linker.nativeLinker();
+		this.fuse_parse_cmdline = lookup.lookup("fuse_parse_cmdline")
 				.map(symbol -> linker.downcallHandle(symbol, FUSE_PARSE_CMDLINE))
 				.orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol fuse_parse_cmdline"));
 	}
@@ -31,7 +33,7 @@ class FuseFunctions {
 		private static final FuseFunctions INSTANCE = new FuseFunctions();
 	}
 
-	public static int fuse_parse_cmdline( Addressable args,  Addressable opts) {
+	public static int fuse_parse_cmdline(Addressable args, Addressable opts) {
 		try {
 			return (int) Holder.INSTANCE.fuse_parse_cmdline.invokeExact(args, opts);
 		} catch (Throwable e) {
