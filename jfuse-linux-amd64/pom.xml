@@ -120,7 +120,7 @@
 										<includeStruct>timespec</includeStruct>
 										<includeStruct>fuse_conn_info</includeStruct>
 										<includeStruct>fuse_args</includeStruct>
-										<includeStruct>fuse_loop_config</includeStruct>
+										<includeStruct>fuse_loop_config_v1</includeStruct>
 									</includeStructs>
 								</configuration>
 							</execution>
@@ -131,15 +131,12 @@
 								</goals>
 								<configuration>
 									<headerFile>${project.parent.basedir}/libfuse3/include/fuse_lowlevel.h</headerFile>
-									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.ll</targetPackage>
+									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr</targetPackage>
 									<headerClassName>fuse_lowlevel_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
 										<cPreprocessorMacro>FUSE_USE_VERSION=312</cPreprocessorMacro>
 									</cPreprocessorMacros>
-									<includeFunctions>
-										<includeFunction>fuse_parse_cmdline_312</includeFunction>
-									</includeFunctions>
 									<includeStructs>
 										<includeStruct>fuse_cmdline_opts</includeStruct>
 									</includeStructs>
