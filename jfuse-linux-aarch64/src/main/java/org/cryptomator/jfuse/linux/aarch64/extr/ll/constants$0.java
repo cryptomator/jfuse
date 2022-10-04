@@ -9,13 +9,13 @@ import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
 class constants$0 {
 
-    static final FunctionDescriptor fuse_parse_cmdline$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
+    static final FunctionDescriptor fuse_parse_cmdline_312$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
     );
-    static final MethodHandle fuse_parse_cmdline$MH = RuntimeHelper.downcallHandle(
-        "fuse_parse_cmdline",
-        constants$0.fuse_parse_cmdline$FUNC
+    static final MethodHandle fuse_parse_cmdline_312$MH = RuntimeHelper.downcallHandle(
+        "fuse_parse_cmdline_312",
+        constants$0.fuse_parse_cmdline_312$FUNC
     );
 }
 

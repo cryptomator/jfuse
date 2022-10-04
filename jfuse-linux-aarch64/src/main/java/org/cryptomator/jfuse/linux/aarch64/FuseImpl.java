@@ -61,7 +61,7 @@ public final class FuseImpl extends Fuse {
 		fuse_args.allocated$set(args, 0);
 
 		var opts = fuse_cmdline_opts.allocate(fuseScope);
-		int parseResult = fuse_lowlevel_h.fuse_parse_cmdline(args, opts);
+		int parseResult = fuse_lowlevel_h.fuse_parse_cmdline_312(args, opts);  // TODO: support fuse < 3.12
 		if (parseResult != 0) {
 			throw new IllegalArgumentException("fuse_parse_cmdline failed to parse " + String.join(" ", cmdLineArgs));
 		}

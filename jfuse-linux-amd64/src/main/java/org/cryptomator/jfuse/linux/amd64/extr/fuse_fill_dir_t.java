@@ -17,7 +17,7 @@ public interface fuse_fill_dir_t {
         MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
         return (java.lang.foreign.MemoryAddress _buf, java.lang.foreign.MemoryAddress _name, java.lang.foreign.MemoryAddress _stbuf, long _off, int _flags) -> {
             try {
-                return (int)constants$0.fuse_fill_dir_t$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)_buf, (java.lang.foreign.Addressable)_name, (java.lang.foreign.Addressable)_stbuf, _off, _flags);
+                return (int)constants$1.fuse_fill_dir_t$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)_buf, (java.lang.foreign.Addressable)_name, (java.lang.foreign.Addressable)_stbuf, _off, _flags);
             } catch (Throwable ex$) {
                 throw new AssertionError("should not reach here", ex$);
             }

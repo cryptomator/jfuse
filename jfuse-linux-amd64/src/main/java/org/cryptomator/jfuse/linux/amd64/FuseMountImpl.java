@@ -11,12 +11,14 @@ record FuseMountImpl(MemoryAddress fuse, FuseArgs fuseArgs) implements FuseMount
 
 	@Override
 	public int loop() {
-		if (fuseArgs.multithreaded()) {
-			try (var scope = MemorySession.openConfined()) {
-				var loopCfg = fuse_loop_config.allocate(scope);
-				fuse_loop_config.clone_fd$set(loopCfg, 0);
-				fuse_loop_config.max_idle_threads$set(loopCfg, 10);
+		if (fuseArgs.multithreaded() && fuse_h.fuse_version() > 312) { // TODO: support fuse < 3.12
+			var loopCfg = fuse_h.fuse_loop_cfg_create();
+			try {
+				fuse_h.fuse_loop_cfg_set_clone_fd(loopCfg, 0);
+				fuse_h.fuse_loop_cfg_set_max_threads (loopCfg, 4);
 				return fuse_h.fuse_loop_mt(fuse, loopCfg);
+			} finally {
+				fuse_h.fuse_loop_cfg_destroy(loopCfg);
 			}
 		} else {
 			return fuse_h.fuse_loop(fuse);

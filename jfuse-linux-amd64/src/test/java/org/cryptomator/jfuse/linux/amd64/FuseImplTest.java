@@ -85,7 +85,7 @@ public class FuseImplTest {
 		var args = List.of("fusefs", arg);
 		try (var fuseLowlevelH = Mockito.mockStatic(fuse_lowlevel_h.class);
 			 var fuseH = Mockito.mockStatic(fuse_h.class)) {
-			fuseLowlevelH.when(() -> fuse_lowlevel_h.fuse_parse_cmdline(Mockito.any(), Mockito.any())).then(invocation -> {
+			fuseLowlevelH.when(() -> fuse_lowlevel_h.fuse_parse_cmdline_312(Mockito.any(), Mockito.any())).then(invocation -> {
 				MemorySegment opts = invocation.getArgument(1);
 				fuse_cmdline_opts.show_help$set(opts, 1);
 				return 0;
@@ -102,7 +102,7 @@ public class FuseImplTest {
 	public void testParseArgs() {
 		try (var fuseLowlevelH = Mockito.mockStatic(fuse_lowlevel_h.class);
 			 var scope = MemorySession.openConfined()) {
-			fuseLowlevelH.when(() -> fuse_lowlevel_h.fuse_parse_cmdline(Mockito.any(), Mockito.any())).then(invocation -> {
+			fuseLowlevelH.when(() -> fuse_lowlevel_h.fuse_parse_cmdline_312(Mockito.any(), Mockito.any())).then(invocation -> {
 				MemorySegment opts = invocation.getArgument(1);
 				fuse_cmdline_opts.singlethread$set(opts, 0);
 				fuse_cmdline_opts.debug$set(opts, 1);
