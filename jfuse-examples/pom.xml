@@ -51,7 +51,7 @@
 			<activation>
 				<os>
 					<family>unix</family>
-					<name>Linux</name>
+					<name>linux</name>
 					<arch>x86_64</arch>
 				</os>
 			</activation>
@@ -69,7 +69,7 @@
 			<activation>
 				<os>
 					<family>unix</family>
-					<name>Linux</name>
+					<name>linux</name>
 					<arch>aarch64</arch>
 				</os>
 			</activation>
