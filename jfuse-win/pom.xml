@@ -92,7 +92,7 @@
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>WINFSP_DLL_INTERNAL</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=32</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=31</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
 										<includeFunction>fuse3_lib_help</includeFunction>
