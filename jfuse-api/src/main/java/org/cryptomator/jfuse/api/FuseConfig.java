@@ -2,37 +2,91 @@ package org.cryptomator.jfuse.api;
 
 public interface FuseConfig {
 
-	int set_gid();
+	boolean getSetGid();
 
-	int set_uid();
+	void setSetGid(boolean setGid);
 
-	double entry_timeout();
+	int getGid();
 
-	double negative_timeout();
+	void setGid(int gid);
 
-	double attr_timeout();
+	boolean getSetUid();
 
-	boolean intr();
+	void setSetUid(boolean setUid);
 
-	int intr_signal();
+	int getUid();
 
-	int remember();
+	void setUid(int uid);
 
-	boolean hard_remove();
+	boolean getSetMode();
 
-	boolean use_ino();
+	void setSetMode(boolean setMode);
 
-	boolean readdir_ino();
+	int getUmask();
 
-	boolean direct_io();
+	void setUmask(int umask);
 
-	boolean kernel_cache();
 
-	boolean auto_cache();
+	double getEntryTimeout();
 
-	int ac_attr_timeout_set();
+	void setEntryTimeout(double entryTimeout);
 
-	boolean nullpath_ok();
+	double getNegativeTimeout();
+
+	void setNegativeTimeout(double negativeTimeout);
+
+	double getAttrTimeout();
+
+	void setAttrTimeout(double attrTimeout);
+
+
+	boolean getIntr();
+
+	void setIntr(boolean intr);
+
+	int getIntrSignal();
+
+	void setIntrSignal(int intrSignal);
+
+	int getRemember();
+
+	void setRemember(int secondsToRemember);
+
+	boolean getHardRemove();
+
+	void setHardRemove(boolean hardRemove);
+
+	boolean getUseIno();
+
+	void setUseIno(boolean useIno);
+
+	boolean getReaddirIno();
+
+	void setReaddirIno(boolean readdirIno);
+
+	boolean getDirectIo();
+
+	void setDirectIo(boolean directIo);
+
+	boolean getKernelCache();
+
+	void setKernelCache(boolean kernelCache);
+
+	boolean getAutoCache();
+
+	void setAutoCache(boolean autoCache);
+
+	boolean getAcAttrTimeoutSet();
+
+	void setAcAttrTimeoutSet(boolean acAttrTimeoutSet);
+
+	double getAcAttrTimeout();
+
+	void setAcAttrTimeout(double acAttrTimeout);
+
+	boolean getNullpathOk();
+
+	void setNullpathOk(boolean nullpathOk);
 
 	//not supported by winfsp due to being on libfuse 3.2
 	//int no_rofd_flush();
