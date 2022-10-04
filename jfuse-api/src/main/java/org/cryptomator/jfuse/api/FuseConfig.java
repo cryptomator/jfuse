@@ -6,85 +6,85 @@ public interface FuseConfig {
 
 	void setSetGid(boolean setGid);
 
-	int getGid();
+	int gid();
 
-	void setGid(int gid);
+	void getSetGid(int gid);
 
 	boolean getSetUid();
 
 	void setSetUid(boolean setUid);
 
-	int getUid();
+	int uid();
 
-	void setUid(int uid);
+	void getSetUid(int uid);
 
 	boolean getSetMode();
 
 	void setSetMode(boolean setMode);
 
-	int getUmask();
+	int umask();
 
 	void setUmask(int umask);
 
 
-	double getEntryTimeout();
+	double entryTimeout();
 
 	void setEntryTimeout(double entryTimeout);
 
-	double getNegativeTimeout();
+	double negativeTimeout();
 
 	void setNegativeTimeout(double negativeTimeout);
 
-	double getAttrTimeout();
+	double attrTimeout();
 
 	void setAttrTimeout(double attrTimeout);
 
 
-	boolean getIntr();
+	boolean intr();
 
 	void setIntr(boolean intr);
 
-	int getIntrSignal();
+	int intrSignal();
 
 	void setIntrSignal(int intrSignal);
 
-	int getRemember();
+	int remember();
 
 	void setRemember(int secondsToRemember);
 
-	boolean getHardRemove();
+	boolean hardRemove();
 
 	void setHardRemove(boolean hardRemove);
 
-	boolean getUseIno();
+	boolean useIno();
 
 	void setUseIno(boolean useIno);
 
-	boolean getReaddirIno();
+	boolean readdirIno();
 
 	void setReaddirIno(boolean readdirIno);
 
-	boolean getDirectIo();
+	boolean directIo();
 
 	void setDirectIo(boolean directIo);
 
-	boolean getKernelCache();
+	boolean kernelCache();
 
 	void setKernelCache(boolean kernelCache);
 
-	boolean getAutoCache();
+	boolean autoCache();
 
 	void setAutoCache(boolean autoCache);
 
-	boolean getAcAttrTimeoutSet();
+	boolean acAttrTimeoutSet();
 
 	void setAcAttrTimeoutSet(boolean acAttrTimeoutSet);
 
-	double getAcAttrTimeout();
+	double acAttrTimeout();
 
 	void setAcAttrTimeout(double acAttrTimeout);
 
-	boolean getNullpathOk();
+	boolean nullpathOk();
 
 	void setNullpathOk(boolean nullpathOk);
 
