@@ -100,7 +100,7 @@
 										<includeFunction>fuse3_mount</includeFunction>
 										<includeFunction>fuse3_get_session</includeFunction>
 										<includeFunction>fuse3_loop</includeFunction>
-										<includeFunction>fuse3_loop_mt</includeFunction>
+										<includeFunction>fuse3_loop_mt_31</includeFunction>
 										<includeFunction>fuse3_exit</includeFunction>
 										<includeFunction>fuse3_unmount</includeFunction>
 										<includeFunction>fuse3_destroy</includeFunction>
@@ -115,7 +115,6 @@
 										<includeStruct>fuse_statvfs</includeStruct>
 										<includeStruct>fuse_timespec</includeStruct>
 										<includeStruct>fuse3_conn_info</includeStruct>
-										<includeStruct>fuse3_loop_config</includeStruct>
 									</includeStructs>
 								</configuration>
 							</execution>
