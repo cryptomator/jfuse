@@ -2,45 +2,98 @@ package org.cryptomator.jfuse.api;
 
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
+import java.util.function.IntPredicate;
 
+/**
+ * Represents the <code>stat</code> struct, which contains file attributes.
+ *
+ * @see <a href="https://man7.org/linux/man-pages/man2/stat.2.html">stat man page</a>
+ * @see <a href="https://man7.org/linux/man-pages/man7/inode.7.html">inode man page</a>
+ */
 @SuppressWarnings("OctalInteger")
 public interface Stat {
+
+	/**
+	 * Bit mask for the file type bit field
+	 */
+	int S_IFMT = 0170000;
 
 	/**
 	 * Mask value for file type socket
 	 * See man page of inode(7).
 	 */
 	int S_IFSOCK = 0140000;
+
 	/**
 	 * Mask value for file type symbolic link
 	 * See man page of inode(7).
 	 */
 	int S_IFLNK = 0120000;
+
 	/**
 	 * Mask value for file type regular file
 	 * See man page of inode(7).
 	 */
 	int S_IFREG = 0100000;
+
 	/**
 	 * Mask value for file type block device
 	 * See man page of inode(7).
 	 */
 	int S_IFBLK = 0060000;
+
 	/**
 	 * Mask value for file type directory
 	 * See man page of inode(7).
 	 */
 	int S_IFDIR = 0040000;
+
 	/**
 	 * Mask value for file type character device
 	 * See man page of inode(7).
 	 */
 	int S_IFCHR = 0020000;
+
 	/**
 	 * Mask value for file type named pipe (FIFO)
 	 * See man page of inode(7).
 	 */
 	int S_IFIFO = 0010000;
+
+	/**
+	 * is it a regular file?
+	 */
+	IntPredicate S_ISREG = m -> (m & S_IFMT) == S_IFREG;
+
+	/**
+	 * directory?
+	 */
+	IntPredicate S_ISDIR = m -> (m & S_IFMT) == S_IFDIR;
+
+	/**
+	 * character device?
+	 */
+	IntPredicate S_ISCHR = m -> (m & S_IFMT) == S_IFCHR;
+
+	/**
+	 * block device?
+	 */
+	IntPredicate S_ISBLK = m -> (m & S_IFMT) == S_IFBLK;
+
+	/**
+	 * FIFO (named pipe)?
+	 */
+	IntPredicate S_ISFIFO = m -> (m & S_IFMT) == S_IFIFO;
+
+	/**
+	 * symbolic link?
+	 */
+	IntPredicate S_ISLNK = m -> (m & S_IFMT) == S_IFLNK;
+
+	/**
+	 * socket?
+	 */
+	IntPredicate S_ISSOCK = m -> (m & S_IFMT) == S_IFSOCK;
 
 	TimeSpec aTime();
 
@@ -80,64 +133,26 @@ public interface Stat {
 		setMode(mode);
 	}
 
-	/**
-	 * @return <code>true</code> if <code>S_IFDIR</code> bit is set in {@link #getMode()}
-	 */
-	default boolean isDir() {
-		return hasMode(S_IFDIR);
-	}
-
-	/**
-	 * Sets the <code>S_IFDIR</code> bit in {@link #setMode(int)}
-	 *
-	 * @param isDir Whether to set the <code>S_IFDIR</code> bit to one.
-	 */
-	default void toggleDir(boolean isDir) {
-		toggleMode(S_IFDIR, isDir);
-	}
-
-	/**
-	 * @return <code>true</code> if <code>S_IFREG</code> bit is set in {@link #getMode()}
-	 */
-	default boolean isReg() {
-		return hasMode(S_IFREG);
-	}
-
-	/**
-	 * Sets the <code>S_IFREG</code> bit in {@link #setMode(int)}
-	 *
-	 * @param isReg Whether to set the <code>S_IFREG</code> bit to one.
-	 */
-	default void toggleReg(boolean isReg) {
-		toggleMode(S_IFREG, isReg);
-	}
-
-	/**
-	 * @return <code>true</code> if <code>S_IFLNK</code> bit is set in {@link #getMode()}
-	 */
-	default boolean isLnk() {
-		return hasMode(S_IFLNK);
-	}
-
-	/**
-	 * Sets the <code>S_IFLNK</code> bit in {@link #setMode(int)}
-	 *
-	 * @param isLnk Whether to set the <code>S_IFLNK</code> bit to one.
-	 */
-	default void toggleLnk(boolean isLnk) {
-		toggleMode(S_IFLNK, isLnk);
-	}
-
 	default boolean hasMode(int mask) {
 		return (getMode() & mask) == mask;
 	}
 
-	default void toggleMode(int mask, boolean set) {
-		if (set) {
-			setMode(getMode() | mask);
-		} else {
-			setMode(getMode() & ~mask);
-		}
+	/**
+	 * Adds the given bit to {@link #getMode() mode}
+	 *
+	 * @param mask the bits to set
+	 */
+	default void setModeBits(int mask) {
+		setMode(getMode() | mask);
+	}
+
+	/**
+	 * Erases the given bit from {@link #getMode() mode}
+	 *
+	 * @param mask the bits to unset
+	 */
+	default void unsetModeBits(int mask) {
+		setMode(getMode() & ~mask);
 	}
 
 }
