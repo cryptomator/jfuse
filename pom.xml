@@ -4,10 +4,10 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cryptomator</groupId>
-	<artifactId>jfuse</artifactId>
+	<artifactId>jfuse-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>0.3.0-SNAPSHOT</version>
-	<name>jFUSE</name>
+	<name>jFUSE Parent</name>
 	<description>Java bindings for FUSE using foreign functions &amp; memory API</description>
 	<url>https://github.com/cryptomator/jfuse</url>
 
@@ -43,6 +43,10 @@
 
 	<modules>
 		<module>jfuse-api</module>
+		<module>jfuse-linux-aarch64</module>
+		<module>jfuse-linux-amd64</module>
+		<module>jfuse-mac</module>
+		<module>jfuse-win-amd64</module>
 	</modules>
 
 	<dependencies>
@@ -192,58 +196,6 @@
 	</build>
 
 	<profiles>
-		<profile>
-			<id>mac</id>
-			<activation>
-				<os>
-					<family>mac</family>
-				</os>
-			</activation>
-			<modules>
-				<module>jfuse-mac</module>
-			</modules>
-		</profile>
-
-		<profile>
-			<id>linux-amd64</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<name>linux</name>
-					<arch>amd64</arch>
-				</os>
-			</activation>
-			<modules>
-				<module>jfuse-linux-amd64</module>
-			</modules>
-		</profile>
-
-		<profile>
-			<id>linux-aarch64</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<name>linux</name>
-					<arch>aarch64</arch>
-				</os>
-			</activation>
-			<modules>
-				<module>jfuse-linux-aarch64</module>
-			</modules>
-		</profile>
-
-		<profile>
-			<id>win-amd64</id>
-			<activation>
-				<os>
-					<family>windows</family>
-					<arch>amd64</arch>
-				</os>
-			</activation>
-			<modules>
-				<module>jfuse-win-amd64</module>
-			</modules>
-		</profile>
 
 		<profile>
 			<id>test</id>
