@@ -188,48 +188,28 @@ public class FuseImplTest {
 		}
 	}
 
-	@Nested
-	@DisplayName("utimens")
-	public class Utimens {
+	@DisplayName("utimens(\"/foo\", ...)")
+	@ParameterizedTest
+	@CsvSource(value = {
+			"123456,789, 456789,123",
+			"111222,333, 444555,666",
+	})
+	public void testUtimens(long sec0, long nsec0, long sec1, long nsec1) {
+		Instant expectedATime = Instant.ofEpochSecond(sec0, nsec0);
+		Instant expectedMTime = Instant.ofEpochSecond(sec1, nsec1);
+		try (var scope = MemorySession.openConfined()) {
+			var path = scope.allocateUtf8String("/foo");
+			var times = fuse_timespec.allocateArray(2, scope);
+			var fi = scope.allocate(fuse3_file_info.$LAYOUT());
+			fuse_timespec.tv_sec$set(times, 0, sec0);
+			fuse_timespec.tv_nsec$set(times, 0, nsec0);
+			fuse_timespec.tv_sec$set(times, 1, sec1);
+			fuse_timespec.tv_nsec$set(times, 1, nsec1);
+			Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(t -> expectedATime.equals(t.get())), Mockito.argThat(t -> expectedMTime.equals(t.get())), Mockito.argThat(usesSameMemorySegement(fi)));
 
-		@DisplayName("utimens(\"/foo\", UTIME_NOW, UTIME_NOW)")
-		@Test
-		public void testUtimensNow() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var times = MemoryAddress.NULL;
-				var fi = scope.allocate(fuse3_file_info.$LAYOUT());
-				Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(t -> t.get().getNano() == 0L), Mockito.argThat(t -> t.get().getNano() == 0L), Mockito.argThat(usesSameMemorySegement(fi)));
+			var result = fuseImpl.utimens(path.address(), times.address(), fi.address());
 
-				var result = fuseImpl.utimens(path.address(), times, fi.address());
-
-				Assertions.assertEquals(42, result);
-			}
-		}
-
-		@DisplayName("utimens(\"/foo\", ...)")
-		@ParameterizedTest
-		@CsvSource(value = {
-				"123456,789, 456789,123",
-				"111222,333, 444555,666",
-		})
-		public void testUtimens(long sec0, long nsec0, long sec1, long nsec1) {
-			Instant expectedATime = Instant.ofEpochSecond(sec0, nsec0);
-			Instant expectedMTime = Instant.ofEpochSecond(sec1, nsec1);
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var times = fuse_timespec.allocateArray(2, scope);
-				var fi = scope.allocate(fuse3_file_info.$LAYOUT());
-				fuse_timespec.tv_sec$set(times, 0, sec0);
-				fuse_timespec.tv_nsec$set(times, 0, nsec0);
-				fuse_timespec.tv_sec$set(times, 1, sec1);
-				fuse_timespec.tv_nsec$set(times, 1, nsec1);
-				Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(t -> expectedATime.equals(t.get())), Mockito.argThat(t -> expectedMTime.equals(t.get())), Mockito.argThat(usesSameMemorySegement(fi)));
-
-				var result = fuseImpl.utimens(path.address(), times.address(), fi.address());
-
-				Assertions.assertEquals(42, result);
-			}
+			Assertions.assertEquals(42, result);
 		}
 	}
 

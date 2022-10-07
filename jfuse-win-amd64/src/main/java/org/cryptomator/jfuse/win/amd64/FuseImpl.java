@@ -259,20 +259,13 @@ public class FuseImpl extends Fuse {
 	@VisibleForTesting
 	int utimens(MemoryAddress path, MemoryAddress times, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
-			if (MemoryAddress.NULL.equals(times)) {
-				// set both times to current time (using on-heap memory segments)
-				var segment = MemorySegment.allocateNative(fuse_timespec.$LAYOUT().byteSize(), scope);
-				fuse_timespec.tv_sec$set(segment, 0);
-				fuse_timespec.tv_nsec$set(segment, 0); //FIXME: use hardcoded UTIME_NOW
-				var time = new TimeSpecImpl(segment);
-				return delegate.utimens(path.getUtf8String(0), time, time, new FileInfoImpl(fi, scope));
-			} else {
-				var seq = MemoryLayout.sequenceLayout(2, fuse_timespec.$LAYOUT());
-				var segment = MemorySegment.ofAddress(times, seq.byteSize(), scope);
-				var time0 = segment.asSlice(0, fuse_timespec.$LAYOUT().byteSize());
-				var time1 = segment.asSlice(fuse_timespec.$LAYOUT().byteSize(), fuse_timespec.$LAYOUT().byteSize());
-				return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), new FileInfoImpl(fi, scope));
-			}
+			// On Windows we know for sure that WinFSP will call this function only with
+			// valid times: https://github.com/winfsp/winfsp/discussions/445
+			var seq = MemoryLayout.sequenceLayout(2, fuse_timespec.$LAYOUT());
+			var segment = MemorySegment.ofAddress(times, seq.byteSize(), scope);
+			var time0 = segment.asSlice(0, fuse_timespec.$LAYOUT().byteSize());
+			var time1 = segment.asSlice(fuse_timespec.$LAYOUT().byteSize(), fuse_timespec.$LAYOUT().byteSize());
+			return delegate.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), new FileInfoImpl(fi, scope));
 		}
 	}
 

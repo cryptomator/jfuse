@@ -1,6 +1,7 @@
 package org.cryptomator.jfuse.tests;
 
 import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.FuseBuilder;
 import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.examples.AbstractMirrorFileSystem;
 import org.cryptomator.jfuse.examples.PosixMirrorFileSystem;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,11 +34,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@EnabledIf("hasSupportedImplementation")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MirrorIT {
 
 	static {
 		System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "TRACE");
+	}
+
+	// skip integration tests, if no implementation is available
+	static boolean hasSupportedImplementation() {
+		try {
+			FuseBuilder.getSupported();
+			return true;
+		} catch (UnsupportedOperationException e) {
+			return false;
+		}
 	}
 
 	private Path orig;

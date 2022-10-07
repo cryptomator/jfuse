@@ -24,15 +24,6 @@ public class stat_h  {
     public static long UTIME_OMIT() {
         return 1073741822L;
     }
-    public static int S_IFDIR() {
-        return (int)16384L;
-    }
-    public static int S_IFREG() {
-        return (int)32768L;
-    }
-    public static int S_IFLNK() {
-        return (int)40960L;
-    }
 }
 
 

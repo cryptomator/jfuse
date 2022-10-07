@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse</artifactId>
-		<version>0.2.0</version>
+		<version>0.2.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-win-amd64</artifactId>
@@ -92,7 +92,7 @@
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>WINFSP_DLL_INTERNAL</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=32</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=31</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
 										<includeFunction>fuse3_lib_help</includeFunction>

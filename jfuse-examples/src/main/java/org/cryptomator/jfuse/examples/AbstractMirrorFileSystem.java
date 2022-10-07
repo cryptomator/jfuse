@@ -71,7 +71,6 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	public Set<FuseOperations.Operation> supportedOperations() {
 		return EnumSet.of(
 				FuseOperations.Operation.ACCESS,
-				FuseOperations.Operation.CHMOD,
 				FuseOperations.Operation.CREATE,
 				FuseOperations.Operation.DESTROY,
 				FuseOperations.Operation.GET_ATTR,
@@ -213,18 +212,6 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	private long countSubDirs(Path dir) throws IOException {
 		try (var ds = Files.newDirectoryStream(dir)) {
 			return StreamSupport.stream(ds.spliterator(), false).filter(Files::isDirectory).count();
-		}
-	}
-
-	@Override
-	public int chmod(String path, int mode, FileInfo fi) {
-		LOG.trace("chmod {}", path);
-		Path node = resolvePath(path);
-		try {
-			Files.setPosixFilePermissions(node, FileModes.toPermissions(mode));
-			return 0;
-		} catch (IOException e) {
-			return -errno.eio();
 		}
 	}
 
