@@ -34,7 +34,6 @@
 			<activation>
 				<os>
 					<family>mac</family>
-					<arch>x86_64</arch>
 				</os>
 			</activation>
 			<dependencies>
@@ -83,17 +82,16 @@
 		</profile>
 
 		<profile>
-			<id>win-amd64</id>
+			<id>win</id>
 			<activation>
 				<os>
 					<family>windows</family>
-					<arch>amd64</arch>
 				</os>
 			</activation>
 			<dependencies>
 				<dependency>
 					<groupId>org.cryptomator</groupId>
-					<artifactId>jfuse-win-amd64</artifactId>
+					<artifactId>jfuse-win</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 			</dependencies>
