@@ -70,6 +70,14 @@ Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operat
 
 Usage examples can be found under [`/jfuse-examples/`](jfuse-examples). You basically need to implement `FuseOperations` and pass it to the `Fuse.builder()`:
 
+```xml
+<dependency>
+	<groupId>org.cryptomator</groupId>
+	<artifactId>jfuse</artifactId>
+	<version>x.y.z</version>
+</dependency>
+```
+
 ```java
 var builder = Fuse.builder();
 var fs = new MyFileSystem(builder.errno());
