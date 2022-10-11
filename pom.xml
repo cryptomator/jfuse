@@ -46,7 +46,7 @@
 		<module>jfuse-linux-aarch64</module>
 		<module>jfuse-linux-amd64</module>
 		<module>jfuse-mac</module>
-		<module>jfuse-win-amd64</module>
+		<module>jfuse-win</module>
 		<module>jfuse</module>
 	</modules>
 

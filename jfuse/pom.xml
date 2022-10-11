@@ -36,7 +36,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.cryptomator</groupId>
-			<artifactId>jfuse-win-amd64</artifactId>
+			<artifactId>jfuse-win</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
