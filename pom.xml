@@ -156,14 +156,12 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
-						<configuration>
-							<release>19</release>
-							<additionalOptions>--enable-preview</additionalOptions>
-						</configuration>
 					</execution>
 				</executions>
 				<configuration>
 					<excludePackageNames>*.extr</excludePackageNames>
+					<release>19</release>
+					<additionalOptions>--enable-preview</additionalOptions>
 				</configuration>
 			</plugin>
 			<plugin>
