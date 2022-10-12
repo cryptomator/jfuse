@@ -1,8 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="RandomFileSystem" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="RandomFileSystem" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.examples.RandomFileSystem" />
     <module name="jfuse-examples" />
-    <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=debug" />
+    <option name="PROGRAM_PARAMETERS" value="/Volumes/random" />
+    <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=debug -Djava.library.path=/usr/local/lib --enable-native-access=org.cryptomator.jfuse.mac --enable-preview" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="org.cryptomator.jfuse.examples.*" />
