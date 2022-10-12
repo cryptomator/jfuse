@@ -4,6 +4,7 @@ import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.api.TimeSpec;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse_config;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_conn_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_file_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_h;
@@ -20,10 +21,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Answers;
-import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.mockito.verification.VerificationMode;
 
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
@@ -133,9 +132,9 @@ public class FuseImplTest {
 				FuseConnInfo connInfo = invocation.getArgument(0);
 				result.set(connInfo.want());
 				return null;
-			}).when(fuseOps).init(Mockito.any());
+			}).when(fuseOps).init(Mockito.any(), Mockito.any());
 			var connInfo = fuse_conn_info.allocate(scope);
-			var fuseConfig = MemoryAddress.NULL; // TODO jextract fuse_config
+			var fuseConfig = fuse_config.allocate(scope);
 
 			fuseImpl.init(connInfo.address(), fuseConfig.address());
 
