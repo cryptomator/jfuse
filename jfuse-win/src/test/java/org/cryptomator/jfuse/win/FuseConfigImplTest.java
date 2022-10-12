@@ -109,7 +109,7 @@ public class FuseConfigImplTest {
 				Arguments.arguments(Named.of("setSetUid()", (SetIntInConfig) FuseConfig::setSetUid), (GetIntInMemorySegment) fuse3_config::set_uid$get),
 				Arguments.arguments(Named.of("setUid()", (SetIntInConfig) FuseConfig::setUid), (GetIntInMemorySegment) fuse3_config::uid$get),
 				Arguments.arguments(Named.of("setSetMode()", (SetIntInConfig) FuseConfig::setSetMode), (GetIntInMemorySegment) fuse3_config::set_mode$get),
-				Arguments.arguments(Named.of("setUmask()", (SetIntInConfig) FuseConfig::setUmask), (GetIntInMemorySegment) fuse3_config::umask$get), //TODO: this test fails
+				Arguments.arguments(Named.of("setUmask()", (SetIntInConfig) FuseConfig::setUmask), (GetIntInMemorySegment) fuse3_config::umask$get),
 				Arguments.arguments(Named.of("setIntr()", (SetIntInConfig) FuseConfig::setIntr), (GetIntInMemorySegment) fuse3_config::intr$get),
 				Arguments.arguments(Named.of("setIntrSignal()", (SetIntInConfig) FuseConfig::setIntrSignal), (GetIntInMemorySegment) fuse3_config::intr_signal$get),
 				Arguments.arguments(Named.of("setRemember()", (SetIntInConfig) FuseConfig::setRemember), (GetIntInMemorySegment) fuse3_config::remember$get),
