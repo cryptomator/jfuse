@@ -70,7 +70,7 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 
 	@Override
 	public void setUmask(int umask) {
-		fuse3_config.uid$set(segment, umask);
+		fuse3_config.umask$set(segment, umask);
 	}
 
 	@Override
