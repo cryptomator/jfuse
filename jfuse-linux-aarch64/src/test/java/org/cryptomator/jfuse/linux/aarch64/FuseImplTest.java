@@ -4,12 +4,11 @@ import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.api.TimeSpec;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse_cmdline_opts;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_config;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_conn_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_file_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_h;
-import org.cryptomator.jfuse.linux.aarch64.extr.ll.fuse_cmdline_opts;
-import org.cryptomator.jfuse.linux.aarch64.extr.ll.fuse_lowlevel_h;
 import org.cryptomator.jfuse.linux.aarch64.extr.timespec;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -84,9 +83,9 @@ public class FuseImplTest {
 	@ValueSource(strings = {"--help", "-h"})
 	public void testParseArgsHelp(String arg) {
 		var args = List.of("fusefs", arg);
-		try (var fuseLowlevelH = Mockito.mockStatic(fuse_lowlevel_h.class);
+		try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
 			 var fuseH = Mockito.mockStatic(fuse_h.class)) {
-			fuseLowlevelH.when(() -> fuse_lowlevel_h.fuse_parse_cmdline(Mockito.any(), Mockito.any())).then(invocation -> {
+			fuseFunctionsClass.when(() -> FuseFunctions.fuse_parse_cmdline(Mockito.any(), Mockito.any())).then(invocation -> {
 				MemorySegment opts = invocation.getArgument(1);
 				fuse_cmdline_opts.show_help$set(opts, 1);
 				return 0;
@@ -101,9 +100,9 @@ public class FuseImplTest {
 	@Test
 	@DisplayName("parseArgs")
 	public void testParseArgs() {
-		try (var fuseLowlevelH = Mockito.mockStatic(fuse_lowlevel_h.class);
+		try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
 			 var scope = MemorySession.openConfined()) {
-			fuseLowlevelH.when(() -> fuse_lowlevel_h.fuse_parse_cmdline(Mockito.any(), Mockito.any())).then(invocation -> {
+			fuseFunctionsClass.when(() -> FuseFunctions.fuse_parse_cmdline(Mockito.any(), Mockito.any())).then(invocation -> {
 				MemorySegment opts = invocation.getArgument(1);
 				fuse_cmdline_opts.singlethread$set(opts, 0);
 				fuse_cmdline_opts.debug$set(opts, 1);

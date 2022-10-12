@@ -8,8 +8,7 @@ import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_args;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_h;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_operations;
-import org.cryptomator.jfuse.linux.amd64.extr.ll.fuse_cmdline_opts;
-import org.cryptomator.jfuse.linux.amd64.extr.ll.fuse_lowlevel_h;
+import org.cryptomator.jfuse.linux.amd64.extr.fuse_cmdline_opts;
 import org.cryptomator.jfuse.linux.amd64.extr.stat_h;
 import org.cryptomator.jfuse.linux.amd64.extr.timespec;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -61,7 +60,7 @@ public final class FuseImpl extends Fuse {
 		fuse_args.allocated$set(args, 0);
 
 		var opts = fuse_cmdline_opts.allocate(fuseScope);
-		int parseResult = fuse_lowlevel_h.fuse_parse_cmdline(args, opts);
+		int parseResult = FuseFunctions.fuse_parse_cmdline(args, opts);
 		if (parseResult != 0) {
 			throw new IllegalArgumentException("fuse_parse_cmdline failed to parse " + String.join(" ", cmdLineArgs));
 		}

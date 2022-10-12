@@ -194,12 +194,12 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		stat.setSize(attrs.size());
 		stat.setNLink((short) 1);
 		if (attrs.isDirectory()) {
-			stat.toggleDir(true);
+			stat.setModeBits(Stat.S_IFDIR);
 			stat.setNLink((short) 2); // quick and dirty implementation. should really be 2 + subdir count
 		} else if (attrs.isSymbolicLink()) {
-			stat.toggleLnk(true);
-		} else if (attrs.isRegularFile()){
-			stat.toggleReg(true);
+			stat.setModeBits(Stat.S_IFLNK);
+		} else if (attrs.isRegularFile()) {
+			stat.setModeBits(Stat.S_IFREG);
 		}
 		stat.aTime().set(attrs.lastAccessTime().toInstant());
 		stat.mTime().set(attrs.lastModifiedTime().toInstant());

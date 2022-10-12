@@ -91,14 +91,19 @@
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=312</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
+										<includeFunction>fuse_version</includeFunction>
 										<includeFunction>fuse_lib_help</includeFunction>
 										<includeFunction>fuse_new</includeFunction>
 										<includeFunction>fuse_mount</includeFunction>
 										<includeFunction>fuse_get_session</includeFunction>
 										<includeFunction>fuse_loop</includeFunction>
+										<includeFunction>fuse_loop_cfg_create</includeFunction>
+										<includeFunction>fuse_loop_cfg_set_clone_fd</includeFunction>
+										<includeFunction>fuse_loop_cfg_set_max_threads</includeFunction>
+										<includeFunction>fuse_loop_cfg_destroy</includeFunction>
 										<includeFunction>fuse_loop_mt</includeFunction>
 										<includeFunction>fuse_exit</includeFunction>
 										<includeFunction>fuse_unmount</includeFunction>
@@ -116,7 +121,7 @@
 										<includeStruct>fuse_conn_info</includeStruct>
 										<includeStruct>fuse_config</includeStruct>
 										<includeStruct>fuse_args</includeStruct>
-										<includeStruct>fuse_loop_config</includeStruct>
+										<includeStruct>fuse_loop_config_v1</includeStruct>
 									</includeStructs>
 								</configuration>
 							</execution>
@@ -127,15 +132,12 @@
 								</goals>
 								<configuration>
 									<headerFile>${project.parent.basedir}/libfuse3/include/fuse_lowlevel.h</headerFile>
-									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.ll</targetPackage>
+									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr</targetPackage>
 									<headerClassName>fuse_lowlevel_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=312</cPreprocessorMacro>
 									</cPreprocessorMacros>
-									<includeFunctions>
-										<includeFunction>fuse_parse_cmdline</includeFunction>
-									</includeFunctions>
 									<includeStructs>
 										<includeStruct>fuse_cmdline_opts</includeStruct>
 									</includeStructs>

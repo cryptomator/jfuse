@@ -18,8 +18,63 @@ public class fuse_h  {
     public static OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
     public static OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
     public static OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
+    public static MethodHandle fuse_version$MH() {
+        return RuntimeHelper.requireNonNull(constants$0.fuse_version$MH,"fuse_version");
+    }
+    public static int fuse_version () {
+        var mh$ = fuse_version$MH();
+        try {
+            return (int)mh$.invokeExact();
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
+    public static MethodHandle fuse_loop_cfg_create$MH() {
+        return RuntimeHelper.requireNonNull(constants$0.fuse_loop_cfg_create$MH,"fuse_loop_cfg_create");
+    }
+    public static MemoryAddress fuse_loop_cfg_create () {
+        var mh$ = fuse_loop_cfg_create$MH();
+        try {
+            return (java.lang.foreign.MemoryAddress)mh$.invokeExact();
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
+    public static MethodHandle fuse_loop_cfg_destroy$MH() {
+        return RuntimeHelper.requireNonNull(constants$0.fuse_loop_cfg_destroy$MH,"fuse_loop_cfg_destroy");
+    }
+    public static void fuse_loop_cfg_destroy ( Addressable config) {
+        var mh$ = fuse_loop_cfg_destroy$MH();
+        try {
+            mh$.invokeExact(config);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
+    public static MethodHandle fuse_loop_cfg_set_max_threads$MH() {
+        return RuntimeHelper.requireNonNull(constants$0.fuse_loop_cfg_set_max_threads$MH,"fuse_loop_cfg_set_max_threads");
+    }
+    public static void fuse_loop_cfg_set_max_threads ( Addressable config,  int value) {
+        var mh$ = fuse_loop_cfg_set_max_threads$MH();
+        try {
+            mh$.invokeExact(config, value);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
+    public static MethodHandle fuse_loop_cfg_set_clone_fd$MH() {
+        return RuntimeHelper.requireNonNull(constants$0.fuse_loop_cfg_set_clone_fd$MH,"fuse_loop_cfg_set_clone_fd");
+    }
+    public static void fuse_loop_cfg_set_clone_fd ( Addressable config,  int value) {
+        var mh$ = fuse_loop_cfg_set_clone_fd$MH();
+        try {
+            mh$.invokeExact(config, value);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
     public static MethodHandle fuse_lib_help$MH() {
-        return RuntimeHelper.requireNonNull(constants$0.fuse_lib_help$MH,"fuse_lib_help");
+        return RuntimeHelper.requireNonNull(constants$1.fuse_lib_help$MH,"fuse_lib_help");
     }
     public static void fuse_lib_help ( Addressable args) {
         var mh$ = fuse_lib_help$MH();
@@ -30,7 +85,7 @@ public class fuse_h  {
         }
     }
     public static MethodHandle fuse_new$MH() {
-        return RuntimeHelper.requireNonNull(constants$0.fuse_new$MH,"fuse_new");
+        return RuntimeHelper.requireNonNull(constants$1.fuse_new$MH,"fuse_new");
     }
     public static MemoryAddress fuse_new ( Addressable args,  Addressable op,  long op_size,  Addressable private_data) {
         var mh$ = fuse_new$MH();
@@ -41,7 +96,7 @@ public class fuse_h  {
         }
     }
     public static MethodHandle fuse_mount$MH() {
-        return RuntimeHelper.requireNonNull(constants$0.fuse_mount$MH,"fuse_mount");
+        return RuntimeHelper.requireNonNull(constants$1.fuse_mount$MH,"fuse_mount");
     }
     public static int fuse_mount ( Addressable f,  Addressable mountpoint) {
         var mh$ = fuse_mount$MH();
@@ -52,7 +107,7 @@ public class fuse_h  {
         }
     }
     public static MethodHandle fuse_unmount$MH() {
-        return RuntimeHelper.requireNonNull(constants$0.fuse_unmount$MH,"fuse_unmount");
+        return RuntimeHelper.requireNonNull(constants$1.fuse_unmount$MH,"fuse_unmount");
     }
     public static void fuse_unmount ( Addressable f) {
         var mh$ = fuse_unmount$MH();
@@ -74,7 +129,7 @@ public class fuse_h  {
         }
     }
     public static MethodHandle fuse_loop$MH() {
-        return RuntimeHelper.requireNonNull(constants$1.fuse_loop$MH,"fuse_loop");
+        return RuntimeHelper.requireNonNull(constants$2.fuse_loop$MH,"fuse_loop");
     }
     public static int fuse_loop ( Addressable f) {
         var mh$ = fuse_loop$MH();
@@ -85,7 +140,7 @@ public class fuse_h  {
         }
     }
     public static MethodHandle fuse_exit$MH() {
-        return RuntimeHelper.requireNonNull(constants$1.fuse_exit$MH,"fuse_exit");
+        return RuntimeHelper.requireNonNull(constants$2.fuse_exit$MH,"fuse_exit");
     }
     public static void fuse_exit ( Addressable f) {
         var mh$ = fuse_exit$MH();
@@ -96,7 +151,7 @@ public class fuse_h  {
         }
     }
     public static MethodHandle fuse_loop_mt$MH() {
-        return RuntimeHelper.requireNonNull(constants$1.fuse_loop_mt$MH,"fuse_loop_mt");
+        return RuntimeHelper.requireNonNull(constants$2.fuse_loop_mt$MH,"fuse_loop_mt");
     }
     public static int fuse_loop_mt ( Addressable f,  Addressable config) {
         var mh$ = fuse_loop_mt$MH();
@@ -107,7 +162,7 @@ public class fuse_h  {
         }
     }
     public static MethodHandle fuse_get_session$MH() {
-        return RuntimeHelper.requireNonNull(constants$1.fuse_get_session$MH,"fuse_get_session");
+        return RuntimeHelper.requireNonNull(constants$2.fuse_get_session$MH,"fuse_get_session");
     }
     public static MemoryAddress fuse_get_session ( Addressable f) {
         var mh$ = fuse_get_session$MH();
