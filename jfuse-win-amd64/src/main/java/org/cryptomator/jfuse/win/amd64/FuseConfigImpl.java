@@ -29,7 +29,7 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public void getSetGid(int gid) {
+	public void setGid(int gid) {
 		fuse3_config.gid$set(segment, gid);
 	}
 
@@ -49,7 +49,7 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public void getSetUid(int uid) {
+	public void setUid(int uid) {
 		fuse3_config.uid$set(segment, uid);
 	}
 

@@ -8,7 +8,7 @@ public interface FuseConfig {
 
 	int gid();
 
-	void getSetGid(int gid);
+	void setGid(int gid);
 
 	int getSetUid();
 
@@ -16,7 +16,7 @@ public interface FuseConfig {
 
 	int uid();
 
-	void getSetUid(int uid);
+	void setUid(int uid);
 
 	int getSetMode();
 
