@@ -223,4 +223,14 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 		fuse_config.nullpath_ok$set(segment, nullpathOk);
 	}
 
+	@Override
+	public int noRofdFlush() {
+		return fuse_config.no_rofd_flush$get(segment);
+	}
+
+	@Override
+	public void setNoRofdFlush(int noRofdFlush) {
+		fuse_config.no_rofd_flush$set(segment, noRofdFlush);
+	}
+
 }

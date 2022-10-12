@@ -1,5 +1,9 @@
 package org.cryptomator.jfuse.api;
 
+/**
+ * Configuration Struct used in {@link FuseOperations#init(FuseConnInfo, FuseConfig)}.
+ * Libfuse 3 only struct.
+ */
 public interface FuseConfig {
 
 	int getSetGid();
@@ -87,7 +91,18 @@ public interface FuseConfig {
 
 	void setNullpathOk(int nullpathOk);
 
-	//not supported by winfsp due to being on libfuse 3.2
-	//int no_rofd_flush();
+	/**
+	 * version > 3.3 only
+	 *
+	 * @return no_rofd_flush value of fuse_config or 0 if not supported
+	 */
+	int noRofdFlush();
+
+	/**
+	 * version > 3.3 only
+	 * <p>
+	 * Set no_rofd_flush field in fuse_config or no-op if not supported
+	 */
+	void setNoRofdFlush(int noRofdFlush);
 
 }

@@ -49,7 +49,8 @@ public class FuseConfigImplTest {
 				Arguments.arguments((SetIntInMemorySegment) fuse_config::kernel_cache$set, Named.of("kernelCache()", (GetIntInConfig) FuseConfig::kernelCache)),
 				Arguments.arguments((SetIntInMemorySegment) fuse_config::auto_cache$set, Named.of("autoCache()", (GetIntInConfig) FuseConfig::autoCache)),
 				Arguments.arguments((SetIntInMemorySegment) fuse_config::ac_attr_timeout_set$set, Named.of("acAtrrTimeoutSet()", (GetIntInConfig) FuseConfig::acAttrTimeoutSet)),
-				Arguments.arguments((SetIntInMemorySegment) fuse_config::nullpath_ok$set, Named.of("nullpathOk()", (GetIntInConfig) FuseConfig::nullpathOk))
+				Arguments.arguments((SetIntInMemorySegment) fuse_config::nullpath_ok$set, Named.of("nullpathOk()", (GetIntInConfig) FuseConfig::nullpathOk)),
+				Arguments.arguments((SetIntInMemorySegment) fuse_config::no_rofd_flush$set, Named.of("noRofdFlush()", (GetIntInConfig) FuseConfig::noRofdFlush))
 		);
 	}
 
@@ -120,7 +121,8 @@ public class FuseConfigImplTest {
 				Arguments.arguments(Named.of("setKernelCache()", (SetIntInConfig) FuseConfig::setKernelCache), (GetIntInMemorySegment) fuse_config::kernel_cache$get),
 				Arguments.arguments(Named.of("setAutoCache()", (SetIntInConfig) FuseConfig::setAutoCache), (GetIntInMemorySegment) fuse_config::auto_cache$get),
 				Arguments.arguments(Named.of("setAcAtrrTimeoutSet()", (SetIntInConfig) FuseConfig::setAcAttrTimeoutSet), (GetIntInMemorySegment) fuse_config::ac_attr_timeout_set$get),
-				Arguments.arguments(Named.of("setNullpathOk()", (SetIntInConfig) FuseConfig::setNullpathOk), (GetIntInMemorySegment) fuse_config::nullpath_ok$get)
+				Arguments.arguments(Named.of("setNullpathOk()", (SetIntInConfig) FuseConfig::setNullpathOk), (GetIntInMemorySegment) fuse_config::nullpath_ok$get),
+				Arguments.arguments(Named.of("setNoRofdFlush()", (SetIntInConfig) FuseConfig::setNoRofdFlush), (GetIntInMemorySegment) fuse_config::no_rofd_flush$get)
 		);
 	}
 
