@@ -200,6 +200,32 @@
 	</build>
 
 	<profiles>
+		<profile>
+			<id>jextract</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>prohibit-jextract-on-parent</id>
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+								<configuration>
+									<rules>
+										<AlwaysFail>
+											<message>Using the jextract profile is only supported on submodules.</message>
+										</AlwaysFail>
+									</rules>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 
 		<profile>
 			<id>test</id>

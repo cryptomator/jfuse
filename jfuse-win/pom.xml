@@ -41,10 +41,6 @@
 								</goals>
 								<configuration>
 									<rules>
-										<requireOS>
-											<family>windows</family>
-											<message>This build configuration requires Windows.</message>
-										</requireOS>
 										<requireFilesExist>
 											<files>
 												<file>${win.ucrtHeaderPath}</file>

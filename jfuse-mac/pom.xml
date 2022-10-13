@@ -41,15 +41,11 @@
 								</goals>
 								<configuration>
 									<rules>
-										<requireOS>
-											<family>mac</family>
-											<message>This build configuration requires macOS.</message>
-										</requireOS>
 										<requireFilesExist>
 											<files>
-												<file>/Applications/Xcode.app</file>
+												<file>${mac.headerSearchPath}</file>
 											</files>
-											<message>XCode not found.</message>
+											<message>macOS headers not found.</message>
 										</requireFilesExist>
 									</rules>
 								</configuration>
