@@ -143,11 +143,12 @@ public class FuseImpl extends Fuse {
 	}
 
 	@VisibleForTesting
-	Addressable init(MemoryAddress conn, MemoryAddress fuseConfig) {
+	Addressable init(MemoryAddress conn, MemoryAddress cfg) {
 		try (var scope = MemorySession.openConfined()) {
 			var connInfo = new FuseConnInfoImpl(conn, scope);
 			connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
-			delegate.init(connInfo);
+			var config = new org.cryptomator.jfuse.win.FuseConfigImpl(cfg, scope);
+			delegate.init(connInfo, config);
 		}
 		return MemoryAddress.NULL;
 	}

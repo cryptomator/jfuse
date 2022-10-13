@@ -2,7 +2,7 @@
   <configuration default="false" name="WindowsMirrorFileSystem" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.examples.WindowsMirrorFileSystem" />
     <module name="jfuse-examples" />
-    <option name="PROGRAM_PARAMETERS" value="$USER_HOME$/Desktop/TMP M:" />
+    <option name="PROGRAM_PARAMETERS" value="T:\test M:" />
     <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=info --enable-native-access=org.cryptomator.jfuse.win.amd64 --enable-preview" />
     <extension name="coverage">
       <pattern>

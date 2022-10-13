@@ -5,6 +5,7 @@ import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_cmdline_opts;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse_config;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_conn_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_file_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_h;
@@ -130,9 +131,9 @@ public class FuseImplTest {
 				FuseConnInfo connInfo = invocation.getArgument(0);
 				result.set(connInfo.want());
 				return null;
-			}).when(fuseOps).init(Mockito.any());
+			}).when(fuseOps).init(Mockito.any(), Mockito.any());
 			var connInfo = fuse_conn_info.allocate(scope);
-			var fuseConfig = MemoryAddress.NULL; // TODO jextract fuse_config
+			var fuseConfig = fuse_config.allocate(scope);
 
 			fuseImpl.init(connInfo.address(), fuseConfig.address());
 

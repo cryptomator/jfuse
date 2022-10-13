@@ -5,10 +5,8 @@ import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
-import org.cryptomator.jfuse.win.FileInfoImpl;
-import org.cryptomator.jfuse.win.FuseArgs;
-import org.cryptomator.jfuse.win.FuseImpl;
 import org.cryptomator.jfuse.win.extr.fuse2.fuse2_h;
+import org.cryptomator.jfuse.win.extr.fuse3_config;
 import org.cryptomator.jfuse.win.extr.fuse3_conn_info;
 import org.cryptomator.jfuse.win.extr.fuse3_file_info;
 import org.cryptomator.jfuse.win.extr.fuse_h;
@@ -181,9 +179,9 @@ public class FuseImplTest {
 				FuseConnInfo connInfo = invocation.getArgument(0);
 				result.set(connInfo.want());
 				return null;
-			}).when(fuseOps).init(Mockito.any());
+			}).when(fuseOps).init(Mockito.any(), Mockito.any());
 			var connInfo = fuse3_conn_info.allocate(scope);
-			var fuseConfig = MemoryAddress.NULL; // TODO jextract fuse_config
+			var fuseConfig = fuse3_config.allocate(scope);
 
 			fuseImpl.init(connInfo.address(), fuseConfig.address());
 
@@ -248,11 +246,11 @@ public class FuseImplTest {
 
 	private static ArgumentMatcher<FileInfo> usesSameMemorySegement(MemorySegment expected) {
 		return obj -> {
-				if (obj instanceof FileInfoImpl fiImpl) {
-					return fiImpl.segment().address().equals(expected.address()) && fiImpl.segment().byteSize() == expected.byteSize();
-				}
-				return false;
-			};
-		}
+			if (obj instanceof FileInfoImpl fiImpl) {
+				return fiImpl.segment().address().equals(expected.address()) && fiImpl.segment().byteSize() == expected.byteSize();
+			}
+			return false;
+		};
+	}
 
 }
