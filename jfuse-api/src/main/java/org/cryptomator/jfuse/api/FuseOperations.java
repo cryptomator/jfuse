@@ -520,7 +520,7 @@ public interface FuseOperations {
 	 *
 	 * @param conn FUSE information
 	 */
-	default void init(FuseConnInfo conn) { // TODO: add @Nullable FuseConfig for libfuse3
+	default void init(FuseConnInfo conn, @Nullable FuseConfig cfg) {
 		// no-op
 	}
 

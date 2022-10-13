@@ -114,6 +114,7 @@
 										<includeStruct>fuse_stat</includeStruct>
 										<includeStruct>fuse_statvfs</includeStruct>
 										<includeStruct>fuse_timespec</includeStruct>
+										<includeStruct>fuse3_config</includeStruct>
 										<includeStruct>fuse3_conn_info</includeStruct>
 									</includeStructs>
 								</configuration>

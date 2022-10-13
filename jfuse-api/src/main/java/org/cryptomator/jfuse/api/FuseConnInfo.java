@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.api;
 
 /**
- * Fuse connection info struct used in {@link FuseOperations#init(FuseConnInfo)} method.
+ * Fuse connection info struct used in {@link FuseOperations#init(FuseConnInfo, FuseConfig)} method.
  * <p>
  * This struct is a union of the libfuse2 and libfuse3 definition. If an accessor method or macro is not supported by used libfuse version, it is documented in the javadoc.
  * See also @code{fuse_common.h} of libfuse2 or 3.
