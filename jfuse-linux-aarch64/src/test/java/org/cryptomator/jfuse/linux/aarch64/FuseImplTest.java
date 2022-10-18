@@ -122,6 +122,54 @@ public class FuseImplTest {
 		}
 	}
 
+	@Nested
+	@DisplayName("flush/fsync/fsyncdir")
+	public class FlushFsyncFsyncdir {
+
+		@Test
+		@DisplayName("flush(\"/foo\", fi)")
+		public void testFlush() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var fi = fuse_file_info.allocate(scope);
+				Mockito.doReturn(42).when(fuseOps).flush(Mockito.eq("/foo"), Mockito.any());
+
+				var result = fuseImpl.flush(path.address(), fi.address());
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
+		@Test
+		@DisplayName("fsync(\"/foo\", 1, fi)")
+		public void testFsync() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var fi = fuse_file_info.allocate(scope);
+				Mockito.doReturn(42).when(fuseOps).fsync(Mockito.eq("/foo"), Mockito.eq(1), Mockito.any());
+
+				var result = fuseImpl.fsync(path.address(), 1, fi.address());
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
+		@Test
+		@DisplayName("fsyncdir(\"/foo\", 1, fi)")
+		public void testFsyncdir() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var fi = fuse_file_info.allocate(scope);
+				Mockito.doReturn(42).when(fuseOps).fsyncdir(Mockito.eq("/foo"), Mockito.eq(1), Mockito.any());
+
+				var result = fuseImpl.fsyncdir(path.address(), 1, fi.address());
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
+	}
+
 	@DisplayName("init() sets fuse_conn_info.wants |= FUSE_CAP_READDIRPLUS")
 	@Test
 	public void testInit() {

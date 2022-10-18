@@ -122,6 +122,9 @@ public class FuseImpl extends Fuse {
 			case CHMOD -> fuse3_operations.chmod$set(fuseOps, fuse3_operations.chmod.allocate(this::chmod, fuseScope).address());
 			case CREATE -> fuse3_operations.create$set(fuseOps, fuse3_operations.create.allocate(this::create, fuseScope).address());
 			case DESTROY -> fuse3_operations.destroy$set(fuseOps, fuse3_operations.destroy.allocate(this::destroy, fuseScope).address());
+			case FLUSH -> fuse3_operations.flush$set(fuseOps, fuse3_operations.flush.allocate(this::flush, fuseScope).address());
+			case FSYNC -> fuse3_operations.fsync$set(fuseOps, fuse3_operations.fsync.allocate(this::fsync, fuseScope).address());
+			case FSYNCDIR -> fuse3_operations.fsyncdir$set(fuseOps, fuse3_operations.fsyncdir.allocate(this::fsyncdir, fuseScope).address());
 			case GET_ATTR -> fuse3_operations.getattr$set(fuseOps, fuse3_operations.getattr.allocate(this::getattr, fuseScope).address());
 			case MKDIR -> fuse3_operations.mkdir$set(fuseOps, fuse3_operations.mkdir.allocate(this::mkdir, fuseScope).address());
 			case OPEN -> fuse3_operations.open$set(fuseOps, fuse3_operations.open.allocate(this::open, fuseScope).address());
@@ -167,6 +170,27 @@ public class FuseImpl extends Fuse {
 
 	private void destroy(MemoryAddress addr) {
 		delegate.destroy();
+	}
+
+	@VisibleForTesting
+	int flush(MemoryAddress path, MemoryAddress fi) {
+		try (var scope = MemorySession.openConfined()) {
+			return delegate.flush(path.getUtf8String(0), new FileInfoImpl(fi, scope));
+		}
+	}
+
+	@VisibleForTesting
+	int fsync(MemoryAddress path, int datasync, MemoryAddress fi) {
+		try (var scope = MemorySession.openConfined()) {
+			return delegate.fsync(path.getUtf8String(0), datasync, new FileInfoImpl(fi, scope));
+		}
+	}
+
+	@VisibleForTesting
+	int fsyncdir(MemoryAddress path, int datasync, MemoryAddress fi) {
+		try (var scope = MemorySession.openConfined()) {
+			return delegate.fsyncdir(path.getUtf8String(0), datasync, new FileInfoImpl(fi, scope));
+		}
 	}
 
 	@VisibleForTesting
