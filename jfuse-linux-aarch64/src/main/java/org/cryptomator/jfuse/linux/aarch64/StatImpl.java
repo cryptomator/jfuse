@@ -47,6 +47,26 @@ record StatImpl(MemorySegment segment) implements Stat {
 	}
 
 	@Override
+	public void setUid(int uid) {
+		stat.st_uid$set(segment, uid);
+	}
+
+	@Override
+	public int getUid() {
+		return stat.st_uid$get(segment);
+	}
+
+	@Override
+	public void setGid(int gid) {
+		stat.st_gid$set(segment, gid);
+	}
+
+	@Override
+	public int getGid() {
+		return stat.st_gid$get(segment);
+	}
+
+	@Override
 	public void setNLink(short count) {
 		stat.st_nlink$set(segment, count);
 	}
