@@ -27,7 +27,7 @@
 
 	<profiles>
 		<profile>
-			<id>jextract</id>
+			<id>jextract-linux-amd64</id>
 			<build>
 				<plugins>
 					<plugin>

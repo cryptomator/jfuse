@@ -27,7 +27,7 @@
 
 	<profiles>
 		<profile>
-			<id>jextract</id>
+			<id>jextract-mac</id>
 			<build>
 				<plugins>
 					<plugin>
