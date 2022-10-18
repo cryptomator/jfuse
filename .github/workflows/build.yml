@@ -20,7 +20,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
-        run: mvn -B verify -Plinux-amd64
+        run: mvn -B verify
       - uses: actions/upload-artifact@v3
         with:
           name: coverage-linux-amd64
@@ -41,7 +41,7 @@ jobs:
       - name: Setup fuse
         run: brew install macfuse
       - name: Maven build
-        run: mvn -B verify -Pmac
+        run: mvn -B verify
       - uses: actions/upload-artifact@v3
         with:
           name: coverage-mac
@@ -62,7 +62,7 @@ jobs:
       - name: Setup fuse
         run: choco install winfsp --version 1.10.22006 -y
       - name: Maven build
-        run: mvn -B verify -Pwin
+        run: mvn -B verify
       - uses: actions/upload-artifact@v3
         with:
           name: coverage-win
@@ -104,7 +104,6 @@ jobs:
         run: >
           mvn -B compile -DskipTests
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-          -Plinux-amd64,linux-aarch64,mac,win
           -Dsonar.projectKey=cryptomator_jfuse
           -Dsonar.coverage.jacoco.xmlReportPaths=${GITHUB_WORKSPACE}/coverage/**/jacoco.xml
           -Dsonar.organization=cryptomator
