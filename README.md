@@ -31,7 +31,7 @@ Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operat
 | rename          | :white_check_mark:                      |
 | link            | :x:                                     |
 | chmod           | :white_check_mark:                      |
-| chown           | :x:                                     |
+| chown           | :white_check_mark:                      |
 | truncate        | :white_check_mark:                      |
 | ~ftruncate~     | use truncate                            |
 | ~utime~         | use utimens                             |
