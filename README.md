@@ -1,4 +1,7 @@
 [![Build](https://github.com/cryptomator/jfuse/actions/workflows/build.yml/badge.svg)](https://github.com/cryptomator/jfuse/actions/workflows/build.yml)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=cryptomator_jfuse&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=cryptomator_jfuse)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=cryptomator_jfuse&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=cryptomator_jfuse)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=cryptomator_jfuse&metric=coverage)](https://sonarcloud.io/summary/new_code?id=cryptomator_jfuse)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cryptomator_jfuse&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cryptomator_jfuse)
 
 # jFUSE
