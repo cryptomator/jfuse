@@ -4,7 +4,7 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>org.cryptomator</groupId>
-		<artifactId>jfuse</artifactId>
+		<artifactId>jfuse-parent</artifactId>
 		<version>0.3.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -27,7 +27,7 @@
 
 	<profiles>
 		<profile>
-			<id>jextract</id>
+			<id>jextract-win</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -41,10 +41,6 @@
 								</goals>
 								<configuration>
 									<rules>
-										<requireOS>
-											<family>windows</family>
-											<message>This build configuration requires Windows.</message>
-										</requireOS>
 										<requireFilesExist>
 											<files>
 												<file>${win.ucrtHeaderPath}</file>

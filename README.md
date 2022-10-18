@@ -70,6 +70,14 @@ Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operat
 
 Usage examples can be found under [`/jfuse-examples/`](jfuse-examples). You basically need to implement `FuseOperations` and pass it to the `Fuse.builder()`:
 
+```xml
+<dependency>
+	<groupId>org.cryptomator</groupId>
+	<artifactId>jfuse</artifactId>
+	<version>x.y.z</version>
+</dependency>
+```
+
 ```java
 var builder = Fuse.builder();
 var fs = new MyFileSystem(builder.errno());
@@ -109,7 +117,7 @@ Each platform has its own module. In rare cases, we need to update jextracted cl
 
 In most cases this requires you to run the build on the target platform, as you need access to its system-specific header files and (most likely) build tools. See module readme for specific requirements.
 
-In order to run `jextract`, use the corresponding Maven profile (`-Pjextract`).
+In order to run `jextract`, use the corresponding Maven profile (e.g. `-Pjextract-win`).
 
 ### Adding a new platform
 

@@ -1,4 +1,4 @@
-# jFUSE Windows x86_64
+# jFUSE Windows x86_64 and arm64
 
 ## Requirements for `jextract`
 
