@@ -78,6 +78,7 @@ public final class FuseImpl extends Fuse {
 			case INIT -> fuse_operations.init$set(fuseOps, fuse_operations.init.allocate(this::init, fuseScope).address());
 			case ACCESS -> fuse_operations.access$set(fuseOps, fuse_operations.access.allocate(this::access, fuseScope).address());
 			case CHMOD -> fuse_operations.chmod$set(fuseOps, fuse_operations.chmod.allocate(this::chmod, fuseScope).address());
+			case CHOWN -> fuse_operations.chown$set(fuseOps, fuse_operations.chown.allocate(this::chown, fuseScope).address());
 			case CREATE -> fuse_operations.create$set(fuseOps, fuse_operations.create.allocate(this::create, fuseScope).address());
 			case DESTROY -> fuse_operations.destroy$set(fuseOps, fuse_operations.destroy.allocate(this::destroy, fuseScope).address());
 			case GET_ATTR -> {
@@ -119,6 +120,11 @@ public final class FuseImpl extends Fuse {
 
 	private int chmod(MemoryAddress path, short mode) {
 		return delegate.chmod(path.getUtf8String(0), mode, null);
+	}
+
+	@VisibleForTesting
+	int chown(MemoryAddress path, int uid, int gid) {
+		return delegate.chown(path.getUtf8String(0), uid, gid, null);
 	}
 
 	private int create(MemoryAddress path, short mode, MemoryAddress fi) {

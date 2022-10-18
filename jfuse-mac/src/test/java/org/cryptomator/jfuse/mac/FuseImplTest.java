@@ -212,4 +212,17 @@ public class FuseImplTest {
 
 	}
 
+	@Test
+	@DisplayName("chown")
+	public void testChown() {
+		try (var scope = MemorySession.openConfined()) {
+			var path = scope.allocateUtf8String("/foo");
+			Mockito.doReturn(42).when(fuseOps).chown("/foo", 42, 1337, null);
+
+			var result = fuseImpl.chown(path.address(), 42, 1337);
+
+			Assertions.assertEquals(42, result);
+		}
+	}
+
 }
