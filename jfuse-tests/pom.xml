@@ -17,9 +17,30 @@
 	</properties>
 
 	<dependencies>
+		<!-- we need _direct_ dependencies in order for jacoco:report-aggregate to pick up coverage reports -->
 		<dependency>
 			<groupId>org.cryptomator</groupId>
-			<artifactId>jfuse</artifactId>
+			<artifactId>jfuse-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cryptomator</groupId>
+			<artifactId>jfuse-linux-aarch64</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cryptomator</groupId>
+			<artifactId>jfuse-linux-amd64</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cryptomator</groupId>
+			<artifactId>jfuse-mac</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cryptomator</groupId>
+			<artifactId>jfuse-win</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
