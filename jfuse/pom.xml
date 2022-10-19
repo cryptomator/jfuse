@@ -9,9 +9,9 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse</artifactId>
-	<name>jFUSE</name>
-	<description>Java bindings for FUSE using foreign functions &amp; memory API</description>
-	<url>https://github.com/cryptomator/jfuse/</url>
+	<name>jFUSE Implementations</name>
+	<description>Aggregator project that contains the public API and all common implementations of jFUSE.</description>
+	<url>https://github.com/cryptomator/jfuse/tree/develop/jfuse</url>
 
 	<dependencies>
 		<dependency>
