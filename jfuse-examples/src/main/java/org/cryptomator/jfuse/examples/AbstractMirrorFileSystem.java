@@ -460,7 +460,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 			return -errno.ebadf();
 		}
 		try {
-			fc.force(datasync != 0);
+			fc.force(datasync == 0);
 			return 0;
 		} catch (IOException e) {
 			return -errno.eio();
