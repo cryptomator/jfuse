@@ -2,7 +2,6 @@ package org.cryptomator.jfuse.api;
 
 
 import org.jetbrains.annotations.Blocking;
-import org.jetbrains.annotations.BlockingExecutor;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.lang.foreign.MemorySession;

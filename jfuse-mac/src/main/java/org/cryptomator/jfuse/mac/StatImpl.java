@@ -3,7 +3,6 @@ package org.cryptomator.jfuse.mac;
 import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.mac.extr.stat;
-import org.cryptomator.jfuse.mac.extr.stat_h;
 
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;

@@ -4,7 +4,6 @@ package org.cryptomator.jfuse.linux.aarch64;
 import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.linux.aarch64.extr.stat;
-import org.cryptomator.jfuse.linux.aarch64.extr.stat_h;
 
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
