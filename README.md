@@ -42,9 +42,9 @@ Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operat
 | read            | :white_check_mark:                      |
 | write           | :white_check_mark:                      |
 | statfs          | :white_check_mark:                      |
-| flush           | :x:                                     |
+| flush           | :white_check_mark:                      |
 | release         | :white_check_mark:                      |
-| fsync           | :x:                                     |
+| fsync           | :white_check_mark:                      |
 | setxattr        | :x:                                     |
 | getxattr        | :x:                                     |
 | listxattr       | :x:                                     |
@@ -52,7 +52,7 @@ Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operat
 | opendir         | :white_check_mark:                      |
 | readdir         | :white_check_mark:                      |
 | releasedir      | :white_check_mark:                      |
-| fsyncdir        | :x:                                     |
+| fsyncdir        | :white_check_mark:                      |
 | init            | :white_check_mark:                      |
 | destroy         | :white_check_mark:                      |
 | access          | :white_check_mark: (ignored on Windows) |
