@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/') # only allow publishing tagged versions
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
         with:
           java-version: 19
           distribution: 'zulu'
@@ -18,7 +18,7 @@ jobs:
       - name: Enforce project version ${{ github.event.release.tag_name }}
         run: mvn versions:set -B -DnewVersion=${{ github.event.release.tag_name }}
       - name: Deploy
-        run: mvn deploy -B -DskipTests -Psign,deploy-github,linux-amd64,linux-aarch64,mac,win-amd64 --no-transfer-progress
+        run: mvn deploy -B -DskipTests -Psign,deploy-github --no-transfer-progress
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.RELEASES_GPG_PASSPHRASE }}

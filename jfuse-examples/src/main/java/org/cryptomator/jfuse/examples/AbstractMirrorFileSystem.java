@@ -73,6 +73,9 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 				FuseOperations.Operation.ACCESS,
 				FuseOperations.Operation.CREATE,
 				FuseOperations.Operation.DESTROY,
+				FuseOperations.Operation.FLUSH,
+				FuseOperations.Operation.FSYNC,
+				FuseOperations.Operation.FSYNCDIR,
 				FuseOperations.Operation.GET_ATTR,
 				FuseOperations.Operation.MKDIR,
 				FuseOperations.Operation.OPEN_DIR,
@@ -194,12 +197,12 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		stat.setSize(attrs.size());
 		stat.setNLink((short) 1);
 		if (attrs.isDirectory()) {
-			stat.toggleDir(true);
+			stat.setModeBits(Stat.S_IFDIR);
 			stat.setNLink((short) 2); // quick and dirty implementation. should really be 2 + subdir count
 		} else if (attrs.isSymbolicLink()) {
-			stat.toggleLnk(true);
-		} else if (attrs.isRegularFile()){
-			stat.toggleReg(true);
+			stat.setModeBits(Stat.S_IFLNK);
+		} else if (attrs.isRegularFile()) {
+			stat.setModeBits(Stat.S_IFREG);
 		}
 		stat.aTime().set(attrs.lastAccessTime().toInstant());
 		stat.mTime().set(attrs.lastModifiedTime().toInstant());
@@ -434,4 +437,40 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		});
 	}
 
+	@Override
+	public int flush(String path, FileInfo fi) {
+		LOG.trace("flush {}", path);
+		var fc = openFiles.get(fi.getFh());
+		if (fc == null) {
+			return -errno.ebadf();
+		}
+		try {
+			fc.force(false);
+			return 0;
+		} catch (IOException e) {
+			return -errno.eio();
+		}
+	}
+
+	@Override
+	public int fsync(String path, int datasync, FileInfo fi) {
+		LOG.trace("fsync {}", path);
+		var fc = openFiles.get(fi.getFh());
+		if (fc == null) {
+			return -errno.ebadf();
+		}
+		try {
+			fc.force(datasync == 0);
+			return 0;
+		} catch (IOException e) {
+			return -errno.eio();
+		}
+	}
+
+	@Override
+	public int fsyncdir(String path, int datasync, FileInfo fi) {
+		LOG.trace("fsyncdir {}", path);
+		// no-op: this quick and dirty impl doesn't open/close dirs
+		return 0;
+	}
 }

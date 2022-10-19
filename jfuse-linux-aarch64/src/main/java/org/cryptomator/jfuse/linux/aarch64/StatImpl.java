@@ -4,7 +4,6 @@ package org.cryptomator.jfuse.linux.aarch64;
 import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.linux.aarch64.extr.stat;
-import org.cryptomator.jfuse.linux.aarch64.extr.stat_h;
 
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
@@ -44,6 +43,26 @@ record StatImpl(MemorySegment segment) implements Stat {
 	@Override
 	public int getMode() {
 		return stat.st_mode$get(segment);
+	}
+
+	@Override
+	public void setUid(int uid) {
+		stat.st_uid$set(segment, uid);
+	}
+
+	@Override
+	public int getUid() {
+		return stat.st_uid$get(segment);
+	}
+
+	@Override
+	public void setGid(int gid) {
+		stat.st_gid$set(segment, gid);
+	}
+
+	@Override
+	public int getGid() {
+		return stat.st_gid$get(segment);
 	}
 
 	@Override

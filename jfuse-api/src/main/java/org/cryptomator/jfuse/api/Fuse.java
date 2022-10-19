@@ -2,7 +2,6 @@ package org.cryptomator.jfuse.api;
 
 
 import org.jetbrains.annotations.Blocking;
-import org.jetbrains.annotations.BlockingExecutor;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.lang.foreign.MemorySession;
@@ -47,7 +46,7 @@ public abstract class Fuse implements AutoCloseable {
 	/**
 	 * Mounts this fuse file system at the given mount point.
 	 * <p>
-	 * This method blocks until either {@link FuseOperations#init(FuseConnInfo)} completes or an error occurs.
+	 * This method blocks until either {@link FuseOperations#init(FuseConnInfo, FuseConfig)} completes or an error occurs.
 	 *
 	 * @param progName   The program name used to construct a usage message and to derive a fallback for <code>-ofsname=...</code>
 	 * @param mountPoint mount point

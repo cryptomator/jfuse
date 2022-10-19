@@ -16,8 +16,12 @@ public interface FuseOperations {
 	enum Operation {
 		ACCESS,
 		CHMOD,
+		CHOWN,
 		CREATE,
 		DESTROY,
+		FLUSH,
+		FSYNC,
+		FSYNCDIR,
 		GET_ATTR,
 		INIT,
 		MKDIR,
@@ -520,7 +524,7 @@ public interface FuseOperations {
 	 *
 	 * @param conn FUSE information
 	 */
-	default void init(FuseConnInfo conn) { // TODO: add @Nullable FuseConfig for libfuse3
+	default void init(FuseConnInfo conn, @Nullable FuseConfig cfg) {
 		// no-op
 	}
 

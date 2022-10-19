@@ -5,6 +5,7 @@ import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_cmdline_opts;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse_config;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_conn_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_file_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_h;
@@ -121,6 +122,54 @@ public class FuseImplTest {
 		}
 	}
 
+	@Nested
+	@DisplayName("flush/fsync/fsyncdir")
+	public class FlushFsyncFsyncdir {
+
+		@Test
+		@DisplayName("flush(\"/foo\", fi)")
+		public void testFlush() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var fi = fuse_file_info.allocate(scope);
+				Mockito.doReturn(42).when(fuseOps).flush(Mockito.eq("/foo"), Mockito.any());
+
+				var result = fuseImpl.flush(path.address(), fi.address());
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
+		@Test
+		@DisplayName("fsync(\"/foo\", 1, fi)")
+		public void testFsync() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var fi = fuse_file_info.allocate(scope);
+				Mockito.doReturn(42).when(fuseOps).fsync(Mockito.eq("/foo"), Mockito.eq(1), Mockito.any());
+
+				var result = fuseImpl.fsync(path.address(), 1, fi.address());
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
+		@Test
+		@DisplayName("fsyncdir(\"/foo\", 1, fi)")
+		public void testFsyncdir() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var fi = fuse_file_info.allocate(scope);
+				Mockito.doReturn(42).when(fuseOps).fsyncdir(Mockito.eq("/foo"), Mockito.eq(1), Mockito.any());
+
+				var result = fuseImpl.fsyncdir(path.address(), 1, fi.address());
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
+	}
+
 	@DisplayName("init() sets fuse_conn_info.wants |= FUSE_CAP_READDIRPLUS")
 	@Test
 	public void testInit() {
@@ -130,9 +179,9 @@ public class FuseImplTest {
 				FuseConnInfo connInfo = invocation.getArgument(0);
 				result.set(connInfo.want());
 				return null;
-			}).when(fuseOps).init(Mockito.any());
+			}).when(fuseOps).init(Mockito.any(), Mockito.any());
 			var connInfo = fuse_conn_info.allocate(scope);
-			var fuseConfig = MemoryAddress.NULL; // TODO jextract fuse_config
+			var fuseConfig = fuse_config.allocate(scope);
 
 			fuseImpl.init(connInfo.address(), fuseConfig.address());
 
@@ -185,4 +234,17 @@ public class FuseImplTest {
 		}
 	}
 
+	@Test
+	@DisplayName("chown")
+	public void testChown() {
+		try (var scope = MemorySession.openConfined()) {
+			var path = scope.allocateUtf8String("/foo");
+			var fi = fuse_file_info.allocate(scope);
+			Mockito.doReturn(42).when(fuseOps).chown(Mockito.eq("/foo"), Mockito.eq(42), Mockito.eq(1337), Mockito.any());
+
+			var result = fuseImpl.chown(path.address(), 42, 1337, fi.address());
+
+			Assertions.assertEquals(42, result);
+		}
+	}
 }

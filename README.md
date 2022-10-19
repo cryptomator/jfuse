@@ -1,4 +1,7 @@
 [![Build](https://github.com/cryptomator/jfuse/actions/workflows/build.yml/badge.svg)](https://github.com/cryptomator/jfuse/actions/workflows/build.yml)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=cryptomator_jfuse&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=cryptomator_jfuse)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=cryptomator_jfuse&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=cryptomator_jfuse)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=cryptomator_jfuse&metric=coverage)](https://sonarcloud.io/summary/new_code?id=cryptomator_jfuse)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cryptomator_jfuse&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cryptomator_jfuse)
 
 # jFUSE
@@ -31,7 +34,7 @@ Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operat
 | rename          | :white_check_mark:                      |
 | link            | :x:                                     |
 | chmod           | :white_check_mark:                      |
-| chown           | :x:                                     |
+| chown           | :white_check_mark:                      |
 | truncate        | :white_check_mark:                      |
 | ~ftruncate~     | use truncate                            |
 | ~utime~         | use utimens                             |
@@ -39,9 +42,9 @@ Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operat
 | read            | :white_check_mark:                      |
 | write           | :white_check_mark:                      |
 | statfs          | :white_check_mark:                      |
-| flush           | :x:                                     |
+| flush           | :white_check_mark:                      |
 | release         | :white_check_mark:                      |
-| fsync           | :x:                                     |
+| fsync           | :white_check_mark:                      |
 | setxattr        | :x:                                     |
 | getxattr        | :x:                                     |
 | listxattr       | :x:                                     |
@@ -49,7 +52,7 @@ Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operat
 | opendir         | :white_check_mark:                      |
 | readdir         | :white_check_mark:                      |
 | releasedir      | :white_check_mark:                      |
-| fsyncdir        | :x:                                     |
+| fsyncdir        | :white_check_mark:                      |
 | init            | :white_check_mark:                      |
 | destroy         | :white_check_mark:                      |
 | access          | :white_check_mark: (ignored on Windows) |
@@ -69,6 +72,14 @@ Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operat
 ## Usage
 
 Usage examples can be found under [`/jfuse-examples/`](jfuse-examples). You basically need to implement `FuseOperations` and pass it to the `Fuse.builder()`:
+
+```xml
+<dependency>
+	<groupId>org.cryptomator</groupId>
+	<artifactId>jfuse</artifactId>
+	<version>x.y.z</version>
+</dependency>
+```
 
 ```java
 var builder = Fuse.builder();
@@ -92,10 +103,10 @@ java -p path/to/mods \
 
 Due to slight differences in memory layout, each platform needs its own implementation. Currently, the following operating systems and architectures are supported:
 
-|        | Linux                                      | Mac (macFUSE)            | Windows (WinFSP)                     |
-|--------|--------------------------------------------|--------------------------|--------------------------------------|
-| x86_64 | [jfuse-linux-amd64](jfuse-linux-amd64)     | [jfuse-mac](jfuse-mac)   | [jfuse-win-amd64](jfuse-win-amd64)   |
-| arm64  | [jfuse-linux-aarch64](jfuse-linux-aarch64) | [jfuse-mac](jfuse-mac)   |                                      |
+|        | Linux                                      | Mac (macFUSE)            | Windows (WinFSP)       |
+|--------|--------------------------------------------|--------------------------|------------------------|
+| x86_64 | [jfuse-linux-amd64](jfuse-linux-amd64)     | [jfuse-mac](jfuse-mac)   | [jfuse-win](jfuse-win) |
+| arm64  | [jfuse-linux-aarch64](jfuse-linux-aarch64) | [jfuse-mac](jfuse-mac)   | [jfuse-win](jfuse-win) |
 
 ## Building
 
@@ -109,7 +120,7 @@ Each platform has its own module. In rare cases, we need to update jextracted cl
 
 In most cases this requires you to run the build on the target platform, as you need access to its system-specific header files and (most likely) build tools. See module readme for specific requirements.
 
-In order to run `jextract`, use the corresponding Maven profile (`-Pjextract`).
+In order to run `jextract`, use the corresponding Maven profile (e.g. `-Pjextract-win`).
 
 ### Adding a new platform
 
