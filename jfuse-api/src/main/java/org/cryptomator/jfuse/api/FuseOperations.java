@@ -16,6 +16,7 @@ public interface FuseOperations {
 	enum Operation {
 		ACCESS,
 		CHMOD,
+		CHOWN,
 		CREATE,
 		DESTROY,
 		FLUSH,

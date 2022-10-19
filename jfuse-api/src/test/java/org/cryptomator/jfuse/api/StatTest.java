@@ -18,7 +18,7 @@ public class StatTest {
 
 	private static final int MAGIC = 123456;//some rando number
 
-	public Stat stat = Mockito.spy(new StubStatImpl());
+	public Stat stat = Mockito.mock(Stat.class);
 
 	@Nested
 	@DisplayName("Test File Type Predicates")
@@ -99,7 +99,8 @@ public class StatTest {
 				"0010644,rw-r--r--"
 		})
 		public void getPermissions(String mode, String perms) {
-			Mockito.when(stat.getMode()).thenReturn(Integer.valueOf(mode, 8));
+			Mockito.doReturn(Integer.valueOf(mode, 8)).when(stat).getMode();
+			Mockito.doCallRealMethod().when(stat).getPermissions();
 			var expected = PosixFilePermissions.fromString(perms);
 
 			var result = stat.getPermissions();
@@ -114,7 +115,8 @@ public class StatTest {
 				"0644,rw-r--r--",
 		})
 		public void setPermissions(String mode, String perms) {
-			Mockito.when(stat.getMode()).thenReturn(S_IFDIR);
+			Mockito.doReturn(S_IFDIR).when(stat).getMode();
+			Mockito.doCallRealMethod().when(stat).setPermissions(Mockito.any());
 			var permissions = PosixFilePermissions.fromString(perms);
 
 			stat.setPermissions(permissions);
@@ -127,7 +129,8 @@ public class StatTest {
 	@ParameterizedTest
 	@ValueSource(booleans = {true, false})
 	public void testHasMode(boolean isPresent) {
-		Mockito.when(stat.getMode()).thenReturn(isPresent ? MAGIC : ~MAGIC);
+		Mockito.doReturn(isPresent ? MAGIC : ~MAGIC).when(stat).getMode();
+		Mockito.doCallRealMethod().when(stat).hasMode(Mockito.anyInt());
 
 		boolean result = stat.hasMode(MAGIC);
 
@@ -137,7 +140,8 @@ public class StatTest {
 	@Test
 	@DisplayName("setModeBits()")
 	public void testSetModeBits() {
-		Mockito.when(stat.getMode()).thenReturn(0755);
+		Mockito.doReturn(0755).when(stat).getMode();
+		Mockito.doCallRealMethod().when(stat).setModeBits(Mockito.anyInt());
 
 		stat.setModeBits(S_IFDIR);
 
@@ -147,64 +151,12 @@ public class StatTest {
 	@Test
 	@DisplayName("unsetModeBits()")
 	public void testUnsetModeBits() {
-		Mockito.when(stat.getMode()).thenReturn(S_IFDIR | 0755);
+		Mockito.doReturn(S_IFDIR | 0755).when(stat).getMode();
+		Mockito.doCallRealMethod().when(stat).unsetModeBits(Mockito.anyInt());
 
 		stat.unsetModeBits(S_IFDIR);
 
 		Mockito.verify(stat).setMode(0755);
-	}
-
-	private static class StubStatImpl implements Stat {
-
-		@Override
-		public TimeSpec aTime() {
-			return null;
-		}
-
-		@Override
-		public TimeSpec cTime() {
-			return null;
-		}
-
-		@Override
-		public TimeSpec mTime() {
-			return null;
-		}
-
-		@Override
-		public TimeSpec birthTime() {
-			return null;
-		}
-
-		@Override
-		public void setMode(int mode) {
-
-		}
-
-		@Override
-		public int getMode() {
-			return 0;
-		}
-
-		@Override
-		public void setNLink(short count) {
-
-		}
-
-		@Override
-		public long getNLink() {
-			return 0;
-		}
-
-		@Override
-		public void setSize(long size) {
-
-		}
-
-		@Override
-		public long getSize() {
-			return 0;
-		}
 	}
 
 }

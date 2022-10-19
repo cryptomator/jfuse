@@ -120,6 +120,7 @@ public class FuseImpl extends Fuse {
 			case INIT -> fuse3_operations.init$set(fuseOps, fuse3_operations.init.allocate(this::init, fuseScope).address());
 			case ACCESS -> fuse3_operations.access$set(fuseOps, MemoryAddress.NULL);
 			case CHMOD -> fuse3_operations.chmod$set(fuseOps, fuse3_operations.chmod.allocate(this::chmod, fuseScope).address());
+			case CHOWN -> fuse3_operations.chown$set(fuseOps, fuse3_operations.chown.allocate(this::chown, fuseScope).address());
 			case CREATE -> fuse3_operations.create$set(fuseOps, fuse3_operations.create.allocate(this::create, fuseScope).address());
 			case DESTROY -> fuse3_operations.destroy$set(fuseOps, fuse3_operations.destroy.allocate(this::destroy, fuseScope).address());
 			case FLUSH -> fuse3_operations.flush$set(fuseOps, fuse3_operations.flush.allocate(this::flush, fuseScope).address());
@@ -159,6 +160,13 @@ public class FuseImpl extends Fuse {
 	private int chmod(MemoryAddress path, int mode, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
 			return delegate.chmod(path.getUtf8String(0), mode, new FileInfoImpl(fi, scope));
+		}
+	}
+
+	@VisibleForTesting
+	int chown(MemoryAddress path, int uid, int gid, MemoryAddress fi) {
+		try (var scope = MemorySession.openConfined()) {
+			return delegate.chown(path.getUtf8String(0), uid, gid, new FileInfoImpl(fi, scope));
 		}
 	}
 

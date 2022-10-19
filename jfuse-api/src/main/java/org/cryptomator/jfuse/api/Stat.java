@@ -107,6 +107,14 @@ public interface Stat {
 
 	int getMode();
 
+	void setUid(int uid);
+
+	int getUid();
+
+	void setGid(int gid);
+
+	int getGid();
+
 	void setNLink(short count);
 
 	long getNLink();
