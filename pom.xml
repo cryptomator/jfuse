@@ -171,7 +171,9 @@
 				<configuration>
 					<excludePackageNames>*.extr</excludePackageNames>
 					<release>19</release>
-					<additionalOptions>--enable-preview</additionalOptions>
+					<additionalOptions>
+						<option>--enable-preview</option>
+					</additionalOptions>
 				</configuration>
 			</plugin>
 			<plugin>
