@@ -343,8 +343,16 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		try {
 			var dst = buf.duplicate();
 			dst.limit((int) Math.min(dst.position() + size, dst.limit())); // restrict to `size` bytes!
-			int read = fc.read(dst, offset);
-			return read == -1 ? 0 : read; // there is no "-1" in fuse
+			int read = 0;
+			while (dst.hasRemaining()) {
+				int r = fc.read(dst, offset + read);
+				if (r == -1) {
+					LOG.trace("Reached EOF");
+					break;
+				}
+				read += r;
+			}
+			return read;
 		} catch (IOException e) {
 			return -errno.eio();
 		}
@@ -358,7 +366,13 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 			return -errno.ebadf();
 		}
 		try {
-			return fc.write(buf, offset);
+			int written = 0;
+			var src = buf.asReadOnlyBuffer();
+			src.limit((int) Math.min(size, src.limit()));
+			while (src.hasRemaining()) {
+				written += fc.write(src, offset + written);
+			}
+			return written;
 		} catch (IOException e) {
 			return -errno.eio();
 		}
