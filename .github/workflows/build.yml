@@ -62,6 +62,7 @@ jobs:
       - name: Setup fuse
         run: choco install winfsp --version 1.10.22006 -y
       - name: Maven build
+        shell: bash # surprise, running maven in pwsh is crappy, see https://stackoverflow.com/q/6347985/4014509
         run: mvn -B verify -Dfuse.lib.path="C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll"
       - uses: actions/upload-artifact@v3
         with:
