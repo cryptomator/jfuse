@@ -11,25 +11,57 @@ import org.cryptomator.jfuse.mac.extr.stat_h;
 import org.cryptomator.jfuse.mac.extr.timespec;
 import org.jetbrains.annotations.VisibleForTesting;
 
+import java.io.IOException;
 import java.lang.foreign.Addressable;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.ValueLayout;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributeView;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
 final class FuseImpl extends Fuse {
 
+	//Used to check, if the mounted fs is actually accessible
+	private static final String MOUNT_PROBE = "/jfuse_mac_mount_probe";
 	private final FuseOperations delegate;
 	private final MemorySegment fuseOps;
+
+	private final CountDownLatch mountProbeSucceeded = new CountDownLatch(1);
 
 	public FuseImpl(FuseOperations fuseOperations) {
 		this.fuseOps = fuse_operations.allocate(fuseScope);
 		this.delegate = fuseOperations;
 		fuseOperations.supportedOperations().forEach(this::bind);
+	}
+
+	@Override
+	public void mount(String progName, Path mountPoint, String... flags) throws MountFailedException, IllegalArgumentException {
+		super.mount(progName, mountPoint, flags);
+		try {
+			waitForMountingToComplete(mountPoint);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new MountFailedException("Interrupted while waiting for mounting to finish");
+		}
+	}
+
+	void waitForMountingToComplete(Path mountPoint) throws InterruptedException {
+		var probe = Files.getFileAttributeView(mountPoint.resolve(MOUNT_PROBE.substring(1)), BasicFileAttributeView.class);
+		do {
+			try {
+				probe.readAttributes(); // we don't care about the result, we just want to trigger a getattr call
+			} catch (IOException e) {
+				//noop
+			}
+		} while (!mountProbeSucceeded.await(333, TimeUnit.MILLISECONDS));
 	}
 
 	@Override
@@ -164,6 +196,10 @@ final class FuseImpl extends Fuse {
 	@VisibleForTesting
 	int getattr(MemoryAddress path, MemoryAddress stat) {
 		try (var scope = MemorySession.openConfined()) {
+			var pathObj = path.getUtf8String(0);
+			if(mountProbeSucceeded.getCount() > 0 && pathObj.equals(MOUNT_PROBE) ) {
+				mountProbeSucceeded.countDown();
+			}
 			return delegate.getattr(path.getUtf8String(0), new StatImpl(stat, scope), null);
 		}
 	}

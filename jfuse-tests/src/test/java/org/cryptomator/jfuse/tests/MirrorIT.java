@@ -57,7 +57,7 @@ public class MirrorIT {
 	private Fuse fuse;
 
 	@BeforeAll
-	public void setup(@TempDir Path tmpDir) throws IOException, InterruptedException, MountFailedException {
+	public void setup(@TempDir Path tmpDir) throws IOException,  MountFailedException {
 		var builder = Fuse.builder();
 		var libPath = System.getProperty("fuse.lib.path");
 		if (libPath != null && !libPath.isEmpty()) {
@@ -82,7 +82,6 @@ public class MirrorIT {
 		};
 		fuse = builder.build(fs);
 		fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));
-		Thread.sleep(100); // give the file system some time before accessing mounted dir
 	}
 
 	@AfterAll
