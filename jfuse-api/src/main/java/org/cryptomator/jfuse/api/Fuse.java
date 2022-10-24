@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,19 +26,11 @@ import java.util.concurrent.atomic.AtomicReference;
 public abstract class Fuse implements AutoCloseable {
 
 	private static final FuseMount UNMOUNTED = new UnmountedFuseMount();
+	private static final ThreadFactory THREAD_FACTORY = Thread.ofPlatform().name("jfuse-main-", 0).daemon().factory();
 
 	protected final MemorySession fuseScope = MemorySession.openShared();
 	private final AtomicReference<FuseMount> mount = new AtomicReference<>(UNMOUNTED);
-	private final ExecutorService executor;
-
-	protected Fuse() {
-		this.executor = Executors.newSingleThreadExecutor(runnable -> {
-			var thread = new Thread(runnable);
-			thread.setName("jfuse-main"); // TODO append id
-			thread.setDaemon(true);
-			return thread;
-		});
-	}
+	private final ExecutorService executor = Executors.newSingleThreadExecutor(THREAD_FACTORY);
 
 	public static FuseBuilder builder() {
 		return FuseBuilder.getSupported();
