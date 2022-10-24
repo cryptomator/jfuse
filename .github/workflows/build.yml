@@ -20,7 +20,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
-        run: mvn -B verify
+        run: mvn -B verify -Dfuse.lib.path="/lib/x86_64-linux-gnu/libfuse3.so.3"
       - uses: actions/upload-artifact@v3
         with:
           name: coverage-linux-amd64
@@ -41,7 +41,7 @@ jobs:
       - name: Setup fuse
         run: brew install macfuse
       - name: Maven build
-        run: mvn -B verify
+        run: mvn -B verify -Dfuse.lib.path="/usr/local/lib/libfuse.dylib"
       - uses: actions/upload-artifact@v3
         with:
           name: coverage-mac
@@ -62,7 +62,7 @@ jobs:
       - name: Setup fuse
         run: choco install winfsp --version 1.10.22006 -y
       - name: Maven build
-        run: mvn -B verify
+        run: mvn -B verify -Dfuse.lib.path="C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll"
       - uses: actions/upload-artifact@v3
         with:
           name: coverage-win

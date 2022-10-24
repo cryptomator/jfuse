@@ -59,39 +59,51 @@ public class MirrorIT {
 	@BeforeAll
 	public void setup(@TempDir Path tmpDir) throws IOException, InterruptedException, MountFailedException {
 		var builder = Fuse.builder();
-		orig = tmpDir.resolve("orig");
-		Files.createDirectories(orig);
-		AbstractMirrorFileSystem fs;
+		var libPath = System.getProperty("fuse.lib.path");
+		if (libPath != null) {
+			builder.setLibraryPath(libPath);
+		}
 		List<String> flags = new ArrayList<>();
 		flags.add("-s");
 		mirror = tmpDir.resolve("mirror");
-		if (OS.WINDOWS.isCurrentOs()) {
-			flags.add("-ouid=-1");
-			flags.add("-ogid=-1");
-			fs = new WindowsMirrorFileSystem(orig, builder.errno());
-		} else {
-			Files.createDirectories(mirror);
-			fs = new PosixMirrorFileSystem(orig, builder.errno());
-		}
+		orig = tmpDir.resolve("orig");
+		Files.createDirectories(orig);
+		AbstractMirrorFileSystem fs = switch (OS.current()) {
+			case WINDOWS -> {
+				flags.add("-ouid=-1");
+				flags.add("-ogid=-1");
+				yield new WindowsMirrorFileSystem(orig, builder.errno());
+			}
+			case MAC, LINUX -> {
+				Files.createDirectories(mirror);
+				yield new PosixMirrorFileSystem(orig, builder.errno());
+			}
+			default -> throw new MountFailedException("Unsupported OS");
+		};
 		fuse = builder.build(fs);
 		fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));
+		Thread.sleep(100); // give the file system some time before accessing mounted dir
 	}
 
 	@AfterAll
 	public void teardown() throws IOException, InterruptedException {
 		// attempt graceful unmount before closing
-		if (OS.MAC.isCurrentOs()) {
-			ProcessBuilder command = new ProcessBuilder("umount", "--", mirror.getFileName().toString());
-			command.directory(mirror.getParent().toFile());
-			Process p = command.start();
-			p.waitFor(10, TimeUnit.SECONDS);
-		} else if (OS.LINUX.isCurrentOs()) {
-			ProcessBuilder command = new ProcessBuilder("fusermount", "-u", "--", mirror.getFileName().toString());
-			command.directory(mirror.getParent().toFile());
-			Process p = command.start();
-			p.waitFor(10, TimeUnit.SECONDS);
-		} else if (OS.WINDOWS.isCurrentOs()) {
-			// there is no graceful unmount, see https://github.com/winfsp/winfsp/issues/121
+		switch (OS.current()) {
+			case MAC -> {
+				ProcessBuilder command = new ProcessBuilder("umount", "--", mirror.getFileName().toString());
+				command.directory(mirror.getParent().toFile());
+				Process p = command.start();
+				p.waitFor(10, TimeUnit.SECONDS);
+			}
+			case LINUX -> {
+				ProcessBuilder command = new ProcessBuilder("fusermount", "-u", "--", mirror.getFileName().toString());
+				command.directory(mirror.getParent().toFile());
+				Process p = command.start();
+				p.waitFor(10, TimeUnit.SECONDS);
+			}
+			case WINDOWS -> {
+				// there is no graceful unmount, see https://github.com/winfsp/winfsp/issues/121
+			}
 		}
 		if (fuse != null) {
 			Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), fuse::close, "file system still active");
