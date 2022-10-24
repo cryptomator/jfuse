@@ -3,7 +3,7 @@ package org.cryptomator.jfuse.win;
 import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.win.extr.errno_h;
 
-public record WinErrno() implements Errno {
+record WinErrno() implements Errno {
 
 	@Override
 	public int enoent() {

@@ -21,7 +21,7 @@ import java.util.List;
 
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
-public final class FuseImpl extends Fuse {
+final class FuseImpl extends Fuse {
 
 	private final FuseOperations delegate;
 	private final MemorySegment fuseOps;

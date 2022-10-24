@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
-public class FuseImpl extends Fuse {
+class FuseImpl extends Fuse {
 
 	//Used to check, if the mounted fs is actually accessible, see https://github.com/winfsp/winfsp/discussions/440
 	private static final String MOUNT_PROBE = "/jfuse_windows_mount_probe";
