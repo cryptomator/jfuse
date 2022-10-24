@@ -60,7 +60,7 @@ jobs:
           distribution: 'zulu'
           cache: 'maven'
       - name: Setup fuse
-        run: choco install winfsp --version 1.10.22006 -y
+        run: choco install winfsp --version 1.11.22176 -y
       - name: Maven build
         shell: bash # surprise, running maven in pwsh is crappy, see https://stackoverflow.com/q/6347985/4014509
         run: mvn -B verify -Dfuse.lib.path="C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll"
