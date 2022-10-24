@@ -3,11 +3,17 @@ package org.cryptomator.jfuse.api;
 
 import org.jetbrains.annotations.Blocking;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.VisibleForTesting;
 
+import java.io.IOException;
 import java.lang.foreign.MemorySession;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributeView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -25,6 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public abstract class Fuse implements AutoCloseable {
 
+	private static final String MOUNT_PROBE = "/jfuse_mount_probe"; // Used to check, if the mounted fs is actually accessible, see https://github.com/winfsp/winfsp/discussions/440
 	private static final FuseMount UNMOUNTED = new UnmountedFuseMount();
 	private static final ThreadFactory THREAD_FACTORY = Thread.ofPlatform().name("jfuse-main-", 0).daemon().factory();
 
@@ -32,13 +39,23 @@ public abstract class Fuse implements AutoCloseable {
 	 * The memory session associated with the lifecycle of this Fuse instance.
 	 */
 	protected final MemorySession fuseScope = MemorySession.openShared();
+
+	/**
+	 * The file system operations invoked by this FUSE file system.
+	 */
+	protected final FuseOperations fuseOperations;
+
 	private final AtomicReference<FuseMount> mount = new AtomicReference<>(UNMOUNTED);
 	private final ExecutorService executor = Executors.newSingleThreadExecutor(THREAD_FACTORY);
+	private final CountDownLatch mountProbeSucceeded = new CountDownLatch(1);
 
 	/**
 	 * Creates a new FUSE session.
+	 *
+	 * @param fuseOperations The file system operations
 	 */
-	protected Fuse() {
+	protected Fuse(FuseOperations fuseOperations) {
+		this.fuseOperations = fuseOperations;
 	}
 
 	/**
@@ -77,22 +94,52 @@ public abstract class Fuse implements AutoCloseable {
 
 		try {
 			var fuseMount = this.mount(args);
-			var isOnlySession = mount.compareAndSet(lock, fuseMount);
-			assert isOnlySession : "unreachable code, as no other method can set this.mount to lock";
-			executor.submit(this::fuseLoop); // TODO keep reference of future and report result
+			executor.submit(() -> fuseLoop(fuseMount)); // TODO keep reference of future and report result
+			waitForMountingToComplete(mountPoint);
+			mount.compareAndSet(lock, fuseMount);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new MountFailedException("Interrupted while waiting for mounting to finish");
 		} finally {
 			mount.compareAndSet(lock, UNMOUNTED); // if value is still `lock`, mount has failed.
 		}
 	}
 
+	@VisibleForTesting
+	void waitForMountingToComplete(Path mountPoint) throws InterruptedException {
+		var probe = Files.getFileAttributeView(mountPoint.resolve(MOUNT_PROBE.substring(1)), BasicFileAttributeView.class);
+		do {
+			try {
+				probe.readAttributes(); // we don't care about the result, we just want to trigger a getattr call
+			} catch (IOException e) {
+				// noop
+			}
+		} while (!mountProbeSucceeded.await(200, TimeUnit.MILLISECONDS));
+	}
+
 	@Blocking
-	private int fuseLoop() {
+	private int fuseLoop(FuseMount mount) {
 		AtomicInteger result = new AtomicInteger();
 		fuseScope.whileAlive(() -> {
-			var mount = this.mount.get();
 			result.set(mount.loop());
 		});
 		return result.get();
+	}
+
+	/**
+	 * Decorates {@link FuseOperations#getattr(String, Stat, FileInfo)} and ensures to properly handle mount probing.
+	 *
+	 * @param path File path
+	 * @param stat File attributes
+	 * @param fi   File handle
+	 * @return 0 on success or negated error code
+	 */
+	@MustBeInvokedByOverriders
+	protected int getattr(String path, Stat stat, @Nullable FileInfo fi) {
+		if (mountProbeSucceeded.getCount() > 0 && path.equals(MOUNT_PROBE)) {
+			mountProbeSucceeded.countDown();
+		}
+		return fuseOperations.getattr(path, stat, fi);
 	}
 
 	/**
