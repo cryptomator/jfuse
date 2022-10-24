@@ -14,13 +14,8 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public int getSetGid() {
+	public int setGid() {
 		return fuse3_config.set_gid$get(segment);
-	}
-
-	@Override
-	public void setSetGid(int setGid) {
-		fuse3_config.set_gid$set(segment, setGid);
 	}
 
 	@Override
@@ -29,18 +24,8 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public void setGid(int gid) {
-		fuse3_config.gid$set(segment, gid);
-	}
-
-	@Override
-	public int getSetUid() {
+	public int setUid() {
 		return fuse3_config.set_uid$get(segment);
-	}
-
-	@Override
-	public void setSetUid(int setUid) {
-		fuse3_config.set_uid$set(segment, setUid);
 	}
 
 	@Override
@@ -49,18 +34,8 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public void setUid(int uid) {
-		fuse3_config.uid$set(segment, uid);
-	}
-
-	@Override
-	public int getSetMode() {
+	public int setMode() {
 		return fuse3_config.set_mode$get(segment);
-	}
-
-	@Override
-	public void setSetMode(int setMode) {
-		fuse3_config.set_mode$set(segment, setMode);
 	}
 
 	@Override
@@ -69,18 +44,8 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public void setUmask(int umask) {
-		fuse3_config.umask$set(segment, umask);
-	}
-
-	@Override
 	public double entryTimeout() {
 		return fuse3_config.entry_timeout$get(segment);
-	}
-
-	@Override
-	public void setEntryTimeout(double entryTimeout) {
-		fuse3_config.entry_timeout$set(segment, entryTimeout);
 	}
 
 	@Override
@@ -89,18 +54,8 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public void setNegativeTimeout(double negativeTimeout) {
-		fuse3_config.negative_timeout$set(segment, negativeTimeout);
-	}
-
-	@Override
 	public double attrTimeout() {
 		return fuse3_config.attr_timeout$get(segment);
-	}
-
-	@Override
-	public void setAttrTimeout(double attrTimeout) {
-		fuse3_config.attr_timeout$set(segment, attrTimeout);
 	}
 
 	@Override
@@ -109,18 +64,8 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public void setIntr(int intr) {
-		fuse3_config.intr$set(segment, intr);
-	}
-
-	@Override
 	public int intrSignal() {
 		return fuse3_config.intr_signal$get(segment);
-	}
-
-	@Override
-	public void setIntrSignal(int intrSignal) {
-		fuse3_config.intr_signal$set(segment, intrSignal);
 	}
 
 	@Override
@@ -129,18 +74,8 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public void setRemember(int secondsToRemember) {
-		fuse3_config.remember$set(segment, secondsToRemember);
-	}
-
-	@Override
 	public int hardRemove() {
 		return fuse3_config.hard_remove$get(segment);
-	}
-
-	@Override
-	public void setHardRemove(int hardRemove) {
-		fuse3_config.hard_remove$set(segment, hardRemove);
 	}
 
 	@Override
@@ -149,18 +84,8 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public void setUseIno(int useIno) {
-		fuse3_config.use_ino$set(segment, useIno);
-	}
-
-	@Override
 	public int readdirIno() {
 		return fuse3_config.readdir_ino$get(segment);
-	}
-
-	@Override
-	public void setReaddirIno(int readdirIno) {
-		fuse3_config.readdir_ino$set(segment, readdirIno);
 	}
 
 	@Override
@@ -169,18 +94,8 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public void setDirectIo(int directIo) {
-		fuse3_config.direct_io$set(segment, directIo);
-	}
-
-	@Override
 	public int kernelCache() {
 		return fuse3_config.kernel_cache$get(segment);
-	}
-
-	@Override
-	public void setKernelCache(int kernelCache) {
-		fuse3_config.kernel_cache$set(segment, kernelCache);
 	}
 
 	@Override
@@ -189,18 +104,8 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public void setAutoCache(int autoCache) {
-		fuse3_config.auto_cache$set(segment, autoCache);
-	}
-
-	@Override
 	public int acAttrTimeoutSet() {
 		return fuse3_config.ac_attr_timeout_set$get(segment);
-	}
-
-	@Override
-	public void setAcAttrTimeoutSet(int acAttrTimeoutSet) {
-		fuse3_config.ac_attr_timeout_set$set(segment, acAttrTimeoutSet);
 	}
 
 	@Override
@@ -209,28 +114,13 @@ record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 	}
 
 	@Override
-	public void setAcAttrTimeout(double acAttrTimeout) {
-		fuse3_config.ac_attr_timeout$set(segment, acAttrTimeout);
-	}
-
-	@Override
 	public int nullpathOk() {
 		return fuse3_config.nullpath_ok$get(segment);
 	}
 
 	@Override
-	public void setNullpathOk(int nullpathOk) {
-		fuse3_config.nullpath_ok$set(segment, nullpathOk);
-	}
-
-	@Override
 	public int noRofdFlush() {
 		return 0;
-	}
-
-	@Override
-	public void setNoRofdFlush(int noRofdFlush) {
-		//no-op
 	}
 
 }
