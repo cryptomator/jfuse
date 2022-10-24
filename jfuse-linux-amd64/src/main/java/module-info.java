@@ -2,6 +2,8 @@ import org.cryptomator.jfuse.api.FuseBuilder;
 import org.cryptomator.jfuse.linux.amd64.LinuxFuseBuilder;
 
 /**
+ * jFUSE implementation for Linux (x86_64).
+ *
  * @provides FuseBuilder FUSE builder for Linux (x86_64)
  */
 @SuppressWarnings("JavaModuleNaming") // 64 is not a "version", see https://bugs.openjdk.java.net/browse/JDK-8264488

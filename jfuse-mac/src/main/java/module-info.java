@@ -2,6 +2,8 @@ import org.cryptomator.jfuse.api.FuseBuilder;
 import org.cryptomator.jfuse.mac.MacFuseBuilder;
 
 /**
+ * jFUSE implementation for macOS.
+ *
  * @provides FuseBuilder FUSE builder for macOS
  */
 module org.cryptomator.jfuse.mac {

@@ -4,14 +4,26 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.util.EnumSet;
 import java.util.Set;
 
+/**
+ * Utility for parsing and serializing file permissions to and from octal int representation.
+ */
 @SuppressWarnings("OctalInteger")
 public final class FileModes {
 
+	/**
+	 * Mask of the 9 permission bits in a file mode integer
+	 */
 	public static final int PERMISSIONS_MASK = 0777;
 
 	private FileModes() {
 	}
 
+	/**
+	 * Parses permissions from the 9 least significant bits of the file mode.
+	 *
+	 * @param mode File mode
+	 * @return Parsed permissions
+	 */
 	public static Set<PosixFilePermission> toPermissions(int mode) {
 		Set<PosixFilePermission> permissions = EnumSet.noneOf(PosixFilePermission.class);
 		// @formatter:off
@@ -28,6 +40,12 @@ public final class FileModes {
 		return permissions;
 	}
 
+	/**
+	 * Serializes the given permissions into a integer.
+	 *
+	 * @param permissions Permissions
+	 * @return An integer with the {@link #PERMISSIONS_MASK permission bits} set accordingly
+	 */
 	public static int fromPermissions(Set<PosixFilePermission> permissions) {
 		int mode = 0;
 		// @formatter:off

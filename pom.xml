@@ -169,7 +169,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<excludePackageNames>*.extr</excludePackageNames>
+					<excludePackageNames>*.extr:*.extr.*</excludePackageNames>
 					<release>19</release>
 					<additionalOptions>
 						<option>--enable-preview</option>

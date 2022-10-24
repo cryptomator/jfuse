@@ -3,6 +3,9 @@ package org.cryptomator.jfuse.api;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Blocking;
 
+/**
+ * Handle of a mounted fuse file system.
+ */
 @ApiStatus.Internal
 public interface FuseMount {
 

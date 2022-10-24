@@ -8,12 +8,21 @@ import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.OperatingSystem;
 import org.cryptomator.jfuse.api.SupportedPlatform;
 
+/**
+ * Builds FUSE file system instances on Linux (x86_64).
+ */
 @SupportedPlatform(os = OperatingSystem.LINUX, arch = Architecture.AMD64)
 public class LinuxFuseBuilder implements FuseBuilder {
 
 	private static final String DEFAULT_LIB_PATH = "/lib/x86_64-linux-gnu/libfuse3.so.3";
 	private static final Errno ERRNO = new LinuxErrno();
 	private String libraryPath;
+
+	/**
+	 * Creates a new LinuxFuseBuilder instance.
+	 */
+	public LinuxFuseBuilder() {
+	}
 
 	@Override
 	public Errno errno() {

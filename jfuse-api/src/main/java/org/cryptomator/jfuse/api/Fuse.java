@@ -28,10 +28,24 @@ public abstract class Fuse implements AutoCloseable {
 	private static final FuseMount UNMOUNTED = new UnmountedFuseMount();
 	private static final ThreadFactory THREAD_FACTORY = Thread.ofPlatform().name("jfuse-main-", 0).daemon().factory();
 
+	/**
+	 * The memory session associated with the lifecycle of this Fuse instance.
+	 */
 	protected final MemorySession fuseScope = MemorySession.openShared();
 	private final AtomicReference<FuseMount> mount = new AtomicReference<>(UNMOUNTED);
 	private final ExecutorService executor = Executors.newSingleThreadExecutor(THREAD_FACTORY);
 
+	/**
+	 * Creates a new FUSE session.
+	 */
+	protected Fuse() {
+	}
+
+	/**
+	 * Gets the builder suitable for the current platform.
+	 *
+	 * @return A FuseBuilder
+	 */
 	public static FuseBuilder builder() {
 		return FuseBuilder.getSupported();
 	}
@@ -44,7 +58,7 @@ public abstract class Fuse implements AutoCloseable {
 	 * @param progName   The program name used to construct a usage message and to derive a fallback for <code>-ofsname=...</code>
 	 * @param mountPoint mount point
 	 * @param flags      Additional flags. Use flag <code>-help</code> to get a list of available flags
-	 * @throws MountFailedException If mounting failed
+	 * @throws MountFailedException     If mounting failed
 	 * @throws IllegalArgumentException If providing unsupported mount flags
 	 */
 	@Blocking
@@ -81,6 +95,14 @@ public abstract class Fuse implements AutoCloseable {
 		return result.get();
 	}
 
+	/**
+	 * Mounts the fuse file system.
+	 *
+	 * @param args Mount args
+	 * @return A mount object
+	 * @throws MountFailedException     Thrown if mounting failed
+	 * @throws IllegalArgumentException Thrown if parsing {@code args} failed
+	 */
 	@Blocking
 	protected abstract FuseMount mount(List<String> args) throws MountFailedException, IllegalArgumentException;
 
