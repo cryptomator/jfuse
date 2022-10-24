@@ -83,7 +83,7 @@
 				<configuration>
 					<argLine>@{surefire.jacoco.args} --enable-native-access=ALL-UNNAMED --enable-preview</argLine>
 					<systemProperties>
-						<fuse.lib.path>@{fuse.lib.path}</fuse.lib.path>
+						<fuse.lib.path>${fuse.lib.path}</fuse.lib.path>
 					</systemProperties>
 				</configuration>
 			</plugin>
@@ -102,7 +102,7 @@
 							</includes>
 							<argLine>@{failsafe.jacoco.args} --enable-native-access=ALL-UNNAMED --enable-preview</argLine>
 							<systemProperties>
-								<fuse.lib.path>@{fuse.lib.path}</fuse.lib.path>
+								<fuse.lib.path>${fuse.lib.path}</fuse.lib.path>
 							</systemProperties>
 						</configuration>
 					</execution>

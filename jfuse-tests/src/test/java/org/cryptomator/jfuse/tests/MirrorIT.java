@@ -60,7 +60,7 @@ public class MirrorIT {
 	public void setup(@TempDir Path tmpDir) throws IOException, InterruptedException, MountFailedException {
 		var builder = Fuse.builder();
 		var libPath = System.getProperty("fuse.lib.path");
-		if (libPath != null) {
+		if (libPath != null && !libPath.isEmpty()) {
 			builder.setLibraryPath(libPath);
 		}
 		List<String> flags = new ArrayList<>();
