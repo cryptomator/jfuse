@@ -7,7 +7,9 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.IOException;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentAllocator;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributeView;
@@ -21,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 
 /**
@@ -45,6 +48,11 @@ public abstract class Fuse implements AutoCloseable {
 	 */
 	protected final FuseOperations fuseOperations;
 
+	/**
+	 * The memory segment containing the fuse_operations struct.
+	 */
+	protected final MemorySegment segment;
+
 	private final AtomicReference<FuseMount> mount = new AtomicReference<>(UNMOUNTED);
 	private final ExecutorService executor = Executors.newSingleThreadExecutor(THREAD_FACTORY);
 	private final CountDownLatch mountProbeSucceeded = new CountDownLatch(1);
@@ -54,8 +62,9 @@ public abstract class Fuse implements AutoCloseable {
 	 *
 	 * @param fuseOperations The file system operations
 	 */
-	protected Fuse(FuseOperations fuseOperations) {
+	protected Fuse(FuseOperations fuseOperations, Function<SegmentAllocator, MemorySegment> structAllocator) {
 		this.fuseOperations = fuseOperations;
+		this.segment = structAllocator.apply(fuseScope);
 	}
 
 	/**

@@ -23,11 +23,8 @@ import java.util.List;
 
 final class FuseImpl extends Fuse {
 
-	private final MemorySegment segment;
-
 	public FuseImpl(FuseOperations fuseOperations) {
-		super(fuseOperations);
-		this.segment = fuse_operations.allocate(fuseScope);
+		super(fuseOperations, fuse_operations::allocate);
 		fuseOperations.supportedOperations().forEach(this::bind);
 	}
 

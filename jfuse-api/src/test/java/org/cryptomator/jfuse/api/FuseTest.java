@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.lang.foreign.ValueLayout;
 import java.nio.file.FileSystem;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -44,7 +45,7 @@ public class FuseTest {
 	private static class FuseStub extends Fuse {
 
 		protected FuseStub(FuseOperations fuseOperations) {
-			super(fuseOperations);
+			super(fuseOperations, allocator -> allocator.allocate(0L));
 		}
 
 		@Override

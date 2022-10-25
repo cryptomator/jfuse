@@ -25,11 +25,8 @@ import static java.lang.foreign.ValueLayout.JAVA_INT;
 
 class FuseImpl extends Fuse {
 
-	private final MemorySegment segment;
-
 	public FuseImpl(FuseOperations fuseOperations) {
-		super(fuseOperations);
-		this.segment = fuse3_operations.allocate(fuseScope);
+		super(fuseOperations, fuse3_operations::allocate);
 		fuseOperations.supportedOperations().forEach(this::bind);
 	}
 
