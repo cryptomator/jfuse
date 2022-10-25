@@ -49,6 +49,11 @@ public class FuseTest {
 		}
 
 		@Override
+		protected void bind(FuseOperations.Operation operation) {
+			// no-op
+		}
+
+		@Override
 		protected FuseMount mount(List<String> args) {
 			return new FuseMount() {
 
