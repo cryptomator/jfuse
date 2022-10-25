@@ -33,7 +33,7 @@ public class FuseTest {
 		Mockito.doReturn(fsProv).when(fs).provider();
 		Mockito.doReturn(attrView).when(fsProv).getFileAttributeView(probePath, BasicFileAttributeView.class);
 		Mockito.doAnswer(invocation -> {
-			fuse.getattr("/jfuse_mount_probe", Mockito.mock(Stat.class), Mockito.mock(FileInfo.class));
+			fuse.fuseOperations.getattr("/jfuse_mount_probe", Mockito.mock(Stat.class), Mockito.mock(FileInfo.class));
 			throw new NoSuchFileException("/mnt/jfuse_mount_probe not found");
 		}).when(attrView).readAttributes();
 
