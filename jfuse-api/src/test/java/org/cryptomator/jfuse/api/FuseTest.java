@@ -36,7 +36,7 @@ public class FuseTest {
 			throw new NoSuchFileException("/mnt/jfuse_mount_probe not found");
 		}).doAnswer(invocation -> {
 			// second attempt: simulate hitting getattr
-			fuse.delegate.getattr("/jfuse_mount_probe", Mockito.mock(Stat.class), Mockito.mock(FileInfo.class));
+			fuse.fuseOperations.getattr("/jfuse_mount_probe", Mockito.mock(Stat.class), Mockito.mock(FileInfo.class));
 			throw new NoSuchFileException("/mnt/jfuse_mount_probe still not found");
 		}).when(attrView).readAttributes();
 

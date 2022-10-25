@@ -46,12 +46,12 @@ public abstract class Fuse implements AutoCloseable {
 	/**
 	 * The file system operations invoked by this FUSE file system.
 	 */
-	protected final FuseOperations delegate;
+	protected final FuseOperations fuseOperations;
 
 	/**
 	 * The memory segment containing the fuse_operations struct.
 	 */
-	protected final MemorySegment fuseOps;
+	protected final MemorySegment fuseOperationsStruct;
 
 	private final AtomicReference<FuseMount> mount = new AtomicReference<>(UNMOUNTED);
 	private final ExecutorService executor = Executors.newSingleThreadExecutor(THREAD_FACTORY);
@@ -63,8 +63,8 @@ public abstract class Fuse implements AutoCloseable {
 	 * @param fuseOperations The file system operations
 	 */
 	protected Fuse(FuseOperations fuseOperations, Function<SegmentAllocator, MemorySegment> structAllocator) {
-		this.delegate = new MountProbeObserver(fuseOperations, mountProbeSucceeded::countDown);
-		this.fuseOps = structAllocator.apply(fuseScope);
+		this.fuseOperations = new MountProbeObserver(fuseOperations, mountProbeSucceeded::countDown);
+		this.fuseOperationsStruct = structAllocator.apply(fuseScope);
 		fuseOperations.supportedOperations().forEach(this::bind);
 	}
 
@@ -83,9 +83,9 @@ public abstract class Fuse implements AutoCloseable {
 	 * Implementers need to make sure to:
 	 * <ol>
 	 *     <li>create an upcall stub for the given operation and save its address at the appropriate position within the
-	 *     {@link #fuseOps}</li>
+	 *     {@link #fuseOperationsStruct}</li>
 	 *     <li>the necessary adaption between native and high-level Java types takes place</li>
-	 *     <li>the adapter calls the corresponding function in {@link #delegate}</li>
+	 *     <li>the adapter calls the corresponding function in {@link #fuseOperations}</li>
 	 * </ol>
 	 *
 	 * @param operation Which function
