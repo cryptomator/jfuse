@@ -18,6 +18,8 @@ import java.nio.file.Path;
 @SupportedPlatform(os = OperatingSystem.MAC, arch = Architecture.ARM64)
 public class MacFuseBuilder implements FuseBuilder {
 
+	private static final String DEFAULT_MACFUSE_PATH = "/usr/local/lib/libfuse.dylib";
+	private static final String DEFAULT_FUSET_PATH = "/usr/local/lib/libfuse-t.dylib";
 	private static final Errno ERRNO = new MacErrno();
 	private String libraryPath;
 
@@ -41,6 +43,10 @@ public class MacFuseBuilder implements FuseBuilder {
 	public Fuse build(FuseOperations fuseOperations) throws UnsatisfiedLinkError {
 		if (libraryPath != null) {
 			System.load(libraryPath);
+		} else if (Files.exists(Path.of(DEFAULT_MACFUSE_PATH))) {
+			System.load(DEFAULT_MACFUSE_PATH);
+		} else if (Files.exists(Path.of(DEFAULT_FUSET_PATH))) {
+			System.load(DEFAULT_FUSET_PATH);
 		} else {
 			System.loadLibrary("fuse");
 		}
