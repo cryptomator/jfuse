@@ -51,7 +51,7 @@ public abstract class Fuse implements AutoCloseable {
 	/**
 	 * The memory segment containing the fuse_operations struct.
 	 */
-	protected final MemorySegment segment;
+	protected final MemorySegment fuseOperationsStruct;
 
 	private final AtomicReference<FuseMount> mount = new AtomicReference<>(UNMOUNTED);
 	private final ExecutorService executor = Executors.newSingleThreadExecutor(THREAD_FACTORY);
@@ -64,7 +64,7 @@ public abstract class Fuse implements AutoCloseable {
 	 */
 	protected Fuse(FuseOperations fuseOperations, Function<SegmentAllocator, MemorySegment> structAllocator) {
 		this.fuseOperations = fuseOperations;
-		this.segment = structAllocator.apply(fuseScope);
+		this.fuseOperationsStruct = structAllocator.apply(fuseScope);
 		fuseOperations.supportedOperations().forEach(this::bind);
 	}
 

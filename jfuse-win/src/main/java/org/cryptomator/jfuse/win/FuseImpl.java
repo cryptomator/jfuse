@@ -42,7 +42,7 @@ class FuseImpl extends Fuse {
 	@Override
 	protected FuseMount mount(List<String> args) throws MountFailedException {
 		var fuseArgs = parseArgs(args);
-		var fuse = fuse_h.fuse3_new(fuseArgs.args(), segment, segment.byteSize(), MemoryAddress.NULL);
+		var fuse = fuse_h.fuse3_new(fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemoryAddress.NULL);
 		if (MemoryAddress.NULL.equals(fuse)) {
 			throw new MountFailedException("fuse_new failed");
 		}
@@ -81,32 +81,32 @@ class FuseImpl extends Fuse {
 	@Override
 	protected void bind(FuseOperations.Operation operation) {
 		switch (operation) {
-			case INIT -> fuse3_operations.init$set(segment, fuse3_operations.init.allocate(this::init, fuseScope).address());
-			case ACCESS -> fuse3_operations.access$set(segment, MemoryAddress.NULL);
-			case CHMOD -> fuse3_operations.chmod$set(segment, fuse3_operations.chmod.allocate(this::chmod, fuseScope).address());
-			case CHOWN -> fuse3_operations.chown$set(segment, fuse3_operations.chown.allocate(this::chown, fuseScope).address());
-			case CREATE -> fuse3_operations.create$set(segment, fuse3_operations.create.allocate(this::create, fuseScope).address());
-			case DESTROY -> fuse3_operations.destroy$set(segment, fuse3_operations.destroy.allocate(this::destroy, fuseScope).address());
-			case FLUSH -> fuse3_operations.flush$set(segment, fuse3_operations.flush.allocate(this::flush, fuseScope).address());
-			case FSYNC -> fuse3_operations.fsync$set(segment, fuse3_operations.fsync.allocate(this::fsync, fuseScope).address());
-			case FSYNCDIR -> fuse3_operations.fsyncdir$set(segment, fuse3_operations.fsyncdir.allocate(this::fsyncdir, fuseScope).address());
-			case GET_ATTR -> fuse3_operations.getattr$set(segment, fuse3_operations.getattr.allocate(this::getattr, fuseScope).address());
-			case MKDIR -> fuse3_operations.mkdir$set(segment, fuse3_operations.mkdir.allocate(this::mkdir, fuseScope).address());
-			case OPEN -> fuse3_operations.open$set(segment, fuse3_operations.open.allocate(this::open, fuseScope).address());
-			case OPEN_DIR -> fuse3_operations.opendir$set(segment, fuse3_operations.opendir.allocate(this::opendir, fuseScope).address());
-			case READ -> fuse3_operations.read$set(segment, fuse3_operations.read.allocate(this::read, fuseScope).address());
-			case READ_DIR -> fuse3_operations.readdir$set(segment, fuse3_operations.readdir.allocate(this::readdir, fuseScope).address());
-			case READLINK -> fuse3_operations.readlink$set(segment, fuse3_operations.readlink.allocate(this::readlink, fuseScope).address());
-			case RELEASE -> fuse3_operations.release$set(segment, fuse3_operations.release.allocate(this::release, fuseScope).address());
-			case RELEASE_DIR -> fuse3_operations.releasedir$set(segment, fuse3_operations.releasedir.allocate(this::releasedir, fuseScope).address());
-			case RENAME -> fuse3_operations.rename$set(segment, fuse3_operations.rename.allocate(this::rename, fuseScope).address());
-			case RMDIR -> fuse3_operations.rmdir$set(segment, fuse3_operations.rmdir.allocate(this::rmdir, fuseScope).address());
-			case STATFS -> fuse3_operations.statfs$set(segment, fuse3_operations.statfs.allocate(this::statfs, fuseScope).address());
-			case SYMLINK -> fuse3_operations.symlink$set(segment, fuse3_operations.symlink.allocate(this::symlink, fuseScope).address());
-			case TRUNCATE -> fuse3_operations.truncate$set(segment, fuse3_operations.truncate.allocate(this::truncate, fuseScope).address());
-			case UNLINK -> fuse3_operations.unlink$set(segment, fuse3_operations.unlink.allocate(this::unlink, fuseScope).address());
-			case UTIMENS -> fuse3_operations.utimens$set(segment, fuse3_operations.utimens.allocate(this::utimens, fuseScope).address());
-			case WRITE -> fuse3_operations.write$set(segment, fuse3_operations.write.allocate(this::write, fuseScope).address());
+			case INIT -> fuse3_operations.init$set(fuseOperationsStruct, fuse3_operations.init.allocate(this::init, fuseScope).address());
+			case ACCESS -> fuse3_operations.access$set(fuseOperationsStruct, MemoryAddress.NULL);
+			case CHMOD -> fuse3_operations.chmod$set(fuseOperationsStruct, fuse3_operations.chmod.allocate(this::chmod, fuseScope).address());
+			case CHOWN -> fuse3_operations.chown$set(fuseOperationsStruct, fuse3_operations.chown.allocate(this::chown, fuseScope).address());
+			case CREATE -> fuse3_operations.create$set(fuseOperationsStruct, fuse3_operations.create.allocate(this::create, fuseScope).address());
+			case DESTROY -> fuse3_operations.destroy$set(fuseOperationsStruct, fuse3_operations.destroy.allocate(this::destroy, fuseScope).address());
+			case FLUSH -> fuse3_operations.flush$set(fuseOperationsStruct, fuse3_operations.flush.allocate(this::flush, fuseScope).address());
+			case FSYNC -> fuse3_operations.fsync$set(fuseOperationsStruct, fuse3_operations.fsync.allocate(this::fsync, fuseScope).address());
+			case FSYNCDIR -> fuse3_operations.fsyncdir$set(fuseOperationsStruct, fuse3_operations.fsyncdir.allocate(this::fsyncdir, fuseScope).address());
+			case GET_ATTR -> fuse3_operations.getattr$set(fuseOperationsStruct, fuse3_operations.getattr.allocate(this::getattr, fuseScope).address());
+			case MKDIR -> fuse3_operations.mkdir$set(fuseOperationsStruct, fuse3_operations.mkdir.allocate(this::mkdir, fuseScope).address());
+			case OPEN -> fuse3_operations.open$set(fuseOperationsStruct, fuse3_operations.open.allocate(this::open, fuseScope).address());
+			case OPEN_DIR -> fuse3_operations.opendir$set(fuseOperationsStruct, fuse3_operations.opendir.allocate(this::opendir, fuseScope).address());
+			case READ -> fuse3_operations.read$set(fuseOperationsStruct, fuse3_operations.read.allocate(this::read, fuseScope).address());
+			case READ_DIR -> fuse3_operations.readdir$set(fuseOperationsStruct, fuse3_operations.readdir.allocate(this::readdir, fuseScope).address());
+			case READLINK -> fuse3_operations.readlink$set(fuseOperationsStruct, fuse3_operations.readlink.allocate(this::readlink, fuseScope).address());
+			case RELEASE -> fuse3_operations.release$set(fuseOperationsStruct, fuse3_operations.release.allocate(this::release, fuseScope).address());
+			case RELEASE_DIR -> fuse3_operations.releasedir$set(fuseOperationsStruct, fuse3_operations.releasedir.allocate(this::releasedir, fuseScope).address());
+			case RENAME -> fuse3_operations.rename$set(fuseOperationsStruct, fuse3_operations.rename.allocate(this::rename, fuseScope).address());
+			case RMDIR -> fuse3_operations.rmdir$set(fuseOperationsStruct, fuse3_operations.rmdir.allocate(this::rmdir, fuseScope).address());
+			case STATFS -> fuse3_operations.statfs$set(fuseOperationsStruct, fuse3_operations.statfs.allocate(this::statfs, fuseScope).address());
+			case SYMLINK -> fuse3_operations.symlink$set(fuseOperationsStruct, fuse3_operations.symlink.allocate(this::symlink, fuseScope).address());
+			case TRUNCATE -> fuse3_operations.truncate$set(fuseOperationsStruct, fuse3_operations.truncate.allocate(this::truncate, fuseScope).address());
+			case UNLINK -> fuse3_operations.unlink$set(fuseOperationsStruct, fuse3_operations.unlink.allocate(this::unlink, fuseScope).address());
+			case UTIMENS -> fuse3_operations.utimens$set(fuseOperationsStruct, fuse3_operations.utimens.allocate(this::utimens, fuseScope).address());
+			case WRITE -> fuse3_operations.write$set(fuseOperationsStruct, fuse3_operations.write.allocate(this::write, fuseScope).address());
 		}
 	}
 
