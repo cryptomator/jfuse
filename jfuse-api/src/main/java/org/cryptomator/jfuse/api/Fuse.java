@@ -65,6 +65,7 @@ public abstract class Fuse implements AutoCloseable {
 	protected Fuse(FuseOperations fuseOperations, Function<SegmentAllocator, MemorySegment> structAllocator) {
 		this.fuseOperations = fuseOperations;
 		this.segment = structAllocator.apply(fuseScope);
+		fuseOperations.supportedOperations().forEach(this::bind);
 	}
 
 	/**
@@ -75,6 +76,13 @@ public abstract class Fuse implements AutoCloseable {
 	public static FuseBuilder builder() {
 		return FuseBuilder.getSupported();
 	}
+
+	/**
+	 * Registers the callback function for the given operation in the {@code fuse_operations} struct.
+	 *
+	 * @param operation Which function
+	 */
+	protected abstract void bind(FuseOperations.Operation operation);
 
 	/**
 	 * Mounts this fuse file system at the given mount point.

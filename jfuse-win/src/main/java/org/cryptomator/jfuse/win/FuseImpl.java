@@ -27,7 +27,6 @@ class FuseImpl extends Fuse {
 
 	public FuseImpl(FuseOperations fuseOperations) {
 		super(fuseOperations, fuse3_operations::allocate);
-		fuseOperations.supportedOperations().forEach(this::bind);
 	}
 
 	@Override
@@ -79,11 +78,8 @@ class FuseImpl extends Fuse {
 		return new FuseArgs(args, mountPoint, isMultiThreaded);
 	}
 
-	/**
-	 * Sets a fuse callback. For supported callbacks, see winfsp/inc/fuse3/fuse_h
-	 * @param operation The fuse operation enum, indicating which operation to set.
-	 */
-	private void bind(FuseOperations.Operation operation) {
+	@Override
+	protected void bind(FuseOperations.Operation operation) {
 		switch (operation) {
 			case INIT -> fuse3_operations.init$set(segment, fuse3_operations.init.allocate(this::init, fuseScope).address());
 			case ACCESS -> fuse3_operations.access$set(segment, MemoryAddress.NULL);

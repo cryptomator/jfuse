@@ -25,7 +25,6 @@ final class FuseImpl extends Fuse {
 
 	public FuseImpl(FuseOperations fuseOperations) {
 		super(fuseOperations, fuse_operations::allocate);
-		fuseOperations.supportedOperations().forEach(this::bind);
 	}
 
 	@Override
@@ -67,7 +66,8 @@ final class FuseImpl extends Fuse {
 		return new FuseArgs(args, opts);
 	}
 
-	private void bind(FuseOperations.Operation operation) {
+	@Override
+	protected void bind(FuseOperations.Operation operation) {
 		switch (operation) {
 			case INIT -> fuse_operations.init$set(segment, fuse_operations.init.allocate(this::init, fuseScope).address());
 			case ACCESS -> fuse_operations.access$set(segment, fuse_operations.access.allocate(this::access, fuseScope).address());
