@@ -160,14 +160,14 @@ final class FuseImpl extends Fuse {
 	@VisibleForTesting
 	int getattr(MemoryAddress path, MemoryAddress stat) {
 		try (var scope = MemorySession.openConfined()) {
-			return this.getattr(path.getUtf8String(0), new StatImpl(stat, scope), null);
+			return fuseOperations.getattr(path.getUtf8String(0), new StatImpl(stat, scope), null);
 		}
 	}
 
 	@VisibleForTesting
 	int fgetattr(MemoryAddress path, MemoryAddress stat, MemoryAddress fi) {
 		try (var scope = MemorySession.openConfined()) {
-			return this.getattr(path.getUtf8String(0), new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
+			return fuseOperations.getattr(path.getUtf8String(0), new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
 		}
 	}
 

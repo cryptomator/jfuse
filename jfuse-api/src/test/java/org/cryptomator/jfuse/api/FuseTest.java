@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.lang.foreign.ValueLayout;
 import java.nio.file.FileSystem;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -21,10 +20,10 @@ public class FuseTest {
 	private Fuse fuse = Mockito.spy(new FuseStub(fuseOps));
 
 	@Test
-	@DisplayName("waitForMountingToComplete() waits for getattr(\"/jfuse_windows_mount_probe\")")
+	@DisplayName("waitForMountingToComplete() waits for getattr(\"/jfuse_mount_probe\")")
 	public void testWaitForMountingToComplete() throws IOException {
 		Path mountPoint = Mockito.mock(Path.class, "/mnt");
-		Path probePath = Mockito.mock(Path.class, "/mnt/jfuse_windows_mount_probe");
+		Path probePath = Mockito.mock(Path.class, "/mnt/jfuse_mount_probe");
 		FileSystem fs = Mockito.mock(FileSystem.class);
 		FileSystemProvider fsProv = Mockito.mock(FileSystemProvider.class);
 		BasicFileAttributeView attrView = Mockito.mock(BasicFileAttributeView.class);
@@ -33,8 +32,12 @@ public class FuseTest {
 		Mockito.doReturn(fsProv).when(fs).provider();
 		Mockito.doReturn(attrView).when(fsProv).getFileAttributeView(probePath, BasicFileAttributeView.class);
 		Mockito.doAnswer(invocation -> {
-			fuse.getattr("/jfuse_mount_probe", Mockito.mock(Stat.class), Mockito.mock(FileInfo.class));
+			// first attempt: not yet mounted
 			throw new NoSuchFileException("/mnt/jfuse_mount_probe not found");
+		}).doAnswer(invocation -> {
+			// second attempt: simulate hitting getattr
+			fuse.fuseOperations.getattr("/jfuse_mount_probe", Mockito.mock(Stat.class), Mockito.mock(FileInfo.class));
+			throw new NoSuchFileException("/mnt/jfuse_mount_probe still not found");
 		}).when(attrView).readAttributes();
 
 		Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> fuse.waitForMountingToComplete(mountPoint));

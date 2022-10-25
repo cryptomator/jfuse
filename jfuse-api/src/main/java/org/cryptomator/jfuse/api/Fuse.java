@@ -63,7 +63,7 @@ public abstract class Fuse implements AutoCloseable {
 	 * @param fuseOperations The file system operations
 	 */
 	protected Fuse(FuseOperations fuseOperations, Function<SegmentAllocator, MemorySegment> structAllocator) {
-		this.fuseOperations = fuseOperations;
+		this.fuseOperations = new MountProbeObserver(fuseOperations, mountProbeSucceeded::countDown);
 		this.fuseOperationsStruct = structAllocator.apply(fuseScope);
 		fuseOperations.supportedOperations().forEach(this::bind);
 	}
@@ -79,6 +79,14 @@ public abstract class Fuse implements AutoCloseable {
 
 	/**
 	 * Registers the callback function for the given operation in the {@code fuse_operations} struct.
+	 * <p>
+	 * Implementers need to make sure to:
+	 * <ol>
+	 *     <li>create an upcall stub for the given operation and save its address at the appropriate position within the
+	 *     {@link #fuseOperationsStruct}</li>
+	 *     <li>the necessary adaption between native and high-level Java types takes place</li>
+	 *     <li>the adapter calls the corresponding function in {@link #fuseOperations}</li>
+	 * </ol>
 	 *
 	 * @param operation Which function
 	 */
@@ -144,22 +152,6 @@ public abstract class Fuse implements AutoCloseable {
 	}
 
 	/**
-	 * Decorates {@link FuseOperations#getattr(String, Stat, FileInfo)} and ensures to properly handle mount probing.
-	 *
-	 * @param path File path
-	 * @param stat File attributes
-	 * @param fi   File handle
-	 * @return 0 on success or negated error code
-	 */
-	@MustBeInvokedByOverriders
-	protected int getattr(String path, Stat stat, @Nullable FileInfo fi) {
-		if (mountProbeSucceeded.getCount() > 0 && path.equals(MOUNT_PROBE)) {
-			mountProbeSucceeded.countDown();
-		}
-		return fuseOperations.getattr(path, stat, fi);
-	}
-
-	/**
 	 * Mounts the fuse file system.
 	 *
 	 * @param args Mount args
@@ -192,6 +184,24 @@ public abstract class Fuse implements AutoCloseable {
 			Thread.currentThread().interrupt();
 		} finally {
 			fuseScope.close();
+		}
+	}
+
+	/**
+	 * Decorates the {@link FuseOperations#getattr(String, Stat, FileInfo) getattr} call of a FuseOperations object
+	 * in order to detect accesses to {@value MOUNT_PROBE} system during {@link #waitForMountingToComplete(Path)}.
+	 *
+	 * @param delegate  The original FuseOperations object
+	 * @param onObserve Handler to invoke as soon as the desired call is detected
+	 */
+	private record MountProbeObserver(FuseOperations delegate, Runnable onObserve) implements FuseOperationsDecorator {
+
+		@Override
+		public int getattr(String path, Stat stat, @Nullable FileInfo fi) {
+			if (MOUNT_PROBE.equals(path)) {
+				onObserve.run();
+			}
+			return delegate.getattr(path, stat, fi);
 		}
 	}
 
