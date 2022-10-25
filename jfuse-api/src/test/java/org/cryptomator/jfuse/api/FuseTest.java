@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.lang.foreign.ValueLayout;
 import java.nio.file.FileSystem;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -37,7 +36,7 @@ public class FuseTest {
 			throw new NoSuchFileException("/mnt/jfuse_mount_probe not found");
 		}).doAnswer(invocation -> {
 			// second attempt: simulate hitting getattr
-			fuse.fuseOperations.getattr("/jfuse_mount_probe", Mockito.mock(Stat.class), Mockito.mock(FileInfo.class));
+			fuse.delegate.getattr("/jfuse_mount_probe", Mockito.mock(Stat.class), Mockito.mock(FileInfo.class));
 			throw new NoSuchFileException("/mnt/jfuse_mount_probe still not found");
 		}).when(attrView).readAttributes();
 
