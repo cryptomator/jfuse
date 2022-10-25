@@ -1,6 +1,7 @@
 package org.cryptomator.jfuse.win;
 
 import org.cryptomator.jfuse.api.FileInfo;
+import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
@@ -24,17 +25,11 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.ValueLayout;
-import java.nio.file.FileSystem;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributeView;
-import java.nio.file.spi.FileSystemProvider;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -107,41 +102,11 @@ public class FuseImplTest {
 			FuseMount fuseMount = Mockito.mock(FuseMount.class);
 			Mockito.doReturn(mountPoint).when(mountPoint).getRoot();
 			Mockito.doReturn(true).when(mountPoint).isAbsolute();
-			Mockito.doReturn(fuseMount).when(fuseImplSpy).mount(Mockito.any());
-			Mockito.doNothing().when(fuseImplSpy).waitForMountingToComplete(mountPoint);
-			Mockito.doReturn(0).when(fuseMount).loop();
+			Mockito.doNothing().when((Fuse) fuseImplSpy).mount(Mockito.any(), Mockito.any(), Mockito.any());
 
 			fuseImplSpy.mount("test", mountPoint);
 
-			Mockito.verify(fuseImplSpy).mount(Mockito.argThat(list -> "A:".equals(list.get(list.size() - 1))));
-			Mockito.verify(fuseImplSpy).waitForMountingToComplete(mountPoint);
-		}
-
-		@Test
-		@DisplayName("waitForMountingToComplete() waits for getattr(\"/jfuse_windows_mount_probe\")")
-		public void testWaitForMountingToComplete() throws IOException {
-			Path mountPoint = Mockito.mock(Path.class, "M:");
-			Path probePath = Mockito.mock(Path.class, "M:/jfuse_windows_mount_probe");
-			FileSystem fs = Mockito.mock(FileSystem.class);
-			FileSystemProvider fsProv = Mockito.mock(FileSystemProvider.class);
-			BasicFileAttributeView attrView = Mockito.mock(BasicFileAttributeView.class);
-			Mockito.doReturn(probePath).when(mountPoint).resolve("jfuse_windows_mount_probe");
-			Mockito.doReturn(fs).when(probePath).getFileSystem();
-			Mockito.doReturn(fsProv).when(fs).provider();
-			Mockito.doReturn(attrView).when(fsProv).getFileAttributeView(probePath, BasicFileAttributeView.class);
-			Mockito.doAnswer(invocation -> {
-				try (var scope = MemorySession.openConfined()) {
-					var path = scope.allocateUtf8String("/jfuse_windows_mount_probe");
-					var stat = fuse_stat.allocate(scope);
-					var fi = fuse3_file_info.allocate(scope);
-					fuseImplSpy.getattr(path.address(), stat.address(), fi.address());
-				}
-				throw new NoSuchFileException("M:/jfuse_windows_mount_probe not found");
-			}).when(attrView).readAttributes();
-
-			Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> fuseImplSpy.waitForMountingToComplete(mountPoint));
-
-			Mockito.verify(fuseOps).getattr(Mockito.eq("/jfuse_windows_mount_probe"), Mockito.any(), Mockito.any());
+			Mockito.verify((Fuse) fuseImplSpy).mount(Mockito.any(), Mockito.eq(mountPoint), Mockito.any());
 		}
 	}
 

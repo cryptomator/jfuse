@@ -6,9 +6,9 @@ import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.MountFailedException;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_args;
+import org.cryptomator.jfuse.linux.amd64.extr.fuse_cmdline_opts;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_h;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_operations;
-import org.cryptomator.jfuse.linux.amd64.extr.fuse_cmdline_opts;
 import org.cryptomator.jfuse.linux.amd64.extr.stat_h;
 import org.cryptomator.jfuse.linux.amd64.extr.timespec;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -23,13 +23,8 @@ import java.util.List;
 
 final class FuseImpl extends Fuse {
 
-	private final FuseOperations delegate;
-	private final MemorySegment fuseOps;
-
 	public FuseImpl(FuseOperations fuseOperations) {
-		this.fuseOps = fuse_operations.allocate(fuseScope);
-		this.delegate = fuseOperations;
-		fuseOperations.supportedOperations().forEach(this::bind);
+		super(fuseOperations, fuse_operations::allocate);
 	}
 
 	@Override
@@ -71,7 +66,8 @@ final class FuseImpl extends Fuse {
 		return new FuseArgs(args, opts);
 	}
 
-	private void bind(FuseOperations.Operation operation) {
+	@Override
+	protected void bind(FuseOperations.Operation operation) {
 		switch (operation) {
 			case INIT -> fuse_operations.init$set(fuseOps, fuse_operations.init.allocate(this::init, fuseScope).address());
 			case ACCESS -> fuse_operations.access$set(fuseOps, fuse_operations.access.allocate(this::access, fuseScope).address());
