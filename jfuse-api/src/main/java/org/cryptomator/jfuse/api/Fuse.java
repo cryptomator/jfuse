@@ -79,6 +79,14 @@ public abstract class Fuse implements AutoCloseable {
 
 	/**
 	 * Registers the callback function for the given operation in the {@code fuse_operations} struct.
+	 * <p>
+	 * Implementers need to make sure to:
+	 * <ol>
+	 *     <li>create an upcall stub for the given operation and save its address at the appropriate position within the
+	 *     {@link #fuseOperationsStruct}</li>
+	 *     <li>the necessary adaption between native and high-level Java types takes place</li>
+	 *     <li>the adapter calls the corresponding function in {@link #fuseOperations}</li>
+	 * </ol>
 	 *
 	 * @param operation Which function
 	 */
@@ -183,7 +191,7 @@ public abstract class Fuse implements AutoCloseable {
 	 * Decorates the {@link FuseOperations#getattr(String, Stat, FileInfo) getattr} call of a FuseOperations object
 	 * in order to detect accesses to {@value MOUNT_PROBE} system during {@link #waitForMountingToComplete(Path)}.
 	 *
-	 * @param delegate The original FuseOperations object
+	 * @param delegate  The original FuseOperations object
 	 * @param onObserve Handler to invoke as soon as the desired call is detected
 	 */
 	private record MountProbeObserver(FuseOperations delegate, Runnable onObserve) implements FuseOperationsDecorator {
