@@ -29,7 +29,7 @@ jobs:
 
   mac:
     name: Test jfuse-mac
-    runs-on: macos-12
+    runs-on: macos-10.15
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - uses: actions/checkout@v3
@@ -39,12 +39,9 @@ jobs:
           distribution: 'zulu'
           cache: 'maven'
       - name: Setup fuse
-        run: |
-          brew tap macos-fuse-t/homebrew-cask
-          brew update
-          brew install fuse-t
+        run: brew install macfuse
       - name: Maven build
-        run: mvn -B verify -Dfuse.lib.path="/usr/local/lib/libfuse-t.dylib"
+        run: mvn -B verify -Dfuse.lib.path="/usr/local/lib/libfuse.dylib"
       - uses: actions/upload-artifact@v3
         with:
           name: coverage-mac
