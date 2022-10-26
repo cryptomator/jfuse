@@ -31,6 +31,10 @@ public final class PosixMirrorFileSystem extends AbstractMirrorFileSystem {
 		Path mirrored = Path.of(args[0]);
 		Path mountPoint = Path.of(args[1]);
 		var builder = Fuse.builder();
+		var libPath = System.getProperty("fuse.lib.path");
+		if (libPath != null && !libPath.isEmpty()) {
+			builder.setLibraryPath(libPath);
+		}
 		try (var fuse = builder.build(new PosixMirrorFileSystem(mirrored, builder.errno()))) {
 			LOG.info("Mounting at {}...", mountPoint);
 			fuse.mount("jfuse", mountPoint, "-s");

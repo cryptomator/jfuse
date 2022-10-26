@@ -106,9 +106,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 
 	@Override
 	public void init(FuseConnInfo conn, FuseConfig cfg) {
-		conn.setWant(conn.want() | FuseConnInfo.FUSE_CAP_BIG_WRITES);
-		conn.setMaxRead(Integer.MAX_VALUE);
-		conn.setMaxWrite(Integer.MAX_VALUE);
+		conn.setWant(conn.want() | (conn.capable() & FuseConnInfo.FUSE_CAP_BIG_WRITES));
 		conn.setMaxBackground(16);
 		conn.setCongestionThreshold(4);
 	}
