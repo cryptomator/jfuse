@@ -53,12 +53,16 @@ public interface FuseOperations {
 	int FUSE_READDIR_PLUS = 1 << 0;
 
 	/**
+	 * The error constants used by this file system.
+	 *
 	 * @return The error codes from <code>errno.h</code> for the current platform.
 	 * @see FuseBuilder#errno()
 	 */
 	Errno errno();
 
 	/**
+	 * The supported file system operations.
+	 *
 	 * @return The set of supported operations.
 	 */
 	Set<Operation> supportedOperations();
@@ -522,7 +526,8 @@ public interface FuseOperations {
 	/**
 	 * Initialize filesystem
 	 *
-	 * @param conn FUSE information
+	 * @param conn FUSE connection information
+	 * @param cfg FUSE configuration object
 	 */
 	default void init(FuseConnInfo conn, @Nullable FuseConfig cfg) {
 		// no-op

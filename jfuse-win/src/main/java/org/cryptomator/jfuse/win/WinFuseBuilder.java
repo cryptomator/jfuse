@@ -8,6 +8,9 @@ import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.OperatingSystem;
 import org.cryptomator.jfuse.api.SupportedPlatform;
 
+/**
+ * Builds FUSE file system instances on Windows.
+ */
 @SupportedPlatform(os = OperatingSystem.WINDOWS, arch = Architecture.AMD64)
 @SupportedPlatform(os = OperatingSystem.WINDOWS, arch = Architecture.ARM64)
 public class WinFuseBuilder implements FuseBuilder {
@@ -16,6 +19,12 @@ public class WinFuseBuilder implements FuseBuilder {
 	private static final String DEFAULT_LIB_PATH_ARM64 = "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-a64.dll";
 	private static final Errno ERRNO = new WinErrno();
 	private String libraryPath;
+
+	/**
+	 * Creates a new WinFuseBuilder instance.
+	 */
+	public WinFuseBuilder() {
+	}
 
 	@Override
 	public Errno errno() {

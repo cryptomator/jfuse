@@ -5,8 +5,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.ServiceLoader;
 
+/**
+ * A platform-specific builder to create a FUSE file system.
+ */
 public interface FuseBuilder {
 
+	/**
+	 * Find a FuseBuilder that is {@link SupportedPlatform supported on this platform}.
+	 *
+	 * @return Any supported builder
+	 * @throws UnsupportedOperationException Thrown if no supported builder could be found.
+	 */
 	static FuseBuilder getSupported() throws UnsupportedOperationException {
 		return ServiceLoader.load(FuseBuilder.class)
 				.stream()
@@ -23,7 +32,9 @@ public interface FuseBuilder {
 	}
 
 	/**
-	 * @return The <code>errno.h</code> error codes used by this implementation.
+	 * The error constants used on the selected platform.
+	 *
+	 * @return The <code>errno.h</code> error codes
 	 */
 	Errno errno();
 

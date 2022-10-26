@@ -4,6 +4,8 @@ import org.cryptomator.jfuse.api.DirFiller;
 import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.FileModes;
+import org.cryptomator.jfuse.api.FuseConfig;
+import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.Statvfs;
@@ -77,6 +79,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 				FuseOperations.Operation.FSYNC,
 				FuseOperations.Operation.FSYNCDIR,
 				FuseOperations.Operation.GET_ATTR,
+				FuseOperations.Operation.INIT,
 				FuseOperations.Operation.MKDIR,
 				FuseOperations.Operation.OPEN_DIR,
 				FuseOperations.Operation.READ_DIR,
@@ -99,6 +102,15 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	@Override
 	public Errno errno() {
 		return errno;
+	}
+
+	@Override
+	public void init(FuseConnInfo conn, FuseConfig cfg) {
+		conn.setWant(conn.want() | FuseConnInfo.FUSE_CAP_BIG_WRITES);
+		conn.setMaxRead(Integer.MAX_VALUE);
+		conn.setMaxWrite(Integer.MAX_VALUE);
+		conn.setMaxBackground(16);
+		conn.setCongestionThreshold(4);
 	}
 
 	@Override
@@ -341,10 +353,17 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 			return -errno.ebadf();
 		}
 		try {
-			var dst = buf.duplicate();
-			dst.limit((int) Math.min(dst.position() + size, dst.limit())); // restrict to `size` bytes!
-			int read = fc.read(dst, offset);
-			return read == -1 ? 0 : read; // there is no "-1" in fuse
+			int read = 0;
+			int toRead = (int) Math.min(size, buf.limit());
+			while (read < toRead) {
+				int r = fc.read(buf, offset + read);
+				if (r == -1) {
+					LOG.trace("Reached EOF");
+					break;
+				}
+				read += r;
+			}
+			return read;
 		} catch (IOException e) {
 			return -errno.eio();
 		}
@@ -358,7 +377,12 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 			return -errno.ebadf();
 		}
 		try {
-			return fc.write(buf, offset);
+			int written = 0;
+			int toWrite = (int) Math.min(size, buf.limit());
+			while (written < toWrite) {
+				written += fc.write(buf, offset + written);
+			}
+			return written;
 		} catch (IOException e) {
 			return -errno.eio();
 		}

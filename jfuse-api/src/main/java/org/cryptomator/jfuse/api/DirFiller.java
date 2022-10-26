@@ -3,6 +3,10 @@ package org.cryptomator.jfuse.api;
 import java.io.IOException;
 import java.util.function.Consumer;
 
+/**
+ * The DirFiller will be used during {@link FuseOperations#readdir(String, DirFiller, long, FileInfo, int) readdir} requests
+ * and needs to be invoked by file system implementations once for every child of the read dir.
+ */
 public interface DirFiller {
 
 	/**

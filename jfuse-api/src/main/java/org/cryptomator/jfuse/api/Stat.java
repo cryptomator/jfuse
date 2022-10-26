@@ -95,36 +95,108 @@ public interface Stat {
 	 */
 	IntPredicate S_ISSOCK = m -> (m & S_IFMT) == S_IFSOCK;
 
+	/**
+	 * Time of last access.
+	 *
+	 * @return {@code st_atime} value
+	 */
 	TimeSpec aTime();
 
+	/**
+	 * Time of last status change.
+	 *
+	 * @return {@code st_ctime} value
+	 */
 	TimeSpec cTime();
 
+	/**
+	 * Time of last data modification.
+	 *
+	 * @return {@code st_mtime} value
+	 */
 	TimeSpec mTime();
 
+	/**
+	 * File creation time.
+	 *
+	 * @return {@code st_birthtime} value
+	 */
 	TimeSpec birthTime();
 
+	/**
+	 * Set {@link #getMode() mode}.
+	 *
+	 * @param mode {@code st_mode} value
+	 */
 	void setMode(int mode);
 
+	/**
+	 * Mode of file.
+	 *
+	 * @return {@code st_mode} value
+	 */
 	int getMode();
 
+	/**
+	 * Set {@link  #getUid() uid}.
+	 *
+	 * @param uid {@code st_uid} value
+	 */
 	void setUid(int uid);
 
+	/**
+	 * User ID of file.
+	 *
+	 * @return {@code st_uid} value
+	 */
 	int getUid();
 
+	/**
+	 * Set {@link  #getGid() gid}.
+	 *
+	 * @param gid {@code st_gid} value
+	 */
 	void setGid(int gid);
 
+	/**
+	 * Group ID of file.
+	 *
+	 * @return {@code st_gid} value
+	 */
 	int getGid();
 
-	void setNLink(short count);
+	/**
+	 * Set {@link #getNLink() nlink}.
+	 *
+	 * @param nlink {@code st_nlink} value
+	 */
+	void setNLink(short nlink);
 
+	/**
+	 * Number of links to the file.
+	 *
+	 * @return {@code st_nlink} value
+	 */
 	long getNLink();
 
+	/**
+	 * Set {@link #getSize() size}.
+	 *
+	 * @param size {@code st_size} value
+	 */
 	void setSize(long size);
 
+	/**
+	 * File size in bytes (if file is a regular file).
+	 *
+	 * @return {@code st_size} value
+	 */
 	long getSize();
 
 	/**
-	 * @return Parsed permission bits from {@link #getMode()}
+	 * Parses the permission bits from {@link #getMode()}.
+	 *
+	 * @return Permissions contained in mode
 	 */
 	default Set<PosixFilePermission> getPermissions() {
 		return FileModes.toPermissions(getMode());
@@ -141,6 +213,12 @@ public interface Stat {
 		setMode(mode);
 	}
 
+	/**
+	 * Checks whether the given bits are set in {@link #getMode() mode}.
+	 *
+	 * @param mask Bits to check
+	 * @return {@code true} if all bits from {@code mask} are set
+	 */
 	default boolean hasMode(int mask) {
 		return (getMode() & mask) == mask;
 	}
