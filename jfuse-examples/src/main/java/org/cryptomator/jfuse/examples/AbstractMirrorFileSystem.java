@@ -4,6 +4,8 @@ import org.cryptomator.jfuse.api.DirFiller;
 import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.FileModes;
+import org.cryptomator.jfuse.api.FuseConfig;
+import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.Statvfs;
@@ -77,6 +79,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 				FuseOperations.Operation.FSYNC,
 				FuseOperations.Operation.FSYNCDIR,
 				FuseOperations.Operation.GET_ATTR,
+				FuseOperations.Operation.INIT,
 				FuseOperations.Operation.MKDIR,
 				FuseOperations.Operation.OPEN_DIR,
 				FuseOperations.Operation.READ_DIR,
@@ -99,6 +102,15 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	@Override
 	public Errno errno() {
 		return errno;
+	}
+
+	@Override
+	public void init(FuseConnInfo conn, FuseConfig cfg) {
+		conn.setWant(conn.want() | FuseConnInfo.FUSE_CAP_BIG_WRITES);
+		conn.setMaxRead(Integer.MAX_VALUE);
+		conn.setMaxWrite(Integer.MAX_VALUE);
+		conn.setMaxBackground(16);
+		conn.setCongestionThreshold(4);
 	}
 
 	@Override
