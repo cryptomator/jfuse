@@ -2,7 +2,7 @@ package org.cryptomator.jfuse.linux.amd64;
 
 import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
-import org.cryptomator.jfuse.api.MountFailedException;
+import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_cmdline_opts;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_config;
@@ -59,7 +59,7 @@ public class FuseImplTest {
 		public void testFuseNewFails() {
 			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemoryAddress.NULL);
 
-			var thrown = Assertions.assertThrows(MountFailedException.class, () -> fuseImplSpy.mount(args));
+			var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
 
 			fuseH.verify(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any()), Mockito.never());
 			Assertions.assertEquals("fuse_new failed", thrown.getMessage());
@@ -71,7 +71,7 @@ public class FuseImplTest {
 			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemoryAddress.ofLong(42L));
 			fuseH.when(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any())).thenReturn(1);
 
-			var thrown = Assertions.assertThrows(MountFailedException.class, () -> fuseImplSpy.mount(args));
+			var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
 
 			Assertions.assertEquals("fuse_mount failed", thrown.getMessage());
 		}

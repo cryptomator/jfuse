@@ -100,12 +100,12 @@ public abstract class Fuse implements AutoCloseable {
 	 * @param progName   The program name used to construct a usage message and to derive a fallback for <code>-ofsname=...</code>
 	 * @param mountPoint mount point
 	 * @param flags      Additional flags. Use flag <code>-help</code> to get a list of available flags
-	 * @throws MountFailedException     If mounting failed
+	 * @throws FuseMountFailedException If mounting failed
 	 * @throws IllegalArgumentException If providing unsupported mount flags
 	 */
 	@Blocking
 	@MustBeInvokedByOverriders
-	public void mount(String progName, Path mountPoint, String... flags) throws MountFailedException, IllegalArgumentException {
+	public void mount(String progName, Path mountPoint, String... flags) throws FuseMountFailedException, IllegalArgumentException {
 		FuseMount lock = new UnmountedFuseMount();
 		if (!mount.compareAndSet(UNMOUNTED, lock)) {
 			throw new IllegalStateException("Already mounted");
@@ -124,7 +124,7 @@ public abstract class Fuse implements AutoCloseable {
 			mount.compareAndSet(lock, fuseMount);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
-			throw new MountFailedException("Interrupted while waiting for mounting to finish");
+			throw new FuseMountFailedException("Interrupted while waiting for mounting to finish");
 		} finally {
 			mount.compareAndSet(lock, UNMOUNTED); // if value is still `lock`, mount has failed.
 		}
@@ -156,11 +156,11 @@ public abstract class Fuse implements AutoCloseable {
 	 *
 	 * @param args Mount args
 	 * @return A mount object
-	 * @throws MountFailedException     Thrown if mounting failed
+	 * @throws FuseMountFailedException Thrown if mounting failed
 	 * @throws IllegalArgumentException Thrown if parsing {@code args} failed
 	 */
 	@Blocking
-	protected abstract FuseMount mount(List<String> args) throws MountFailedException, IllegalArgumentException;
+	protected abstract FuseMount mount(List<String> args) throws FuseMountFailedException, IllegalArgumentException;
 
 	/**
 	 * Unmounts (if needed) this fuse file system and frees up system resources.

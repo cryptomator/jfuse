@@ -5,7 +5,7 @@ import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
-import org.cryptomator.jfuse.api.MountFailedException;
+import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.win.extr.fuse2.fuse2_h;
 import org.cryptomator.jfuse.win.extr.fuse3_config;
 import org.cryptomator.jfuse.win.extr.fuse3_conn_info;
@@ -78,7 +78,7 @@ public class FuseImplTest {
 		public void testFuseNewFails() {
 			fuseH.when(() -> fuse_h.fuse3_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemoryAddress.NULL);
 
-			var thrown = Assertions.assertThrows(MountFailedException.class, () -> fuseImplSpy.mount(args));
+			var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
 
 			fuseH.verify(() -> fuse_h.fuse3_mount(Mockito.any(), Mockito.any()), Mockito.never());
 			Assertions.assertEquals("fuse_new failed", thrown.getMessage());
@@ -90,14 +90,14 @@ public class FuseImplTest {
 			fuseH.when(() -> fuse_h.fuse3_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemoryAddress.ofLong(42L));
 			fuseH.when(() -> fuse_h.fuse3_mount(Mockito.any(), Mockito.any())).thenReturn(1);
 
-			var thrown = Assertions.assertThrows(MountFailedException.class, () -> fuseImplSpy.mount(args));
+			var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
 
 			Assertions.assertEquals("fuse_mount failed", thrown.getMessage());
 		}
 
 		@Test
 		@DisplayName("Adjust mount point A -> A:")
-		public void testAdjustMountPoint() throws MountFailedException, InterruptedException {
+		public void testAdjustMountPoint() throws FuseMountFailedException, InterruptedException {
 			Path mountPoint = Mockito.mock(Path.class, "A");
 			FuseMount fuseMount = Mockito.mock(FuseMount.class);
 			Mockito.doReturn(mountPoint).when(mountPoint).getRoot();
