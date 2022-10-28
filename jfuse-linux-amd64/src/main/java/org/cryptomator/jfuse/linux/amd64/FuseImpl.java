@@ -4,7 +4,7 @@ import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
-import org.cryptomator.jfuse.api.MountFailedException;
+import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_args;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_cmdline_opts;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse_h;
@@ -28,14 +28,14 @@ final class FuseImpl extends Fuse {
 	}
 
 	@Override
-	protected FuseMount mount(List<String> args) throws MountFailedException {
+	protected FuseMount mount(List<String> args) throws FuseMountFailedException {
 		var fuseArgs = parseArgs(args);
 		var fuse = fuse_h.fuse_new(fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemoryAddress.NULL);
 		if (MemoryAddress.NULL.equals(fuse)) {
-			throw new MountFailedException("fuse_new failed");
+			throw new FuseMountFailedException("fuse_new failed");
 		}
 		if (fuse_h.fuse_mount(fuse, fuseArgs.mountPoint()) != 0) {
-			throw new MountFailedException("fuse_mount failed");
+			throw new FuseMountFailedException("fuse_mount failed");
 		}
 		return new FuseMountImpl(fuse, fuseArgs);
 	}

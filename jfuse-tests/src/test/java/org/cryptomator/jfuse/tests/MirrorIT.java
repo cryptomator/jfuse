@@ -2,7 +2,7 @@ package org.cryptomator.jfuse.tests;
 
 import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseBuilder;
-import org.cryptomator.jfuse.api.MountFailedException;
+import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.examples.AbstractMirrorFileSystem;
 import org.cryptomator.jfuse.examples.PosixMirrorFileSystem;
 import org.cryptomator.jfuse.examples.WindowsMirrorFileSystem;
@@ -57,7 +57,7 @@ public class MirrorIT {
 	private Fuse fuse;
 
 	@BeforeAll
-	public void setup(@TempDir Path tmpDir) throws IOException,  MountFailedException {
+	public void setup(@TempDir Path tmpDir) throws IOException, FuseMountFailedException {
 		var builder = Fuse.builder();
 		var libPath = System.getProperty("fuse.lib.path");
 		if (libPath != null && !libPath.isEmpty()) {
@@ -78,7 +78,7 @@ public class MirrorIT {
 				Files.createDirectories(mirror);
 				yield new PosixMirrorFileSystem(orig, builder.errno());
 			}
-			default -> throw new MountFailedException("Unsupported OS");
+			default -> throw new FuseMountFailedException("Unsupported OS");
 		};
 		fuse = builder.build(fs);
 		fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));

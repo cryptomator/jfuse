@@ -4,7 +4,7 @@ import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseOperations;
-import org.cryptomator.jfuse.api.MountFailedException;
+import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.win.extr.fuse2.fuse2_h;
 import org.cryptomator.jfuse.win.extr.fuse2.fuse_args;
 import org.cryptomator.jfuse.win.extr.fuse3_operations;
@@ -30,7 +30,7 @@ class FuseImpl extends Fuse {
 	}
 
 	@Override
-	public void mount(String progName, Path mountPoint, String... flags) throws MountFailedException {
+	public void mount(String progName, Path mountPoint, String... flags) throws FuseMountFailedException {
 		var adjustedMP = mountPoint;
 		if (mountPoint.equals(mountPoint.getRoot()) && mountPoint.isAbsolute()) {
 			//winfsp accepts only drive letters written in drive relative notation
@@ -40,14 +40,14 @@ class FuseImpl extends Fuse {
 	}
 
 	@Override
-	protected FuseMount mount(List<String> args) throws MountFailedException {
+	protected FuseMount mount(List<String> args) throws FuseMountFailedException {
 		var fuseArgs = parseArgs(args);
 		var fuse = fuse_h.fuse3_new(fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemoryAddress.NULL);
 		if (MemoryAddress.NULL.equals(fuse)) {
-			throw new MountFailedException("fuse_new failed");
+			throw new FuseMountFailedException("fuse_new failed");
 		}
 		if (fuse_h.fuse3_mount(fuse, fuseArgs.mountPoint()) != 0) {
-			throw new MountFailedException("fuse_mount failed");
+			throw new FuseMountFailedException("fuse_mount failed");
 		}
 		return new FuseMountImpl(fuse, fuseArgs);
 	}
