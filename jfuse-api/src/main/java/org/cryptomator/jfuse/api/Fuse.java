@@ -172,10 +172,8 @@ public abstract class Fuse implements AutoCloseable {
 	@Override
 	@Blocking
 	@MustBeInvokedByOverriders
-	public void close() throws TimeoutException {
-		if (fuseScope.ownerThread() != Thread.currentThread()) {
-			throw new WrongThreadException();
-		} else if (!fuseScope.isAlive()) {
+	public synchronized void close() throws TimeoutException {
+		if (!fuseScope.isAlive()) {
 			return; // already closed
 		}
 		try {
