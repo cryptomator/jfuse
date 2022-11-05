@@ -1,12 +1,12 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
-import org.cryptomator.jfuse.api.Architecture;
 import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseBuilder;
 import org.cryptomator.jfuse.api.FuseOperations;
-import org.cryptomator.jfuse.api.OperatingSystem;
-import org.cryptomator.jfuse.api.SupportedPlatform;
+import org.cryptomator.jfuse.api.platforms.Architecture;
+import org.cryptomator.jfuse.api.platforms.OperatingSystem;
+import org.cryptomator.jfuse.api.platforms.SupportedPlatform;
 
 /**
  * Builds FUSE file system instances on Linux (aarch64).

@@ -1,4 +1,4 @@
-package org.cryptomator.jfuse.api;
+package org.cryptomator.jfuse.api.platforms;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
