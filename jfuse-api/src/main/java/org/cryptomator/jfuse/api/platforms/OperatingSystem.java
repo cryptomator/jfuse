@@ -1,4 +1,4 @@
-package org.cryptomator.jfuse.api;
+package org.cryptomator.jfuse.api.platforms;
 
 /**
  * Operating System

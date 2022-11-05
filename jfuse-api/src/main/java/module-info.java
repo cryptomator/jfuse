@@ -9,6 +9,7 @@ module org.cryptomator.jfuse.api {
 	requires static org.jetbrains.annotations;
 
 	exports org.cryptomator.jfuse.api;
+	exports org.cryptomator.jfuse.api.platforms to org.cryptomator.jfuse.linux.aarch64, org.cryptomator.jfuse.linux.amd64, org.cryptomator.jfuse.mac, org.cryptomator.jfuse.win;
 
 	uses FuseBuilder;
 }

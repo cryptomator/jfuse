@@ -1,4 +1,6 @@
-package org.cryptomator.jfuse.api;
+package org.cryptomator.jfuse.api.platforms;
+
+import org.cryptomator.jfuse.api.FuseBuilder;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

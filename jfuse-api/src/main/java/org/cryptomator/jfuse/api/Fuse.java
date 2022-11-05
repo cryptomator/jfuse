@@ -165,19 +165,24 @@ public abstract class Fuse implements AutoCloseable {
 	/**
 	 * Unmounts (if needed) this fuse file system and frees up system resources.
 	 * <p>
+	 * This method is idempotent and closing multiple times will be no-op.
+	 * <p>
 	 * <strong>Important:</strong> Before closing, a graceful unmount via system tools (e.g. {@code fusermount -u}) should be attempted.
 	 */
 	@Override
 	@Blocking
 	@MustBeInvokedByOverriders
-	public void close() throws TimeoutException {
+	public synchronized void close() throws TimeoutException {
+		if (!fuseScope.isAlive()) {
+			return; // already closed
+		}
 		try {
 			var fuseMount = this.mount.getAndSet(UNMOUNTED);
 			fuseMount.unmount();
 			executor.shutdown();
 			boolean exited = executor.awaitTermination(10, TimeUnit.SECONDS);
 			if (!exited) {
-				throw new TimeoutException("fuse main loop continued runn");
+				throw new TimeoutException("fuse main loop continued run");
 			}
 			fuseMount.destroy();
 		} catch (InterruptedException e) {

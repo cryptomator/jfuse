@@ -1,5 +1,8 @@
 package org.cryptomator.jfuse.api;
 
+import org.cryptomator.jfuse.api.platforms.Architecture;
+import org.cryptomator.jfuse.api.platforms.OperatingSystem;
+import org.cryptomator.jfuse.api.platforms.SupportedPlatform;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
