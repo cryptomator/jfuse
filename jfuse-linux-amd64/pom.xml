@@ -160,6 +160,7 @@
 										<includeMacro>EISDIR</includeMacro>
 										<includeMacro>ENOTEMPTY</includeMacro>
 										<includeMacro>EINVAL</includeMacro>
+										<includeMacro>ERANGE</includeMacro>
 									</includeMacros>
 								</configuration>
 							</execution>
