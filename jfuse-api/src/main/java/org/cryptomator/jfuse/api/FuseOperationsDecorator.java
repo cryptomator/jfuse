@@ -33,6 +33,26 @@ public interface FuseOperationsDecorator extends FuseOperations {
 	}
 
 	@Override
+	default int getxattr(String path, String name, ByteBuffer value) {
+		return delegate().getxattr(path, name, value);
+	}
+
+	@Override
+	default int setxattr(String path, String name, ByteBuffer value, int flags) {
+		return delegate().setxattr(path, name, value, flags);
+	}
+
+	@Override
+	default int listxattr(String path, ByteBuffer list) {
+		return delegate().listxattr(path, list);
+	}
+
+	@Override
+	default int removexattr(String path, String name) {
+		return delegate().removexattr(path, name);
+	}
+
+	@Override
 	default int readlink(String path, ByteBuffer buf, long len) {
 		return delegate().readlink(path, buf, len);
 	}
