@@ -227,19 +227,87 @@ public class FuseImplTest {
 		}
 	}
 
-	@Test
-	@DisplayName("getattr")
-	public void testGetattr() {
-		try (var scope = MemorySession.openConfined()) {
-			var path = scope.allocateUtf8String("/foo");
-			var attr = fuse_stat.allocate(scope);
-			var fi = scope.allocate(fuse3_file_info.$LAYOUT());
-			Mockito.doReturn(42).when(fuseOps).getattr(Mockito.eq("/foo"), Mockito.any(), Mockito.argThat(usesSameMemorySegement(fi)));
+	@Nested
+	@DisplayName("attr")
+	public class Attr {
 
-			var result = fuseImpl.getattr(path.address(), attr.address(), fi.address());
+		@Test
+		@DisplayName("getattr")
+		public void testGetattr() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var attr = fuse_stat.allocate(scope);
+				var fi = scope.allocate(fuse3_file_info.$LAYOUT());
+				Mockito.doReturn(42).when(fuseOps).getattr(Mockito.eq("/foo"), Mockito.any(), Mockito.argThat(usesSameMemorySegement(fi)));
 
-			Assertions.assertEquals(42, result);
+				var result = fuseImpl.getattr(path.address(), attr.address(), fi.address());
+
+				Assertions.assertEquals(42, result);
+			}
 		}
+
+		@Test
+		@DisplayName("getxattr")
+		public void testGetxattr() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var name = scope.allocateUtf8String("bar");
+				var value = scope.allocate(100);
+
+				Mockito.doReturn(42).when(fuseOps).getxattr(Mockito.eq("/foo"), Mockito.eq("bar"), Mockito.any());
+
+				var result = fuseImpl.getxattr(path.address(), name.address(), value.address(), 100);
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
+		@Test
+		@DisplayName("setxattr")
+		public void testSetxattr() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var name = scope.allocateUtf8String("bar");
+				var value = scope.allocate(100);
+
+				Mockito.doReturn(42).when(fuseOps).setxattr(Mockito.eq("/foo"), Mockito.eq("bar"), Mockito.any(), Mockito.anyInt());
+
+				var result = fuseImpl.setxattr(path.address(), name.address(), value.address(), 100, 0xDEADBEEF);
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
+		@Test
+		@DisplayName("listxattr")
+		public void testListxattr() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var list = scope.allocate(100);
+
+				Mockito.doReturn(42).when(fuseOps).listxattr(Mockito.eq("/foo"), Mockito.any());
+
+				var result = fuseImpl.listxattr(path.address(), list.address(), 100);
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
+		@Test
+		@DisplayName("removexattr")
+		public void testRemovexattr() {
+			try (var scope = MemorySession.openConfined()) {
+				var path = scope.allocateUtf8String("/foo");
+				var name = scope.allocateUtf8String("bar");
+
+				Mockito.doReturn(42).when(fuseOps).removexattr(Mockito.eq("/foo"), Mockito.eq("bar"));
+
+				var result = fuseImpl.removexattr(path.address(), name.address());
+
+				Assertions.assertEquals(42, result);
+			}
+		}
+
 	}
 
 
