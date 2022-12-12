@@ -24,14 +24,18 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @EnabledIf("hasSupportedImplementation")
@@ -80,6 +84,7 @@ public class MirrorIT {
 			}
 			default -> throw new FuseMountFailedException("Unsupported OS");
 		};
+		flags.add("-onoattrcache");
 		fuse = builder.build(fs);
 		fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));
 	}
@@ -200,4 +205,71 @@ public class MirrorIT {
 	}
 
 
+	@Nested
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+	@DisplayName("Extended Attributes")
+	public class TestXattr {
+
+		private Path file;
+
+		@BeforeAll
+		public void setup() throws IOException {
+			file = mirror.resolve("xattr.txt");
+			Files.createFile(file);
+		}
+
+		@Order(1)
+		@DisplayName("setxattr /xattr.txt")
+		@ParameterizedTest(name = "{0}")
+		@ValueSource(strings = {"attr1", "attr2", "attr3", "attr4", "attr5"})
+		public void testSetxattr(String attrName) {
+			var attrView = Files.getFileAttributeView(file, UserDefinedFileAttributeView.class);
+			var attrValue = StandardCharsets.UTF_8.encode(attrName);
+
+			Assertions.assertDoesNotThrow(() -> attrView.write(attrName, attrValue));
+		}
+
+		@Order(2)
+		@Test
+		@DisplayName("removexattr /xattr.txt")
+
+		public void testRemovexattr() {
+			var attrView = Files.getFileAttributeView(file, UserDefinedFileAttributeView.class);
+
+			Assertions.assertDoesNotThrow(() -> attrView.delete("attr3"));
+		}
+
+		@Order(3)
+		@Test
+		@DisplayName("listxattr /xattr.txt")
+		public void testListxattr() throws IOException {
+			var attrView = Files.getFileAttributeView(file, UserDefinedFileAttributeView.class);
+			var result = attrView.list();
+
+			Assertions.assertAll(
+					() -> Assertions.assertTrue(result.contains("attr1")),
+					() -> Assertions.assertTrue(result.contains("attr2")),
+					() -> Assertions.assertFalse(result.contains("attr3")),
+					() -> Assertions.assertTrue(result.contains("attr4")),
+					() -> Assertions.assertTrue(result.contains("attr5"))
+			);
+		}
+
+		@Order(4)
+		@DisplayName("getxattr")
+		@ParameterizedTest(name = "{0}")
+		@ValueSource(strings = {/* "attr1", BUG in fuse-t */ "attr2", "attr4", "attr5"})
+		public void testGetxattr(String attrName) throws IOException {
+			var attrView = Files.getFileAttributeView(file, UserDefinedFileAttributeView.class);
+			var buffer = ByteBuffer.allocate(attrView.size(attrName));
+			var read = attrView.read(attrName, buffer);
+			buffer.flip();
+			var value = StandardCharsets.UTF_8.decode(buffer).toString();
+
+			Assertions.assertEquals(attrName.length(), read);
+			Assertions.assertEquals(attrName, value);
+		}
+
+	}
 }
