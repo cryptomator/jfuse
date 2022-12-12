@@ -84,7 +84,6 @@ public class MirrorIT {
 			}
 			default -> throw new FuseMountFailedException("Unsupported OS");
 		};
-		flags.add("-onoattrcache");
 		fuse = builder.build(fs);
 		fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));
 	}
