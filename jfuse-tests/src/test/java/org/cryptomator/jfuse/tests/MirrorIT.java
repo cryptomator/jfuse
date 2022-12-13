@@ -17,6 +17,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
@@ -205,6 +206,7 @@ public class MirrorIT {
 
 
 	@Nested
+	@DisabledOnOs(OS.WINDOWS) // see remark on https://github.com/cryptomator/jfuse/pull/26
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 	@DisplayName("Extended Attributes")
