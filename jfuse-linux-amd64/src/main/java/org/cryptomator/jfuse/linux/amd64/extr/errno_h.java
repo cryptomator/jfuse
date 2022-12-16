@@ -48,6 +48,9 @@ public class errno_h  {
     public static int EROFS() {
         return (int)30L;
     }
+    public static int ERANGE() {
+        return (int)34L;
+    }
     public static int ENOSYS() {
         return (int)38L;
     }

@@ -64,4 +64,9 @@ record WinErrno() implements Errno {
 	public int einval() {
 		return errno_h.EINVAL();
 	}
+
+	@Override
+	public int erange() {
+		return errno_h.ERANGE();
+	}
 }

@@ -95,4 +95,11 @@ public interface Errno {
 	 */
 	int einval();
 
+	/**
+	 * Result too large
+	 *
+	 * @return error constant {@code ERANGE}
+	 */
+	int erange();
+
 }
