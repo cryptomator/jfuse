@@ -153,6 +153,7 @@
 										<includeMacro>ENOTDIR</includeMacro>
 										<includeMacro>EISDIR</includeMacro>
 										<includeMacro>ENOTEMPTY</includeMacro>
+										<includeMacro>ENOTSUP</includeMacro>
 										<includeMacro>EINVAL</includeMacro>
 										<includeMacro>ERANGE</includeMacro>
 									</includeMacros>

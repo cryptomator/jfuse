@@ -57,6 +57,9 @@ public class errno_h  {
     public static int ENOTEMPTY() {
         return (int)39L;
     }
+    public static int ENOTSUP() {
+        return (int)95L;
+    }
 }
 
 

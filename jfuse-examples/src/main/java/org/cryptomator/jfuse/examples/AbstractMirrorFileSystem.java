@@ -205,6 +205,9 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		Path node = resolvePath(path);
 		try {
 			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
 			int size = xattr.size(name);
 			if (value.capacity() == 0) {
 				return size;
@@ -226,6 +229,9 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		Path node = resolvePath(path);
 		try {
 			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
 			xattr.write(name, value);
 			return 0;
 		} catch (NoSuchFileException e) {
@@ -241,15 +247,21 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		Path node = resolvePath(path);
 		try {
 			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
 			var names = xattr.list();
 			if (list.capacity() == 0) {
-				return names.size();
+				var contentBytes = xattr.list().stream().map(StandardCharsets.UTF_8::encode).mapToInt(ByteBuffer::remaining).sum();
+				var nulBytes = names.size();
+				return contentBytes + nulBytes; // attr1\0aattr2\0attr3\0
+			} else {
+				int startpos = list.position();
+				for (var name : names) {
+					list.put(StandardCharsets.UTF_8.encode(name)).put((byte) 0x00);
+				}
+				return list.position() - startpos;
 			}
-			int startpos = list.position();
-			for (var name : names) {
-				list.put(StandardCharsets.UTF_8.encode(name)).put((byte) 0x00);
-			}
-			return list.position() - startpos;
 		} catch (BufferOverflowException e) {
 			return -errno.erange();
 		} catch (NoSuchFileException e) {
@@ -265,6 +277,9 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		Path node = resolvePath(path);
 		try {
 			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
 			xattr.delete(name);
 			return 0;
 		} catch (NoSuchFileException e) {

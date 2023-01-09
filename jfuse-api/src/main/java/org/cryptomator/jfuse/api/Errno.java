@@ -89,6 +89,13 @@ public interface Errno {
 	int enotempty();
 
 	/**
+	 * Operation not supported
+	 *
+	 * @return error constant {@code ENOTSUP}
+	 */
+	int enotsup();
+
+	/**
 	 * Invalid argument
 	 *
 	 * @return error constant {@code EINVAL}
