@@ -205,6 +205,9 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		Path node = resolvePath(path);
 		try {
 			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
 			int size = xattr.size(name);
 			if (value.capacity() == 0) {
 				return size;
@@ -226,6 +229,9 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		Path node = resolvePath(path);
 		try {
 			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
 			xattr.write(name, value);
 			return 0;
 		} catch (NoSuchFileException e) {
@@ -241,6 +247,9 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		Path node = resolvePath(path);
 		try {
 			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
 			var names = xattr.list();
 			if (list.capacity() == 0) {
 				return names.size();
@@ -265,6 +274,9 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		Path node = resolvePath(path);
 		try {
 			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
 			xattr.delete(name);
 			return 0;
 		} catch (NoSuchFileException e) {

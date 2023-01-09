@@ -61,6 +61,11 @@ record WinErrno() implements Errno {
 	}
 
 	@Override
+	public int enotsup() {
+		return errno_h.ENOTSUP();
+	}
+
+	@Override
 	public int einval() {
 		return errno_h.EINVAL();
 	}
