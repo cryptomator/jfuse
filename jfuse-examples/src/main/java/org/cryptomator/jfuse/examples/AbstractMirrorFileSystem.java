@@ -252,13 +252,16 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 			}
 			var names = xattr.list();
 			if (list.capacity() == 0) {
-				return names.size();
+				var contentBytes = xattr.list().stream().map(StandardCharsets.UTF_8::encode).mapToInt(ByteBuffer::remaining).sum();
+				var nulBytes = names.size();
+				return contentBytes + nulBytes; // attr1\0aattr2\0attr3\0
+			} else {
+				int startpos = list.position();
+				for (var name : names) {
+					list.put(StandardCharsets.UTF_8.encode(name)).put((byte) 0x00);
+				}
+				return list.position() - startpos;
 			}
-			int startpos = list.position();
-			for (var name : names) {
-				list.put(StandardCharsets.UTF_8.encode(name)).put((byte) 0x00);
-			}
-			return list.position() - startpos;
 		} catch (BufferOverflowException e) {
 			return -errno.erange();
 		} catch (NoSuchFileException e) {
