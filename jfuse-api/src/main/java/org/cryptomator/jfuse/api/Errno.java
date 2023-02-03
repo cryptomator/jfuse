@@ -109,4 +109,19 @@ public interface Errno {
 	 */
 	int erange();
 
+
+	/**
+	 * No locks available
+	 *
+	 * @return error constant {@code ENOLCK}
+	 */
+	int ernolck();
+
+	/**
+	 * Filename too long
+	 *
+	 * @return error constant {@code ENAMETOOLONG}
+	 */
+	int enametoolong();
+
 }
