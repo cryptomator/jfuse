@@ -76,7 +76,7 @@ record LinuxErrno() implements Errno {
 	}
 
 	@Override
-	public int ernolck() {
+	public int enolck() {
 		return errno_h.ENOLCK();
 	}
 

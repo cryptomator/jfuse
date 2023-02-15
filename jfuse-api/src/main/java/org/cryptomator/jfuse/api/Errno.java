@@ -115,7 +115,7 @@ public interface Errno {
 	 *
 	 * @return error constant {@code ENOLCK}
 	 */
-	int ernolck();
+	int enolck();
 
 	/**
 	 * Filename too long
