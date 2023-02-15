@@ -74,4 +74,14 @@ record MacErrno() implements Errno {
 	public int erange() {
 		return errno_h.ERANGE();
 	}
+
+	@Override
+	public int ernolck() {
+		return errno_h.ENOLCK();
+	}
+
+	@Override
+	public int enametoolong() {
+		return errno_h.ENAMETOOLONG();
+	}
 }
