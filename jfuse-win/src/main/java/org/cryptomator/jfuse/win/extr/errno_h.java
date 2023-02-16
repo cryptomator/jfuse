@@ -2,6 +2,10 @@
 
 package org.cryptomator.jfuse.win.extr;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
+import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
 public class errno_h  {
 
@@ -41,8 +45,11 @@ public class errno_h  {
     public static int EROFS() {
         return (int)30L;
     }
-    public static int ERANGE() {
-        return (int)34L;
+    public static int ENAMETOOLONG() {
+        return (int)38L;
+    }
+    public static int ENOLCK() {
+        return (int)39L;
     }
     public static int ENOSYS() {
         return (int)40L;
@@ -50,11 +57,14 @@ public class errno_h  {
     public static int ENOTEMPTY() {
         return (int)41L;
     }
-    public static int ENOTSUP() {
-        return (int)129L;
-    }
     public static int EINVAL() {
         return (int)22L;
+    }
+    public static int ERANGE() {
+        return (int)34L;
+    }
+    public static int ENOTSUP() {
+        return (int)129L;
     }
 }
 

@@ -162,6 +162,8 @@
 										<includeMacro>ENOTSUP</includeMacro>
 										<includeMacro>EINVAL</includeMacro>
 										<includeMacro>ERANGE</includeMacro>
+										<includeMacro>ENOLCK</includeMacro>
+										<includeMacro>ENAMETOOLONG</includeMacro>
 									</includeMacros>
 								</configuration>
 							</execution>

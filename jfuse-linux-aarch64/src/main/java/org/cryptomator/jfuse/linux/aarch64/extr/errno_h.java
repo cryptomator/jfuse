@@ -51,6 +51,12 @@ public class errno_h  {
     public static int ERANGE() {
         return (int)34L;
     }
+    public static int ENAMETOOLONG() {
+        return (int)36L;
+    }
+    public static int ENOLCK() {
+        return (int)37L;
+    }
     public static int ENOSYS() {
         return (int)38L;
     }
