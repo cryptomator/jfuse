@@ -61,7 +61,27 @@ record LinuxErrno() implements Errno {
 	}
 
 	@Override
+	public int enotsup() {
+		return errno_h.ENOTSUP();
+	}
+
+	@Override
 	public int einval() {
 		return errno_h.EINVAL();
+	}
+
+	@Override
+	public int erange() {
+		return errno_h.ERANGE();
+	}
+
+	@Override
+	public int enolck() {
+		return errno_h.ENOLCK();
+	}
+
+	@Override
+	public int enametoolong() {
+		return errno_h.ENAMETOOLONG();
 	}
 }

@@ -18,15 +18,6 @@ public class stat_h  {
     public static OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
     public static OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
     public static OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
-    public static int S_IFDIR() {
-        return (int)16384L;
-    }
-    public static int S_IFREG() {
-        return (int)32768L;
-    }
-    public static int S_IFLNK() {
-        return (int)40960L;
-    }
     public static int UTIME_NOW() {
         return (int)-1L;
     }

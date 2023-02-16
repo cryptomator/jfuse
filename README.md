@@ -45,10 +45,10 @@ Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operat
 | flush           | :white_check_mark:                      |
 | release         | :white_check_mark:                      |
 | fsync           | :white_check_mark:                      |
-| setxattr        | :x:                                     |
-| getxattr        | :x:                                     |
-| listxattr       | :x:                                     |
-| removexattr     | :x:                                     |
+| setxattr        | :white_check_mark:                      |
+| getxattr        | :white_check_mark:                      |
+| listxattr       | :white_check_mark:                      |
+| removexattr     | :white_check_mark:                      |
 | opendir         | :white_check_mark:                      |
 | readdir         | :white_check_mark:                      |
 | releasedir      | :white_check_mark:                      |

@@ -48,8 +48,20 @@ public class errno_h  {
     public static int EROFS() {
         return (int)30L;
     }
+    public static int ERANGE() {
+        return (int)34L;
+    }
+    public static int ENOTSUP() {
+        return (int)45L;
+    }
+    public static int ENAMETOOLONG() {
+        return (int)63L;
+    }
     public static int ENOTEMPTY() {
         return (int)66L;
+    }
+    public static int ENOLCK() {
+        return (int)77L;
     }
     public static int ENOSYS() {
         return (int)78L;

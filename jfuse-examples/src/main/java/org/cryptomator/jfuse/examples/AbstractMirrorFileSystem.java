@@ -38,6 +38,7 @@ import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -79,7 +80,9 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 				FuseOperations.Operation.FSYNC,
 				FuseOperations.Operation.FSYNCDIR,
 				FuseOperations.Operation.GET_ATTR,
+				FuseOperations.Operation.GET_XATTR,
 				FuseOperations.Operation.INIT,
+				FuseOperations.Operation.LIST_XATTR,
 				FuseOperations.Operation.MKDIR,
 				FuseOperations.Operation.OPEN_DIR,
 				FuseOperations.Operation.READ_DIR,
@@ -90,6 +93,8 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 				FuseOperations.Operation.READ,
 				FuseOperations.Operation.READLINK,
 				FuseOperations.Operation.RELEASE,
+				FuseOperations.Operation.REMOVE_XATTR,
+				FuseOperations.Operation.SET_XATTR,
 				FuseOperations.Operation.STATFS,
 				FuseOperations.Operation.SYMLINK,
 				FuseOperations.Operation.TRUNCATE,
@@ -186,6 +191,96 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		try {
 			var attrs = readAttributes(node);
 			copyAttrsToStat(attrs, stat);
+			return 0;
+		} catch (NoSuchFileException e) {
+			return -errno.enoent();
+		} catch (IOException e) {
+			return -errno.eio();
+		}
+	}
+
+	@Override
+	public int getxattr(String path, String name, ByteBuffer value) {
+		LOG.trace("getxattr {} {}", path, name);
+		Path node = resolvePath(path);
+		try {
+			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
+			int size = xattr.size(name);
+			if (value.capacity() == 0) {
+				return size;
+			} else if (value.remaining() < size) {
+				return -errno.erange();
+			} else {
+				return xattr.read(name, value);
+			}
+		} catch (NoSuchFileException e) {
+			return -errno.enoent();
+		} catch (IOException e) {
+			return -errno.eio();
+		}
+	}
+
+	@Override
+	public int setxattr(String path, String name, ByteBuffer value, int flags) {
+		LOG.trace("setxattr {} {}", path, name);
+		Path node = resolvePath(path);
+		try {
+			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
+			xattr.write(name, value);
+			return 0;
+		} catch (NoSuchFileException e) {
+			return -errno.enoent();
+		} catch (IOException e) {
+			return -errno.eio();
+		}
+	}
+
+	@Override
+	public int listxattr(String path, ByteBuffer list) {
+		LOG.trace("listxattr {}", path);
+		Path node = resolvePath(path);
+		try {
+			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
+			var names = xattr.list();
+			if (list.capacity() == 0) {
+				var contentBytes = xattr.list().stream().map(StandardCharsets.UTF_8::encode).mapToInt(ByteBuffer::remaining).sum();
+				var nulBytes = names.size();
+				return contentBytes + nulBytes; // attr1\0aattr2\0attr3\0
+			} else {
+				int startpos = list.position();
+				for (var name : names) {
+					list.put(StandardCharsets.UTF_8.encode(name)).put((byte) 0x00);
+				}
+				return list.position() - startpos;
+			}
+		} catch (BufferOverflowException e) {
+			return -errno.erange();
+		} catch (NoSuchFileException e) {
+			return -errno.enoent();
+		} catch (IOException e) {
+			return -errno.eio();
+		}
+	}
+
+	@Override
+	public int removexattr(String path, String name) {
+		LOG.trace("removexattr {} {}", path, name);
+		Path node = resolvePath(path);
+		try {
+			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
+			xattr.delete(name);
 			return 0;
 		} catch (NoSuchFileException e) {
 			return -errno.enoent();

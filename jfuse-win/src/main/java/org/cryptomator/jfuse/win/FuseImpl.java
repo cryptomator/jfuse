@@ -91,6 +91,8 @@ class FuseImpl extends Fuse {
 			case FSYNC -> fuse3_operations.fsync$set(fuseOperationsStruct, fuse3_operations.fsync.allocate(this::fsync, fuseScope).address());
 			case FSYNCDIR -> fuse3_operations.fsyncdir$set(fuseOperationsStruct, fuse3_operations.fsyncdir.allocate(this::fsyncdir, fuseScope).address());
 			case GET_ATTR -> fuse3_operations.getattr$set(fuseOperationsStruct, fuse3_operations.getattr.allocate(this::getattr, fuseScope).address());
+			case GET_XATTR -> fuse3_operations.getxattr$set(fuseOperationsStruct, fuse3_operations.getxattr.allocate(this::getxattr, fuseScope).address());
+			case LIST_XATTR -> fuse3_operations.listxattr$set(fuseOperationsStruct, fuse3_operations.listxattr.allocate(this::listxattr, fuseScope).address());
 			case MKDIR -> fuse3_operations.mkdir$set(fuseOperationsStruct, fuse3_operations.mkdir.allocate(this::mkdir, fuseScope).address());
 			case OPEN -> fuse3_operations.open$set(fuseOperationsStruct, fuse3_operations.open.allocate(this::open, fuseScope).address());
 			case OPEN_DIR -> fuse3_operations.opendir$set(fuseOperationsStruct, fuse3_operations.opendir.allocate(this::opendir, fuseScope).address());
@@ -99,8 +101,10 @@ class FuseImpl extends Fuse {
 			case READLINK -> fuse3_operations.readlink$set(fuseOperationsStruct, fuse3_operations.readlink.allocate(this::readlink, fuseScope).address());
 			case RELEASE -> fuse3_operations.release$set(fuseOperationsStruct, fuse3_operations.release.allocate(this::release, fuseScope).address());
 			case RELEASE_DIR -> fuse3_operations.releasedir$set(fuseOperationsStruct, fuse3_operations.releasedir.allocate(this::releasedir, fuseScope).address());
+			case REMOVE_XATTR -> fuse3_operations.removexattr$set(fuseOperationsStruct, fuse3_operations.removexattr.allocate(this::removexattr, fuseScope).address());
 			case RENAME -> fuse3_operations.rename$set(fuseOperationsStruct, fuse3_operations.rename.allocate(this::rename, fuseScope).address());
 			case RMDIR -> fuse3_operations.rmdir$set(fuseOperationsStruct, fuse3_operations.rmdir.allocate(this::rmdir, fuseScope).address());
+			case SET_XATTR -> fuse3_operations.setxattr$set(fuseOperationsStruct, fuse3_operations.setxattr.allocate(this::setxattr, fuseScope).address());
 			case STATFS -> fuse3_operations.statfs$set(fuseOperationsStruct, fuse3_operations.statfs.allocate(this::statfs, fuseScope).address());
 			case SYMLINK -> fuse3_operations.symlink$set(fuseOperationsStruct, fuse3_operations.symlink.allocate(this::symlink, fuseScope).address());
 			case TRUNCATE -> fuse3_operations.truncate$set(fuseOperationsStruct, fuse3_operations.truncate.allocate(this::truncate, fuseScope).address());
@@ -170,6 +174,32 @@ class FuseImpl extends Fuse {
 		try (var scope = MemorySession.openConfined()) {
 			return fuseOperations.getattr(path.getUtf8String(0), new StatImpl(stat, scope), new FileInfoImpl(fi, scope));
 		}
+	}
+
+	@VisibleForTesting
+	int getxattr(MemoryAddress path, MemoryAddress name, MemoryAddress value, long size) {
+		try (var scope = MemorySession.openConfined()) {
+			return fuseOperations.getxattr(path.getUtf8String(0), name.getUtf8String(0), MemorySegment.ofAddress(value.address(), size, scope).asByteBuffer());
+		}
+	}
+
+	@VisibleForTesting
+	int setxattr(MemoryAddress path, MemoryAddress name, MemoryAddress value, long size, int flags) {
+		try (var scope = MemorySession.openConfined()) {
+			return fuseOperations.setxattr(path.getUtf8String(0), name.getUtf8String(0), MemorySegment.ofAddress(value.address(), size, scope).asByteBuffer(), flags);
+		}
+	}
+
+	@VisibleForTesting
+	int listxattr(MemoryAddress path, MemoryAddress value, long size) {
+		try (var scope = MemorySession.openConfined()) {
+			return fuseOperations.listxattr(path.getUtf8String(0), MemorySegment.ofAddress(value.address(), size, scope).asByteBuffer());
+		}
+	}
+
+	@VisibleForTesting
+	int removexattr(MemoryAddress path, MemoryAddress name) {
+		return fuseOperations.removexattr(path.getUtf8String(0), name.getUtf8String(0));
 	}
 
 	private int mkdir(MemoryAddress path, int mode) {

@@ -89,10 +89,39 @@ public interface Errno {
 	int enotempty();
 
 	/**
+	 * Operation not supported
+	 *
+	 * @return error constant {@code ENOTSUP}
+	 */
+	int enotsup();
+
+	/**
 	 * Invalid argument
 	 *
 	 * @return error constant {@code EINVAL}
 	 */
 	int einval();
+
+	/**
+	 * Result too large
+	 *
+	 * @return error constant {@code ERANGE}
+	 */
+	int erange();
+
+
+	/**
+	 * No locks available
+	 *
+	 * @return error constant {@code ENOLCK}
+	 */
+	int enolck();
+
+	/**
+	 * Filename too long
+	 *
+	 * @return error constant {@code ENAMETOOLONG}
+	 */
+	int enametoolong();
 
 }

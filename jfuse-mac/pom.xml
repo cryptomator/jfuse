@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse-parent</artifactId>
-		<version>0.3.3</version>
+		<version>0.4.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-mac</artifactId>
@@ -133,7 +133,11 @@
 										<includeMacro>ENOTDIR</includeMacro>
 										<includeMacro>EISDIR</includeMacro>
 										<includeMacro>ENOTEMPTY</includeMacro>
+										<includeMacro>ENOTSUP</includeMacro>
 										<includeMacro>EINVAL</includeMacro>
+										<includeMacro>ERANGE</includeMacro>
+										<includeMacro>ENOLCK</includeMacro>
+										<includeMacro>ENAMETOOLONG</includeMacro>
 									</includeMacros>
 								</configuration>
 							</execution>
