@@ -37,7 +37,7 @@ record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	@Override
 	public long getBlocks() {
-		return statvfs.f_blocks$get(segment);
+		return Integer.toUnsignedLong(statvfs.f_blocks$get(segment));
 	}
 
 	@Override
@@ -51,7 +51,7 @@ record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	@Override
 	public long getBfree() {
-		return statvfs.f_bfree$get(segment);
+		return Integer.toUnsignedLong(statvfs.f_bfree$get(segment));
 	}
 
 	@Override
@@ -65,7 +65,7 @@ record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	@Override
 	public long getBavail() {
-		return statvfs.f_bavail$get(segment);
+		return Integer.toUnsignedLong(statvfs.f_bavail$get(segment));
 	}
 
 	@Override
