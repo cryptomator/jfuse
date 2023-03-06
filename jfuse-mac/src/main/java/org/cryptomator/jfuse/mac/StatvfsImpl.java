@@ -9,6 +9,8 @@ import java.lang.foreign.MemorySession;
 
 record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
+	private static final long MAX_UINT = 0xFFFFFFFF;
+
 	public StatvfsImpl(MemoryAddress address, MemorySession scope) {
 		this(statvfs.ofAddress(address, scope));
 	}
@@ -40,8 +42,8 @@ record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	@Override
 	public void setBlocks(long blocks) {
-		if (blocks > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("Max supported number of blocks: " + Integer.MAX_VALUE);
+		if (blocks > MAX_UINT){
+			throw new IllegalArgumentException("Max supported number of blocks: " + MAX_UINT);
 		} else {
 			statvfs.f_blocks$set(segment, (int) blocks);
 		}
@@ -54,8 +56,8 @@ record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	@Override
 	public void setBfree(long bfree) {
-		if (bfree > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("Max supported number of blocks: " + Integer.MAX_VALUE);
+		if (bfree > MAX_UINT){
+			throw new IllegalArgumentException("Max supported number of blocks: " + MAX_UINT);
 		} else {
 			statvfs.f_bfree$set(segment, (int) bfree);
 		}
@@ -68,8 +70,8 @@ record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	@Override
 	public void setBavail(long bavail) {
-		if (bavail > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("Max supported number of blocks: " + Integer.MAX_VALUE);
+		if (bavail > MAX_UINT){
+			throw new IllegalArgumentException("Max supported number of blocks: " + MAX_UINT);
 		} else {
 			statvfs.f_bavail$set(segment, (int) bavail);
 		}
