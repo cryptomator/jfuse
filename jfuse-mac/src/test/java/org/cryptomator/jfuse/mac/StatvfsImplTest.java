@@ -17,46 +17,33 @@ import java.util.stream.Stream;
 
 public class StatvfsImplTest {
 
-	@DisplayName("test getters with native long type")
+	@DisplayName("test getters")
 	@ParameterizedTest(name = "{1}")
 	@MethodSource
-	public void testGettersLong(SetInMemorySegment<Number> setter, GetInStatvfs<Number> getter, Number value) {
+	public void testGetters(SetInMemorySegment<Number> setter, GetInStatvfs<Number> getter, Number value, long expected) {
 		try (var scope = MemorySession.openConfined()) {
 			var segment = statvfs.allocate(scope);
 			var statvfs = new StatvfsImpl(segment.address(), scope);
 
 			setter.accept(segment, value);
 
-			Assertions.assertEquals(value.longValue(), getter.apply(statvfs).longValue());
+			Assertions.assertEquals(expected, getter.apply(statvfs).longValue());
 		}
 	}
 
-	public static Stream<Arguments> testGettersLong() {
+	public static Stream<Arguments> testGetters() {
 		return Stream.of(
-				Arguments.arguments((SetInMemorySegment<Long>) statvfs::f_bsize$set, Named.of("getBsize()", (GetInStatvfs<Long>) Statvfs::getBsize), 42L),
-				Arguments.arguments((SetInMemorySegment<Long>) statvfs::f_frsize$set, Named.of("getFrsize()", (GetInStatvfs<Long>) Statvfs::getFrsize), 42L),
-				Arguments.arguments((SetInMemorySegment<Long>) statvfs::f_namemax$set, Named.of("getNameMax()", (GetInStatvfs<Long>) Statvfs::getNameMax), 42L)
-		);
-	}
+				Arguments.arguments((SetInMemorySegment<Long>) statvfs::f_bsize$set, Named.of("getBsize()", (GetInStatvfs<Long>) Statvfs::getBsize), 42L, 42L),
+				Arguments.arguments((SetInMemorySegment<Long>) statvfs::f_frsize$set, Named.of("getFrsize()", (GetInStatvfs<Long>) Statvfs::getFrsize), 42L, 42L),
+				Arguments.arguments((SetInMemorySegment<Long>) statvfs::f_namemax$set, Named.of("getNameMax()", (GetInStatvfs<Long>) Statvfs::getNameMax), 42L, 42L),
 
-	@DisplayName("test getters with native int type")
-	@ParameterizedTest(name = "{1}")
-	@MethodSource
-	public void testGettersInt(SetInMemorySegment<Number> setter, GetInStatvfs<Number> getter, Number value) {
-		try (var scope = MemorySession.openConfined()) {
-			var segment = statvfs.allocate(scope);
-			var statvfs = new StatvfsImpl(segment.address(), scope);
+				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_blocks$set, Named.of("getBlocks() with memory containing value < INT32", (GetInStatvfs<Long>) Statvfs::getBlocks), 42, 42L),
+				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_bfree$set, Named.of("getBfree() with memory containing value < INT32", (GetInStatvfs<Long>) Statvfs::getBfree), 42, 42L),
+				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_bavail$set, Named.of("getBavail() with memory containing value < INT32", (GetInStatvfs<Long>) Statvfs::getBavail), 42, 42L),
 
-			setter.accept(segment, value.intValue());
-			Assertions.assertEquals(Integer.toUnsignedLong(value.intValue()), getter.apply(statvfs).longValue());
-		}
-	}
-
-	public static Stream<Arguments> testGettersInt() {
-		return Stream.of(
-				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_blocks$set, Named.of("getBlocks()", (GetInStatvfs<Long>) Statvfs::getBlocks), -42),
-				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_bfree$set, Named.of("getBfree()", (GetInStatvfs<Long>) Statvfs::getBfree), -42),
-				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_bavail$set, Named.of("getBavail()", (GetInStatvfs<Long>) Statvfs::getBavail), -42)
+				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_blocks$set, Named.of("getBlocks() with memory containing value < UINT32", (GetInStatvfs<Long>) Statvfs::getBlocks), 0xFFFFFFD6, 0x00000000_FFFFFFD6L),
+				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_bfree$set, Named.of("getBfree() with memory containing value < UINT32", (GetInStatvfs<Long>) Statvfs::getBfree), 0xFFFFFFD6, 0x00000000_FFFFFFD6L),
+				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_bavail$set, Named.of("getBavail() with memory containing value < UINT32", (GetInStatvfs<Long>) Statvfs::getBavail), 0xFFFFFFD6, 0x00000000_FFFFFFD6L)
 		);
 	}
 
@@ -66,91 +53,37 @@ public class StatvfsImplTest {
 	private interface GetInStatvfs<T> extends Function<Statvfs, T> {
 	}
 
-	@DisplayName("test setters with long type")
+	@DisplayName("test setters")
 	@ParameterizedTest(name = "{0}")
 	@MethodSource
-	public void testSettersLong(SetInStatvfs<Number> setter, GetInMemorySegment<Number> getter, Number value) {
+	public void testSetters(SetInStatvfs<Number> setter, GetInMemorySegment<Number> getter, Number value, long expected) {
 		try (var scope = MemorySession.openConfined()) {
 			var segment = statvfs.allocate(scope);
 			var statvfs = new StatvfsImpl(segment.address(), scope);
 
 			setter.accept(statvfs, value.longValue());
 
-			Assertions.assertEquals(value.longValue(), getter.apply(segment).longValue());
+			Assertions.assertEquals(expected, getter.apply(segment).longValue());
 		}
 	}
 
-	public static Stream<Arguments> testSettersLong() {
+	public static Stream<Arguments> testSetters() {
 		return Stream.of(
-				Arguments.arguments(Named.of("setBsize()", (SetInStatvfs<Long>) Statvfs::setBsize), (GetInMemorySegment<Long>) statvfs::f_bsize$get, 42L),
-				Arguments.arguments(Named.of("setFrsize()", (SetInStatvfs<Long>) Statvfs::setFrsize), (GetInMemorySegment<Long>) statvfs::f_frsize$get, 42L),
-				Arguments.arguments(Named.of("setNameMax()", (SetInStatvfs<Long>) Statvfs::setNameMax), (GetInMemorySegment<Long>) statvfs::f_namemax$get, 42L)
-		);
-	}
+				Arguments.arguments(Named.of("setBsize()", (SetInStatvfs<Long>) Statvfs::setBsize), (GetInMemorySegment<Long>) statvfs::f_bsize$get, 42L, 42L),
+				Arguments.arguments(Named.of("setFrsize()", (SetInStatvfs<Long>) Statvfs::setFrsize), (GetInMemorySegment<Long>) statvfs::f_frsize$get, 42L, 42L),
+				Arguments.arguments(Named.of("setNameMax()", (SetInStatvfs<Long>) Statvfs::setNameMax), (GetInMemorySegment<Long>) statvfs::f_namemax$get, 42L, 42L),
 
-	@DisplayName("test setters with int type")
-	@ParameterizedTest(name = "{0}")
-	@MethodSource
-	public void testSettersInt(SetInStatvfs<Number> setter, GetInMemorySegment<Number> getter, Number value) {
-		try (var scope = MemorySession.openConfined()) {
-			var segment = statvfs.allocate(scope);
-			var statvfs = new StatvfsImpl(segment.address(), scope);
+				Arguments.arguments(Named.of("setBlocks(i) with i < INT32", (SetInStatvfs<Long>) Statvfs::setBlocks), (GetInMemorySegment<Integer>) statvfs::f_blocks$get, 42, 42),
+				Arguments.arguments(Named.of("setBfree(i) with i < INT32", (SetInStatvfs<Long>) Statvfs::setBfree), (GetInMemorySegment<Integer>) statvfs::f_bfree$get, 42, 42),
+				Arguments.arguments(Named.of("setBavail(i) with i < INT32", (SetInStatvfs<Long>) Statvfs::setBavail), (GetInMemorySegment<Integer>) statvfs::f_bavail$get, 42, 42),
 
-			setter.accept(statvfs, value.longValue());
+				Arguments.arguments(Named.of("setBlocks(i) with i > INT32", (SetInStatvfs<Long>) Statvfs::setBlocks), (GetInMemorySegment<Integer>) statvfs::f_blocks$get, 0xFFFFFFD6, 0xFFFFFFD6),
+				Arguments.arguments(Named.of("setBfree(i) with i > INT32", (SetInStatvfs<Long>) Statvfs::setBfree), (GetInMemorySegment<Integer>) statvfs::f_bfree$get, 0xFFFFFFD6, 0xFFFFFFD6),
+				Arguments.arguments(Named.of("setBavail(i) with i > INT32", (SetInStatvfs<Long>) Statvfs::setBavail), (GetInMemorySegment<Integer>) statvfs::f_bavail$get, 0xFFFFFFD6, 0xFFFFFFD6),
 
-			Assertions.assertEquals(value.longValue(), getter.apply(segment).intValue());
-		}
-	}
-
-	public static Stream<Arguments> testSettersInt() {
-		return Stream.of(
-				Arguments.arguments(Named.of("setBlocks()", (SetInStatvfs<Long>) Statvfs::setBlocks), (GetInMemorySegment<Integer>) statvfs::f_blocks$get, 42),
-				Arguments.arguments(Named.of("setBfree()", (SetInStatvfs<Long>) Statvfs::setBfree), (GetInMemorySegment<Integer>) statvfs::f_bfree$get, 42),
-				Arguments.arguments(Named.of("setBavail()", (SetInStatvfs<Long>) Statvfs::setBavail), (GetInMemorySegment<Integer>) statvfs::f_bavail$get, 42)
-		);
-	}
-
-	@DisplayName("test setters casting")
-	@ParameterizedTest(name = "{0}")
-	@MethodSource
-	public void testSettersCasting(SetInStatvfs<Number> setter, GetInMemorySegment<Number> getter, Number value) {
-		try (var scope = MemorySession.openConfined()) {
-			var segment = statvfs.allocate(scope);
-			var statvfs = new StatvfsImpl(segment.address(), scope);
-
-			setter.accept(statvfs, value.longValue());
-
-			Assertions.assertEquals(value.intValue(), getter.apply(segment).intValue());
-		}
-	}
-
-	public static Stream<Arguments> testSettersCasting() {
-		return Stream.of(
-				Arguments.arguments(Named.of("setBlocks()", (SetInStatvfs<Long>) Statvfs::setBlocks), (GetInMemorySegment<Integer>) statvfs::f_blocks$get, -42),
-				Arguments.arguments(Named.of("setBfree()", (SetInStatvfs<Long>) Statvfs::setBfree), (GetInMemorySegment<Integer>) statvfs::f_bfree$get, -42),
-				Arguments.arguments(Named.of("setBavail()", (SetInStatvfs<Long>) Statvfs::setBavail), (GetInMemorySegment<Integer>) statvfs::f_bavail$get, -42)
-		);
-	}
-
-	@DisplayName("test setters out-of-range")
-	@ParameterizedTest(name = "{0}")
-	@MethodSource
-	public void testSettersOutOfRange(SetInStatvfs<Number> setter, GetInMemorySegment<Number> getter, Number value) {
-		try (var scope = MemorySession.openConfined()) {
-			var segment = statvfs.allocate(scope);
-			var statvfs = new StatvfsImpl(segment.address(), scope);
-
-			setter.accept(statvfs, value.longValue());
-
-			Assertions.assertEquals(0xFFFFFFFF, getter.apply(segment).intValue());
-		}
-	}
-
-	public static Stream<Arguments> testSettersOutOfRange() {
-		return Stream.of(
-				Arguments.arguments(Named.of("setBlocks()", (SetInStatvfs<Long>) Statvfs::setBlocks), (GetInMemorySegment<Integer>) statvfs::f_blocks$get, 0x01234567_89abcdefL),
-				Arguments.arguments(Named.of("setBfree()", (SetInStatvfs<Long>) Statvfs::setBfree), (GetInMemorySegment<Integer>) statvfs::f_bfree$get, 0x01234567_89abcdefL),
-				Arguments.arguments(Named.of("setBavail()", (SetInStatvfs<Long>) Statvfs::setBavail), (GetInMemorySegment<Integer>) statvfs::f_bavail$get, 0x01234567_89abcdefL)
+				Arguments.arguments(Named.of("setBlocks(i) with i > UINT32", (SetInStatvfs<Long>) Statvfs::setBlocks), (GetInMemorySegment<Integer>) statvfs::f_blocks$get, 0x01234567_89ABCDEFL, 0xFFFFFFFF),
+				Arguments.arguments(Named.of("setBfree(i) with i > UINT32", (SetInStatvfs<Long>) Statvfs::setBfree), (GetInMemorySegment<Integer>) statvfs::f_bfree$get, 0x01234567_89ABCDEFL, 0xFFFFFFFF),
+				Arguments.arguments(Named.of("setBavail(i) with i > UINT32", (SetInStatvfs<Long>) Statvfs::setBavail), (GetInMemorySegment<Integer>) statvfs::f_bavail$get, 0x01234567_89ABCDEFL, 0xFFFFFFFF)
 		);
 	}
 
