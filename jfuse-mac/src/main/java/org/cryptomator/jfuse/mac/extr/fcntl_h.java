@@ -9,39 +9,83 @@ import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
 public class fcntl_h  {
 
-    /* package-private */ fcntl_h() {}
-    public static OfByte C_CHAR = Constants$root.C_CHAR$LAYOUT;
-    public static OfShort C_SHORT = Constants$root.C_SHORT$LAYOUT;
-    public static OfInt C_INT = Constants$root.C_INT$LAYOUT;
-    public static OfLong C_LONG = Constants$root.C_LONG_LONG$LAYOUT;
-    public static OfLong C_LONG_LONG = Constants$root.C_LONG_LONG$LAYOUT;
-    public static OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
-    public static OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
-    public static OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
+    public static final OfByte C_CHAR = Constants$root.C_CHAR$LAYOUT;
+    public static final OfShort C_SHORT = Constants$root.C_SHORT$LAYOUT;
+    public static final OfInt C_INT = Constants$root.C_INT$LAYOUT;
+    public static final OfLong C_LONG = Constants$root.C_LONG_LONG$LAYOUT;
+    public static final OfLong C_LONG_LONG = Constants$root.C_LONG_LONG$LAYOUT;
+    public static final OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
+    public static final OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
+    public static final OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
+    /**
+     * {@snippet :
+     * #define O_RDONLY 0
+     * }
+     */
     public static int O_RDONLY() {
         return (int)0L;
     }
+    /**
+     * {@snippet :
+     * #define O_WRONLY 1
+     * }
+     */
     public static int O_WRONLY() {
         return (int)1L;
     }
+    /**
+     * {@snippet :
+     * #define O_RDWR 2
+     * }
+     */
     public static int O_RDWR() {
         return (int)2L;
     }
+    /**
+     * {@snippet :
+     * #define O_APPEND 8
+     * }
+     */
     public static int O_APPEND() {
         return (int)8L;
     }
+    /**
+     * {@snippet :
+     * #define O_SYNC 128
+     * }
+     */
     public static int O_SYNC() {
         return (int)128L;
     }
+    /**
+     * {@snippet :
+     * #define O_CREAT 512
+     * }
+     */
     public static int O_CREAT() {
         return (int)512L;
     }
+    /**
+     * {@snippet :
+     * #define O_TRUNC 1024
+     * }
+     */
     public static int O_TRUNC() {
         return (int)1024L;
     }
+    /**
+     * {@snippet :
+     * #define O_EXCL 2048
+     * }
+     */
     public static int O_EXCL() {
         return (int)2048L;
     }
+    /**
+     * {@snippet :
+     * #define O_DSYNC 4194304
+     * }
+     */
     public static int O_DSYNC() {
         return (int)4194304L;
     }

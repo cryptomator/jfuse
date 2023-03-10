@@ -3,7 +3,6 @@ package org.cryptomator.jfuse.linux.aarch64;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_args;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_cmdline_opts;
 
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
@@ -15,7 +14,7 @@ record FuseArgs(MemorySegment args, MemorySegment cmdLineOpts) {
 		var argc = fuse_args.argc$get(args);
 		var argv = fuse_args.argv$get(args);
 		for (int i = 0; i < argc; i++) {
-			var cString = argv.getAtIndex(ValueLayout.ADDRESS, i);
+			var cString = argv.getAtIndex(ValueLayout.ADDRESS.asUnbounded(), i);
 			sb.append("arg[").append(i).append("] = ").append(cString.getUtf8String(0)).append(", ");
 		}
 		sb.append("mountPoint = ").append(mountPoint().getUtf8String(0));
@@ -24,7 +23,7 @@ record FuseArgs(MemorySegment args, MemorySegment cmdLineOpts) {
 		return sb.toString();
 	}
 
-	public MemoryAddress mountPoint() {
+	public MemorySegment mountPoint() {
 		return fuse_cmdline_opts.mountpoint$get(cmdLineOpts);
 	}
 

@@ -9,8 +9,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -21,9 +21,9 @@ public class FuseConnInfoImplTest {
 	@ParameterizedTest(name = "{1}")
 	@MethodSource
 	public void testGetters(SetInMemorySegment setter, GetInConnInfo getter) {
-		try (var scope = MemorySession.openConfined()) {
-			var segment = fuse_conn_info.allocate(scope);
-			var connInfo = new FuseConnInfoImpl(segment.address(), scope);
+		try (var arena = Arena.openConfined()) {
+			var segment = fuse_conn_info.allocate(arena);
+			var connInfo = new FuseConnInfoImpl(segment, arena.scope());
 
 			setter.accept(segment, 42);
 
@@ -53,9 +53,9 @@ public class FuseConnInfoImplTest {
 	@ParameterizedTest(name = "{0}")
 	@MethodSource
 	public void testSetters(SetInConnInfo setter, GetInMemorySegment getter) {
-		try (var scope = MemorySession.openConfined()) {
-			var segment = fuse_conn_info.allocate(scope);
-			var connInfo = new FuseConnInfoImpl(segment.address(), scope);
+		try (var arena = Arena.openConfined()) {
+			var segment = fuse_conn_info.allocate(arena);
+			var connInfo = new FuseConnInfoImpl(segment, arena.scope());
 
 			setter.accept(connInfo, 42);
 

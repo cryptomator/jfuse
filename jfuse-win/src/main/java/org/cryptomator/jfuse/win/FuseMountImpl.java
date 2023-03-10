@@ -3,9 +3,9 @@ package org.cryptomator.jfuse.win;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.win.extr.fuse_h;
 
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 
-record FuseMountImpl(MemoryAddress fuse, FuseArgs fuseArgs) implements FuseMount {
+record FuseMountImpl(MemorySegment fuse, FuseArgs fuseArgs) implements FuseMount {
 
 	@Override
 	public int loop() {

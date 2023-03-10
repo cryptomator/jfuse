@@ -7,9 +7,25 @@ import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct fuse_cmdline_opts {
+ *     int singlethread;
+ *     int foreground;
+ *     int debug;
+ *     int nodefault_subtype;
+ *     char* mountpoint;
+ *     int show_version;
+ *     int show_help;
+ *     int clone_fd;
+ *     unsigned int max_idle_threads;
+ *     unsigned int max_threads;
+ * };
+ * }
+ */
 public class fuse_cmdline_opts {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_INT$LAYOUT.withName("singlethread"),
         Constants$root.C_INT$LAYOUT.withName("foreground"),
         Constants$root.C_INT$LAYOUT.withName("debug"),
@@ -29,10 +45,22 @@ public class fuse_cmdline_opts {
     public static VarHandle singlethread$VH() {
         return fuse_cmdline_opts.singlethread$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int singlethread;
+     * }
+     */
     public static int singlethread$get(MemorySegment seg) {
         return (int)fuse_cmdline_opts.singlethread$VH.get(seg);
     }
-    public static void singlethread$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int singlethread;
+     * }
+     */
+    public static void singlethread$set(MemorySegment seg, int x) {
         fuse_cmdline_opts.singlethread$VH.set(seg, x);
     }
     public static int singlethread$get(MemorySegment seg, long index) {
@@ -45,10 +73,22 @@ public class fuse_cmdline_opts {
     public static VarHandle foreground$VH() {
         return fuse_cmdline_opts.foreground$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int foreground;
+     * }
+     */
     public static int foreground$get(MemorySegment seg) {
         return (int)fuse_cmdline_opts.foreground$VH.get(seg);
     }
-    public static void foreground$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int foreground;
+     * }
+     */
+    public static void foreground$set(MemorySegment seg, int x) {
         fuse_cmdline_opts.foreground$VH.set(seg, x);
     }
     public static int foreground$get(MemorySegment seg, long index) {
@@ -61,10 +101,22 @@ public class fuse_cmdline_opts {
     public static VarHandle debug$VH() {
         return fuse_cmdline_opts.debug$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int debug;
+     * }
+     */
     public static int debug$get(MemorySegment seg) {
         return (int)fuse_cmdline_opts.debug$VH.get(seg);
     }
-    public static void debug$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int debug;
+     * }
+     */
+    public static void debug$set(MemorySegment seg, int x) {
         fuse_cmdline_opts.debug$VH.set(seg, x);
     }
     public static int debug$get(MemorySegment seg, long index) {
@@ -77,10 +129,22 @@ public class fuse_cmdline_opts {
     public static VarHandle nodefault_subtype$VH() {
         return fuse_cmdline_opts.nodefault_subtype$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int nodefault_subtype;
+     * }
+     */
     public static int nodefault_subtype$get(MemorySegment seg) {
         return (int)fuse_cmdline_opts.nodefault_subtype$VH.get(seg);
     }
-    public static void nodefault_subtype$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int nodefault_subtype;
+     * }
+     */
+    public static void nodefault_subtype$set(MemorySegment seg, int x) {
         fuse_cmdline_opts.nodefault_subtype$VH.set(seg, x);
     }
     public static int nodefault_subtype$get(MemorySegment seg, long index) {
@@ -93,26 +157,50 @@ public class fuse_cmdline_opts {
     public static VarHandle mountpoint$VH() {
         return fuse_cmdline_opts.mountpoint$VH;
     }
-    public static MemoryAddress mountpoint$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_cmdline_opts.mountpoint$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * char* mountpoint;
+     * }
+     */
+    public static MemorySegment mountpoint$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_cmdline_opts.mountpoint$VH.get(seg);
     }
-    public static void mountpoint$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * char* mountpoint;
+     * }
+     */
+    public static void mountpoint$set(MemorySegment seg, MemorySegment x) {
         fuse_cmdline_opts.mountpoint$VH.set(seg, x);
     }
-    public static MemoryAddress mountpoint$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_cmdline_opts.mountpoint$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment mountpoint$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_cmdline_opts.mountpoint$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void mountpoint$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void mountpoint$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_cmdline_opts.mountpoint$VH.set(seg.asSlice(index*sizeof()), x);
     }
     static final VarHandle show_version$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("show_version"));
     public static VarHandle show_version$VH() {
         return fuse_cmdline_opts.show_version$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int show_version;
+     * }
+     */
     public static int show_version$get(MemorySegment seg) {
         return (int)fuse_cmdline_opts.show_version$VH.get(seg);
     }
-    public static void show_version$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int show_version;
+     * }
+     */
+    public static void show_version$set(MemorySegment seg, int x) {
         fuse_cmdline_opts.show_version$VH.set(seg, x);
     }
     public static int show_version$get(MemorySegment seg, long index) {
@@ -125,10 +213,22 @@ public class fuse_cmdline_opts {
     public static VarHandle show_help$VH() {
         return fuse_cmdline_opts.show_help$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int show_help;
+     * }
+     */
     public static int show_help$get(MemorySegment seg) {
         return (int)fuse_cmdline_opts.show_help$VH.get(seg);
     }
-    public static void show_help$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int show_help;
+     * }
+     */
+    public static void show_help$set(MemorySegment seg, int x) {
         fuse_cmdline_opts.show_help$VH.set(seg, x);
     }
     public static int show_help$get(MemorySegment seg, long index) {
@@ -141,10 +241,22 @@ public class fuse_cmdline_opts {
     public static VarHandle clone_fd$VH() {
         return fuse_cmdline_opts.clone_fd$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int clone_fd;
+     * }
+     */
     public static int clone_fd$get(MemorySegment seg) {
         return (int)fuse_cmdline_opts.clone_fd$VH.get(seg);
     }
-    public static void clone_fd$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int clone_fd;
+     * }
+     */
+    public static void clone_fd$set(MemorySegment seg, int x) {
         fuse_cmdline_opts.clone_fd$VH.set(seg, x);
     }
     public static int clone_fd$get(MemorySegment seg, long index) {
@@ -157,10 +269,22 @@ public class fuse_cmdline_opts {
     public static VarHandle max_idle_threads$VH() {
         return fuse_cmdline_opts.max_idle_threads$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int max_idle_threads;
+     * }
+     */
     public static int max_idle_threads$get(MemorySegment seg) {
         return (int)fuse_cmdline_opts.max_idle_threads$VH.get(seg);
     }
-    public static void max_idle_threads$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int max_idle_threads;
+     * }
+     */
+    public static void max_idle_threads$set(MemorySegment seg, int x) {
         fuse_cmdline_opts.max_idle_threads$VH.set(seg, x);
     }
     public static int max_idle_threads$get(MemorySegment seg, long index) {
@@ -173,10 +297,22 @@ public class fuse_cmdline_opts {
     public static VarHandle max_threads$VH() {
         return fuse_cmdline_opts.max_threads$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int max_threads;
+     * }
+     */
     public static int max_threads$get(MemorySegment seg) {
         return (int)fuse_cmdline_opts.max_threads$VH.get(seg);
     }
-    public static void max_threads$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int max_threads;
+     * }
+     */
+    public static void max_threads$set(MemorySegment seg, int x) {
         fuse_cmdline_opts.max_threads$VH.set(seg, x);
     }
     public static int max_threads$get(MemorySegment seg, long index) {
@@ -187,10 +323,10 @@ public class fuse_cmdline_opts {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 

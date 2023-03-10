@@ -19,7 +19,7 @@ public class fuse2_h  {
     public static MethodHandle fuse_parse_cmdline$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse_parse_cmdline$MH,"fuse_parse_cmdline");
     }
-    public static int fuse_parse_cmdline ( Addressable args,  Addressable mountpoint,  Addressable multithreaded,  Addressable foreground) {
+    public static int fuse_parse_cmdline ( MemorySegment args,  MemorySegment mountpoint,  MemorySegment multithreaded,  MemorySegment foreground) {
         var mh$ = fuse_parse_cmdline$MH();
         try {
             return (int)mh$.invokeExact(args, mountpoint, multithreaded, foreground);

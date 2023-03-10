@@ -19,7 +19,7 @@ public class fuse_h  {
     public static MethodHandle fuse3_lib_help$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse3_lib_help$MH,"fuse3_lib_help");
     }
-    public static void fuse3_lib_help ( Addressable args) {
+    public static void fuse3_lib_help ( MemorySegment args) {
         var mh$ = fuse3_lib_help$MH();
         try {
             mh$.invokeExact(args);
@@ -30,10 +30,10 @@ public class fuse_h  {
     public static MethodHandle fuse3_new$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse3_new$MH,"fuse3_new");
     }
-    public static MemoryAddress fuse3_new ( Addressable args,  Addressable ops,  long opsize,  Addressable data) {
+    public static MemorySegment fuse3_new ( MemorySegment args,  MemorySegment ops,  long opsize,  MemorySegment data) {
         var mh$ = fuse3_new$MH();
         try {
-            return (java.lang.foreign.MemoryAddress)mh$.invokeExact(args, ops, opsize, data);
+            return (java.lang.foreign.MemorySegment)mh$.invokeExact(args, ops, opsize, data);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }
@@ -41,7 +41,7 @@ public class fuse_h  {
     public static MethodHandle fuse3_destroy$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse3_destroy$MH,"fuse3_destroy");
     }
-    public static void fuse3_destroy ( Addressable f) {
+    public static void fuse3_destroy ( MemorySegment f) {
         var mh$ = fuse3_destroy$MH();
         try {
             mh$.invokeExact(f);
@@ -52,7 +52,7 @@ public class fuse_h  {
     public static MethodHandle fuse3_mount$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse3_mount$MH,"fuse3_mount");
     }
-    public static int fuse3_mount ( Addressable f,  Addressable mountpoint) {
+    public static int fuse3_mount ( MemorySegment f,  MemorySegment mountpoint) {
         var mh$ = fuse3_mount$MH();
         try {
             return (int)mh$.invokeExact(f, mountpoint);
@@ -63,7 +63,7 @@ public class fuse_h  {
     public static MethodHandle fuse3_unmount$MH() {
         return RuntimeHelper.requireNonNull(constants$1.fuse3_unmount$MH,"fuse3_unmount");
     }
-    public static void fuse3_unmount ( Addressable f) {
+    public static void fuse3_unmount ( MemorySegment f) {
         var mh$ = fuse3_unmount$MH();
         try {
             mh$.invokeExact(f);
@@ -74,7 +74,7 @@ public class fuse_h  {
     public static MethodHandle fuse3_loop$MH() {
         return RuntimeHelper.requireNonNull(constants$1.fuse3_loop$MH,"fuse3_loop");
     }
-    public static int fuse3_loop ( Addressable f) {
+    public static int fuse3_loop ( MemorySegment f) {
         var mh$ = fuse3_loop$MH();
         try {
             return (int)mh$.invokeExact(f);
@@ -85,7 +85,7 @@ public class fuse_h  {
     public static MethodHandle fuse3_loop_mt_31$MH() {
         return RuntimeHelper.requireNonNull(constants$1.fuse3_loop_mt_31$MH,"fuse3_loop_mt_31");
     }
-    public static int fuse3_loop_mt_31 ( Addressable f,  int clone_fd) {
+    public static int fuse3_loop_mt_31 ( MemorySegment f,  int clone_fd) {
         var mh$ = fuse3_loop_mt_31$MH();
         try {
             return (int)mh$.invokeExact(f, clone_fd);
@@ -96,7 +96,7 @@ public class fuse_h  {
     public static MethodHandle fuse3_exit$MH() {
         return RuntimeHelper.requireNonNull(constants$1.fuse3_exit$MH,"fuse3_exit");
     }
-    public static void fuse3_exit ( Addressable f) {
+    public static void fuse3_exit ( MemorySegment f) {
         var mh$ = fuse3_exit$MH();
         try {
             mh$.invokeExact(f);
@@ -107,10 +107,10 @@ public class fuse_h  {
     public static MethodHandle fuse3_get_session$MH() {
         return RuntimeHelper.requireNonNull(constants$1.fuse3_get_session$MH,"fuse3_get_session");
     }
-    public static MemoryAddress fuse3_get_session ( Addressable f) {
+    public static MemorySegment fuse3_get_session ( MemorySegment f) {
         var mh$ = fuse3_get_session$MH();
         try {
-            return (java.lang.foreign.MemoryAddress)mh$.invokeExact(f);
+            return (java.lang.foreign.MemorySegment)mh$.invokeExact(f);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }

@@ -7,9 +7,17 @@ import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct fuse_loop_config_v1 {
+ *     int clone_fd;
+ *     unsigned int max_idle_threads;
+ * };
+ * }
+ */
 public class fuse_loop_config_v1 {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_INT$LAYOUT.withName("clone_fd"),
         Constants$root.C_INT$LAYOUT.withName("max_idle_threads")
     ).withName("fuse_loop_config_v1");
@@ -20,10 +28,22 @@ public class fuse_loop_config_v1 {
     public static VarHandle clone_fd$VH() {
         return fuse_loop_config_v1.clone_fd$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int clone_fd;
+     * }
+     */
     public static int clone_fd$get(MemorySegment seg) {
         return (int)fuse_loop_config_v1.clone_fd$VH.get(seg);
     }
-    public static void clone_fd$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int clone_fd;
+     * }
+     */
+    public static void clone_fd$set(MemorySegment seg, int x) {
         fuse_loop_config_v1.clone_fd$VH.set(seg, x);
     }
     public static int clone_fd$get(MemorySegment seg, long index) {
@@ -36,10 +56,22 @@ public class fuse_loop_config_v1 {
     public static VarHandle max_idle_threads$VH() {
         return fuse_loop_config_v1.max_idle_threads$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int max_idle_threads;
+     * }
+     */
     public static int max_idle_threads$get(MemorySegment seg) {
         return (int)fuse_loop_config_v1.max_idle_threads$VH.get(seg);
     }
-    public static void max_idle_threads$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int max_idle_threads;
+     * }
+     */
+    public static void max_idle_threads$set(MemorySegment seg, int x) {
         fuse_loop_config_v1.max_idle_threads$VH.set(seg, x);
     }
     public static int max_idle_threads$get(MemorySegment seg, long index) {
@@ -50,10 +82,10 @@ public class fuse_loop_config_v1 {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 

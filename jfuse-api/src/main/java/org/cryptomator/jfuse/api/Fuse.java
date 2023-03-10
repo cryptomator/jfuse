@@ -7,8 +7,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import java.lang.foreign.SegmentAllocator;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,7 +41,7 @@ public abstract class Fuse implements AutoCloseable {
 	/**
 	 * The memory session associated with the lifecycle of this Fuse instance.
 	 */
-	protected final MemorySession fuseScope = MemorySession.openShared();
+	protected final Arena fuseScope = Arena.openShared(); // TODO rename to fuseArena?
 
 	/**
 	 * The file system operations invoked by this FUSE file system.
@@ -145,7 +145,7 @@ public abstract class Fuse implements AutoCloseable {
 	@Blocking
 	private int fuseLoop(FuseMount mount) {
 		AtomicInteger result = new AtomicInteger();
-		fuseScope.whileAlive(() -> {
+		fuseScope.scope().whileAlive(() -> {
 			result.set(mount.loop());
 		});
 		return result.get();
@@ -173,7 +173,7 @@ public abstract class Fuse implements AutoCloseable {
 	@Blocking
 	@MustBeInvokedByOverriders
 	public synchronized void close() throws TimeoutException {
-		if (!fuseScope.isAlive()) {
+		if (!fuseScope.scope().isAlive()) {
 			return; // already closed
 		}
 		try {

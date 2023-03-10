@@ -9,60 +9,139 @@ import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
 public class errno_h  {
 
-    /* package-private */ errno_h() {}
-    public static OfByte C_CHAR = Constants$root.C_CHAR$LAYOUT;
-    public static OfShort C_SHORT = Constants$root.C_SHORT$LAYOUT;
-    public static OfInt C_INT = Constants$root.C_INT$LAYOUT;
-    public static OfLong C_LONG = Constants$root.C_LONG_LONG$LAYOUT;
-    public static OfLong C_LONG_LONG = Constants$root.C_LONG_LONG$LAYOUT;
-    public static OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
-    public static OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
-    public static OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
+    public static final OfByte C_CHAR = Constants$root.C_CHAR$LAYOUT;
+    public static final OfShort C_SHORT = Constants$root.C_SHORT$LAYOUT;
+    public static final OfInt C_INT = Constants$root.C_INT$LAYOUT;
+    public static final OfLong C_LONG = Constants$root.C_LONG_LONG$LAYOUT;
+    public static final OfLong C_LONG_LONG = Constants$root.C_LONG_LONG$LAYOUT;
+    public static final OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
+    public static final OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
+    public static final OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
+    /**
+     * {@snippet :
+     * #define ENOENT 2
+     * }
+     */
     public static int ENOENT() {
         return (int)2L;
     }
+    /**
+     * {@snippet :
+     * #define EIO 5
+     * }
+     */
     public static int EIO() {
         return (int)5L;
     }
+    /**
+     * {@snippet :
+     * #define EBADF 9
+     * }
+     */
     public static int EBADF() {
         return (int)9L;
     }
+    /**
+     * {@snippet :
+     * #define ENOMEM 12
+     * }
+     */
     public static int ENOMEM() {
         return (int)12L;
     }
+    /**
+     * {@snippet :
+     * #define EACCES 13
+     * }
+     */
     public static int EACCES() {
         return (int)13L;
     }
+    /**
+     * {@snippet :
+     * #define EEXIST 17
+     * }
+     */
     public static int EEXIST() {
         return (int)17L;
     }
+    /**
+     * {@snippet :
+     * #define ENOTDIR 20
+     * }
+     */
     public static int ENOTDIR() {
         return (int)20L;
     }
+    /**
+     * {@snippet :
+     * #define EISDIR 21
+     * }
+     */
     public static int EISDIR() {
         return (int)21L;
     }
+    /**
+     * {@snippet :
+     * #define EINVAL 22
+     * }
+     */
     public static int EINVAL() {
         return (int)22L;
     }
+    /**
+     * {@snippet :
+     * #define EROFS 30
+     * }
+     */
     public static int EROFS() {
         return (int)30L;
     }
+    /**
+     * {@snippet :
+     * #define ERANGE 34
+     * }
+     */
     public static int ERANGE() {
         return (int)34L;
     }
+    /**
+     * {@snippet :
+     * #define ENAMETOOLONG 36
+     * }
+     */
     public static int ENAMETOOLONG() {
         return (int)36L;
     }
+    /**
+     * {@snippet :
+     * #define ENOLCK 37
+     * }
+     */
     public static int ENOLCK() {
         return (int)37L;
     }
+    /**
+     * {@snippet :
+     * #define ENOSYS 38
+     * }
+     */
     public static int ENOSYS() {
         return (int)38L;
     }
+    /**
+     * {@snippet :
+     * #define ENOTEMPTY 39
+     * }
+     */
     public static int ENOTEMPTY() {
         return (int)39L;
     }
+    /**
+     * {@snippet :
+     * #define ENOTSUP 95
+     * }
+     */
     public static int ENOTSUP() {
         return (int)95L;
     }

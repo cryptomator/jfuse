@@ -2,12 +2,17 @@
 
 package org.cryptomator.jfuse.win.extr.fuse2;
 
+import java.lang.foreign.GroupLayout;
+import java.lang.foreign.MemoryLayout;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.SegmentAllocator;
+import java.lang.foreign.SegmentScope;
+import java.lang.foreign.StructLayout;
 import java.lang.invoke.VarHandle;
-import java.lang.foreign.*;
 
 public class fuse_args {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_LONG$LAYOUT.withName("argc"),
         MemoryLayout.paddingLayout(32),
         Constants$root.C_POINTER$LAYOUT.withName("argv"),
@@ -37,16 +42,16 @@ public class fuse_args {
     public static VarHandle argv$VH() {
         return fuse_args.argv$VH;
     }
-    public static MemoryAddress argv$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_args.argv$VH.get(seg);
+    public static MemorySegment argv$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_args.argv$VH.get(seg);
     }
-    public static void argv$set( MemorySegment seg, MemoryAddress x) {
+    public static void argv$set( MemorySegment seg, MemorySegment x) {
         fuse_args.argv$VH.set(seg, x);
     }
-    public static MemoryAddress argv$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_args.argv$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment argv$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_args.argv$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void argv$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void argv$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_args.argv$VH.set(seg.asSlice(index*sizeof()), x);
     }
     static final VarHandle allocated$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("allocated"));
@@ -70,7 +75,7 @@ public class fuse_args {
     public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 

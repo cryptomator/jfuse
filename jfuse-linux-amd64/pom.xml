@@ -69,9 +69,9 @@
 					<plugin>
 						<groupId>io.github.coffeelibs</groupId>
 						<artifactId>jextract-maven-plugin</artifactId>
-						<version>0.2.0</version>
+						<version>0.3.0</version>
 						<configuration>
-							<executable>${user.home}/.sdkman/candidates/java/19.ea.jextract/bin/jextract</executable>
+							<executable>/Users/sebastian/Documents/Cryptomator/jextract/build/jextract/bin/jextract</executable>
 							<headerSearchPaths>${linux.headerSearchPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
 							<targetPackage>org.cryptomator.jfuse.linux.amd64.extr</targetPackage>
@@ -147,7 +147,7 @@
 								<configuration>
 									<headerFile>${linux.headerSearchPath}/errno.h</headerFile>
 									<headerClassName>errno_h</headerClassName>
-									<includeMacros>
+									<includeConstants>
 										<includeMacro>ENOENT</includeMacro>
 										<includeMacro>ENOSYS</includeMacro>
 										<includeMacro>ENOMEM</includeMacro>
@@ -164,7 +164,7 @@
 										<includeMacro>ERANGE</includeMacro>
 										<includeMacro>ENOLCK</includeMacro>
 										<includeMacro>ENAMETOOLONG</includeMacro>
-									</includeMacros>
+									</includeConstants>
 								</configuration>
 							</execution>
 							<execution>
@@ -175,10 +175,10 @@
 								<configuration>
 									<headerFile>${linux.headerSearchPath}/sys/stat.h</headerFile>
 									<headerClassName>stat_h</headerClassName>
-									<includeMacros>
+									<includeConstants>
 										<includeMacro>UTIME_NOW</includeMacro>
 										<includeMacro>UTIME_OMIT</includeMacro>
-									</includeMacros>
+									</includeConstants>
 								</configuration>
 							</execution>
 							<execution>
@@ -189,7 +189,7 @@
 								<configuration>
 									<headerFile>${linux.headerSearchPath}/fcntl.h</headerFile>
 									<headerClassName>fcntl_h</headerClassName>
-									<includeMacros>
+									<includeConstants>
 										<includeMacro>O_RDONLY</includeMacro>
 										<includeMacro>O_WRONLY</includeMacro>
 										<includeMacro>O_RDWR</includeMacro>
@@ -199,7 +199,7 @@
 										<includeMacro>O_EXCL</includeMacro>
 										<includeMacro>O_DSYNC</includeMacro>
 										<includeMacro>O_SYNC</includeMacro>
-									</includeMacros>
+									</includeConstants>
 								</configuration>
 							</execution>
 							<execution>
@@ -213,12 +213,12 @@
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_GNU_SOURCE=1</cPreprocessorMacro>
 									</cPreprocessorMacros>
-									<includeMacros>
+									<includeConstants>
 										<!-- GNU-specific flags for rename: -->
 										<includeMacro>RENAME_NOREPLACE</includeMacro>
 										<includeMacro>RENAME_EXCHANGE</includeMacro>
 										<includeMacro>RENAME_WHITEOUT</includeMacro>
-									</includeMacros>
+									</includeConstants>
 								</configuration>
 							</execution>
 						</executions>

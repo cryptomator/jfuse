@@ -395,16 +395,16 @@ public class fuse3_config {
     public static VarHandle modules$VH() {
         return fuse3_config.modules$VH;
     }
-    public static MemoryAddress modules$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse3_config.modules$VH.get(seg);
+    public static MemorySegment modules$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse3_config.modules$VH.get(seg);
     }
-    public static void modules$set( MemorySegment seg, MemoryAddress x) {
+    public static void modules$set( MemorySegment seg, MemorySegment x) {
         fuse3_config.modules$VH.set(seg, x);
     }
-    public static MemoryAddress modules$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse3_config.modules$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment modules$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse3_config.modules$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void modules$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void modules$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_config.modules$VH.set(seg.asSlice(index*sizeof()), x);
     }
     static final VarHandle debug$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("debug"));
@@ -428,7 +428,7 @@ public class fuse3_config {
     public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 

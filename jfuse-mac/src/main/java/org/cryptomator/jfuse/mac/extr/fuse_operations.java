@@ -7,9 +7,63 @@ import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct fuse_operations {
+ *     int (*getattr)(char*,struct stat*);
+ *     int (*readlink)(char*,char*,size_t);
+ *     int (*getdir)(char*,fuse_dirh_t,fuse_dirfil_t);
+ *     int (*mknod)(char*,mode_t,dev_t);
+ *     int (*mkdir)(char*,mode_t);
+ *     int (*unlink)(char*);
+ *     int (*rmdir)(char*);
+ *     int (*symlink)(char*,char*);
+ *     int (*rename)(char*,char*);
+ *     int (*link)(char*,char*);
+ *     int (*chmod)(char*,mode_t);
+ *     int (*chown)(char*,uid_t,gid_t);
+ *     int (*truncate)(char*,off_t);
+ *     int (*utime)(char*,struct utimbuf*);
+ *     int (*open)(char*,struct fuse_file_info*);
+ *     int (*read)(char*,char*,size_t,off_t,struct fuse_file_info*);
+ *     int (*write)(char*,char*,size_t,off_t,struct fuse_file_info*);
+ *     int (*statfs)(char*,struct statvfs*);
+ *     int (*flush)(char*,struct fuse_file_info*);
+ *     int (*release)(char*,struct fuse_file_info*);
+ *     int (*fsync)(char*,int,struct fuse_file_info*);
+ *     int (*setxattr)(char*,char*,char*,size_t,int);
+ *     int (*getxattr)(char*,char*,char*,size_t);
+ *     int (*listxattr)(char*,char*,size_t);
+ *     int (*removexattr)(char*,char*);
+ *     int (*opendir)(char*,struct fuse_file_info*);
+ *     int (*readdir)(char*,void*,fuse_fill_dir_t,off_t,struct fuse_file_info*);
+ *     int (*releasedir)(char*,struct fuse_file_info*);
+ *     int (*fsyncdir)(char*,int,struct fuse_file_info*);
+ *     void* (*init)(struct fuse_conn_info*);
+ *     void (*destroy)(void*);
+ *     int (*access)(char*,int);
+ *     int (*create)(char*,mode_t,struct fuse_file_info*);
+ *     int (*ftruncate)(char*,off_t,struct fuse_file_info*);
+ *     int (*fgetattr)(char*,struct stat*,struct fuse_file_info*);
+ *     int (*lock)(char*,struct fuse_file_info*,int,struct flock*);
+ *     int (*utimens)(char*,struct timespec*);
+ *     int (*bmap)(char*,size_t,uint64_t*);
+ *      *     unsigned int flag_nullpath_ok;
+ *     unsigned int flag_nopath;
+ *     unsigned int flag_utime_omit_ok;
+ *     unsigned int flag_reserved;
+ *     int (*ioctl)(char*,int,void*,struct fuse_file_info*,unsigned int,void*);
+ *     int (*poll)(char*,struct fuse_file_info*,struct fuse_pollhandle*,unsigned int*);
+ *     int (*write_buf)(char*,struct fuse_bufvec*,off_t,struct fuse_file_info*);
+ *     int (*read_buf)(char*,struct fuse_bufvec**,size_t,off_t,struct fuse_file_info*);
+ *     int (*flock)(char*,struct fuse_file_info*,int);
+ *     int (*fallocate)(char*,int,off_t,off_t,struct fuse_file_info*);
+ * };
+ * }
+ */
 public class fuse_operations {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_POINTER$LAYOUT.withName("getattr"),
         Constants$root.C_POINTER$LAYOUT.withName("readlink"),
         Constants$root.C_POINTER$LAYOUT.withName("getdir"),
@@ -72,17 +126,22 @@ public class fuse_operations {
     static final MethodHandle getattr$MH = RuntimeHelper.downcallHandle(
         fuse_operations.getattr$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*getattr)(char*,struct stat*);
+     * }
+     */
     public interface getattr {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(getattr fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(getattr.class, fi, fuse_operations.getattr$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(getattr fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(getattr.class, fi, fuse_operations.getattr$FUNC, scope);
         }
-        static getattr ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static getattr ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.getattr$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.getattr$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -94,20 +153,32 @@ public class fuse_operations {
     public static VarHandle getattr$VH() {
         return fuse_operations.getattr$VH;
     }
-    public static MemoryAddress getattr$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.getattr$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*getattr)(char*,struct stat*);
+     * }
+     */
+    public static MemorySegment getattr$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.getattr$VH.get(seg);
     }
-    public static void getattr$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*getattr)(char*,struct stat*);
+     * }
+     */
+    public static void getattr$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.getattr$VH.set(seg, x);
     }
-    public static MemoryAddress getattr$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.getattr$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment getattr$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.getattr$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void getattr$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void getattr$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.getattr$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static getattr getattr (MemorySegment segment, MemorySession session) {
-        return getattr.ofAddress(getattr$get(segment), session);
+    public static getattr getattr(MemorySegment segment, SegmentScope scope) {
+        return getattr.ofAddress(getattr$get(segment), scope);
     }
     static final FunctionDescriptor readlink$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -117,17 +188,22 @@ public class fuse_operations {
     static final MethodHandle readlink$MH = RuntimeHelper.downcallHandle(
         fuse_operations.readlink$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*readlink)(char*,char*,size_t);
+     * }
+     */
     public interface readlink {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, long _x2);
-        static MemorySegment allocate(readlink fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(readlink.class, fi, fuse_operations.readlink$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, long _x2);
+        static MemorySegment allocate(readlink fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(readlink.class, fi, fuse_operations.readlink$FUNC, scope);
         }
-        static readlink ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, long __x2) -> {
+        static readlink ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, long __x2) -> {
                 try {
-                    return (int)fuse_operations.readlink$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, __x2);
+                    return (int)fuse_operations.readlink$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -139,20 +215,32 @@ public class fuse_operations {
     public static VarHandle readlink$VH() {
         return fuse_operations.readlink$VH;
     }
-    public static MemoryAddress readlink$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.readlink$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*readlink)(char*,char*,size_t);
+     * }
+     */
+    public static MemorySegment readlink$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.readlink$VH.get(seg);
     }
-    public static void readlink$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*readlink)(char*,char*,size_t);
+     * }
+     */
+    public static void readlink$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.readlink$VH.set(seg, x);
     }
-    public static MemoryAddress readlink$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.readlink$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment readlink$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.readlink$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void readlink$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void readlink$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.readlink$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static readlink readlink (MemorySegment segment, MemorySession session) {
-        return readlink.ofAddress(readlink$get(segment), session);
+    public static readlink readlink(MemorySegment segment, SegmentScope scope) {
+        return readlink.ofAddress(readlink$get(segment), scope);
     }
     static final FunctionDescriptor getdir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -162,17 +250,22 @@ public class fuse_operations {
     static final MethodHandle getdir$MH = RuntimeHelper.downcallHandle(
         fuse_operations.getdir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*getdir)(char*,fuse_dirh_t,fuse_dirfil_t);
+     * }
+     */
     public interface getdir {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, java.lang.foreign.MemoryAddress _x2);
-        static MemorySegment allocate(getdir fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(getdir.class, fi, fuse_operations.getdir$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, java.lang.foreign.MemorySegment _x2);
+        static MemorySegment allocate(getdir fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(getdir.class, fi, fuse_operations.getdir$FUNC, scope);
         }
-        static getdir ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, java.lang.foreign.MemoryAddress __x2) -> {
+        static getdir ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse_operations.getdir$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, (java.lang.foreign.Addressable)__x2);
+                    return (int)fuse_operations.getdir$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -184,20 +277,32 @@ public class fuse_operations {
     public static VarHandle getdir$VH() {
         return fuse_operations.getdir$VH;
     }
-    public static MemoryAddress getdir$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.getdir$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*getdir)(char*,fuse_dirh_t,fuse_dirfil_t);
+     * }
+     */
+    public static MemorySegment getdir$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.getdir$VH.get(seg);
     }
-    public static void getdir$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*getdir)(char*,fuse_dirh_t,fuse_dirfil_t);
+     * }
+     */
+    public static void getdir$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.getdir$VH.set(seg, x);
     }
-    public static MemoryAddress getdir$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.getdir$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment getdir$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.getdir$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void getdir$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void getdir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.getdir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static getdir getdir (MemorySegment segment, MemorySession session) {
-        return getdir.ofAddress(getdir$get(segment), session);
+    public static getdir getdir(MemorySegment segment, SegmentScope scope) {
+        return getdir.ofAddress(getdir$get(segment), scope);
     }
     static final FunctionDescriptor mknod$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -207,17 +312,22 @@ public class fuse_operations {
     static final MethodHandle mknod$MH = RuntimeHelper.downcallHandle(
         fuse_operations.mknod$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*mknod)(char*,mode_t,dev_t);
+     * }
+     */
     public interface mknod {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, short _x1, int _x2);
-        static MemorySegment allocate(mknod fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(mknod.class, fi, fuse_operations.mknod$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, short _x1, int _x2);
+        static MemorySegment allocate(mknod fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(mknod.class, fi, fuse_operations.mknod$FUNC, scope);
         }
-        static mknod ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, short __x1, int __x2) -> {
+        static mknod ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, short __x1, int __x2) -> {
                 try {
-                    return (int)fuse_operations.mknod$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1, __x2);
+                    return (int)fuse_operations.mknod$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -229,20 +339,32 @@ public class fuse_operations {
     public static VarHandle mknod$VH() {
         return fuse_operations.mknod$VH;
     }
-    public static MemoryAddress mknod$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.mknod$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*mknod)(char*,mode_t,dev_t);
+     * }
+     */
+    public static MemorySegment mknod$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.mknod$VH.get(seg);
     }
-    public static void mknod$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*mknod)(char*,mode_t,dev_t);
+     * }
+     */
+    public static void mknod$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.mknod$VH.set(seg, x);
     }
-    public static MemoryAddress mknod$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.mknod$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment mknod$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.mknod$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void mknod$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void mknod$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.mknod$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static mknod mknod (MemorySegment segment, MemorySession session) {
-        return mknod.ofAddress(mknod$get(segment), session);
+    public static mknod mknod(MemorySegment segment, SegmentScope scope) {
+        return mknod.ofAddress(mknod$get(segment), scope);
     }
     static final FunctionDescriptor mkdir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -251,17 +373,22 @@ public class fuse_operations {
     static final MethodHandle mkdir$MH = RuntimeHelper.downcallHandle(
         fuse_operations.mkdir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*mkdir)(char*,mode_t);
+     * }
+     */
     public interface mkdir {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, short _x1);
-        static MemorySegment allocate(mkdir fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(mkdir.class, fi, fuse_operations.mkdir$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, short _x1);
+        static MemorySegment allocate(mkdir fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(mkdir.class, fi, fuse_operations.mkdir$FUNC, scope);
         }
-        static mkdir ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, short __x1) -> {
+        static mkdir ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, short __x1) -> {
                 try {
-                    return (int)fuse_operations.mkdir$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1);
+                    return (int)fuse_operations.mkdir$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -273,20 +400,32 @@ public class fuse_operations {
     public static VarHandle mkdir$VH() {
         return fuse_operations.mkdir$VH;
     }
-    public static MemoryAddress mkdir$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.mkdir$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*mkdir)(char*,mode_t);
+     * }
+     */
+    public static MemorySegment mkdir$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.mkdir$VH.get(seg);
     }
-    public static void mkdir$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*mkdir)(char*,mode_t);
+     * }
+     */
+    public static void mkdir$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.mkdir$VH.set(seg, x);
     }
-    public static MemoryAddress mkdir$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.mkdir$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment mkdir$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.mkdir$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void mkdir$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void mkdir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.mkdir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static mkdir mkdir (MemorySegment segment, MemorySession session) {
-        return mkdir.ofAddress(mkdir$get(segment), session);
+    public static mkdir mkdir(MemorySegment segment, SegmentScope scope) {
+        return mkdir.ofAddress(mkdir$get(segment), scope);
     }
     static final FunctionDescriptor unlink$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
@@ -294,17 +433,22 @@ public class fuse_operations {
     static final MethodHandle unlink$MH = RuntimeHelper.downcallHandle(
         fuse_operations.unlink$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*unlink)(char*);
+     * }
+     */
     public interface unlink {
 
-        int apply(java.lang.foreign.MemoryAddress _x0);
-        static MemorySegment allocate(unlink fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(unlink.class, fi, fuse_operations.unlink$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0);
+        static MemorySegment allocate(unlink fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(unlink.class, fi, fuse_operations.unlink$FUNC, scope);
         }
-        static unlink ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0) -> {
+        static unlink ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0) -> {
                 try {
-                    return (int)fuse_operations.unlink$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0);
+                    return (int)fuse_operations.unlink$MH.invokeExact(symbol, __x0);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -316,20 +460,32 @@ public class fuse_operations {
     public static VarHandle unlink$VH() {
         return fuse_operations.unlink$VH;
     }
-    public static MemoryAddress unlink$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.unlink$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*unlink)(char*);
+     * }
+     */
+    public static MemorySegment unlink$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.unlink$VH.get(seg);
     }
-    public static void unlink$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*unlink)(char*);
+     * }
+     */
+    public static void unlink$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.unlink$VH.set(seg, x);
     }
-    public static MemoryAddress unlink$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.unlink$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment unlink$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.unlink$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void unlink$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void unlink$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.unlink$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static unlink unlink (MemorySegment segment, MemorySession session) {
-        return unlink.ofAddress(unlink$get(segment), session);
+    public static unlink unlink(MemorySegment segment, SegmentScope scope) {
+        return unlink.ofAddress(unlink$get(segment), scope);
     }
     static final FunctionDescriptor rmdir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
@@ -337,17 +493,22 @@ public class fuse_operations {
     static final MethodHandle rmdir$MH = RuntimeHelper.downcallHandle(
         fuse_operations.rmdir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*rmdir)(char*);
+     * }
+     */
     public interface rmdir {
 
-        int apply(java.lang.foreign.MemoryAddress _x0);
-        static MemorySegment allocate(rmdir fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(rmdir.class, fi, fuse_operations.rmdir$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0);
+        static MemorySegment allocate(rmdir fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(rmdir.class, fi, fuse_operations.rmdir$FUNC, scope);
         }
-        static rmdir ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0) -> {
+        static rmdir ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0) -> {
                 try {
-                    return (int)fuse_operations.rmdir$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0);
+                    return (int)fuse_operations.rmdir$MH.invokeExact(symbol, __x0);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -359,20 +520,32 @@ public class fuse_operations {
     public static VarHandle rmdir$VH() {
         return fuse_operations.rmdir$VH;
     }
-    public static MemoryAddress rmdir$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.rmdir$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*rmdir)(char*);
+     * }
+     */
+    public static MemorySegment rmdir$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.rmdir$VH.get(seg);
     }
-    public static void rmdir$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*rmdir)(char*);
+     * }
+     */
+    public static void rmdir$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.rmdir$VH.set(seg, x);
     }
-    public static MemoryAddress rmdir$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.rmdir$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment rmdir$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.rmdir$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void rmdir$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void rmdir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.rmdir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static rmdir rmdir (MemorySegment segment, MemorySession session) {
-        return rmdir.ofAddress(rmdir$get(segment), session);
+    public static rmdir rmdir(MemorySegment segment, SegmentScope scope) {
+        return rmdir.ofAddress(rmdir$get(segment), scope);
     }
     static final FunctionDescriptor symlink$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -381,17 +554,22 @@ public class fuse_operations {
     static final MethodHandle symlink$MH = RuntimeHelper.downcallHandle(
         fuse_operations.symlink$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*symlink)(char*,char*);
+     * }
+     */
     public interface symlink {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(symlink fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(symlink.class, fi, fuse_operations.symlink$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(symlink fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(symlink.class, fi, fuse_operations.symlink$FUNC, scope);
         }
-        static symlink ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static symlink ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.symlink$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.symlink$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -403,20 +581,32 @@ public class fuse_operations {
     public static VarHandle symlink$VH() {
         return fuse_operations.symlink$VH;
     }
-    public static MemoryAddress symlink$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.symlink$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*symlink)(char*,char*);
+     * }
+     */
+    public static MemorySegment symlink$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.symlink$VH.get(seg);
     }
-    public static void symlink$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*symlink)(char*,char*);
+     * }
+     */
+    public static void symlink$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.symlink$VH.set(seg, x);
     }
-    public static MemoryAddress symlink$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.symlink$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment symlink$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.symlink$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void symlink$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void symlink$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.symlink$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static symlink symlink (MemorySegment segment, MemorySession session) {
-        return symlink.ofAddress(symlink$get(segment), session);
+    public static symlink symlink(MemorySegment segment, SegmentScope scope) {
+        return symlink.ofAddress(symlink$get(segment), scope);
     }
     static final FunctionDescriptor rename$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -425,17 +615,22 @@ public class fuse_operations {
     static final MethodHandle rename$MH = RuntimeHelper.downcallHandle(
         fuse_operations.rename$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*rename)(char*,char*);
+     * }
+     */
     public interface rename {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(rename fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(rename.class, fi, fuse_operations.rename$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(rename fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(rename.class, fi, fuse_operations.rename$FUNC, scope);
         }
-        static rename ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static rename ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.rename$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.rename$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -447,20 +642,32 @@ public class fuse_operations {
     public static VarHandle rename$VH() {
         return fuse_operations.rename$VH;
     }
-    public static MemoryAddress rename$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.rename$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*rename)(char*,char*);
+     * }
+     */
+    public static MemorySegment rename$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.rename$VH.get(seg);
     }
-    public static void rename$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*rename)(char*,char*);
+     * }
+     */
+    public static void rename$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.rename$VH.set(seg, x);
     }
-    public static MemoryAddress rename$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.rename$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment rename$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.rename$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void rename$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void rename$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.rename$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static rename rename (MemorySegment segment, MemorySession session) {
-        return rename.ofAddress(rename$get(segment), session);
+    public static rename rename(MemorySegment segment, SegmentScope scope) {
+        return rename.ofAddress(rename$get(segment), scope);
     }
     static final FunctionDescriptor link$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -469,17 +676,22 @@ public class fuse_operations {
     static final MethodHandle link$MH = RuntimeHelper.downcallHandle(
         fuse_operations.link$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*link)(char*,char*);
+     * }
+     */
     public interface link {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(link fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(link.class, fi, fuse_operations.link$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(link fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(link.class, fi, fuse_operations.link$FUNC, scope);
         }
-        static link ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static link ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.link$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.link$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -491,20 +703,32 @@ public class fuse_operations {
     public static VarHandle link$VH() {
         return fuse_operations.link$VH;
     }
-    public static MemoryAddress link$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.link$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*link)(char*,char*);
+     * }
+     */
+    public static MemorySegment link$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.link$VH.get(seg);
     }
-    public static void link$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*link)(char*,char*);
+     * }
+     */
+    public static void link$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.link$VH.set(seg, x);
     }
-    public static MemoryAddress link$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.link$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment link$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.link$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void link$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void link$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.link$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static link link (MemorySegment segment, MemorySession session) {
-        return link.ofAddress(link$get(segment), session);
+    public static link link(MemorySegment segment, SegmentScope scope) {
+        return link.ofAddress(link$get(segment), scope);
     }
     static final FunctionDescriptor chmod$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -513,17 +737,22 @@ public class fuse_operations {
     static final MethodHandle chmod$MH = RuntimeHelper.downcallHandle(
         fuse_operations.chmod$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*chmod)(char*,mode_t);
+     * }
+     */
     public interface chmod {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, short _x1);
-        static MemorySegment allocate(chmod fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(chmod.class, fi, fuse_operations.chmod$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, short _x1);
+        static MemorySegment allocate(chmod fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(chmod.class, fi, fuse_operations.chmod$FUNC, scope);
         }
-        static chmod ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, short __x1) -> {
+        static chmod ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, short __x1) -> {
                 try {
-                    return (int)fuse_operations.chmod$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1);
+                    return (int)fuse_operations.chmod$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -535,20 +764,32 @@ public class fuse_operations {
     public static VarHandle chmod$VH() {
         return fuse_operations.chmod$VH;
     }
-    public static MemoryAddress chmod$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.chmod$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*chmod)(char*,mode_t);
+     * }
+     */
+    public static MemorySegment chmod$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.chmod$VH.get(seg);
     }
-    public static void chmod$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*chmod)(char*,mode_t);
+     * }
+     */
+    public static void chmod$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.chmod$VH.set(seg, x);
     }
-    public static MemoryAddress chmod$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.chmod$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment chmod$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.chmod$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void chmod$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void chmod$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.chmod$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static chmod chmod (MemorySegment segment, MemorySession session) {
-        return chmod.ofAddress(chmod$get(segment), session);
+    public static chmod chmod(MemorySegment segment, SegmentScope scope) {
+        return chmod.ofAddress(chmod$get(segment), scope);
     }
     static final FunctionDescriptor chown$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -558,17 +799,22 @@ public class fuse_operations {
     static final MethodHandle chown$MH = RuntimeHelper.downcallHandle(
         fuse_operations.chown$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*chown)(char*,uid_t,gid_t);
+     * }
+     */
     public interface chown {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, int _x1, int _x2);
-        static MemorySegment allocate(chown fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(chown.class, fi, fuse_operations.chown$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, int _x1, int _x2);
+        static MemorySegment allocate(chown fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(chown.class, fi, fuse_operations.chown$FUNC, scope);
         }
-        static chown ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, int __x1, int __x2) -> {
+        static chown ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, int __x1, int __x2) -> {
                 try {
-                    return (int)fuse_operations.chown$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1, __x2);
+                    return (int)fuse_operations.chown$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -580,20 +826,32 @@ public class fuse_operations {
     public static VarHandle chown$VH() {
         return fuse_operations.chown$VH;
     }
-    public static MemoryAddress chown$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.chown$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*chown)(char*,uid_t,gid_t);
+     * }
+     */
+    public static MemorySegment chown$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.chown$VH.get(seg);
     }
-    public static void chown$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*chown)(char*,uid_t,gid_t);
+     * }
+     */
+    public static void chown$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.chown$VH.set(seg, x);
     }
-    public static MemoryAddress chown$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.chown$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment chown$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.chown$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void chown$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void chown$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.chown$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static chown chown (MemorySegment segment, MemorySession session) {
-        return chown.ofAddress(chown$get(segment), session);
+    public static chown chown(MemorySegment segment, SegmentScope scope) {
+        return chown.ofAddress(chown$get(segment), scope);
     }
     static final FunctionDescriptor truncate$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -602,17 +860,22 @@ public class fuse_operations {
     static final MethodHandle truncate$MH = RuntimeHelper.downcallHandle(
         fuse_operations.truncate$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*truncate)(char*,off_t);
+     * }
+     */
     public interface truncate {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, long _x1);
-        static MemorySegment allocate(truncate fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(truncate.class, fi, fuse_operations.truncate$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, long _x1);
+        static MemorySegment allocate(truncate fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(truncate.class, fi, fuse_operations.truncate$FUNC, scope);
         }
-        static truncate ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, long __x1) -> {
+        static truncate ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, long __x1) -> {
                 try {
-                    return (int)fuse_operations.truncate$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1);
+                    return (int)fuse_operations.truncate$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -624,20 +887,32 @@ public class fuse_operations {
     public static VarHandle truncate$VH() {
         return fuse_operations.truncate$VH;
     }
-    public static MemoryAddress truncate$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.truncate$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*truncate)(char*,off_t);
+     * }
+     */
+    public static MemorySegment truncate$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.truncate$VH.get(seg);
     }
-    public static void truncate$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*truncate)(char*,off_t);
+     * }
+     */
+    public static void truncate$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.truncate$VH.set(seg, x);
     }
-    public static MemoryAddress truncate$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.truncate$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment truncate$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.truncate$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void truncate$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void truncate$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.truncate$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static truncate truncate (MemorySegment segment, MemorySession session) {
-        return truncate.ofAddress(truncate$get(segment), session);
+    public static truncate truncate(MemorySegment segment, SegmentScope scope) {
+        return truncate.ofAddress(truncate$get(segment), scope);
     }
     static final FunctionDescriptor utime$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -646,17 +921,22 @@ public class fuse_operations {
     static final MethodHandle utime$MH = RuntimeHelper.downcallHandle(
         fuse_operations.utime$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*utime)(char*,struct utimbuf*);
+     * }
+     */
     public interface utime {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(utime fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(utime.class, fi, fuse_operations.utime$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(utime fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(utime.class, fi, fuse_operations.utime$FUNC, scope);
         }
-        static utime ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static utime ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.utime$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.utime$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -668,20 +948,32 @@ public class fuse_operations {
     public static VarHandle utime$VH() {
         return fuse_operations.utime$VH;
     }
-    public static MemoryAddress utime$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.utime$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*utime)(char*,struct utimbuf*);
+     * }
+     */
+    public static MemorySegment utime$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.utime$VH.get(seg);
     }
-    public static void utime$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*utime)(char*,struct utimbuf*);
+     * }
+     */
+    public static void utime$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.utime$VH.set(seg, x);
     }
-    public static MemoryAddress utime$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.utime$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment utime$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.utime$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void utime$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void utime$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.utime$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static utime utime (MemorySegment segment, MemorySession session) {
-        return utime.ofAddress(utime$get(segment), session);
+    public static utime utime(MemorySegment segment, SegmentScope scope) {
+        return utime.ofAddress(utime$get(segment), scope);
     }
     static final FunctionDescriptor open$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -690,17 +982,22 @@ public class fuse_operations {
     static final MethodHandle open$MH = RuntimeHelper.downcallHandle(
         fuse_operations.open$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*open)(char*,struct fuse_file_info*);
+     * }
+     */
     public interface open {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(open fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(open.class, fi, fuse_operations.open$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(open fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(open.class, fi, fuse_operations.open$FUNC, scope);
         }
-        static open ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static open ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.open$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.open$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -712,20 +1009,32 @@ public class fuse_operations {
     public static VarHandle open$VH() {
         return fuse_operations.open$VH;
     }
-    public static MemoryAddress open$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.open$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*open)(char*,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment open$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.open$VH.get(seg);
     }
-    public static void open$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*open)(char*,struct fuse_file_info*);
+     * }
+     */
+    public static void open$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.open$VH.set(seg, x);
     }
-    public static MemoryAddress open$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.open$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment open$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.open$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void open$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void open$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.open$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static open open (MemorySegment segment, MemorySession session) {
-        return open.ofAddress(open$get(segment), session);
+    public static open open(MemorySegment segment, SegmentScope scope) {
+        return open.ofAddress(open$get(segment), scope);
     }
     static final FunctionDescriptor read$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -737,17 +1046,22 @@ public class fuse_operations {
     static final MethodHandle read$MH = RuntimeHelper.downcallHandle(
         fuse_operations.read$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*read)(char*,char*,size_t,off_t,struct fuse_file_info*);
+     * }
+     */
     public interface read {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, long _x2, long _x3, java.lang.foreign.MemoryAddress _x4);
-        static MemorySegment allocate(read fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(read.class, fi, fuse_operations.read$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, long _x2, long _x3, java.lang.foreign.MemorySegment _x4);
+        static MemorySegment allocate(read fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(read.class, fi, fuse_operations.read$FUNC, scope);
         }
-        static read ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, long __x2, long __x3, java.lang.foreign.MemoryAddress __x4) -> {
+        static read ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, long __x2, long __x3, java.lang.foreign.MemorySegment __x4) -> {
                 try {
-                    return (int)fuse_operations.read$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, __x2, __x3, (java.lang.foreign.Addressable)__x4);
+                    return (int)fuse_operations.read$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -759,20 +1073,32 @@ public class fuse_operations {
     public static VarHandle read$VH() {
         return fuse_operations.read$VH;
     }
-    public static MemoryAddress read$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.read$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*read)(char*,char*,size_t,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment read$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.read$VH.get(seg);
     }
-    public static void read$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*read)(char*,char*,size_t,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static void read$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.read$VH.set(seg, x);
     }
-    public static MemoryAddress read$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.read$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment read$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.read$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void read$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void read$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.read$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static read read (MemorySegment segment, MemorySession session) {
-        return read.ofAddress(read$get(segment), session);
+    public static read read(MemorySegment segment, SegmentScope scope) {
+        return read.ofAddress(read$get(segment), scope);
     }
     static final FunctionDescriptor write$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -784,17 +1110,22 @@ public class fuse_operations {
     static final MethodHandle write$MH = RuntimeHelper.downcallHandle(
         fuse_operations.write$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*write)(char*,char*,size_t,off_t,struct fuse_file_info*);
+     * }
+     */
     public interface write {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, long _x2, long _x3, java.lang.foreign.MemoryAddress _x4);
-        static MemorySegment allocate(write fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(write.class, fi, fuse_operations.write$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, long _x2, long _x3, java.lang.foreign.MemorySegment _x4);
+        static MemorySegment allocate(write fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(write.class, fi, fuse_operations.write$FUNC, scope);
         }
-        static write ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, long __x2, long __x3, java.lang.foreign.MemoryAddress __x4) -> {
+        static write ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, long __x2, long __x3, java.lang.foreign.MemorySegment __x4) -> {
                 try {
-                    return (int)fuse_operations.write$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, __x2, __x3, (java.lang.foreign.Addressable)__x4);
+                    return (int)fuse_operations.write$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -806,20 +1137,32 @@ public class fuse_operations {
     public static VarHandle write$VH() {
         return fuse_operations.write$VH;
     }
-    public static MemoryAddress write$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.write$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*write)(char*,char*,size_t,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment write$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.write$VH.get(seg);
     }
-    public static void write$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*write)(char*,char*,size_t,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static void write$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.write$VH.set(seg, x);
     }
-    public static MemoryAddress write$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.write$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment write$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.write$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void write$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void write$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.write$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static write write (MemorySegment segment, MemorySession session) {
-        return write.ofAddress(write$get(segment), session);
+    public static write write(MemorySegment segment, SegmentScope scope) {
+        return write.ofAddress(write$get(segment), scope);
     }
     static final FunctionDescriptor statfs$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -828,17 +1171,22 @@ public class fuse_operations {
     static final MethodHandle statfs$MH = RuntimeHelper.downcallHandle(
         fuse_operations.statfs$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*statfs)(char*,struct statvfs*);
+     * }
+     */
     public interface statfs {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(statfs fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(statfs.class, fi, fuse_operations.statfs$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(statfs fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(statfs.class, fi, fuse_operations.statfs$FUNC, scope);
         }
-        static statfs ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static statfs ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.statfs$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.statfs$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -850,20 +1198,32 @@ public class fuse_operations {
     public static VarHandle statfs$VH() {
         return fuse_operations.statfs$VH;
     }
-    public static MemoryAddress statfs$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.statfs$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*statfs)(char*,struct statvfs*);
+     * }
+     */
+    public static MemorySegment statfs$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.statfs$VH.get(seg);
     }
-    public static void statfs$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*statfs)(char*,struct statvfs*);
+     * }
+     */
+    public static void statfs$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.statfs$VH.set(seg, x);
     }
-    public static MemoryAddress statfs$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.statfs$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment statfs$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.statfs$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void statfs$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void statfs$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.statfs$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static statfs statfs (MemorySegment segment, MemorySession session) {
-        return statfs.ofAddress(statfs$get(segment), session);
+    public static statfs statfs(MemorySegment segment, SegmentScope scope) {
+        return statfs.ofAddress(statfs$get(segment), scope);
     }
     static final FunctionDescriptor flush$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -872,17 +1232,22 @@ public class fuse_operations {
     static final MethodHandle flush$MH = RuntimeHelper.downcallHandle(
         fuse_operations.flush$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*flush)(char*,struct fuse_file_info*);
+     * }
+     */
     public interface flush {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(flush fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(flush.class, fi, fuse_operations.flush$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(flush fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(flush.class, fi, fuse_operations.flush$FUNC, scope);
         }
-        static flush ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static flush ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.flush$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.flush$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -894,20 +1259,32 @@ public class fuse_operations {
     public static VarHandle flush$VH() {
         return fuse_operations.flush$VH;
     }
-    public static MemoryAddress flush$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.flush$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*flush)(char*,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment flush$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.flush$VH.get(seg);
     }
-    public static void flush$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*flush)(char*,struct fuse_file_info*);
+     * }
+     */
+    public static void flush$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.flush$VH.set(seg, x);
     }
-    public static MemoryAddress flush$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.flush$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment flush$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.flush$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void flush$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void flush$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.flush$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static flush flush (MemorySegment segment, MemorySession session) {
-        return flush.ofAddress(flush$get(segment), session);
+    public static flush flush(MemorySegment segment, SegmentScope scope) {
+        return flush.ofAddress(flush$get(segment), scope);
     }
     static final FunctionDescriptor release$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -916,17 +1293,22 @@ public class fuse_operations {
     static final MethodHandle release$MH = RuntimeHelper.downcallHandle(
         fuse_operations.release$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*release)(char*,struct fuse_file_info*);
+     * }
+     */
     public interface release {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(release fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(release.class, fi, fuse_operations.release$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(release fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(release.class, fi, fuse_operations.release$FUNC, scope);
         }
-        static release ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static release ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.release$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.release$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -938,20 +1320,32 @@ public class fuse_operations {
     public static VarHandle release$VH() {
         return fuse_operations.release$VH;
     }
-    public static MemoryAddress release$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.release$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*release)(char*,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment release$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.release$VH.get(seg);
     }
-    public static void release$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*release)(char*,struct fuse_file_info*);
+     * }
+     */
+    public static void release$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.release$VH.set(seg, x);
     }
-    public static MemoryAddress release$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.release$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment release$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.release$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void release$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void release$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.release$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static release release (MemorySegment segment, MemorySession session) {
-        return release.ofAddress(release$get(segment), session);
+    public static release release(MemorySegment segment, SegmentScope scope) {
+        return release.ofAddress(release$get(segment), scope);
     }
     static final FunctionDescriptor fsync$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -961,17 +1355,22 @@ public class fuse_operations {
     static final MethodHandle fsync$MH = RuntimeHelper.downcallHandle(
         fuse_operations.fsync$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*fsync)(char*,int,struct fuse_file_info*);
+     * }
+     */
     public interface fsync {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, int _x1, java.lang.foreign.MemoryAddress _x2);
-        static MemorySegment allocate(fsync fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(fsync.class, fi, fuse_operations.fsync$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, int _x1, java.lang.foreign.MemorySegment _x2);
+        static MemorySegment allocate(fsync fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(fsync.class, fi, fuse_operations.fsync$FUNC, scope);
         }
-        static fsync ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, int __x1, java.lang.foreign.MemoryAddress __x2) -> {
+        static fsync ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, int __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse_operations.fsync$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1, (java.lang.foreign.Addressable)__x2);
+                    return (int)fuse_operations.fsync$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -983,20 +1382,32 @@ public class fuse_operations {
     public static VarHandle fsync$VH() {
         return fuse_operations.fsync$VH;
     }
-    public static MemoryAddress fsync$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.fsync$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*fsync)(char*,int,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment fsync$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.fsync$VH.get(seg);
     }
-    public static void fsync$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*fsync)(char*,int,struct fuse_file_info*);
+     * }
+     */
+    public static void fsync$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.fsync$VH.set(seg, x);
     }
-    public static MemoryAddress fsync$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.fsync$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment fsync$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.fsync$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void fsync$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void fsync$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.fsync$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static fsync fsync (MemorySegment segment, MemorySession session) {
-        return fsync.ofAddress(fsync$get(segment), session);
+    public static fsync fsync(MemorySegment segment, SegmentScope scope) {
+        return fsync.ofAddress(fsync$get(segment), scope);
     }
     static final FunctionDescriptor setxattr$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1008,17 +1419,22 @@ public class fuse_operations {
     static final MethodHandle setxattr$MH = RuntimeHelper.downcallHandle(
         fuse_operations.setxattr$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*setxattr)(char*,char*,char*,size_t,int);
+     * }
+     */
     public interface setxattr {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, java.lang.foreign.MemoryAddress _x2, long _x3, int _x4);
-        static MemorySegment allocate(setxattr fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(setxattr.class, fi, fuse_operations.setxattr$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, java.lang.foreign.MemorySegment _x2, long _x3, int _x4);
+        static MemorySegment allocate(setxattr fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(setxattr.class, fi, fuse_operations.setxattr$FUNC, scope);
         }
-        static setxattr ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, java.lang.foreign.MemoryAddress __x2, long __x3, int __x4) -> {
+        static setxattr ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, java.lang.foreign.MemorySegment __x2, long __x3, int __x4) -> {
                 try {
-                    return (int)fuse_operations.setxattr$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, (java.lang.foreign.Addressable)__x2, __x3, __x4);
+                    return (int)fuse_operations.setxattr$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1030,20 +1446,32 @@ public class fuse_operations {
     public static VarHandle setxattr$VH() {
         return fuse_operations.setxattr$VH;
     }
-    public static MemoryAddress setxattr$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.setxattr$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*setxattr)(char*,char*,char*,size_t,int);
+     * }
+     */
+    public static MemorySegment setxattr$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.setxattr$VH.get(seg);
     }
-    public static void setxattr$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*setxattr)(char*,char*,char*,size_t,int);
+     * }
+     */
+    public static void setxattr$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.setxattr$VH.set(seg, x);
     }
-    public static MemoryAddress setxattr$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.setxattr$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment setxattr$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.setxattr$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void setxattr$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void setxattr$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.setxattr$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static setxattr setxattr (MemorySegment segment, MemorySession session) {
-        return setxattr.ofAddress(setxattr$get(segment), session);
+    public static setxattr setxattr(MemorySegment segment, SegmentScope scope) {
+        return setxattr.ofAddress(setxattr$get(segment), scope);
     }
     static final FunctionDescriptor getxattr$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1054,17 +1482,22 @@ public class fuse_operations {
     static final MethodHandle getxattr$MH = RuntimeHelper.downcallHandle(
         fuse_operations.getxattr$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*getxattr)(char*,char*,char*,size_t);
+     * }
+     */
     public interface getxattr {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, java.lang.foreign.MemoryAddress _x2, long _x3);
-        static MemorySegment allocate(getxattr fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(getxattr.class, fi, fuse_operations.getxattr$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, java.lang.foreign.MemorySegment _x2, long _x3);
+        static MemorySegment allocate(getxattr fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(getxattr.class, fi, fuse_operations.getxattr$FUNC, scope);
         }
-        static getxattr ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, java.lang.foreign.MemoryAddress __x2, long __x3) -> {
+        static getxattr ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, java.lang.foreign.MemorySegment __x2, long __x3) -> {
                 try {
-                    return (int)fuse_operations.getxattr$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, (java.lang.foreign.Addressable)__x2, __x3);
+                    return (int)fuse_operations.getxattr$MH.invokeExact(symbol, __x0, __x1, __x2, __x3);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1076,20 +1509,32 @@ public class fuse_operations {
     public static VarHandle getxattr$VH() {
         return fuse_operations.getxattr$VH;
     }
-    public static MemoryAddress getxattr$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.getxattr$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*getxattr)(char*,char*,char*,size_t);
+     * }
+     */
+    public static MemorySegment getxattr$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.getxattr$VH.get(seg);
     }
-    public static void getxattr$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*getxattr)(char*,char*,char*,size_t);
+     * }
+     */
+    public static void getxattr$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.getxattr$VH.set(seg, x);
     }
-    public static MemoryAddress getxattr$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.getxattr$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment getxattr$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.getxattr$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void getxattr$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void getxattr$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.getxattr$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static getxattr getxattr (MemorySegment segment, MemorySession session) {
-        return getxattr.ofAddress(getxattr$get(segment), session);
+    public static getxattr getxattr(MemorySegment segment, SegmentScope scope) {
+        return getxattr.ofAddress(getxattr$get(segment), scope);
     }
     static final FunctionDescriptor listxattr$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1099,17 +1544,22 @@ public class fuse_operations {
     static final MethodHandle listxattr$MH = RuntimeHelper.downcallHandle(
         fuse_operations.listxattr$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*listxattr)(char*,char*,size_t);
+     * }
+     */
     public interface listxattr {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, long _x2);
-        static MemorySegment allocate(listxattr fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(listxattr.class, fi, fuse_operations.listxattr$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, long _x2);
+        static MemorySegment allocate(listxattr fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(listxattr.class, fi, fuse_operations.listxattr$FUNC, scope);
         }
-        static listxattr ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, long __x2) -> {
+        static listxattr ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, long __x2) -> {
                 try {
-                    return (int)fuse_operations.listxattr$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, __x2);
+                    return (int)fuse_operations.listxattr$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1121,20 +1571,32 @@ public class fuse_operations {
     public static VarHandle listxattr$VH() {
         return fuse_operations.listxattr$VH;
     }
-    public static MemoryAddress listxattr$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.listxattr$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*listxattr)(char*,char*,size_t);
+     * }
+     */
+    public static MemorySegment listxattr$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.listxattr$VH.get(seg);
     }
-    public static void listxattr$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*listxattr)(char*,char*,size_t);
+     * }
+     */
+    public static void listxattr$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.listxattr$VH.set(seg, x);
     }
-    public static MemoryAddress listxattr$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.listxattr$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment listxattr$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.listxattr$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void listxattr$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void listxattr$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.listxattr$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static listxattr listxattr (MemorySegment segment, MemorySession session) {
-        return listxattr.ofAddress(listxattr$get(segment), session);
+    public static listxattr listxattr(MemorySegment segment, SegmentScope scope) {
+        return listxattr.ofAddress(listxattr$get(segment), scope);
     }
     static final FunctionDescriptor removexattr$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1143,17 +1605,22 @@ public class fuse_operations {
     static final MethodHandle removexattr$MH = RuntimeHelper.downcallHandle(
         fuse_operations.removexattr$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*removexattr)(char*,char*);
+     * }
+     */
     public interface removexattr {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(removexattr fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(removexattr.class, fi, fuse_operations.removexattr$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(removexattr fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(removexattr.class, fi, fuse_operations.removexattr$FUNC, scope);
         }
-        static removexattr ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static removexattr ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.removexattr$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.removexattr$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1165,20 +1632,32 @@ public class fuse_operations {
     public static VarHandle removexattr$VH() {
         return fuse_operations.removexattr$VH;
     }
-    public static MemoryAddress removexattr$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.removexattr$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*removexattr)(char*,char*);
+     * }
+     */
+    public static MemorySegment removexattr$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.removexattr$VH.get(seg);
     }
-    public static void removexattr$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*removexattr)(char*,char*);
+     * }
+     */
+    public static void removexattr$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.removexattr$VH.set(seg, x);
     }
-    public static MemoryAddress removexattr$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.removexattr$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment removexattr$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.removexattr$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void removexattr$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void removexattr$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.removexattr$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static removexattr removexattr (MemorySegment segment, MemorySession session) {
-        return removexattr.ofAddress(removexattr$get(segment), session);
+    public static removexattr removexattr(MemorySegment segment, SegmentScope scope) {
+        return removexattr.ofAddress(removexattr$get(segment), scope);
     }
     static final FunctionDescriptor opendir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1187,17 +1666,22 @@ public class fuse_operations {
     static final MethodHandle opendir$MH = RuntimeHelper.downcallHandle(
         fuse_operations.opendir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*opendir)(char*,struct fuse_file_info*);
+     * }
+     */
     public interface opendir {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(opendir fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(opendir.class, fi, fuse_operations.opendir$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(opendir fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(opendir.class, fi, fuse_operations.opendir$FUNC, scope);
         }
-        static opendir ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static opendir ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.opendir$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.opendir$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1209,20 +1693,32 @@ public class fuse_operations {
     public static VarHandle opendir$VH() {
         return fuse_operations.opendir$VH;
     }
-    public static MemoryAddress opendir$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.opendir$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*opendir)(char*,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment opendir$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.opendir$VH.get(seg);
     }
-    public static void opendir$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*opendir)(char*,struct fuse_file_info*);
+     * }
+     */
+    public static void opendir$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.opendir$VH.set(seg, x);
     }
-    public static MemoryAddress opendir$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.opendir$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment opendir$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.opendir$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void opendir$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void opendir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.opendir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static opendir opendir (MemorySegment segment, MemorySession session) {
-        return opendir.ofAddress(opendir$get(segment), session);
+    public static opendir opendir(MemorySegment segment, SegmentScope scope) {
+        return opendir.ofAddress(opendir$get(segment), scope);
     }
     static final FunctionDescriptor readdir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1234,17 +1730,22 @@ public class fuse_operations {
     static final MethodHandle readdir$MH = RuntimeHelper.downcallHandle(
         fuse_operations.readdir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*readdir)(char*,void*,fuse_fill_dir_t,off_t,struct fuse_file_info*);
+     * }
+     */
     public interface readdir {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, java.lang.foreign.MemoryAddress _x2, long _x3, java.lang.foreign.MemoryAddress _x4);
-        static MemorySegment allocate(readdir fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(readdir.class, fi, fuse_operations.readdir$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, java.lang.foreign.MemorySegment _x2, long _x3, java.lang.foreign.MemorySegment _x4);
+        static MemorySegment allocate(readdir fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(readdir.class, fi, fuse_operations.readdir$FUNC, scope);
         }
-        static readdir ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, java.lang.foreign.MemoryAddress __x2, long __x3, java.lang.foreign.MemoryAddress __x4) -> {
+        static readdir ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, java.lang.foreign.MemorySegment __x2, long __x3, java.lang.foreign.MemorySegment __x4) -> {
                 try {
-                    return (int)fuse_operations.readdir$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, (java.lang.foreign.Addressable)__x2, __x3, (java.lang.foreign.Addressable)__x4);
+                    return (int)fuse_operations.readdir$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1256,20 +1757,32 @@ public class fuse_operations {
     public static VarHandle readdir$VH() {
         return fuse_operations.readdir$VH;
     }
-    public static MemoryAddress readdir$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.readdir$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*readdir)(char*,void*,fuse_fill_dir_t,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment readdir$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.readdir$VH.get(seg);
     }
-    public static void readdir$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*readdir)(char*,void*,fuse_fill_dir_t,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static void readdir$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.readdir$VH.set(seg, x);
     }
-    public static MemoryAddress readdir$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.readdir$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment readdir$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.readdir$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void readdir$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void readdir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.readdir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static readdir readdir (MemorySegment segment, MemorySession session) {
-        return readdir.ofAddress(readdir$get(segment), session);
+    public static readdir readdir(MemorySegment segment, SegmentScope scope) {
+        return readdir.ofAddress(readdir$get(segment), scope);
     }
     static final FunctionDescriptor releasedir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1278,17 +1791,22 @@ public class fuse_operations {
     static final MethodHandle releasedir$MH = RuntimeHelper.downcallHandle(
         fuse_operations.releasedir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*releasedir)(char*,struct fuse_file_info*);
+     * }
+     */
     public interface releasedir {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(releasedir fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(releasedir.class, fi, fuse_operations.releasedir$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(releasedir fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(releasedir.class, fi, fuse_operations.releasedir$FUNC, scope);
         }
-        static releasedir ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static releasedir ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.releasedir$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.releasedir$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1300,20 +1818,32 @@ public class fuse_operations {
     public static VarHandle releasedir$VH() {
         return fuse_operations.releasedir$VH;
     }
-    public static MemoryAddress releasedir$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.releasedir$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*releasedir)(char*,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment releasedir$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.releasedir$VH.get(seg);
     }
-    public static void releasedir$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*releasedir)(char*,struct fuse_file_info*);
+     * }
+     */
+    public static void releasedir$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.releasedir$VH.set(seg, x);
     }
-    public static MemoryAddress releasedir$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.releasedir$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment releasedir$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.releasedir$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void releasedir$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void releasedir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.releasedir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static releasedir releasedir (MemorySegment segment, MemorySession session) {
-        return releasedir.ofAddress(releasedir$get(segment), session);
+    public static releasedir releasedir(MemorySegment segment, SegmentScope scope) {
+        return releasedir.ofAddress(releasedir$get(segment), scope);
     }
     static final FunctionDescriptor fsyncdir$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1323,17 +1853,22 @@ public class fuse_operations {
     static final MethodHandle fsyncdir$MH = RuntimeHelper.downcallHandle(
         fuse_operations.fsyncdir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*fsyncdir)(char*,int,struct fuse_file_info*);
+     * }
+     */
     public interface fsyncdir {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, int _x1, java.lang.foreign.MemoryAddress _x2);
-        static MemorySegment allocate(fsyncdir fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(fsyncdir.class, fi, fuse_operations.fsyncdir$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, int _x1, java.lang.foreign.MemorySegment _x2);
+        static MemorySegment allocate(fsyncdir fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(fsyncdir.class, fi, fuse_operations.fsyncdir$FUNC, scope);
         }
-        static fsyncdir ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, int __x1, java.lang.foreign.MemoryAddress __x2) -> {
+        static fsyncdir ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, int __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse_operations.fsyncdir$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1, (java.lang.foreign.Addressable)__x2);
+                    return (int)fuse_operations.fsyncdir$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1345,20 +1880,32 @@ public class fuse_operations {
     public static VarHandle fsyncdir$VH() {
         return fuse_operations.fsyncdir$VH;
     }
-    public static MemoryAddress fsyncdir$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.fsyncdir$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*fsyncdir)(char*,int,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment fsyncdir$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.fsyncdir$VH.get(seg);
     }
-    public static void fsyncdir$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*fsyncdir)(char*,int,struct fuse_file_info*);
+     * }
+     */
+    public static void fsyncdir$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.fsyncdir$VH.set(seg, x);
     }
-    public static MemoryAddress fsyncdir$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.fsyncdir$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment fsyncdir$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.fsyncdir$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void fsyncdir$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void fsyncdir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.fsyncdir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static fsyncdir fsyncdir (MemorySegment segment, MemorySession session) {
-        return fsyncdir.ofAddress(fsyncdir$get(segment), session);
+    public static fsyncdir fsyncdir(MemorySegment segment, SegmentScope scope) {
+        return fsyncdir.ofAddress(fsyncdir$get(segment), scope);
     }
     static final FunctionDescriptor init$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT,
         Constants$root.C_POINTER$LAYOUT
@@ -1366,17 +1913,22 @@ public class fuse_operations {
     static final MethodHandle init$MH = RuntimeHelper.downcallHandle(
         fuse_operations.init$FUNC
     );
+    /**
+     * {@snippet :
+ * void* (*init)(struct fuse_conn_info*);
+     * }
+     */
     public interface init {
 
-        java.lang.foreign.Addressable apply(java.lang.foreign.MemoryAddress _x0);
-        static MemorySegment allocate(init fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(init.class, fi, fuse_operations.init$FUNC, session);
+        java.lang.foreign.MemorySegment apply(java.lang.foreign.MemorySegment _x0);
+        static MemorySegment allocate(init fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(init.class, fi, fuse_operations.init$FUNC, scope);
         }
-        static init ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0) -> {
+        static init ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0) -> {
                 try {
-                    return (java.lang.foreign.Addressable)(java.lang.foreign.MemoryAddress)fuse_operations.init$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0);
+                    return (java.lang.foreign.MemorySegment)fuse_operations.init$MH.invokeExact(symbol, __x0);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1388,20 +1940,32 @@ public class fuse_operations {
     public static VarHandle init$VH() {
         return fuse_operations.init$VH;
     }
-    public static MemoryAddress init$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.init$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * void* (*init)(struct fuse_conn_info*);
+     * }
+     */
+    public static MemorySegment init$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.init$VH.get(seg);
     }
-    public static void init$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * void* (*init)(struct fuse_conn_info*);
+     * }
+     */
+    public static void init$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.init$VH.set(seg, x);
     }
-    public static MemoryAddress init$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.init$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment init$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.init$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void init$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void init$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.init$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static init init (MemorySegment segment, MemorySession session) {
-        return init.ofAddress(init$get(segment), session);
+    public static init init(MemorySegment segment, SegmentScope scope) {
+        return init.ofAddress(init$get(segment), scope);
     }
     static final FunctionDescriptor destroy$FUNC = FunctionDescriptor.ofVoid(
         Constants$root.C_POINTER$LAYOUT
@@ -1409,17 +1973,22 @@ public class fuse_operations {
     static final MethodHandle destroy$MH = RuntimeHelper.downcallHandle(
         fuse_operations.destroy$FUNC
     );
+    /**
+     * {@snippet :
+ * void (*destroy)(void*);
+     * }
+     */
     public interface destroy {
 
-        void apply(java.lang.foreign.MemoryAddress _x0);
-        static MemorySegment allocate(destroy fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(destroy.class, fi, fuse_operations.destroy$FUNC, session);
+        void apply(java.lang.foreign.MemorySegment _x0);
+        static MemorySegment allocate(destroy fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(destroy.class, fi, fuse_operations.destroy$FUNC, scope);
         }
-        static destroy ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0) -> {
+        static destroy ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0) -> {
                 try {
-                    fuse_operations.destroy$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0);
+                    fuse_operations.destroy$MH.invokeExact(symbol, __x0);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1431,20 +2000,32 @@ public class fuse_operations {
     public static VarHandle destroy$VH() {
         return fuse_operations.destroy$VH;
     }
-    public static MemoryAddress destroy$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.destroy$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * void (*destroy)(void*);
+     * }
+     */
+    public static MemorySegment destroy$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.destroy$VH.get(seg);
     }
-    public static void destroy$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * void (*destroy)(void*);
+     * }
+     */
+    public static void destroy$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.destroy$VH.set(seg, x);
     }
-    public static MemoryAddress destroy$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.destroy$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment destroy$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.destroy$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void destroy$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void destroy$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.destroy$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static destroy destroy (MemorySegment segment, MemorySession session) {
-        return destroy.ofAddress(destroy$get(segment), session);
+    public static destroy destroy(MemorySegment segment, SegmentScope scope) {
+        return destroy.ofAddress(destroy$get(segment), scope);
     }
     static final FunctionDescriptor access$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1453,17 +2034,22 @@ public class fuse_operations {
     static final MethodHandle access$MH = RuntimeHelper.downcallHandle(
         fuse_operations.access$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*access)(char*,int);
+     * }
+     */
     public interface access {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, int _x1);
-        static MemorySegment allocate(access fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(access.class, fi, fuse_operations.access$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, int _x1);
+        static MemorySegment allocate(access fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(access.class, fi, fuse_operations.access$FUNC, scope);
         }
-        static access ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, int __x1) -> {
+        static access ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, int __x1) -> {
                 try {
-                    return (int)fuse_operations.access$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1);
+                    return (int)fuse_operations.access$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1475,20 +2061,32 @@ public class fuse_operations {
     public static VarHandle access$VH() {
         return fuse_operations.access$VH;
     }
-    public static MemoryAddress access$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.access$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*access)(char*,int);
+     * }
+     */
+    public static MemorySegment access$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.access$VH.get(seg);
     }
-    public static void access$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*access)(char*,int);
+     * }
+     */
+    public static void access$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.access$VH.set(seg, x);
     }
-    public static MemoryAddress access$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.access$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment access$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.access$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void access$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void access$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.access$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static access access (MemorySegment segment, MemorySession session) {
-        return access.ofAddress(access$get(segment), session);
+    public static access access(MemorySegment segment, SegmentScope scope) {
+        return access.ofAddress(access$get(segment), scope);
     }
     static final FunctionDescriptor create$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1498,17 +2096,22 @@ public class fuse_operations {
     static final MethodHandle create$MH = RuntimeHelper.downcallHandle(
         fuse_operations.create$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*create)(char*,mode_t,struct fuse_file_info*);
+     * }
+     */
     public interface create {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, short _x1, java.lang.foreign.MemoryAddress _x2);
-        static MemorySegment allocate(create fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(create.class, fi, fuse_operations.create$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, short _x1, java.lang.foreign.MemorySegment _x2);
+        static MemorySegment allocate(create fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(create.class, fi, fuse_operations.create$FUNC, scope);
         }
-        static create ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, short __x1, java.lang.foreign.MemoryAddress __x2) -> {
+        static create ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, short __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse_operations.create$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1, (java.lang.foreign.Addressable)__x2);
+                    return (int)fuse_operations.create$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1520,20 +2123,32 @@ public class fuse_operations {
     public static VarHandle create$VH() {
         return fuse_operations.create$VH;
     }
-    public static MemoryAddress create$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.create$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*create)(char*,mode_t,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment create$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.create$VH.get(seg);
     }
-    public static void create$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*create)(char*,mode_t,struct fuse_file_info*);
+     * }
+     */
+    public static void create$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.create$VH.set(seg, x);
     }
-    public static MemoryAddress create$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.create$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment create$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.create$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void create$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void create$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.create$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static create create (MemorySegment segment, MemorySession session) {
-        return create.ofAddress(create$get(segment), session);
+    public static create create(MemorySegment segment, SegmentScope scope) {
+        return create.ofAddress(create$get(segment), scope);
     }
     static final FunctionDescriptor ftruncate$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1543,17 +2158,22 @@ public class fuse_operations {
     static final MethodHandle ftruncate$MH = RuntimeHelper.downcallHandle(
         fuse_operations.ftruncate$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*ftruncate)(char*,off_t,struct fuse_file_info*);
+     * }
+     */
     public interface ftruncate {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, long _x1, java.lang.foreign.MemoryAddress _x2);
-        static MemorySegment allocate(ftruncate fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(ftruncate.class, fi, fuse_operations.ftruncate$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, long _x1, java.lang.foreign.MemorySegment _x2);
+        static MemorySegment allocate(ftruncate fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(ftruncate.class, fi, fuse_operations.ftruncate$FUNC, scope);
         }
-        static ftruncate ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, long __x1, java.lang.foreign.MemoryAddress __x2) -> {
+        static ftruncate ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, long __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse_operations.ftruncate$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1, (java.lang.foreign.Addressable)__x2);
+                    return (int)fuse_operations.ftruncate$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1565,20 +2185,32 @@ public class fuse_operations {
     public static VarHandle ftruncate$VH() {
         return fuse_operations.ftruncate$VH;
     }
-    public static MemoryAddress ftruncate$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.ftruncate$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*ftruncate)(char*,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment ftruncate$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.ftruncate$VH.get(seg);
     }
-    public static void ftruncate$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*ftruncate)(char*,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static void ftruncate$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.ftruncate$VH.set(seg, x);
     }
-    public static MemoryAddress ftruncate$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.ftruncate$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment ftruncate$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.ftruncate$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void ftruncate$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void ftruncate$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.ftruncate$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static ftruncate ftruncate (MemorySegment segment, MemorySession session) {
-        return ftruncate.ofAddress(ftruncate$get(segment), session);
+    public static ftruncate ftruncate(MemorySegment segment, SegmentScope scope) {
+        return ftruncate.ofAddress(ftruncate$get(segment), scope);
     }
     static final FunctionDescriptor fgetattr$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1588,17 +2220,22 @@ public class fuse_operations {
     static final MethodHandle fgetattr$MH = RuntimeHelper.downcallHandle(
         fuse_operations.fgetattr$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*fgetattr)(char*,struct stat*,struct fuse_file_info*);
+     * }
+     */
     public interface fgetattr {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, java.lang.foreign.MemoryAddress _x2);
-        static MemorySegment allocate(fgetattr fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(fgetattr.class, fi, fuse_operations.fgetattr$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, java.lang.foreign.MemorySegment _x2);
+        static MemorySegment allocate(fgetattr fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(fgetattr.class, fi, fuse_operations.fgetattr$FUNC, scope);
         }
-        static fgetattr ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, java.lang.foreign.MemoryAddress __x2) -> {
+        static fgetattr ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse_operations.fgetattr$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, (java.lang.foreign.Addressable)__x2);
+                    return (int)fuse_operations.fgetattr$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1610,20 +2247,32 @@ public class fuse_operations {
     public static VarHandle fgetattr$VH() {
         return fuse_operations.fgetattr$VH;
     }
-    public static MemoryAddress fgetattr$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.fgetattr$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*fgetattr)(char*,struct stat*,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment fgetattr$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.fgetattr$VH.get(seg);
     }
-    public static void fgetattr$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*fgetattr)(char*,struct stat*,struct fuse_file_info*);
+     * }
+     */
+    public static void fgetattr$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.fgetattr$VH.set(seg, x);
     }
-    public static MemoryAddress fgetattr$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.fgetattr$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment fgetattr$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.fgetattr$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void fgetattr$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void fgetattr$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.fgetattr$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static fgetattr fgetattr (MemorySegment segment, MemorySession session) {
-        return fgetattr.ofAddress(fgetattr$get(segment), session);
+    public static fgetattr fgetattr(MemorySegment segment, SegmentScope scope) {
+        return fgetattr.ofAddress(fgetattr$get(segment), scope);
     }
     static final FunctionDescriptor lock$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1634,17 +2283,22 @@ public class fuse_operations {
     static final MethodHandle lock$MH = RuntimeHelper.downcallHandle(
         fuse_operations.lock$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*lock)(char*,struct fuse_file_info*,int,struct flock*);
+     * }
+     */
     public interface lock {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, int _x2, java.lang.foreign.MemoryAddress _x3);
-        static MemorySegment allocate(lock fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(lock.class, fi, fuse_operations.lock$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, int _x2, java.lang.foreign.MemorySegment _x3);
+        static MemorySegment allocate(lock fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(lock.class, fi, fuse_operations.lock$FUNC, scope);
         }
-        static lock ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, int __x2, java.lang.foreign.MemoryAddress __x3) -> {
+        static lock ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, int __x2, java.lang.foreign.MemorySegment __x3) -> {
                 try {
-                    return (int)fuse_operations.lock$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, __x2, (java.lang.foreign.Addressable)__x3);
+                    return (int)fuse_operations.lock$MH.invokeExact(symbol, __x0, __x1, __x2, __x3);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1656,20 +2310,32 @@ public class fuse_operations {
     public static VarHandle lock$VH() {
         return fuse_operations.lock$VH;
     }
-    public static MemoryAddress lock$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.lock$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*lock)(char*,struct fuse_file_info*,int,struct flock*);
+     * }
+     */
+    public static MemorySegment lock$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.lock$VH.get(seg);
     }
-    public static void lock$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*lock)(char*,struct fuse_file_info*,int,struct flock*);
+     * }
+     */
+    public static void lock$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.lock$VH.set(seg, x);
     }
-    public static MemoryAddress lock$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.lock$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment lock$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.lock$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void lock$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void lock$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.lock$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static lock lock (MemorySegment segment, MemorySession session) {
-        return lock.ofAddress(lock$get(segment), session);
+    public static lock lock(MemorySegment segment, SegmentScope scope) {
+        return lock.ofAddress(lock$get(segment), scope);
     }
     static final FunctionDescriptor utimens$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1678,17 +2344,22 @@ public class fuse_operations {
     static final MethodHandle utimens$MH = RuntimeHelper.downcallHandle(
         fuse_operations.utimens$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*utimens)(char*,struct timespec*);
+     * }
+     */
     public interface utimens {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1);
-        static MemorySegment allocate(utimens fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(utimens.class, fi, fuse_operations.utimens$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
+        static MemorySegment allocate(utimens fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(utimens.class, fi, fuse_operations.utimens$FUNC, scope);
         }
-        static utimens ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1) -> {
+        static utimens ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse_operations.utimens$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1);
+                    return (int)fuse_operations.utimens$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1700,20 +2371,32 @@ public class fuse_operations {
     public static VarHandle utimens$VH() {
         return fuse_operations.utimens$VH;
     }
-    public static MemoryAddress utimens$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.utimens$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*utimens)(char*,struct timespec*);
+     * }
+     */
+    public static MemorySegment utimens$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.utimens$VH.get(seg);
     }
-    public static void utimens$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*utimens)(char*,struct timespec*);
+     * }
+     */
+    public static void utimens$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.utimens$VH.set(seg, x);
     }
-    public static MemoryAddress utimens$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.utimens$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment utimens$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.utimens$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void utimens$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void utimens$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.utimens$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static utimens utimens (MemorySegment segment, MemorySession session) {
-        return utimens.ofAddress(utimens$get(segment), session);
+    public static utimens utimens(MemorySegment segment, SegmentScope scope) {
+        return utimens.ofAddress(utimens$get(segment), scope);
     }
     static final FunctionDescriptor bmap$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1723,17 +2406,22 @@ public class fuse_operations {
     static final MethodHandle bmap$MH = RuntimeHelper.downcallHandle(
         fuse_operations.bmap$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*bmap)(char*,size_t,uint64_t*);
+     * }
+     */
     public interface bmap {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, long _x1, java.lang.foreign.MemoryAddress _x2);
-        static MemorySegment allocate(bmap fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(bmap.class, fi, fuse_operations.bmap$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, long _x1, java.lang.foreign.MemorySegment _x2);
+        static MemorySegment allocate(bmap fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(bmap.class, fi, fuse_operations.bmap$FUNC, scope);
         }
-        static bmap ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, long __x1, java.lang.foreign.MemoryAddress __x2) -> {
+        static bmap ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, long __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse_operations.bmap$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1, (java.lang.foreign.Addressable)__x2);
+                    return (int)fuse_operations.bmap$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1745,20 +2433,32 @@ public class fuse_operations {
     public static VarHandle bmap$VH() {
         return fuse_operations.bmap$VH;
     }
-    public static MemoryAddress bmap$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.bmap$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*bmap)(char*,size_t,uint64_t*);
+     * }
+     */
+    public static MemorySegment bmap$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.bmap$VH.get(seg);
     }
-    public static void bmap$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*bmap)(char*,size_t,uint64_t*);
+     * }
+     */
+    public static void bmap$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.bmap$VH.set(seg, x);
     }
-    public static MemoryAddress bmap$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.bmap$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment bmap$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.bmap$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void bmap$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void bmap$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.bmap$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static bmap bmap (MemorySegment segment, MemorySession session) {
-        return bmap.ofAddress(bmap$get(segment), session);
+    public static bmap bmap(MemorySegment segment, SegmentScope scope) {
+        return bmap.ofAddress(bmap$get(segment), scope);
     }
     static final FunctionDescriptor ioctl$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1771,17 +2471,22 @@ public class fuse_operations {
     static final MethodHandle ioctl$MH = RuntimeHelper.downcallHandle(
         fuse_operations.ioctl$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*ioctl)(char*,int,void*,struct fuse_file_info*,unsigned int,void*);
+     * }
+     */
     public interface ioctl {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, int _x1, java.lang.foreign.MemoryAddress _x2, java.lang.foreign.MemoryAddress _x3, int _x4, java.lang.foreign.MemoryAddress _x5);
-        static MemorySegment allocate(ioctl fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(ioctl.class, fi, fuse_operations.ioctl$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, int _x1, java.lang.foreign.MemorySegment _x2, java.lang.foreign.MemorySegment _x3, int _x4, java.lang.foreign.MemorySegment _x5);
+        static MemorySegment allocate(ioctl fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(ioctl.class, fi, fuse_operations.ioctl$FUNC, scope);
         }
-        static ioctl ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, int __x1, java.lang.foreign.MemoryAddress __x2, java.lang.foreign.MemoryAddress __x3, int __x4, java.lang.foreign.MemoryAddress __x5) -> {
+        static ioctl ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, int __x1, java.lang.foreign.MemorySegment __x2, java.lang.foreign.MemorySegment __x3, int __x4, java.lang.foreign.MemorySegment __x5) -> {
                 try {
-                    return (int)fuse_operations.ioctl$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1, (java.lang.foreign.Addressable)__x2, (java.lang.foreign.Addressable)__x3, __x4, (java.lang.foreign.Addressable)__x5);
+                    return (int)fuse_operations.ioctl$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4, __x5);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1793,20 +2498,32 @@ public class fuse_operations {
     public static VarHandle ioctl$VH() {
         return fuse_operations.ioctl$VH;
     }
-    public static MemoryAddress ioctl$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.ioctl$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*ioctl)(char*,int,void*,struct fuse_file_info*,unsigned int,void*);
+     * }
+     */
+    public static MemorySegment ioctl$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.ioctl$VH.get(seg);
     }
-    public static void ioctl$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*ioctl)(char*,int,void*,struct fuse_file_info*,unsigned int,void*);
+     * }
+     */
+    public static void ioctl$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.ioctl$VH.set(seg, x);
     }
-    public static MemoryAddress ioctl$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.ioctl$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment ioctl$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.ioctl$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void ioctl$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void ioctl$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.ioctl$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static ioctl ioctl (MemorySegment segment, MemorySession session) {
-        return ioctl.ofAddress(ioctl$get(segment), session);
+    public static ioctl ioctl(MemorySegment segment, SegmentScope scope) {
+        return ioctl.ofAddress(ioctl$get(segment), scope);
     }
     static final FunctionDescriptor poll$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1817,17 +2534,22 @@ public class fuse_operations {
     static final MethodHandle poll$MH = RuntimeHelper.downcallHandle(
         fuse_operations.poll$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*poll)(char*,struct fuse_file_info*,struct fuse_pollhandle*,unsigned int*);
+     * }
+     */
     public interface poll {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, java.lang.foreign.MemoryAddress _x2, java.lang.foreign.MemoryAddress _x3);
-        static MemorySegment allocate(poll fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(poll.class, fi, fuse_operations.poll$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, java.lang.foreign.MemorySegment _x2, java.lang.foreign.MemorySegment _x3);
+        static MemorySegment allocate(poll fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(poll.class, fi, fuse_operations.poll$FUNC, scope);
         }
-        static poll ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, java.lang.foreign.MemoryAddress __x2, java.lang.foreign.MemoryAddress __x3) -> {
+        static poll ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, java.lang.foreign.MemorySegment __x2, java.lang.foreign.MemorySegment __x3) -> {
                 try {
-                    return (int)fuse_operations.poll$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, (java.lang.foreign.Addressable)__x2, (java.lang.foreign.Addressable)__x3);
+                    return (int)fuse_operations.poll$MH.invokeExact(symbol, __x0, __x1, __x2, __x3);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1839,20 +2561,32 @@ public class fuse_operations {
     public static VarHandle poll$VH() {
         return fuse_operations.poll$VH;
     }
-    public static MemoryAddress poll$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.poll$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*poll)(char*,struct fuse_file_info*,struct fuse_pollhandle*,unsigned int*);
+     * }
+     */
+    public static MemorySegment poll$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.poll$VH.get(seg);
     }
-    public static void poll$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*poll)(char*,struct fuse_file_info*,struct fuse_pollhandle*,unsigned int*);
+     * }
+     */
+    public static void poll$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.poll$VH.set(seg, x);
     }
-    public static MemoryAddress poll$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.poll$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment poll$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.poll$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void poll$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void poll$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.poll$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static poll poll (MemorySegment segment, MemorySession session) {
-        return poll.ofAddress(poll$get(segment), session);
+    public static poll poll(MemorySegment segment, SegmentScope scope) {
+        return poll.ofAddress(poll$get(segment), scope);
     }
     static final FunctionDescriptor write_buf$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1863,17 +2597,22 @@ public class fuse_operations {
     static final MethodHandle write_buf$MH = RuntimeHelper.downcallHandle(
         fuse_operations.write_buf$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*write_buf)(char*,struct fuse_bufvec*,off_t,struct fuse_file_info*);
+     * }
+     */
     public interface write_buf {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, long _x2, java.lang.foreign.MemoryAddress _x3);
-        static MemorySegment allocate(write_buf fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(write_buf.class, fi, fuse_operations.write_buf$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, long _x2, java.lang.foreign.MemorySegment _x3);
+        static MemorySegment allocate(write_buf fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(write_buf.class, fi, fuse_operations.write_buf$FUNC, scope);
         }
-        static write_buf ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, long __x2, java.lang.foreign.MemoryAddress __x3) -> {
+        static write_buf ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, long __x2, java.lang.foreign.MemorySegment __x3) -> {
                 try {
-                    return (int)fuse_operations.write_buf$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, __x2, (java.lang.foreign.Addressable)__x3);
+                    return (int)fuse_operations.write_buf$MH.invokeExact(symbol, __x0, __x1, __x2, __x3);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1885,20 +2624,32 @@ public class fuse_operations {
     public static VarHandle write_buf$VH() {
         return fuse_operations.write_buf$VH;
     }
-    public static MemoryAddress write_buf$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.write_buf$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*write_buf)(char*,struct fuse_bufvec*,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment write_buf$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.write_buf$VH.get(seg);
     }
-    public static void write_buf$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*write_buf)(char*,struct fuse_bufvec*,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static void write_buf$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.write_buf$VH.set(seg, x);
     }
-    public static MemoryAddress write_buf$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.write_buf$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment write_buf$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.write_buf$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void write_buf$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void write_buf$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.write_buf$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static write_buf write_buf (MemorySegment segment, MemorySession session) {
-        return write_buf.ofAddress(write_buf$get(segment), session);
+    public static write_buf write_buf(MemorySegment segment, SegmentScope scope) {
+        return write_buf.ofAddress(write_buf$get(segment), scope);
     }
     static final FunctionDescriptor read_buf$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1910,17 +2661,22 @@ public class fuse_operations {
     static final MethodHandle read_buf$MH = RuntimeHelper.downcallHandle(
         fuse_operations.read_buf$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*read_buf)(char*,struct fuse_bufvec**,size_t,off_t,struct fuse_file_info*);
+     * }
+     */
     public interface read_buf {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, long _x2, long _x3, java.lang.foreign.MemoryAddress _x4);
-        static MemorySegment allocate(read_buf fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(read_buf.class, fi, fuse_operations.read_buf$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, long _x2, long _x3, java.lang.foreign.MemorySegment _x4);
+        static MemorySegment allocate(read_buf fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(read_buf.class, fi, fuse_operations.read_buf$FUNC, scope);
         }
-        static read_buf ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, long __x2, long __x3, java.lang.foreign.MemoryAddress __x4) -> {
+        static read_buf ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, long __x2, long __x3, java.lang.foreign.MemorySegment __x4) -> {
                 try {
-                    return (int)fuse_operations.read_buf$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, __x2, __x3, (java.lang.foreign.Addressable)__x4);
+                    return (int)fuse_operations.read_buf$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1932,20 +2688,32 @@ public class fuse_operations {
     public static VarHandle read_buf$VH() {
         return fuse_operations.read_buf$VH;
     }
-    public static MemoryAddress read_buf$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.read_buf$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*read_buf)(char*,struct fuse_bufvec**,size_t,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment read_buf$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.read_buf$VH.get(seg);
     }
-    public static void read_buf$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*read_buf)(char*,struct fuse_bufvec**,size_t,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static void read_buf$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.read_buf$VH.set(seg, x);
     }
-    public static MemoryAddress read_buf$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.read_buf$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment read_buf$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.read_buf$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void read_buf$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void read_buf$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.read_buf$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static read_buf read_buf (MemorySegment segment, MemorySession session) {
-        return read_buf.ofAddress(read_buf$get(segment), session);
+    public static read_buf read_buf(MemorySegment segment, SegmentScope scope) {
+        return read_buf.ofAddress(read_buf$get(segment), scope);
     }
     static final FunctionDescriptor flock$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -1955,17 +2723,22 @@ public class fuse_operations {
     static final MethodHandle flock$MH = RuntimeHelper.downcallHandle(
         fuse_operations.flock$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*flock)(char*,struct fuse_file_info*,int);
+     * }
+     */
     public interface flock {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, java.lang.foreign.MemoryAddress _x1, int _x2);
-        static MemorySegment allocate(flock fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(flock.class, fi, fuse_operations.flock$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, int _x2);
+        static MemorySegment allocate(flock fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(flock.class, fi, fuse_operations.flock$FUNC, scope);
         }
-        static flock ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, java.lang.foreign.MemoryAddress __x1, int __x2) -> {
+        static flock ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, int __x2) -> {
                 try {
-                    return (int)fuse_operations.flock$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, (java.lang.foreign.Addressable)__x1, __x2);
+                    return (int)fuse_operations.flock$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1977,20 +2750,32 @@ public class fuse_operations {
     public static VarHandle flock$VH() {
         return fuse_operations.flock$VH;
     }
-    public static MemoryAddress flock$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.flock$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*flock)(char*,struct fuse_file_info*,int);
+     * }
+     */
+    public static MemorySegment flock$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.flock$VH.get(seg);
     }
-    public static void flock$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*flock)(char*,struct fuse_file_info*,int);
+     * }
+     */
+    public static void flock$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.flock$VH.set(seg, x);
     }
-    public static MemoryAddress flock$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.flock$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment flock$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.flock$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void flock$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void flock$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.flock$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static flock flock (MemorySegment segment, MemorySession session) {
-        return flock.ofAddress(flock$get(segment), session);
+    public static flock flock(MemorySegment segment, SegmentScope scope) {
+        return flock.ofAddress(flock$get(segment), scope);
     }
     static final FunctionDescriptor fallocate$FUNC = FunctionDescriptor.of(Constants$root.C_INT$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
@@ -2002,17 +2787,22 @@ public class fuse_operations {
     static final MethodHandle fallocate$MH = RuntimeHelper.downcallHandle(
         fuse_operations.fallocate$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*fallocate)(char*,int,off_t,off_t,struct fuse_file_info*);
+     * }
+     */
     public interface fallocate {
 
-        int apply(java.lang.foreign.MemoryAddress _x0, int _x1, long _x2, long _x3, java.lang.foreign.MemoryAddress _x4);
-        static MemorySegment allocate(fallocate fi, MemorySession session) {
-            return RuntimeHelper.upcallStub(fallocate.class, fi, fuse_operations.fallocate$FUNC, session);
+        int apply(java.lang.foreign.MemorySegment _x0, int _x1, long _x2, long _x3, java.lang.foreign.MemorySegment _x4);
+        static MemorySegment allocate(fallocate fi, SegmentScope scope) {
+            return RuntimeHelper.upcallStub(fallocate.class, fi, fuse_operations.fallocate$FUNC, scope);
         }
-        static fallocate ofAddress(MemoryAddress addr, MemorySession session) {
-            MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-            return (java.lang.foreign.MemoryAddress __x0, int __x1, long __x2, long __x3, java.lang.foreign.MemoryAddress __x4) -> {
+        static fallocate ofAddress(MemorySegment addr, SegmentScope scope) {
+            MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+            return (java.lang.foreign.MemorySegment __x0, int __x1, long __x2, long __x3, java.lang.foreign.MemorySegment __x4) -> {
                 try {
-                    return (int)fuse_operations.fallocate$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)__x0, __x1, __x2, __x3, (java.lang.foreign.Addressable)__x4);
+                    return (int)fuse_operations.fallocate$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -2024,27 +2814,39 @@ public class fuse_operations {
     public static VarHandle fallocate$VH() {
         return fuse_operations.fallocate$VH;
     }
-    public static MemoryAddress fallocate$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.fallocate$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*fallocate)(char*,int,off_t,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static MemorySegment fallocate$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.fallocate$VH.get(seg);
     }
-    public static void fallocate$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*fallocate)(char*,int,off_t,off_t,struct fuse_file_info*);
+     * }
+     */
+    public static void fallocate$set(MemorySegment seg, MemorySegment x) {
         fuse_operations.fallocate$VH.set(seg, x);
     }
-    public static MemoryAddress fallocate$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse_operations.fallocate$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment fallocate$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse_operations.fallocate$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void fallocate$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void fallocate$set(MemorySegment seg, long index, MemorySegment x) {
         fuse_operations.fallocate$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static fallocate fallocate (MemorySegment segment, MemorySession session) {
-        return fallocate.ofAddress(fallocate$get(segment), session);
+    public static fallocate fallocate(MemorySegment segment, SegmentScope scope) {
+        return fallocate.ofAddress(fallocate$get(segment), scope);
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 

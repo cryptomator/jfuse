@@ -1,8 +1,8 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
 import org.cryptomator.jfuse.api.FuseConnInfo;
-import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.FuseMountFailedException;
+import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_cmdline_opts;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse_config;
@@ -23,9 +23,8 @@ import org.mockito.Answers;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -57,7 +56,7 @@ public class FuseImplTest {
 		@Test
 		@DisplayName("MountFailedException when fuse_new fails")
 		public void testFuseNewFails() {
-			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemoryAddress.NULL);
+			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemorySegment.NULL);
 
 			var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
 
@@ -68,7 +67,7 @@ public class FuseImplTest {
 		@Test
 		@DisplayName("MountFailedException when fuse_mount fails")
 		public void testFuseMountFails() {
-			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemoryAddress.ofLong(42L));
+			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemorySegment.ofAddress(42L));
 			fuseH.when(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any())).thenReturn(1);
 
 			var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
@@ -101,12 +100,12 @@ public class FuseImplTest {
 	@DisplayName("parseArgs")
 	public void testParseArgs() {
 		try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
-			 var scope = MemorySession.openConfined()) {
+			 var arena = Arena.openConfined()) {
 			fuseFunctionsClass.when(() -> FuseFunctions.fuse_parse_cmdline(Mockito.any(), Mockito.any())).then(invocation -> {
 				MemorySegment opts = invocation.getArgument(1);
 				fuse_cmdline_opts.singlethread$set(opts, 0);
 				fuse_cmdline_opts.debug$set(opts, 1);
-				fuse_cmdline_opts.mountpoint$set(opts, scope.allocateUtf8String("/mount/point").address());
+				fuse_cmdline_opts.mountpoint$set(opts, arena.allocateUtf8String("/mount/point"));
 				return 0;
 			});
 
@@ -129,12 +128,12 @@ public class FuseImplTest {
 		@Test
 		@DisplayName("flush(\"/foo\", fi)")
 		public void testFlush() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var fi = fuse_file_info.allocate(scope);
+			try (var arena = Arena.openConfined()) {
+				var path = arena.allocateUtf8String("/foo");
+				var fi = fuse_file_info.allocate(arena);
 				Mockito.doReturn(42).when(fuseOps).flush(Mockito.eq("/foo"), Mockito.any());
 
-				var result = fuseImpl.flush(path.address(), fi.address());
+				var result = fuseImpl.flush(path, fi);
 
 				Assertions.assertEquals(42, result);
 			}
@@ -143,12 +142,12 @@ public class FuseImplTest {
 		@Test
 		@DisplayName("fsync(\"/foo\", 1, fi)")
 		public void testFsync() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var fi = fuse_file_info.allocate(scope);
+			try (var arena = Arena.openConfined()) {
+				var path = arena.allocateUtf8String("/foo");
+				var fi = fuse_file_info.allocate(arena);
 				Mockito.doReturn(42).when(fuseOps).fsync(Mockito.eq("/foo"), Mockito.eq(1), Mockito.any());
 
-				var result = fuseImpl.fsync(path.address(), 1, fi.address());
+				var result = fuseImpl.fsync(path, 1, fi);
 
 				Assertions.assertEquals(42, result);
 			}
@@ -157,12 +156,12 @@ public class FuseImplTest {
 		@Test
 		@DisplayName("fsyncdir(\"/foo\", 1, fi)")
 		public void testFsyncdir() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var fi = fuse_file_info.allocate(scope);
+			try (var arena = Arena.openConfined()) {
+				var path = arena.allocateUtf8String("/foo");
+				var fi = fuse_file_info.allocate(arena);
 				Mockito.doReturn(42).when(fuseOps).fsyncdir(Mockito.eq("/foo"), Mockito.eq(1), Mockito.any());
 
-				var result = fuseImpl.fsyncdir(path.address(), 1, fi.address());
+				var result = fuseImpl.fsyncdir(path, 1, fi);
 
 				Assertions.assertEquals(42, result);
 			}
@@ -173,17 +172,17 @@ public class FuseImplTest {
 	@DisplayName("init() sets fuse_conn_info.wants |= FUSE_CAP_READDIRPLUS")
 	@Test
 	public void testInit() {
-		try (var scope = MemorySession.openConfined()) {
+		try (var arena = Arena.openConfined()) {
 			var result = new AtomicInteger();
 			Mockito.doAnswer(invocation -> {
 				FuseConnInfo connInfo = invocation.getArgument(0);
 				result.set(connInfo.want());
 				return null;
 			}).when(fuseOps).init(Mockito.any(), Mockito.any());
-			var connInfo = fuse_conn_info.allocate(scope);
-			var fuseConfig = fuse_config.allocate(scope);
+			var connInfo = fuse_conn_info.allocate(arena);
+			var fuseConfig = fuse_config.allocate(arena);
 
-			fuseImpl.init(connInfo.address(), fuseConfig.address());
+			fuseImpl.init(connInfo, fuseConfig);
 
 			Assertions.assertEquals(FuseConnInfo.FUSE_CAP_READDIRPLUS, result.get() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
 		}
@@ -196,13 +195,13 @@ public class FuseImplTest {
 		@DisplayName("utimens(\"/foo\", UTIME_NOW, UTIME_NOW)")
 		@Test
 		public void testUtimensNow() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var fi = scope.allocate(fuse_file_info.$LAYOUT());
-				var times = MemoryAddress.NULL;
+			try (var arena = Arena.openConfined()) {
+				var path = arena.allocateUtf8String("/foo");
+				var fi = arena.allocate(fuse_file_info.$LAYOUT());
+				var times = MemorySegment.NULL;
 				Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(TimeSpec::isUtimeNow), Mockito.argThat(TimeSpec::isUtimeNow), Mockito.any());
 
-				var result = fuseImpl.utimens(path.address(), times, fi.address());
+				var result = fuseImpl.utimens(path, times, fi);
 
 				Assertions.assertEquals(42, result);
 			}
@@ -217,17 +216,17 @@ public class FuseImplTest {
 		public void testUtimens(long sec0, long nsec0, long sec1, long nsec1) {
 			Instant expectedATime = Instant.ofEpochSecond(sec0, nsec0);
 			Instant expectedMTime = Instant.ofEpochSecond(sec1, nsec1);
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var fi = scope.allocate(fuse_file_info.$LAYOUT());
-				var times = timespec.allocateArray(2, scope);
+			try (var arena = Arena.openConfined()) {
+				var path = arena.allocateUtf8String("/foo");
+				var fi = arena.allocate(fuse_file_info.$LAYOUT());
+				var times = timespec.allocateArray(2, arena);
 				timespec.tv_sec$set(times, 0, sec0);
 				timespec.tv_nsec$set(times, 0, nsec0);
 				timespec.tv_sec$set(times, 1, sec1);
 				timespec.tv_nsec$set(times, 1, nsec1);
 				Mockito.doReturn(42).when(fuseOps).utimens(Mockito.eq("/foo"), Mockito.argThat(t -> expectedATime.equals(t.get())), Mockito.argThat(t -> expectedMTime.equals(t.get())), Mockito.any());
 
-				var result = fuseImpl.utimens(path.address(), times.address(), fi.address());
+				var result = fuseImpl.utimens(path, times, fi);
 
 				Assertions.assertEquals(42, result);
 			}
@@ -241,14 +240,14 @@ public class FuseImplTest {
 		@Test
 		@DisplayName("getxattr")
 		public void testGetxattr() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var name = scope.allocateUtf8String("bar");
-				var value = scope.allocate(100);
+			try (var arena = Arena.openConfined()) {
+				var path = arena.allocateUtf8String("/foo");
+				var name = arena.allocateUtf8String("bar");
+				var value = arena.allocate(100);
 
 				Mockito.doReturn(42).when(fuseOps).getxattr(Mockito.eq("/foo"), Mockito.eq("bar"), Mockito.any());
 
-				var result = fuseImpl.getxattr(path.address(), name.address(), value.address(), 100);
+				var result = fuseImpl.getxattr(path, name, value, 100);
 
 				Assertions.assertEquals(42, result);
 			}
@@ -257,14 +256,14 @@ public class FuseImplTest {
 		@Test
 		@DisplayName("setxattr")
 		public void testSetxattr() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var name = scope.allocateUtf8String("bar");
-				var value = scope.allocate(100);
+			try (var arena = Arena.openConfined()) {
+				var path = arena.allocateUtf8String("/foo");
+				var name = arena.allocateUtf8String("bar");
+				var value = arena.allocate(100);
 
 				Mockito.doReturn(42).when(fuseOps).setxattr(Mockito.eq("/foo"), Mockito.eq("bar"), Mockito.any(), Mockito.anyInt());
 
-				var result = fuseImpl.setxattr(path.address(), name.address(), value.address(), 100, 0xDEADBEEF);
+				var result = fuseImpl.setxattr(path, name, value, 100, 0xDEADBEEF);
 
 				Assertions.assertEquals(42, result);
 			}
@@ -273,13 +272,13 @@ public class FuseImplTest {
 		@Test
 		@DisplayName("listxattr")
 		public void testListxattr() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var list = scope.allocate(100);
+			try (var arena = Arena.openConfined()) {
+				var path = arena.allocateUtf8String("/foo");
+				var list = arena.allocate(100);
 
 				Mockito.doReturn(42).when(fuseOps).listxattr(Mockito.eq("/foo"), Mockito.any());
 
-				var result = fuseImpl.listxattr(path.address(), list.address(), 100);
+				var result = fuseImpl.listxattr(path, list, 100);
 
 				Assertions.assertEquals(42, result);
 			}
@@ -288,13 +287,13 @@ public class FuseImplTest {
 		@Test
 		@DisplayName("removexattr")
 		public void testRemovexattr() {
-			try (var scope = MemorySession.openConfined()) {
-				var path = scope.allocateUtf8String("/foo");
-				var name = scope.allocateUtf8String("bar");
+			try (var arena = Arena.openConfined()) {
+				var path = arena.allocateUtf8String("/foo");
+				var name = arena.allocateUtf8String("bar");
 
 				Mockito.doReturn(42).when(fuseOps).removexattr(Mockito.eq("/foo"), Mockito.eq("bar"));
 
-				var result = fuseImpl.removexattr(path.address(), name.address());
+				var result = fuseImpl.removexattr(path, name);
 
 				Assertions.assertEquals(42, result);
 			}
@@ -305,12 +304,12 @@ public class FuseImplTest {
 	@Test
 	@DisplayName("chown")
 	public void testChown() {
-		try (var scope = MemorySession.openConfined()) {
-			var path = scope.allocateUtf8String("/foo");
-			var fi = fuse_file_info.allocate(scope);
+		try (var arena = Arena.openConfined()) {
+			var path = arena.allocateUtf8String("/foo");
+			var fi = fuse_file_info.allocate(arena);
 			Mockito.doReturn(42).when(fuseOps).chown(Mockito.eq("/foo"), Mockito.eq(42), Mockito.eq(1337), Mockito.any());
 
-			var result = fuseImpl.chown(path.address(), 42, 1337, fi.address());
+			var result = fuseImpl.chown(path, 42, 1337, fi);
 
 			Assertions.assertEquals(42, result);
 		}
