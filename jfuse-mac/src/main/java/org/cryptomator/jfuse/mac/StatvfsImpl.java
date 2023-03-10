@@ -9,7 +9,7 @@ import java.lang.foreign.MemorySession;
 
 record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
-	private static final long MAX_UINT = 0xFFFFFFFF;
+	private static final long MAX_UINT = 0xFFFFFFFFL;
 
 	public StatvfsImpl(MemoryAddress address, MemorySession scope) {
 		this(statvfs.ofAddress(address, scope));
