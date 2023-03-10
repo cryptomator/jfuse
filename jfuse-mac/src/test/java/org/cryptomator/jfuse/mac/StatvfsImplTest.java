@@ -120,7 +120,7 @@ public class StatvfsImplTest {
 
 			setter.accept(statvfs, value.longValue());
 
-			Assertions.assertEquals(value.byteValue(), getter.apply(segment).byteValue());
+			Assertions.assertEquals(value.intValue(), getter.apply(segment).intValue());
 		}
 	}
 
