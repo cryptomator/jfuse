@@ -17,10 +17,10 @@ import java.util.stream.Stream;
 
 public class StatvfsImplTest {
 
-	@DisplayName("test getters")
+	@DisplayName("test getters with native long type")
 	@ParameterizedTest(name = "{1}")
 	@MethodSource
-	public void testGetters(SetInMemorySegment<Number> setter, GetInStatvfs<Number> getter, Number value) {
+	public void testGettersLong(SetInMemorySegment<Number> setter, GetInStatvfs<Number> getter, Number value) {
 		try (var scope = MemorySession.openConfined()) {
 			var segment = statvfs.allocate(scope);
 			var statvfs = new StatvfsImpl(segment.address(), scope);
@@ -31,14 +31,32 @@ public class StatvfsImplTest {
 		}
 	}
 
-	public static Stream<Arguments> testGetters() {
+	public static Stream<Arguments> testGettersLong() {
 		return Stream.of(
 				Arguments.arguments((SetInMemorySegment<Long>) statvfs::f_bsize$set, Named.of("getBsize()", (GetInStatvfs<Long>) Statvfs::getBsize), 42L),
 				Arguments.arguments((SetInMemorySegment<Long>) statvfs::f_frsize$set, Named.of("getFrsize()", (GetInStatvfs<Long>) Statvfs::getFrsize), 42L),
-				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_blocks$set, Named.of("getBlocks()", (GetInStatvfs<Long>) Statvfs::getBlocks), 42),
-				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_bfree$set, Named.of("getBfree()", (GetInStatvfs<Long>) Statvfs::getBfree), 42),
-				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_bavail$set, Named.of("getBavail()", (GetInStatvfs<Long>) Statvfs::getBavail), 42),
 				Arguments.arguments((SetInMemorySegment<Long>) statvfs::f_namemax$set, Named.of("getNameMax()", (GetInStatvfs<Long>) Statvfs::getNameMax), 42L)
+		);
+	}
+
+	@DisplayName("test getters with native int type")
+	@ParameterizedTest(name = "{1}")
+	@MethodSource
+	public void testGettersInt(SetInMemorySegment<Number> setter, GetInStatvfs<Number> getter, Number value) {
+		try (var scope = MemorySession.openConfined()) {
+			var segment = statvfs.allocate(scope);
+			var statvfs = new StatvfsImpl(segment.address(), scope);
+
+			setter.accept(segment, value.intValue());
+			Assertions.assertEquals(Integer.toUnsignedLong(value.intValue()), getter.apply(statvfs).longValue());
+		}
+	}
+
+	public static Stream<Arguments> testGettersInt() {
+		return Stream.of(
+				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_blocks$set, Named.of("getBlocks()", (GetInStatvfs<Long>) Statvfs::getBlocks), -42),
+				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_bfree$set, Named.of("getBfree()", (GetInStatvfs<Long>) Statvfs::getBfree), -42),
+				Arguments.arguments((SetInMemorySegment<Integer>) statvfs::f_bavail$set, Named.of("getBavail()", (GetInStatvfs<Long>) Statvfs::getBavail), -42)
 		);
 	}
 
@@ -111,26 +129,6 @@ public class StatvfsImplTest {
 				Arguments.arguments(Named.of("setBlocks()", (SetInStatvfs<Long>) Statvfs::setBlocks), (GetInMemorySegment<Integer>) statvfs::f_blocks$get, -42),
 				Arguments.arguments(Named.of("setBfree()", (SetInStatvfs<Long>) Statvfs::setBfree), (GetInMemorySegment<Integer>) statvfs::f_bfree$get, -42),
 				Arguments.arguments(Named.of("setBavail()", (SetInStatvfs<Long>) Statvfs::setBavail), (GetInMemorySegment<Integer>) statvfs::f_bavail$get, -42)
-		);
-	}
-
-	@DisplayName("test setters out-of-range")
-	@ParameterizedTest(name = "{0}")
-	@MethodSource
-	public void testSettersOutOfRange(SetInStatvfs<Number> setter, Number value) {
-		try (var scope = MemorySession.openConfined()) {
-			var segment = statvfs.allocate(scope);
-			var statvfs = new StatvfsImpl(segment.address(), scope);
-
-			Assertions.assertThrows(IllegalArgumentException.class, () -> setter.accept(statvfs, value));
-		}
-	}
-
-	public static Stream<Arguments> testSettersOutOfRange() {
-		return Stream.of(
-				Arguments.arguments(Named.of("setBlocks()", (SetInStatvfs<Long>) Statvfs::setBlocks), 0x100000000L),
-				Arguments.arguments(Named.of("setBfree()", (SetInStatvfs<Long>) Statvfs::setBfree), 0x100000000L),
-				Arguments.arguments(Named.of("setBavail()", (SetInStatvfs<Long>) Statvfs::setBavail), 0x100000000L)
 		);
 	}
 
