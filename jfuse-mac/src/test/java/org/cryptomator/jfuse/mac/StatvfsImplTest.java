@@ -132,6 +132,29 @@ public class StatvfsImplTest {
 		);
 	}
 
+	@DisplayName("test setters out-of-range")
+	@ParameterizedTest(name = "{0}")
+	@MethodSource
+	public void testSettersOutOfRange(SetInStatvfs<Number> setter, GetInMemorySegment<Number> getter, Number value) {
+		try (var scope = MemorySession.openConfined()) {
+			var segment = statvfs.allocate(scope);
+			var statvfs = new StatvfsImpl(segment.address(), scope);
+
+			setter.accept(statvfs, value.longValue());
+
+			Assertions.assertEquals(0xFFFFFFFF, getter.apply(segment).intValue());
+		}
+	}
+
+	public static Stream<Arguments> testSettersOutOfRange() {
+		return Stream.of(
+				Arguments.arguments(Named.of("setBlocks()", (SetInStatvfs<Long>) Statvfs::setBlocks), (GetInMemorySegment<Integer>) statvfs::f_blocks$get, 0x01234567_89abcdefL),
+				Arguments.arguments(Named.of("setBfree()", (SetInStatvfs<Long>) Statvfs::setBfree), (GetInMemorySegment<Integer>) statvfs::f_bfree$get, 0x01234567_89abcdefL),
+				Arguments.arguments(Named.of("setBavail()", (SetInStatvfs<Long>) Statvfs::setBavail), (GetInMemorySegment<Integer>) statvfs::f_bavail$get, 0x01234567_89abcdefL)
+		);
+	}
+
+
 	private interface SetInStatvfs<T> extends BiConsumer<Statvfs, T> {
 	}
 
