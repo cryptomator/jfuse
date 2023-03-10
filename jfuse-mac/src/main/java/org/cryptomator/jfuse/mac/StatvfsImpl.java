@@ -52,7 +52,7 @@ record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	@Override
 	public void setBfree(long bfree) {
-		statvfs.f_blocks$set(segment,(int) Math.min(MAX_UINT, bfree));
+		statvfs.f_bfree$set(segment,(int) Math.min(MAX_UINT, bfree));
 	}
 
 	@Override
@@ -62,7 +62,7 @@ record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	@Override
 	public void setBavail(long bavail) {
-		statvfs.f_blocks$set(segment,(int) Math.min(MAX_UINT, bavail));
+		statvfs.f_bavail$set(segment,(int) Math.min(MAX_UINT, bavail));
 	}
 
 	@Override
