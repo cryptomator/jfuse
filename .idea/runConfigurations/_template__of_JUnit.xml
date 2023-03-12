@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="true" type="JUnit" factoryName="JUnit">
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <option name="VM_PARAMETERS" value="-ea --enable-native-access=org.cryptomator.jfuse.linux.aarch64,org.cryptomator.jfuse.linux.amd64,org.cryptomator.jfuse.mac,org.cryptomator.jfuse.win" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

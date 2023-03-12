@@ -8,6 +8,8 @@ import java.lang.foreign.SegmentScope;
 
 record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
+	private static final long MAX_UINT = 0xFFFFFFFFL;
+
 	public StatvfsImpl(MemorySegment address, SegmentScope scope) {
 		this(statvfs.ofAddress(address, scope));
 	}
@@ -34,44 +36,32 @@ record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	@Override
 	public long getBlocks() {
-		return statvfs.f_blocks$get(segment);
+		return Integer.toUnsignedLong(statvfs.f_blocks$get(segment));
 	}
 
 	@Override
 	public void setBlocks(long blocks) {
-		if (blocks > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("Max supported number of blocks: " + Integer.MAX_VALUE);
-		} else {
-			statvfs.f_blocks$set(segment, (int) blocks);
-		}
+		statvfs.f_blocks$set(segment,(int) Math.min(MAX_UINT, blocks));
 	}
 
 	@Override
 	public long getBfree() {
-		return statvfs.f_bfree$get(segment);
+		return Integer.toUnsignedLong(statvfs.f_bfree$get(segment));
 	}
 
 	@Override
 	public void setBfree(long bfree) {
-		if (bfree > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("Max supported number of blocks: " + Integer.MAX_VALUE);
-		} else {
-			statvfs.f_bfree$set(segment, (int) bfree);
-		}
+		statvfs.f_bfree$set(segment,(int) Math.min(MAX_UINT, bfree));
 	}
 
 	@Override
 	public long getBavail() {
-		return statvfs.f_bavail$get(segment);
+		return Integer.toUnsignedLong(statvfs.f_bavail$get(segment));
 	}
 
 	@Override
 	public void setBavail(long bavail) {
-		if (bavail > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("Max supported number of blocks: " + Integer.MAX_VALUE);
-		} else {
-			statvfs.f_bavail$set(segment, (int) bavail);
-		}
+		statvfs.f_bavail$set(segment,(int) Math.min(MAX_UINT, bavail));
 	}
 
 	@Override
