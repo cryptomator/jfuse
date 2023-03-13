@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libfuse2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libfuse3" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/winfsp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/winfsp/ext/test" vcs="Git" />
   </component>
 </project>
