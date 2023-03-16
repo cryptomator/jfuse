@@ -105,7 +105,11 @@ public abstract class Fuse implements AutoCloseable {
 	 */
 	@Blocking
 	@MustBeInvokedByOverriders
-	public void mount(String progName, Path mountPoint, String... flags) throws FuseMountFailedException, IllegalArgumentException {
+	public synchronized void mount(String progName, Path mountPoint, String... flags) throws FuseMountFailedException, IllegalArgumentException {
+		if(!fuseScope.isAlive()) {
+			throw new IllegalStateException("Already closed"); //TODO: throw specialized exception
+		}
+
 		FuseMount lock = new UnmountedFuseMount();
 		if (!mount.compareAndSet(UNMOUNTED, lock)) {
 			throw new IllegalStateException("Already mounted");
