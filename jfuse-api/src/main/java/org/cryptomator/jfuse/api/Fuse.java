@@ -16,8 +16,10 @@ import java.nio.file.attribute.BasicFileAttributeView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -123,19 +125,24 @@ public abstract class Fuse implements AutoCloseable {
 
 		try {
 			var fuseMount = this.mount(args);
-			executor.submit(() -> fuseLoop(fuseMount)); // TODO keep reference of future and report result
-			waitForMountingToComplete(mountPoint);
+			Future<Integer> fuseLoop = executor.submit(() -> fuseLoop(fuseMount));
+			waitForMountingToComplete(mountPoint, fuseLoop);
+			if (fuseLoop.isDone()) {
+				throw new FuseMountFailedException("fuse_loop() returned prematurely with non-zero exit code " + fuseLoop.get());
+			}
 			mount.compareAndSet(lock, fuseMount);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			throw new FuseMountFailedException("Interrupted while waiting for mounting to finish");
+		} catch (ExecutionException e) {
+			throw new FuseMountFailedException("Exception when starting fuse_loop. Message: " + e.getCause().getMessage());
 		} finally {
 			mount.compareAndSet(lock, UNMOUNTED); // if value is still `lock`, mount has failed.
 		}
 	}
 
 	@VisibleForTesting
-	void waitForMountingToComplete(Path mountPoint) throws InterruptedException {
+	void waitForMountingToComplete(Path mountPoint, Future<Integer> fuseLoop) throws InterruptedException {
 		var probe = Files.getFileAttributeView(mountPoint.resolve(MOUNT_PROBE.substring(1)), BasicFileAttributeView.class);
 		do {
 			try {
@@ -143,7 +150,7 @@ public abstract class Fuse implements AutoCloseable {
 			} catch (IOException e) {
 				// noop
 			}
-		} while (!mountProbeSucceeded.await(200, TimeUnit.MILLISECONDS));
+		} while (!fuseLoop.isDone() && !mountProbeSucceeded.await(200, TimeUnit.MILLISECONDS));
 	}
 
 	@Blocking

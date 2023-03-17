@@ -13,6 +13,7 @@ import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.Future;
 
 public class FuseTest {
 
@@ -39,10 +40,30 @@ public class FuseTest {
 			fuse.fuseOperations.getattr("/jfuse_mount_probe", Mockito.mock(Stat.class), Mockito.mock(FileInfo.class));
 			throw new NoSuchFileException("/mnt/jfuse_mount_probe still not found");
 		}).when(attrView).readAttributes();
+		Future<Integer> fuseLoop = Mockito.mock(Future.class);
+		Mockito.doReturn(false).when(fuseLoop).isDone();
 
-		Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> fuse.waitForMountingToComplete(mountPoint));
+		Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> fuse.waitForMountingToComplete(mountPoint, fuseLoop));
+		Mockito.verify(fuseLoop, Mockito.atLeastOnce()).isDone();
+	}
 
-		Mockito.verify(fuseOps).getattr(Mockito.eq("/jfuse_mount_probe"), Mockito.any(), Mockito.any());
+	@Test
+	@DisplayName("waitForMountingToComplete() waits returns immediately if fuse_loop fails")
+	public void testPrematurelyFuseLoopReturn() throws IOException {
+		Path mountPoint = Mockito.mock(Path.class, "/mnt");
+		Path probePath = Mockito.mock(Path.class, "/mnt/jfuse_mount_probe");
+		FileSystem fs = Mockito.mock(FileSystem.class);
+		FileSystemProvider fsProv = Mockito.mock(FileSystemProvider.class);
+		BasicFileAttributeView attrView = Mockito.mock(BasicFileAttributeView.class);
+		Mockito.doReturn(probePath).when(mountPoint).resolve("jfuse_mount_probe");
+		Mockito.doReturn(fs).when(probePath).getFileSystem();
+		Mockito.doReturn(fsProv).when(fs).provider();
+		Mockito.doReturn(attrView).when(fsProv).getFileAttributeView(probePath, BasicFileAttributeView.class);
+		Future<Integer> fuseLoop = Mockito.mock(Future.class);
+		Mockito.doReturn(true).when(fuseLoop).isDone();
+
+		Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> fuse.waitForMountingToComplete(mountPoint, fuseLoop));
+		Mockito.verify(fuseLoop, Mockito.atLeastOnce()).isDone();
 	}
 
 	private static class FuseStub extends Fuse {
