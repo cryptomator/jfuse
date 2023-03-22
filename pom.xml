@@ -6,7 +6,7 @@
 	<groupId>org.cryptomator</groupId>
 	<artifactId>jfuse-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.4.2</version>
+	<version>0.5.0-SNAPSHOT</version>
 	<name>jFUSE</name>
 	<description>Java bindings for FUSE using foreign functions &amp; memory API</description>
 	<url>https://github.com/cryptomator/jfuse</url>
