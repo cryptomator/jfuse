@@ -1,6 +1,5 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HelloWorldFileSystem" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
-    <option name="ALTERNATIVE_JRE_PATH" value="17" />
     <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.examples.HelloWorldFileSystem" />
     <module name="jfuse-examples" />
     <option name="PROGRAM_PARAMETERS" value="/Volumes/foo" />
