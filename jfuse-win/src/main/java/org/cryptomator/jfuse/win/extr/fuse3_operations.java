@@ -4,11 +4,58 @@ package org.cryptomator.jfuse.win.extr;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
 import java.lang.foreign.*;
-
+import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct fuse3_operations {
+ *     int (*getattr)(char*,struct fuse_stat*,struct fuse3_file_info*);
+ *     int (*readlink)(char*,char*,unsigned long long);
+ *     int (*mknod)(char*,unsigned int,unsigned int);
+ *     int (*mkdir)(char*,unsigned int);
+ *     int (*unlink)(char*);
+ *     int (*rmdir)(char*);
+ *     int (*symlink)(char*,char*);
+ *     int (*rename)(char*,char*,unsigned int);
+ *     int (*link)(char*,char*);
+ *     int (*chmod)(char*,unsigned int,struct fuse3_file_info*);
+ *     int (*chown)(char*,unsigned int,unsigned int,struct fuse3_file_info*);
+ *     int (*truncate)(char*,long long,struct fuse3_file_info*);
+ *     int (*open)(char*,struct fuse3_file_info*);
+ *     int (*read)(char*,char*,unsigned long long,long long,struct fuse3_file_info*);
+ *     int (*write)(char*,char*,unsigned long long,long long,struct fuse3_file_info*);
+ *     int (*statfs)(char*,struct fuse_statvfs*);
+ *     int (*flush)(char*,struct fuse3_file_info*);
+ *     int (*release)(char*,struct fuse3_file_info*);
+ *     int (*fsync)(char*,int,struct fuse3_file_info*);
+ *     int (*setxattr)(char*,char*,char*,unsigned long long,int);
+ *     int (*getxattr)(char*,char*,char*,unsigned long long);
+ *     int (*listxattr)(char*,char*,unsigned long long);
+ *     int (*removexattr)(char*,char*);
+ *     int (*opendir)(char*,struct fuse3_file_info*);
+ *     int (*readdir)(char*,void*,int (*)(void*,char*,struct fuse_stat*,long long,enum fuse3_fill_dir_flags),long long,struct fuse3_file_info*,enum fuse3_readdir_flags);
+ *     int (*releasedir)(char*,struct fuse3_file_info*);
+ *     int (*fsyncdir)(char*,int,struct fuse3_file_info*);
+ *     void* (*init)(struct fuse3_conn_info*,struct fuse3_config*);
+ *     void (*destroy)(void*);
+ *     int (*access)(char*,int);
+ *     int (*create)(char*,unsigned int,struct fuse3_file_info*);
+ *     int (*lock)(char*,struct fuse3_file_info*,int,struct fuse_flock*);
+ *     int (*utimens)(char*,struct fuse_timespec*,struct fuse3_file_info*);
+ *     int (*bmap)(char*,unsigned long long,unsigned long long*);
+ *     int (*ioctl)(char*,int,void*,struct fuse3_file_info*,unsigned int,void*);
+ *     int (*poll)(char*,struct fuse3_file_info*,struct fuse3_pollhandle*,unsigned int*);
+ *     int (*write_buf)(char*,struct fuse3_bufvec*,long long,struct fuse3_file_info*);
+ *     int (*read_buf)(char*,struct fuse3_bufvec**,unsigned long long,long long,struct fuse3_file_info*);
+ *     int (*flock)(char*,struct fuse3_file_info*,int);
+ *     int (*fallocate)(char*,int,long long,long long,struct fuse3_file_info*);
+ * };
+ * }
+ */
 public class fuse3_operations {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_POINTER$LAYOUT.withName("getattr"),
         Constants$root.C_POINTER$LAYOUT.withName("readlink"),
         Constants$root.C_POINTER$LAYOUT.withName("mknod"),
@@ -61,6 +108,11 @@ public class fuse3_operations {
     static final MethodHandle getattr$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.getattr$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*getattr)(char*,struct fuse_stat*,struct fuse3_file_info*);
+     * }
+     */
     public interface getattr {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, java.lang.foreign.MemorySegment _x2);
@@ -71,7 +123,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse3_operations.getattr$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, (java.lang.foreign.MemorySegment)__x2);
+                    return (int)fuse3_operations.getattr$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -83,10 +135,22 @@ public class fuse3_operations {
     public static VarHandle getattr$VH() {
         return fuse3_operations.getattr$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*getattr)(char*,struct fuse_stat*,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment getattr$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.getattr$VH.get(seg);
     }
-    public static void getattr$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*getattr)(char*,struct fuse_stat*,struct fuse3_file_info*);
+     * }
+     */
+    public static void getattr$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.getattr$VH.set(seg, x);
     }
     public static MemorySegment getattr$get(MemorySegment seg, long index) {
@@ -95,7 +159,7 @@ public class fuse3_operations {
     public static void getattr$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.getattr$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static getattr getattr (MemorySegment segment, SegmentScope scope) {
+    public static getattr getattr(MemorySegment segment, SegmentScope scope) {
         return getattr.ofAddress(getattr$get(segment), scope);
     }
     static final FunctionDescriptor readlink$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -106,6 +170,11 @@ public class fuse3_operations {
     static final MethodHandle readlink$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.readlink$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*readlink)(char*,char*,unsigned long long);
+     * }
+     */
     public interface readlink {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, long _x2);
@@ -116,7 +185,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, long __x2) -> {
                 try {
-                    return (int)fuse3_operations.readlink$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, __x2);
+                    return (int)fuse3_operations.readlink$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -128,10 +197,22 @@ public class fuse3_operations {
     public static VarHandle readlink$VH() {
         return fuse3_operations.readlink$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*readlink)(char*,char*,unsigned long long);
+     * }
+     */
     public static MemorySegment readlink$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.readlink$VH.get(seg);
     }
-    public static void readlink$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*readlink)(char*,char*,unsigned long long);
+     * }
+     */
+    public static void readlink$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.readlink$VH.set(seg, x);
     }
     public static MemorySegment readlink$get(MemorySegment seg, long index) {
@@ -140,7 +221,7 @@ public class fuse3_operations {
     public static void readlink$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.readlink$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static readlink readlink (MemorySegment segment, SegmentScope scope) {
+    public static readlink readlink(MemorySegment segment, SegmentScope scope) {
         return readlink.ofAddress(readlink$get(segment), scope);
     }
     static final FunctionDescriptor mknod$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -151,6 +232,11 @@ public class fuse3_operations {
     static final MethodHandle mknod$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.mknod$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*mknod)(char*,unsigned int,unsigned int);
+     * }
+     */
     public interface mknod {
 
         int apply(java.lang.foreign.MemorySegment _x0, int _x1, int _x2);
@@ -161,7 +247,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, int __x1, int __x2) -> {
                 try {
-                    return (int)fuse3_operations.mknod$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, __x1, __x2);
+                    return (int)fuse3_operations.mknod$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -173,10 +259,22 @@ public class fuse3_operations {
     public static VarHandle mknod$VH() {
         return fuse3_operations.mknod$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*mknod)(char*,unsigned int,unsigned int);
+     * }
+     */
     public static MemorySegment mknod$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.mknod$VH.get(seg);
     }
-    public static void mknod$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*mknod)(char*,unsigned int,unsigned int);
+     * }
+     */
+    public static void mknod$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.mknod$VH.set(seg, x);
     }
     public static MemorySegment mknod$get(MemorySegment seg, long index) {
@@ -185,7 +283,7 @@ public class fuse3_operations {
     public static void mknod$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.mknod$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static mknod mknod (MemorySegment segment, SegmentScope scope) {
+    public static mknod mknod(MemorySegment segment, SegmentScope scope) {
         return mknod.ofAddress(mknod$get(segment), scope);
     }
     static final FunctionDescriptor mkdir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -195,6 +293,11 @@ public class fuse3_operations {
     static final MethodHandle mkdir$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.mkdir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*mkdir)(char*,unsigned int);
+     * }
+     */
     public interface mkdir {
 
         int apply(java.lang.foreign.MemorySegment _x0, int _x1);
@@ -205,7 +308,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, int __x1) -> {
                 try {
-                    return (int)fuse3_operations.mkdir$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, __x1);
+                    return (int)fuse3_operations.mkdir$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -217,10 +320,22 @@ public class fuse3_operations {
     public static VarHandle mkdir$VH() {
         return fuse3_operations.mkdir$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*mkdir)(char*,unsigned int);
+     * }
+     */
     public static MemorySegment mkdir$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.mkdir$VH.get(seg);
     }
-    public static void mkdir$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*mkdir)(char*,unsigned int);
+     * }
+     */
+    public static void mkdir$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.mkdir$VH.set(seg, x);
     }
     public static MemorySegment mkdir$get(MemorySegment seg, long index) {
@@ -229,7 +344,7 @@ public class fuse3_operations {
     public static void mkdir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.mkdir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static mkdir mkdir (MemorySegment segment, SegmentScope scope) {
+    public static mkdir mkdir(MemorySegment segment, SegmentScope scope) {
         return mkdir.ofAddress(mkdir$get(segment), scope);
     }
     static final FunctionDescriptor unlink$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -238,6 +353,11 @@ public class fuse3_operations {
     static final MethodHandle unlink$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.unlink$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*unlink)(char*);
+     * }
+     */
     public interface unlink {
 
         int apply(java.lang.foreign.MemorySegment _x0);
@@ -248,7 +368,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0) -> {
                 try {
-                    return (int)fuse3_operations.unlink$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0);
+                    return (int)fuse3_operations.unlink$MH.invokeExact(symbol, __x0);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -260,10 +380,22 @@ public class fuse3_operations {
     public static VarHandle unlink$VH() {
         return fuse3_operations.unlink$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*unlink)(char*);
+     * }
+     */
     public static MemorySegment unlink$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.unlink$VH.get(seg);
     }
-    public static void unlink$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*unlink)(char*);
+     * }
+     */
+    public static void unlink$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.unlink$VH.set(seg, x);
     }
     public static MemorySegment unlink$get(MemorySegment seg, long index) {
@@ -272,7 +404,7 @@ public class fuse3_operations {
     public static void unlink$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.unlink$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static unlink unlink (MemorySegment segment, SegmentScope scope) {
+    public static unlink unlink(MemorySegment segment, SegmentScope scope) {
         return unlink.ofAddress(unlink$get(segment), scope);
     }
     static final FunctionDescriptor rmdir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -281,6 +413,11 @@ public class fuse3_operations {
     static final MethodHandle rmdir$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.rmdir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*rmdir)(char*);
+     * }
+     */
     public interface rmdir {
 
         int apply(java.lang.foreign.MemorySegment _x0);
@@ -291,7 +428,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0) -> {
                 try {
-                    return (int)fuse3_operations.rmdir$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0);
+                    return (int)fuse3_operations.rmdir$MH.invokeExact(symbol, __x0);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -303,10 +440,22 @@ public class fuse3_operations {
     public static VarHandle rmdir$VH() {
         return fuse3_operations.rmdir$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*rmdir)(char*);
+     * }
+     */
     public static MemorySegment rmdir$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.rmdir$VH.get(seg);
     }
-    public static void rmdir$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*rmdir)(char*);
+     * }
+     */
+    public static void rmdir$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.rmdir$VH.set(seg, x);
     }
     public static MemorySegment rmdir$get(MemorySegment seg, long index) {
@@ -315,7 +464,7 @@ public class fuse3_operations {
     public static void rmdir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.rmdir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static rmdir rmdir (MemorySegment segment, SegmentScope scope) {
+    public static rmdir rmdir(MemorySegment segment, SegmentScope scope) {
         return rmdir.ofAddress(rmdir$get(segment), scope);
     }
     static final FunctionDescriptor symlink$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -325,6 +474,11 @@ public class fuse3_operations {
     static final MethodHandle symlink$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.symlink$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*symlink)(char*,char*);
+     * }
+     */
     public interface symlink {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
@@ -335,7 +489,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse3_operations.symlink$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1);
+                    return (int)fuse3_operations.symlink$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -347,10 +501,22 @@ public class fuse3_operations {
     public static VarHandle symlink$VH() {
         return fuse3_operations.symlink$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*symlink)(char*,char*);
+     * }
+     */
     public static MemorySegment symlink$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.symlink$VH.get(seg);
     }
-    public static void symlink$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*symlink)(char*,char*);
+     * }
+     */
+    public static void symlink$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.symlink$VH.set(seg, x);
     }
     public static MemorySegment symlink$get(MemorySegment seg, long index) {
@@ -359,7 +525,7 @@ public class fuse3_operations {
     public static void symlink$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.symlink$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static symlink symlink (MemorySegment segment, SegmentScope scope) {
+    public static symlink symlink(MemorySegment segment, SegmentScope scope) {
         return symlink.ofAddress(symlink$get(segment), scope);
     }
     static final FunctionDescriptor rename$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -370,6 +536,11 @@ public class fuse3_operations {
     static final MethodHandle rename$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.rename$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*rename)(char*,char*,unsigned int);
+     * }
+     */
     public interface rename {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, int _x2);
@@ -380,7 +551,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, int __x2) -> {
                 try {
-                    return (int)fuse3_operations.rename$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, __x2);
+                    return (int)fuse3_operations.rename$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -392,10 +563,22 @@ public class fuse3_operations {
     public static VarHandle rename$VH() {
         return fuse3_operations.rename$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*rename)(char*,char*,unsigned int);
+     * }
+     */
     public static MemorySegment rename$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.rename$VH.get(seg);
     }
-    public static void rename$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*rename)(char*,char*,unsigned int);
+     * }
+     */
+    public static void rename$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.rename$VH.set(seg, x);
     }
     public static MemorySegment rename$get(MemorySegment seg, long index) {
@@ -404,7 +587,7 @@ public class fuse3_operations {
     public static void rename$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.rename$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static rename rename (MemorySegment segment, SegmentScope scope) {
+    public static rename rename(MemorySegment segment, SegmentScope scope) {
         return rename.ofAddress(rename$get(segment), scope);
     }
     static final FunctionDescriptor link$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -414,6 +597,11 @@ public class fuse3_operations {
     static final MethodHandle link$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.link$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*link)(char*,char*);
+     * }
+     */
     public interface link {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
@@ -424,7 +612,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse3_operations.link$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1);
+                    return (int)fuse3_operations.link$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -436,10 +624,22 @@ public class fuse3_operations {
     public static VarHandle link$VH() {
         return fuse3_operations.link$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*link)(char*,char*);
+     * }
+     */
     public static MemorySegment link$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.link$VH.get(seg);
     }
-    public static void link$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*link)(char*,char*);
+     * }
+     */
+    public static void link$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.link$VH.set(seg, x);
     }
     public static MemorySegment link$get(MemorySegment seg, long index) {
@@ -448,7 +648,7 @@ public class fuse3_operations {
     public static void link$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.link$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static link link (MemorySegment segment, SegmentScope scope) {
+    public static link link(MemorySegment segment, SegmentScope scope) {
         return link.ofAddress(link$get(segment), scope);
     }
     static final FunctionDescriptor chmod$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -459,6 +659,11 @@ public class fuse3_operations {
     static final MethodHandle chmod$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.chmod$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*chmod)(char*,unsigned int,struct fuse3_file_info*);
+     * }
+     */
     public interface chmod {
 
         int apply(java.lang.foreign.MemorySegment _x0, int _x1, java.lang.foreign.MemorySegment _x2);
@@ -469,7 +674,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, int __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse3_operations.chmod$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, __x1, (java.lang.foreign.MemorySegment)__x2);
+                    return (int)fuse3_operations.chmod$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -481,10 +686,22 @@ public class fuse3_operations {
     public static VarHandle chmod$VH() {
         return fuse3_operations.chmod$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*chmod)(char*,unsigned int,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment chmod$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.chmod$VH.get(seg);
     }
-    public static void chmod$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*chmod)(char*,unsigned int,struct fuse3_file_info*);
+     * }
+     */
+    public static void chmod$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.chmod$VH.set(seg, x);
     }
     public static MemorySegment chmod$get(MemorySegment seg, long index) {
@@ -493,7 +710,7 @@ public class fuse3_operations {
     public static void chmod$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.chmod$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static chmod chmod (MemorySegment segment, SegmentScope scope) {
+    public static chmod chmod(MemorySegment segment, SegmentScope scope) {
         return chmod.ofAddress(chmod$get(segment), scope);
     }
     static final FunctionDescriptor chown$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -505,6 +722,11 @@ public class fuse3_operations {
     static final MethodHandle chown$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.chown$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*chown)(char*,unsigned int,unsigned int,struct fuse3_file_info*);
+     * }
+     */
     public interface chown {
 
         int apply(java.lang.foreign.MemorySegment _x0, int _x1, int _x2, java.lang.foreign.MemorySegment _x3);
@@ -515,7 +737,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, int __x1, int __x2, java.lang.foreign.MemorySegment __x3) -> {
                 try {
-                    return (int)fuse3_operations.chown$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, __x1, __x2, (java.lang.foreign.MemorySegment)__x3);
+                    return (int)fuse3_operations.chown$MH.invokeExact(symbol, __x0, __x1, __x2, __x3);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -527,10 +749,22 @@ public class fuse3_operations {
     public static VarHandle chown$VH() {
         return fuse3_operations.chown$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*chown)(char*,unsigned int,unsigned int,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment chown$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.chown$VH.get(seg);
     }
-    public static void chown$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*chown)(char*,unsigned int,unsigned int,struct fuse3_file_info*);
+     * }
+     */
+    public static void chown$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.chown$VH.set(seg, x);
     }
     public static MemorySegment chown$get(MemorySegment seg, long index) {
@@ -539,7 +773,7 @@ public class fuse3_operations {
     public static void chown$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.chown$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static chown chown (MemorySegment segment, SegmentScope scope) {
+    public static chown chown(MemorySegment segment, SegmentScope scope) {
         return chown.ofAddress(chown$get(segment), scope);
     }
     static final FunctionDescriptor truncate$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -550,6 +784,11 @@ public class fuse3_operations {
     static final MethodHandle truncate$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.truncate$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*truncate)(char*,long long,struct fuse3_file_info*);
+     * }
+     */
     public interface truncate {
 
         int apply(java.lang.foreign.MemorySegment _x0, long _x1, java.lang.foreign.MemorySegment _x2);
@@ -560,7 +799,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, long __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse3_operations.truncate$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, __x1, (java.lang.foreign.MemorySegment)__x2);
+                    return (int)fuse3_operations.truncate$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -572,10 +811,22 @@ public class fuse3_operations {
     public static VarHandle truncate$VH() {
         return fuse3_operations.truncate$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*truncate)(char*,long long,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment truncate$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.truncate$VH.get(seg);
     }
-    public static void truncate$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*truncate)(char*,long long,struct fuse3_file_info*);
+     * }
+     */
+    public static void truncate$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.truncate$VH.set(seg, x);
     }
     public static MemorySegment truncate$get(MemorySegment seg, long index) {
@@ -584,7 +835,7 @@ public class fuse3_operations {
     public static void truncate$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.truncate$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static truncate truncate (MemorySegment segment, SegmentScope scope) {
+    public static truncate truncate(MemorySegment segment, SegmentScope scope) {
         return truncate.ofAddress(truncate$get(segment), scope);
     }
     static final FunctionDescriptor open$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -594,6 +845,11 @@ public class fuse3_operations {
     static final MethodHandle open$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.open$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*open)(char*,struct fuse3_file_info*);
+     * }
+     */
     public interface open {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
@@ -604,7 +860,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse3_operations.open$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1);
+                    return (int)fuse3_operations.open$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -616,10 +872,22 @@ public class fuse3_operations {
     public static VarHandle open$VH() {
         return fuse3_operations.open$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*open)(char*,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment open$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.open$VH.get(seg);
     }
-    public static void open$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*open)(char*,struct fuse3_file_info*);
+     * }
+     */
+    public static void open$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.open$VH.set(seg, x);
     }
     public static MemorySegment open$get(MemorySegment seg, long index) {
@@ -628,7 +896,7 @@ public class fuse3_operations {
     public static void open$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.open$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static open open (MemorySegment segment, SegmentScope scope) {
+    public static open open(MemorySegment segment, SegmentScope scope) {
         return open.ofAddress(open$get(segment), scope);
     }
     static final FunctionDescriptor read$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -641,6 +909,11 @@ public class fuse3_operations {
     static final MethodHandle read$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.read$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*read)(char*,char*,unsigned long long,long long,struct fuse3_file_info*);
+     * }
+     */
     public interface read {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, long _x2, long _x3, java.lang.foreign.MemorySegment _x4);
@@ -651,7 +924,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, long __x2, long __x3, java.lang.foreign.MemorySegment __x4) -> {
                 try {
-                    return (int)fuse3_operations.read$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, __x2, __x3, (java.lang.foreign.MemorySegment)__x4);
+                    return (int)fuse3_operations.read$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -663,10 +936,22 @@ public class fuse3_operations {
     public static VarHandle read$VH() {
         return fuse3_operations.read$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*read)(char*,char*,unsigned long long,long long,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment read$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.read$VH.get(seg);
     }
-    public static void read$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*read)(char*,char*,unsigned long long,long long,struct fuse3_file_info*);
+     * }
+     */
+    public static void read$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.read$VH.set(seg, x);
     }
     public static MemorySegment read$get(MemorySegment seg, long index) {
@@ -675,7 +960,7 @@ public class fuse3_operations {
     public static void read$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.read$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static read read (MemorySegment segment, SegmentScope scope) {
+    public static read read(MemorySegment segment, SegmentScope scope) {
         return read.ofAddress(read$get(segment), scope);
     }
     static final FunctionDescriptor write$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -688,6 +973,11 @@ public class fuse3_operations {
     static final MethodHandle write$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.write$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*write)(char*,char*,unsigned long long,long long,struct fuse3_file_info*);
+     * }
+     */
     public interface write {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, long _x2, long _x3, java.lang.foreign.MemorySegment _x4);
@@ -698,7 +988,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, long __x2, long __x3, java.lang.foreign.MemorySegment __x4) -> {
                 try {
-                    return (int)fuse3_operations.write$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, __x2, __x3, (java.lang.foreign.MemorySegment)__x4);
+                    return (int)fuse3_operations.write$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -710,10 +1000,22 @@ public class fuse3_operations {
     public static VarHandle write$VH() {
         return fuse3_operations.write$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*write)(char*,char*,unsigned long long,long long,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment write$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.write$VH.get(seg);
     }
-    public static void write$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*write)(char*,char*,unsigned long long,long long,struct fuse3_file_info*);
+     * }
+     */
+    public static void write$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.write$VH.set(seg, x);
     }
     public static MemorySegment write$get(MemorySegment seg, long index) {
@@ -722,7 +1024,7 @@ public class fuse3_operations {
     public static void write$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.write$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static write write (MemorySegment segment, SegmentScope scope) {
+    public static write write(MemorySegment segment, SegmentScope scope) {
         return write.ofAddress(write$get(segment), scope);
     }
     static final FunctionDescriptor statfs$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -732,6 +1034,11 @@ public class fuse3_operations {
     static final MethodHandle statfs$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.statfs$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*statfs)(char*,struct fuse_statvfs*);
+     * }
+     */
     public interface statfs {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
@@ -742,7 +1049,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse3_operations.statfs$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1);
+                    return (int)fuse3_operations.statfs$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -754,10 +1061,22 @@ public class fuse3_operations {
     public static VarHandle statfs$VH() {
         return fuse3_operations.statfs$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*statfs)(char*,struct fuse_statvfs*);
+     * }
+     */
     public static MemorySegment statfs$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.statfs$VH.get(seg);
     }
-    public static void statfs$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*statfs)(char*,struct fuse_statvfs*);
+     * }
+     */
+    public static void statfs$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.statfs$VH.set(seg, x);
     }
     public static MemorySegment statfs$get(MemorySegment seg, long index) {
@@ -766,7 +1085,7 @@ public class fuse3_operations {
     public static void statfs$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.statfs$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static statfs statfs (MemorySegment segment, SegmentScope scope) {
+    public static statfs statfs(MemorySegment segment, SegmentScope scope) {
         return statfs.ofAddress(statfs$get(segment), scope);
     }
     static final FunctionDescriptor flush$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -776,6 +1095,11 @@ public class fuse3_operations {
     static final MethodHandle flush$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.flush$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*flush)(char*,struct fuse3_file_info*);
+     * }
+     */
     public interface flush {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
@@ -786,7 +1110,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse3_operations.flush$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1);
+                    return (int)fuse3_operations.flush$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -798,10 +1122,22 @@ public class fuse3_operations {
     public static VarHandle flush$VH() {
         return fuse3_operations.flush$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*flush)(char*,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment flush$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.flush$VH.get(seg);
     }
-    public static void flush$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*flush)(char*,struct fuse3_file_info*);
+     * }
+     */
+    public static void flush$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.flush$VH.set(seg, x);
     }
     public static MemorySegment flush$get(MemorySegment seg, long index) {
@@ -810,7 +1146,7 @@ public class fuse3_operations {
     public static void flush$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.flush$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static flush flush (MemorySegment segment, SegmentScope scope) {
+    public static flush flush(MemorySegment segment, SegmentScope scope) {
         return flush.ofAddress(flush$get(segment), scope);
     }
     static final FunctionDescriptor release$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -820,6 +1156,11 @@ public class fuse3_operations {
     static final MethodHandle release$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.release$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*release)(char*,struct fuse3_file_info*);
+     * }
+     */
     public interface release {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
@@ -830,7 +1171,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse3_operations.release$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1);
+                    return (int)fuse3_operations.release$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -842,10 +1183,22 @@ public class fuse3_operations {
     public static VarHandle release$VH() {
         return fuse3_operations.release$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*release)(char*,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment release$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.release$VH.get(seg);
     }
-    public static void release$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*release)(char*,struct fuse3_file_info*);
+     * }
+     */
+    public static void release$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.release$VH.set(seg, x);
     }
     public static MemorySegment release$get(MemorySegment seg, long index) {
@@ -854,7 +1207,7 @@ public class fuse3_operations {
     public static void release$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.release$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static release release (MemorySegment segment, SegmentScope scope) {
+    public static release release(MemorySegment segment, SegmentScope scope) {
         return release.ofAddress(release$get(segment), scope);
     }
     static final FunctionDescriptor fsync$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -865,6 +1218,11 @@ public class fuse3_operations {
     static final MethodHandle fsync$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.fsync$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*fsync)(char*,int,struct fuse3_file_info*);
+     * }
+     */
     public interface fsync {
 
         int apply(java.lang.foreign.MemorySegment _x0, int _x1, java.lang.foreign.MemorySegment _x2);
@@ -875,7 +1233,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, int __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse3_operations.fsync$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, __x1, (java.lang.foreign.MemorySegment)__x2);
+                    return (int)fuse3_operations.fsync$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -887,10 +1245,22 @@ public class fuse3_operations {
     public static VarHandle fsync$VH() {
         return fuse3_operations.fsync$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*fsync)(char*,int,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment fsync$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.fsync$VH.get(seg);
     }
-    public static void fsync$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*fsync)(char*,int,struct fuse3_file_info*);
+     * }
+     */
+    public static void fsync$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.fsync$VH.set(seg, x);
     }
     public static MemorySegment fsync$get(MemorySegment seg, long index) {
@@ -899,7 +1269,7 @@ public class fuse3_operations {
     public static void fsync$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.fsync$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static fsync fsync (MemorySegment segment, SegmentScope scope) {
+    public static fsync fsync(MemorySegment segment, SegmentScope scope) {
         return fsync.ofAddress(fsync$get(segment), scope);
     }
     static final FunctionDescriptor setxattr$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -912,6 +1282,11 @@ public class fuse3_operations {
     static final MethodHandle setxattr$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.setxattr$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*setxattr)(char*,char*,char*,unsigned long long,int);
+     * }
+     */
     public interface setxattr {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, java.lang.foreign.MemorySegment _x2, long _x3, int _x4);
@@ -922,7 +1297,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, java.lang.foreign.MemorySegment __x2, long __x3, int __x4) -> {
                 try {
-                    return (int)fuse3_operations.setxattr$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, (java.lang.foreign.MemorySegment)__x2, __x3, __x4);
+                    return (int)fuse3_operations.setxattr$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -934,10 +1309,22 @@ public class fuse3_operations {
     public static VarHandle setxattr$VH() {
         return fuse3_operations.setxattr$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*setxattr)(char*,char*,char*,unsigned long long,int);
+     * }
+     */
     public static MemorySegment setxattr$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.setxattr$VH.get(seg);
     }
-    public static void setxattr$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*setxattr)(char*,char*,char*,unsigned long long,int);
+     * }
+     */
+    public static void setxattr$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.setxattr$VH.set(seg, x);
     }
     public static MemorySegment setxattr$get(MemorySegment seg, long index) {
@@ -946,7 +1333,7 @@ public class fuse3_operations {
     public static void setxattr$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.setxattr$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static setxattr setxattr (MemorySegment segment, SegmentScope scope) {
+    public static setxattr setxattr(MemorySegment segment, SegmentScope scope) {
         return setxattr.ofAddress(setxattr$get(segment), scope);
     }
     static final FunctionDescriptor getxattr$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -958,6 +1345,11 @@ public class fuse3_operations {
     static final MethodHandle getxattr$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.getxattr$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*getxattr)(char*,char*,char*,unsigned long long);
+     * }
+     */
     public interface getxattr {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, java.lang.foreign.MemorySegment _x2, long _x3);
@@ -968,7 +1360,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, java.lang.foreign.MemorySegment __x2, long __x3) -> {
                 try {
-                    return (int)fuse3_operations.getxattr$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, (java.lang.foreign.MemorySegment)__x2, __x3);
+                    return (int)fuse3_operations.getxattr$MH.invokeExact(symbol, __x0, __x1, __x2, __x3);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -980,10 +1372,22 @@ public class fuse3_operations {
     public static VarHandle getxattr$VH() {
         return fuse3_operations.getxattr$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*getxattr)(char*,char*,char*,unsigned long long);
+     * }
+     */
     public static MemorySegment getxattr$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.getxattr$VH.get(seg);
     }
-    public static void getxattr$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*getxattr)(char*,char*,char*,unsigned long long);
+     * }
+     */
+    public static void getxattr$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.getxattr$VH.set(seg, x);
     }
     public static MemorySegment getxattr$get(MemorySegment seg, long index) {
@@ -992,7 +1396,7 @@ public class fuse3_operations {
     public static void getxattr$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.getxattr$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static getxattr getxattr (MemorySegment segment, SegmentScope scope) {
+    public static getxattr getxattr(MemorySegment segment, SegmentScope scope) {
         return getxattr.ofAddress(getxattr$get(segment), scope);
     }
     static final FunctionDescriptor listxattr$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1003,6 +1407,11 @@ public class fuse3_operations {
     static final MethodHandle listxattr$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.listxattr$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*listxattr)(char*,char*,unsigned long long);
+     * }
+     */
     public interface listxattr {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, long _x2);
@@ -1013,7 +1422,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, long __x2) -> {
                 try {
-                    return (int)fuse3_operations.listxattr$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, __x2);
+                    return (int)fuse3_operations.listxattr$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1025,10 +1434,22 @@ public class fuse3_operations {
     public static VarHandle listxattr$VH() {
         return fuse3_operations.listxattr$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*listxattr)(char*,char*,unsigned long long);
+     * }
+     */
     public static MemorySegment listxattr$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.listxattr$VH.get(seg);
     }
-    public static void listxattr$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*listxattr)(char*,char*,unsigned long long);
+     * }
+     */
+    public static void listxattr$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.listxattr$VH.set(seg, x);
     }
     public static MemorySegment listxattr$get(MemorySegment seg, long index) {
@@ -1037,7 +1458,7 @@ public class fuse3_operations {
     public static void listxattr$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.listxattr$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static listxattr listxattr (MemorySegment segment, SegmentScope scope) {
+    public static listxattr listxattr(MemorySegment segment, SegmentScope scope) {
         return listxattr.ofAddress(listxattr$get(segment), scope);
     }
     static final FunctionDescriptor removexattr$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1047,6 +1468,11 @@ public class fuse3_operations {
     static final MethodHandle removexattr$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.removexattr$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*removexattr)(char*,char*);
+     * }
+     */
     public interface removexattr {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
@@ -1057,7 +1483,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse3_operations.removexattr$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1);
+                    return (int)fuse3_operations.removexattr$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1069,10 +1495,22 @@ public class fuse3_operations {
     public static VarHandle removexattr$VH() {
         return fuse3_operations.removexattr$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*removexattr)(char*,char*);
+     * }
+     */
     public static MemorySegment removexattr$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.removexattr$VH.get(seg);
     }
-    public static void removexattr$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*removexattr)(char*,char*);
+     * }
+     */
+    public static void removexattr$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.removexattr$VH.set(seg, x);
     }
     public static MemorySegment removexattr$get(MemorySegment seg, long index) {
@@ -1081,7 +1519,7 @@ public class fuse3_operations {
     public static void removexattr$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.removexattr$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static removexattr removexattr (MemorySegment segment, SegmentScope scope) {
+    public static removexattr removexattr(MemorySegment segment, SegmentScope scope) {
         return removexattr.ofAddress(removexattr$get(segment), scope);
     }
     static final FunctionDescriptor opendir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1091,6 +1529,11 @@ public class fuse3_operations {
     static final MethodHandle opendir$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.opendir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*opendir)(char*,struct fuse3_file_info*);
+     * }
+     */
     public interface opendir {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
@@ -1101,7 +1544,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse3_operations.opendir$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1);
+                    return (int)fuse3_operations.opendir$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1113,10 +1556,22 @@ public class fuse3_operations {
     public static VarHandle opendir$VH() {
         return fuse3_operations.opendir$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*opendir)(char*,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment opendir$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.opendir$VH.get(seg);
     }
-    public static void opendir$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*opendir)(char*,struct fuse3_file_info*);
+     * }
+     */
+    public static void opendir$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.opendir$VH.set(seg, x);
     }
     public static MemorySegment opendir$get(MemorySegment seg, long index) {
@@ -1125,7 +1580,7 @@ public class fuse3_operations {
     public static void opendir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.opendir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static opendir opendir (MemorySegment segment, SegmentScope scope) {
+    public static opendir opendir(MemorySegment segment, SegmentScope scope) {
         return opendir.ofAddress(opendir$get(segment), scope);
     }
     static final FunctionDescriptor readdir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1139,6 +1594,11 @@ public class fuse3_operations {
     static final MethodHandle readdir$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.readdir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*readdir)(char*,void*,int (*)(void*,char*,struct fuse_stat*,long long,enum fuse3_fill_dir_flags),long long,struct fuse3_file_info*,enum fuse3_readdir_flags);
+     * }
+     */
     public interface readdir {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, java.lang.foreign.MemorySegment _x2, long _x3, java.lang.foreign.MemorySegment _x4, int _x5);
@@ -1149,7 +1609,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, java.lang.foreign.MemorySegment __x2, long __x3, java.lang.foreign.MemorySegment __x4, int __x5) -> {
                 try {
-                    return (int)fuse3_operations.readdir$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, (java.lang.foreign.MemorySegment)__x2, __x3, (java.lang.foreign.MemorySegment)__x4, __x5);
+                    return (int)fuse3_operations.readdir$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4, __x5);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1161,10 +1621,22 @@ public class fuse3_operations {
     public static VarHandle readdir$VH() {
         return fuse3_operations.readdir$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*readdir)(char*,void*,int (*)(void*,char*,struct fuse_stat*,long long,enum fuse3_fill_dir_flags),long long,struct fuse3_file_info*,enum fuse3_readdir_flags);
+     * }
+     */
     public static MemorySegment readdir$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.readdir$VH.get(seg);
     }
-    public static void readdir$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*readdir)(char*,void*,int (*)(void*,char*,struct fuse_stat*,long long,enum fuse3_fill_dir_flags),long long,struct fuse3_file_info*,enum fuse3_readdir_flags);
+     * }
+     */
+    public static void readdir$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.readdir$VH.set(seg, x);
     }
     public static MemorySegment readdir$get(MemorySegment seg, long index) {
@@ -1173,7 +1645,7 @@ public class fuse3_operations {
     public static void readdir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.readdir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static readdir readdir (MemorySegment segment, SegmentScope scope) {
+    public static readdir readdir(MemorySegment segment, SegmentScope scope) {
         return readdir.ofAddress(readdir$get(segment), scope);
     }
     static final FunctionDescriptor releasedir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1183,6 +1655,11 @@ public class fuse3_operations {
     static final MethodHandle releasedir$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.releasedir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*releasedir)(char*,struct fuse3_file_info*);
+     * }
+     */
     public interface releasedir {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
@@ -1193,7 +1670,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (int)fuse3_operations.releasedir$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1);
+                    return (int)fuse3_operations.releasedir$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1205,10 +1682,22 @@ public class fuse3_operations {
     public static VarHandle releasedir$VH() {
         return fuse3_operations.releasedir$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*releasedir)(char*,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment releasedir$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.releasedir$VH.get(seg);
     }
-    public static void releasedir$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*releasedir)(char*,struct fuse3_file_info*);
+     * }
+     */
+    public static void releasedir$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.releasedir$VH.set(seg, x);
     }
     public static MemorySegment releasedir$get(MemorySegment seg, long index) {
@@ -1217,7 +1706,7 @@ public class fuse3_operations {
     public static void releasedir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.releasedir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static releasedir releasedir (MemorySegment segment, SegmentScope scope) {
+    public static releasedir releasedir(MemorySegment segment, SegmentScope scope) {
         return releasedir.ofAddress(releasedir$get(segment), scope);
     }
     static final FunctionDescriptor fsyncdir$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1228,6 +1717,11 @@ public class fuse3_operations {
     static final MethodHandle fsyncdir$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.fsyncdir$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*fsyncdir)(char*,int,struct fuse3_file_info*);
+     * }
+     */
     public interface fsyncdir {
 
         int apply(java.lang.foreign.MemorySegment _x0, int _x1, java.lang.foreign.MemorySegment _x2);
@@ -1238,7 +1732,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, int __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse3_operations.fsyncdir$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, __x1, (java.lang.foreign.MemorySegment)__x2);
+                    return (int)fuse3_operations.fsyncdir$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1250,10 +1744,22 @@ public class fuse3_operations {
     public static VarHandle fsyncdir$VH() {
         return fuse3_operations.fsyncdir$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*fsyncdir)(char*,int,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment fsyncdir$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.fsyncdir$VH.get(seg);
     }
-    public static void fsyncdir$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*fsyncdir)(char*,int,struct fuse3_file_info*);
+     * }
+     */
+    public static void fsyncdir$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.fsyncdir$VH.set(seg, x);
     }
     public static MemorySegment fsyncdir$get(MemorySegment seg, long index) {
@@ -1262,7 +1768,7 @@ public class fuse3_operations {
     public static void fsyncdir$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.fsyncdir$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static fsyncdir fsyncdir (MemorySegment segment, SegmentScope scope) {
+    public static fsyncdir fsyncdir(MemorySegment segment, SegmentScope scope) {
         return fsyncdir.ofAddress(fsyncdir$get(segment), scope);
     }
     static final FunctionDescriptor init$FUNC = FunctionDescriptor.of(Constants$root.C_POINTER$LAYOUT,
@@ -1272,6 +1778,11 @@ public class fuse3_operations {
     static final MethodHandle init$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.init$FUNC
     );
+    /**
+     * {@snippet :
+ * void* (*init)(struct fuse3_conn_info*,struct fuse3_config*);
+     * }
+     */
     public interface init {
 
         java.lang.foreign.MemorySegment apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1);
@@ -1282,7 +1793,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1) -> {
                 try {
-                    return (java.lang.foreign.MemorySegment)(java.lang.foreign.MemorySegment)fuse3_operations.init$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1);
+                    return (java.lang.foreign.MemorySegment)fuse3_operations.init$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1294,10 +1805,22 @@ public class fuse3_operations {
     public static VarHandle init$VH() {
         return fuse3_operations.init$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * void* (*init)(struct fuse3_conn_info*,struct fuse3_config*);
+     * }
+     */
     public static MemorySegment init$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.init$VH.get(seg);
     }
-    public static void init$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * void* (*init)(struct fuse3_conn_info*,struct fuse3_config*);
+     * }
+     */
+    public static void init$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.init$VH.set(seg, x);
     }
     public static MemorySegment init$get(MemorySegment seg, long index) {
@@ -1306,7 +1829,7 @@ public class fuse3_operations {
     public static void init$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.init$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static init init (MemorySegment segment, SegmentScope scope) {
+    public static init init(MemorySegment segment, SegmentScope scope) {
         return init.ofAddress(init$get(segment), scope);
     }
     static final FunctionDescriptor destroy$FUNC = FunctionDescriptor.ofVoid(
@@ -1315,6 +1838,11 @@ public class fuse3_operations {
     static final MethodHandle destroy$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.destroy$FUNC
     );
+    /**
+     * {@snippet :
+ * void (*destroy)(void*);
+     * }
+     */
     public interface destroy {
 
         void apply(java.lang.foreign.MemorySegment _x0);
@@ -1325,7 +1853,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0) -> {
                 try {
-                    fuse3_operations.destroy$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0);
+                    fuse3_operations.destroy$MH.invokeExact(symbol, __x0);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1337,10 +1865,22 @@ public class fuse3_operations {
     public static VarHandle destroy$VH() {
         return fuse3_operations.destroy$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * void (*destroy)(void*);
+     * }
+     */
     public static MemorySegment destroy$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.destroy$VH.get(seg);
     }
-    public static void destroy$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * void (*destroy)(void*);
+     * }
+     */
+    public static void destroy$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.destroy$VH.set(seg, x);
     }
     public static MemorySegment destroy$get(MemorySegment seg, long index) {
@@ -1349,7 +1889,7 @@ public class fuse3_operations {
     public static void destroy$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.destroy$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static destroy destroy (MemorySegment segment, SegmentScope scope) {
+    public static destroy destroy(MemorySegment segment, SegmentScope scope) {
         return destroy.ofAddress(destroy$get(segment), scope);
     }
     static final FunctionDescriptor access$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1359,6 +1899,11 @@ public class fuse3_operations {
     static final MethodHandle access$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.access$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*access)(char*,int);
+     * }
+     */
     public interface access {
 
         int apply(java.lang.foreign.MemorySegment _x0, int _x1);
@@ -1369,7 +1914,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, int __x1) -> {
                 try {
-                    return (int)fuse3_operations.access$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, __x1);
+                    return (int)fuse3_operations.access$MH.invokeExact(symbol, __x0, __x1);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1381,10 +1926,22 @@ public class fuse3_operations {
     public static VarHandle access$VH() {
         return fuse3_operations.access$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*access)(char*,int);
+     * }
+     */
     public static MemorySegment access$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.access$VH.get(seg);
     }
-    public static void access$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*access)(char*,int);
+     * }
+     */
+    public static void access$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.access$VH.set(seg, x);
     }
     public static MemorySegment access$get(MemorySegment seg, long index) {
@@ -1393,7 +1950,7 @@ public class fuse3_operations {
     public static void access$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.access$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static access access (MemorySegment segment, SegmentScope scope) {
+    public static access access(MemorySegment segment, SegmentScope scope) {
         return access.ofAddress(access$get(segment), scope);
     }
     static final FunctionDescriptor create$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1404,6 +1961,11 @@ public class fuse3_operations {
     static final MethodHandle create$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.create$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*create)(char*,unsigned int,struct fuse3_file_info*);
+     * }
+     */
     public interface create {
 
         int apply(java.lang.foreign.MemorySegment _x0, int _x1, java.lang.foreign.MemorySegment _x2);
@@ -1414,7 +1976,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, int __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse3_operations.create$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, __x1, (java.lang.foreign.MemorySegment)__x2);
+                    return (int)fuse3_operations.create$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1426,10 +1988,22 @@ public class fuse3_operations {
     public static VarHandle create$VH() {
         return fuse3_operations.create$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*create)(char*,unsigned int,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment create$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.create$VH.get(seg);
     }
-    public static void create$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*create)(char*,unsigned int,struct fuse3_file_info*);
+     * }
+     */
+    public static void create$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.create$VH.set(seg, x);
     }
     public static MemorySegment create$get(MemorySegment seg, long index) {
@@ -1438,7 +2012,7 @@ public class fuse3_operations {
     public static void create$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.create$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static create create (MemorySegment segment, SegmentScope scope) {
+    public static create create(MemorySegment segment, SegmentScope scope) {
         return create.ofAddress(create$get(segment), scope);
     }
     static final FunctionDescriptor lock$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1450,6 +2024,11 @@ public class fuse3_operations {
     static final MethodHandle lock$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.lock$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*lock)(char*,struct fuse3_file_info*,int,struct fuse_flock*);
+     * }
+     */
     public interface lock {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, int _x2, java.lang.foreign.MemorySegment _x3);
@@ -1460,7 +2039,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, int __x2, java.lang.foreign.MemorySegment __x3) -> {
                 try {
-                    return (int)fuse3_operations.lock$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, __x2, (java.lang.foreign.MemorySegment)__x3);
+                    return (int)fuse3_operations.lock$MH.invokeExact(symbol, __x0, __x1, __x2, __x3);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1472,10 +2051,22 @@ public class fuse3_operations {
     public static VarHandle lock$VH() {
         return fuse3_operations.lock$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*lock)(char*,struct fuse3_file_info*,int,struct fuse_flock*);
+     * }
+     */
     public static MemorySegment lock$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.lock$VH.get(seg);
     }
-    public static void lock$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*lock)(char*,struct fuse3_file_info*,int,struct fuse_flock*);
+     * }
+     */
+    public static void lock$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.lock$VH.set(seg, x);
     }
     public static MemorySegment lock$get(MemorySegment seg, long index) {
@@ -1484,7 +2075,7 @@ public class fuse3_operations {
     public static void lock$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.lock$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static lock lock (MemorySegment segment, SegmentScope scope) {
+    public static lock lock(MemorySegment segment, SegmentScope scope) {
         return lock.ofAddress(lock$get(segment), scope);
     }
     static final FunctionDescriptor utimens$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1495,6 +2086,11 @@ public class fuse3_operations {
     static final MethodHandle utimens$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.utimens$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*utimens)(char*,struct fuse_timespec*,struct fuse3_file_info*);
+     * }
+     */
     public interface utimens {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, java.lang.foreign.MemorySegment _x2);
@@ -1505,7 +2101,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse3_operations.utimens$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, (java.lang.foreign.MemorySegment)__x2);
+                    return (int)fuse3_operations.utimens$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1517,10 +2113,22 @@ public class fuse3_operations {
     public static VarHandle utimens$VH() {
         return fuse3_operations.utimens$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*utimens)(char*,struct fuse_timespec*,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment utimens$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.utimens$VH.get(seg);
     }
-    public static void utimens$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*utimens)(char*,struct fuse_timespec*,struct fuse3_file_info*);
+     * }
+     */
+    public static void utimens$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.utimens$VH.set(seg, x);
     }
     public static MemorySegment utimens$get(MemorySegment seg, long index) {
@@ -1529,7 +2137,7 @@ public class fuse3_operations {
     public static void utimens$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.utimens$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static utimens utimens (MemorySegment segment, SegmentScope scope) {
+    public static utimens utimens(MemorySegment segment, SegmentScope scope) {
         return utimens.ofAddress(utimens$get(segment), scope);
     }
     static final FunctionDescriptor bmap$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1540,6 +2148,11 @@ public class fuse3_operations {
     static final MethodHandle bmap$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.bmap$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*bmap)(char*,unsigned long long,unsigned long long*);
+     * }
+     */
     public interface bmap {
 
         int apply(java.lang.foreign.MemorySegment _x0, long _x1, java.lang.foreign.MemorySegment _x2);
@@ -1550,7 +2163,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, long __x1, java.lang.foreign.MemorySegment __x2) -> {
                 try {
-                    return (int)fuse3_operations.bmap$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, __x1, (java.lang.foreign.MemorySegment)__x2);
+                    return (int)fuse3_operations.bmap$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1562,10 +2175,22 @@ public class fuse3_operations {
     public static VarHandle bmap$VH() {
         return fuse3_operations.bmap$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*bmap)(char*,unsigned long long,unsigned long long*);
+     * }
+     */
     public static MemorySegment bmap$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.bmap$VH.get(seg);
     }
-    public static void bmap$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*bmap)(char*,unsigned long long,unsigned long long*);
+     * }
+     */
+    public static void bmap$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.bmap$VH.set(seg, x);
     }
     public static MemorySegment bmap$get(MemorySegment seg, long index) {
@@ -1574,7 +2199,7 @@ public class fuse3_operations {
     public static void bmap$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.bmap$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static bmap bmap (MemorySegment segment, SegmentScope scope) {
+    public static bmap bmap(MemorySegment segment, SegmentScope scope) {
         return bmap.ofAddress(bmap$get(segment), scope);
     }
     static final FunctionDescriptor ioctl$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1588,6 +2213,11 @@ public class fuse3_operations {
     static final MethodHandle ioctl$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.ioctl$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*ioctl)(char*,int,void*,struct fuse3_file_info*,unsigned int,void*);
+     * }
+     */
     public interface ioctl {
 
         int apply(java.lang.foreign.MemorySegment _x0, int _x1, java.lang.foreign.MemorySegment _x2, java.lang.foreign.MemorySegment _x3, int _x4, java.lang.foreign.MemorySegment _x5);
@@ -1598,7 +2228,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, int __x1, java.lang.foreign.MemorySegment __x2, java.lang.foreign.MemorySegment __x3, int __x4, java.lang.foreign.MemorySegment __x5) -> {
                 try {
-                    return (int)fuse3_operations.ioctl$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, __x1, (java.lang.foreign.MemorySegment)__x2, (java.lang.foreign.MemorySegment)__x3, __x4, (java.lang.foreign.MemorySegment)__x5);
+                    return (int)fuse3_operations.ioctl$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4, __x5);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1610,10 +2240,22 @@ public class fuse3_operations {
     public static VarHandle ioctl$VH() {
         return fuse3_operations.ioctl$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*ioctl)(char*,int,void*,struct fuse3_file_info*,unsigned int,void*);
+     * }
+     */
     public static MemorySegment ioctl$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.ioctl$VH.get(seg);
     }
-    public static void ioctl$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*ioctl)(char*,int,void*,struct fuse3_file_info*,unsigned int,void*);
+     * }
+     */
+    public static void ioctl$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.ioctl$VH.set(seg, x);
     }
     public static MemorySegment ioctl$get(MemorySegment seg, long index) {
@@ -1622,7 +2264,7 @@ public class fuse3_operations {
     public static void ioctl$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.ioctl$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static ioctl ioctl (MemorySegment segment, SegmentScope scope) {
+    public static ioctl ioctl(MemorySegment segment, SegmentScope scope) {
         return ioctl.ofAddress(ioctl$get(segment), scope);
     }
     static final FunctionDescriptor poll$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1634,6 +2276,11 @@ public class fuse3_operations {
     static final MethodHandle poll$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.poll$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*poll)(char*,struct fuse3_file_info*,struct fuse3_pollhandle*,unsigned int*);
+     * }
+     */
     public interface poll {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, java.lang.foreign.MemorySegment _x2, java.lang.foreign.MemorySegment _x3);
@@ -1644,7 +2291,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, java.lang.foreign.MemorySegment __x2, java.lang.foreign.MemorySegment __x3) -> {
                 try {
-                    return (int)fuse3_operations.poll$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, (java.lang.foreign.MemorySegment)__x2, (java.lang.foreign.MemorySegment)__x3);
+                    return (int)fuse3_operations.poll$MH.invokeExact(symbol, __x0, __x1, __x2, __x3);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1656,10 +2303,22 @@ public class fuse3_operations {
     public static VarHandle poll$VH() {
         return fuse3_operations.poll$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*poll)(char*,struct fuse3_file_info*,struct fuse3_pollhandle*,unsigned int*);
+     * }
+     */
     public static MemorySegment poll$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.poll$VH.get(seg);
     }
-    public static void poll$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*poll)(char*,struct fuse3_file_info*,struct fuse3_pollhandle*,unsigned int*);
+     * }
+     */
+    public static void poll$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.poll$VH.set(seg, x);
     }
     public static MemorySegment poll$get(MemorySegment seg, long index) {
@@ -1668,7 +2327,7 @@ public class fuse3_operations {
     public static void poll$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.poll$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static poll poll (MemorySegment segment, SegmentScope scope) {
+    public static poll poll(MemorySegment segment, SegmentScope scope) {
         return poll.ofAddress(poll$get(segment), scope);
     }
     static final FunctionDescriptor write_buf$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1680,6 +2339,11 @@ public class fuse3_operations {
     static final MethodHandle write_buf$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.write_buf$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*write_buf)(char*,struct fuse3_bufvec*,long long,struct fuse3_file_info*);
+     * }
+     */
     public interface write_buf {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, long _x2, java.lang.foreign.MemorySegment _x3);
@@ -1690,7 +2354,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, long __x2, java.lang.foreign.MemorySegment __x3) -> {
                 try {
-                    return (int)fuse3_operations.write_buf$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, __x2, (java.lang.foreign.MemorySegment)__x3);
+                    return (int)fuse3_operations.write_buf$MH.invokeExact(symbol, __x0, __x1, __x2, __x3);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1702,10 +2366,22 @@ public class fuse3_operations {
     public static VarHandle write_buf$VH() {
         return fuse3_operations.write_buf$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*write_buf)(char*,struct fuse3_bufvec*,long long,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment write_buf$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.write_buf$VH.get(seg);
     }
-    public static void write_buf$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*write_buf)(char*,struct fuse3_bufvec*,long long,struct fuse3_file_info*);
+     * }
+     */
+    public static void write_buf$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.write_buf$VH.set(seg, x);
     }
     public static MemorySegment write_buf$get(MemorySegment seg, long index) {
@@ -1714,7 +2390,7 @@ public class fuse3_operations {
     public static void write_buf$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.write_buf$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static write_buf write_buf (MemorySegment segment, SegmentScope scope) {
+    public static write_buf write_buf(MemorySegment segment, SegmentScope scope) {
         return write_buf.ofAddress(write_buf$get(segment), scope);
     }
     static final FunctionDescriptor read_buf$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1727,6 +2403,11 @@ public class fuse3_operations {
     static final MethodHandle read_buf$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.read_buf$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*read_buf)(char*,struct fuse3_bufvec**,unsigned long long,long long,struct fuse3_file_info*);
+     * }
+     */
     public interface read_buf {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, long _x2, long _x3, java.lang.foreign.MemorySegment _x4);
@@ -1737,7 +2418,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, long __x2, long __x3, java.lang.foreign.MemorySegment __x4) -> {
                 try {
-                    return (int)fuse3_operations.read_buf$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, __x2, __x3, (java.lang.foreign.MemorySegment)__x4);
+                    return (int)fuse3_operations.read_buf$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1749,10 +2430,22 @@ public class fuse3_operations {
     public static VarHandle read_buf$VH() {
         return fuse3_operations.read_buf$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*read_buf)(char*,struct fuse3_bufvec**,unsigned long long,long long,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment read_buf$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.read_buf$VH.get(seg);
     }
-    public static void read_buf$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*read_buf)(char*,struct fuse3_bufvec**,unsigned long long,long long,struct fuse3_file_info*);
+     * }
+     */
+    public static void read_buf$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.read_buf$VH.set(seg, x);
     }
     public static MemorySegment read_buf$get(MemorySegment seg, long index) {
@@ -1761,7 +2454,7 @@ public class fuse3_operations {
     public static void read_buf$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.read_buf$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static read_buf read_buf (MemorySegment segment, SegmentScope scope) {
+    public static read_buf read_buf(MemorySegment segment, SegmentScope scope) {
         return read_buf.ofAddress(read_buf$get(segment), scope);
     }
     static final FunctionDescriptor flock$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1772,6 +2465,11 @@ public class fuse3_operations {
     static final MethodHandle flock$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.flock$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*flock)(char*,struct fuse3_file_info*,int);
+     * }
+     */
     public interface flock {
 
         int apply(java.lang.foreign.MemorySegment _x0, java.lang.foreign.MemorySegment _x1, int _x2);
@@ -1782,7 +2480,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, java.lang.foreign.MemorySegment __x1, int __x2) -> {
                 try {
-                    return (int)fuse3_operations.flock$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, (java.lang.foreign.MemorySegment)__x1, __x2);
+                    return (int)fuse3_operations.flock$MH.invokeExact(symbol, __x0, __x1, __x2);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1794,10 +2492,22 @@ public class fuse3_operations {
     public static VarHandle flock$VH() {
         return fuse3_operations.flock$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*flock)(char*,struct fuse3_file_info*,int);
+     * }
+     */
     public static MemorySegment flock$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.flock$VH.get(seg);
     }
-    public static void flock$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*flock)(char*,struct fuse3_file_info*,int);
+     * }
+     */
+    public static void flock$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.flock$VH.set(seg, x);
     }
     public static MemorySegment flock$get(MemorySegment seg, long index) {
@@ -1806,7 +2516,7 @@ public class fuse3_operations {
     public static void flock$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.flock$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static flock flock (MemorySegment segment, SegmentScope scope) {
+    public static flock flock(MemorySegment segment, SegmentScope scope) {
         return flock.ofAddress(flock$get(segment), scope);
     }
     static final FunctionDescriptor fallocate$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
@@ -1819,6 +2529,11 @@ public class fuse3_operations {
     static final MethodHandle fallocate$MH = RuntimeHelper.downcallHandle(
         fuse3_operations.fallocate$FUNC
     );
+    /**
+     * {@snippet :
+ * int (*fallocate)(char*,int,long long,long long,struct fuse3_file_info*);
+     * }
+     */
     public interface fallocate {
 
         int apply(java.lang.foreign.MemorySegment _x0, int _x1, long _x2, long _x3, java.lang.foreign.MemorySegment _x4);
@@ -1829,7 +2544,7 @@ public class fuse3_operations {
             MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
             return (java.lang.foreign.MemorySegment __x0, int __x1, long __x2, long __x3, java.lang.foreign.MemorySegment __x4) -> {
                 try {
-                    return (int)fuse3_operations.fallocate$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)__x0, __x1, __x2, __x3, (java.lang.foreign.MemorySegment)__x4);
+                    return (int)fuse3_operations.fallocate$MH.invokeExact(symbol, __x0, __x1, __x2, __x3, __x4);
                 } catch (Throwable ex$) {
                     throw new AssertionError("should not reach here", ex$);
                 }
@@ -1841,10 +2556,22 @@ public class fuse3_operations {
     public static VarHandle fallocate$VH() {
         return fuse3_operations.fallocate$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int (*fallocate)(char*,int,long long,long long,struct fuse3_file_info*);
+     * }
+     */
     public static MemorySegment fallocate$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse3_operations.fallocate$VH.get(seg);
     }
-    public static void fallocate$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int (*fallocate)(char*,int,long long,long long,struct fuse3_file_info*);
+     * }
+     */
+    public static void fallocate$set(MemorySegment seg, MemorySegment x) {
         fuse3_operations.fallocate$VH.set(seg, x);
     }
     public static MemorySegment fallocate$get(MemorySegment seg, long index) {
@@ -1853,12 +2580,12 @@ public class fuse3_operations {
     public static void fallocate$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_operations.fallocate$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    public static fallocate fallocate (MemorySegment segment, SegmentScope scope) {
+    public static fallocate fallocate(MemorySegment segment, SegmentScope scope) {
         return fallocate.ofAddress(fallocate$get(segment), scope);
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
     public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }

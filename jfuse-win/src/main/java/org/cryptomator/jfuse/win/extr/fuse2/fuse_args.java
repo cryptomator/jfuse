@@ -2,14 +2,20 @@
 
 package org.cryptomator.jfuse.win.extr.fuse2;
 
-import java.lang.foreign.GroupLayout;
-import java.lang.foreign.MemoryLayout;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
-import java.lang.foreign.SegmentScope;
-import java.lang.foreign.StructLayout;
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
-
+import java.nio.ByteOrder;
+import java.lang.foreign.*;
+import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct fuse_args {
+ *     int argc;
+ *     char** argv;
+ *     int allocated;
+ * };
+ * }
+ */
 public class fuse_args {
 
     static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
@@ -26,10 +32,22 @@ public class fuse_args {
     public static VarHandle argc$VH() {
         return fuse_args.argc$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int argc;
+     * }
+     */
     public static int argc$get(MemorySegment seg) {
         return (int)fuse_args.argc$VH.get(seg);
     }
-    public static void argc$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int argc;
+     * }
+     */
+    public static void argc$set(MemorySegment seg, int x) {
         fuse_args.argc$VH.set(seg, x);
     }
     public static int argc$get(MemorySegment seg, long index) {
@@ -42,10 +60,22 @@ public class fuse_args {
     public static VarHandle argv$VH() {
         return fuse_args.argv$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * char** argv;
+     * }
+     */
     public static MemorySegment argv$get(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)fuse_args.argv$VH.get(seg);
     }
-    public static void argv$set( MemorySegment seg, MemorySegment x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * char** argv;
+     * }
+     */
+    public static void argv$set(MemorySegment seg, MemorySegment x) {
         fuse_args.argv$VH.set(seg, x);
     }
     public static MemorySegment argv$get(MemorySegment seg, long index) {
@@ -58,10 +88,22 @@ public class fuse_args {
     public static VarHandle allocated$VH() {
         return fuse_args.allocated$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int allocated;
+     * }
+     */
     public static int allocated$get(MemorySegment seg) {
         return (int)fuse_args.allocated$VH.get(seg);
     }
-    public static void allocated$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int allocated;
+     * }
+     */
+    public static void allocated$set(MemorySegment seg, int x) {
         fuse_args.allocated$VH.set(seg, x);
     }
     public static int allocated$get(MemorySegment seg, long index) {
@@ -72,7 +114,7 @@ public class fuse_args {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
     public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }

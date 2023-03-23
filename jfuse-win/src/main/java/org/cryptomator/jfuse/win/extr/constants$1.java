@@ -3,10 +3,14 @@
 package org.cryptomator.jfuse.win.extr;
 
 import java.lang.invoke.MethodHandle;
+import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
 import java.lang.foreign.*;
+import static java.lang.foreign.ValueLayout.*;
+final class constants$1 {
 
-class constants$1 {
-
+    // Suppresses default constructor, ensuring non-instantiability.
+    private constants$1() {}
     static final FunctionDescriptor fuse3_unmount$FUNC = FunctionDescriptor.ofVoid(
         Constants$root.C_POINTER$LAYOUT
     );
@@ -21,13 +25,13 @@ class constants$1 {
         "fuse3_loop",
         constants$1.fuse3_loop$FUNC
     );
-    static final FunctionDescriptor fuse3_loop_mt_31$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+    static final FunctionDescriptor fuse3_loop_mt$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_LONG$LAYOUT
+        Constants$root.C_POINTER$LAYOUT
     );
-    static final MethodHandle fuse3_loop_mt_31$MH = RuntimeHelper.downcallHandle(
-        "fuse3_loop_mt_31",
-        constants$1.fuse3_loop_mt_31$FUNC
+    static final MethodHandle fuse3_loop_mt$MH = RuntimeHelper.downcallHandle(
+        "fuse3_loop_mt",
+        constants$1.fuse3_loop_mt$FUNC
     );
     static final FunctionDescriptor fuse3_exit$FUNC = FunctionDescriptor.ofVoid(
         Constants$root.C_POINTER$LAYOUT

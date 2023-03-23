@@ -15,6 +15,7 @@
 
 	<properties>
 		<win.ucrtHeaderPath>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</win.ucrtHeaderPath>
+		<jextract.executable>C:\Users\Arbeit\Skymatic\jextract\build\jextract\bin\jextract.bat</jextract.executable>
 	</properties>
 
 	<dependencies>
@@ -70,9 +71,9 @@
 					<plugin>
 						<groupId>io.github.coffeelibs</groupId>
 						<artifactId>jextract-maven-plugin</artifactId>
-						<version>0.2.0</version>
+						<version>0.3.0</version>
 						<configuration>
-							<executable>C:\Users\Arbeit\Programs\jextract-19\bin\jextract.bat</executable>
+							<executable>${jextract.executable}</executable>
 							<headerSearchPaths>${win.ucrtHeaderPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
 							<targetPackage>org.cryptomator.jfuse.win.extr</targetPackage>
@@ -88,7 +89,8 @@
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>WINFSP_DLL_INTERNAL</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=31</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=33</cPreprocessorMacro>
+										<cPreprocessorMacro>CYGFUSE</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
 										<includeFunction>fuse3_lib_help</includeFunction>
@@ -96,7 +98,7 @@
 										<includeFunction>fuse3_mount</includeFunction>
 										<includeFunction>fuse3_get_session</includeFunction>
 										<includeFunction>fuse3_loop</includeFunction>
-										<includeFunction>fuse3_loop_mt_31</includeFunction>
+										<includeFunction>fuse3_loop_mt</includeFunction>
 										<includeFunction>fuse3_exit</includeFunction>
 										<includeFunction>fuse3_unmount</includeFunction>
 										<includeFunction>fuse3_destroy</includeFunction>
@@ -112,6 +114,7 @@
 										<includeStruct>fuse_timespec</includeStruct>
 										<includeStruct>fuse3_config</includeStruct>
 										<includeStruct>fuse3_conn_info</includeStruct>
+										<includeStruct>fuse3_loop_config</includeStruct>
 									</includeStructs>
 								</configuration>
 							</execution>
@@ -125,6 +128,9 @@
 									<targetPackage>org.cryptomator.jfuse.win.extr.fuse2</targetPackage>
 									<headerFile>${project.parent.basedir}/winfsp/inc/fuse/fuse_common.h</headerFile>
 									<headerClassName>fuse2_h</headerClassName>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>CYGFUSE</cPreprocessorMacro>
+									</cPreprocessorMacros>
 									<includeFunctions>
 										<includeFunction>fuse_parse_cmdline</includeFunction>
 									</includeFunctions>
@@ -141,24 +147,24 @@
 								<configuration>
 									<headerFile>${win.ucrtHeaderPath}/errno.h</headerFile>
 									<headerClassName>errno_h</headerClassName>
-									<includeMacros>
-										<includeMacro>ENOENT</includeMacro>
-										<includeMacro>ENOSYS</includeMacro>
-										<includeMacro>ENOMEM</includeMacro>
-										<includeMacro>EACCES</includeMacro>
-										<includeMacro>EIO</includeMacro>
-										<includeMacro>EROFS</includeMacro>
-										<includeMacro>EBADF</includeMacro>
-										<includeMacro>EEXIST</includeMacro>
-										<includeMacro>ENOTDIR</includeMacro>
-										<includeMacro>EISDIR</includeMacro>
-										<includeMacro>ENOTEMPTY</includeMacro>
-										<includeMacro>ENOTSUP</includeMacro>
-										<includeMacro>EINVAL</includeMacro>
-										<includeMacro>ERANGE</includeMacro>
-										<includeMacro>ENOLCK</includeMacro>
-										<includeMacro>ENAMETOOLONG</includeMacro>
-									</includeMacros>
+									<includeConstants>
+										<includeConstant>ENOENT</includeConstant>
+										<includeConstant>ENOSYS</includeConstant>
+										<includeConstant>ENOMEM</includeConstant>
+										<includeConstant>EACCES</includeConstant>
+										<includeConstant>EIO</includeConstant>
+										<includeConstant>EROFS</includeConstant>
+										<includeConstant>EBADF</includeConstant>
+										<includeConstant>EEXIST</includeConstant>
+										<includeConstant>ENOTDIR</includeConstant>
+										<includeConstant>EISDIR</includeConstant>
+										<includeConstant>ENOTEMPTY</includeConstant>
+										<includeConstant>ENOTSUP</includeConstant>
+										<includeConstant>EINVAL</includeConstant>
+										<includeConstant>ERANGE</includeConstant>
+										<includeConstant>ENOLCK</includeConstant>
+										<includeConstant>ENAMETOOLONG</includeConstant>
+									</includeConstants>
 								</configuration>
 							</execution>
 							<execution>
@@ -169,15 +175,15 @@
 								<configuration>
 									<headerFile>${win.ucrtHeaderPath}/fcntl.h</headerFile>
 									<headerClassName>fcntl_h</headerClassName>
-									<includeMacros>
-										<includeMacro>O_RDONLY</includeMacro>
-										<includeMacro>O_WRONLY</includeMacro>
-										<includeMacro>O_RDWR</includeMacro>
-										<includeMacro>O_APPEND</includeMacro>
-										<includeMacro>O_CREAT</includeMacro>
-										<includeMacro>O_TRUNC</includeMacro>
-										<includeMacro>O_EXCL</includeMacro>
-									</includeMacros>
+									<includeConstants>
+										<includeConstant>O_RDONLY</includeConstant>
+										<includeConstant>O_WRONLY</includeConstant>
+										<includeConstant>O_RDWR</includeConstant>
+										<includeConstant>O_APPEND</includeConstant>
+										<includeConstant>O_CREAT</includeConstant>
+										<includeConstant>O_TRUNC</includeConstant>
+										<includeConstant>O_EXCL</includeConstant>
+									</includeConstants>
 								</configuration>
 							</execution>
 						</executions>

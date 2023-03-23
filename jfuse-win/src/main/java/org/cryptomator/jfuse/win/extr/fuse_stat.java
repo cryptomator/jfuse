@@ -2,12 +2,34 @@
 
 package org.cryptomator.jfuse.win.extr;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
 import java.lang.foreign.*;
-
+import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct fuse_stat {
+ *     unsigned int st_dev;
+ *     unsigned long long st_ino;
+ *     unsigned int st_mode;
+ *     unsigned short st_nlink;
+ *     unsigned int st_uid;
+ *     unsigned int st_gid;
+ *     unsigned int st_rdev;
+ *     long long st_size;
+ *     struct fuse_timespec st_atim;
+ *     struct fuse_timespec st_mtim;
+ *     struct fuse_timespec st_ctim;
+ *     int st_blksize;
+ *     long long st_blocks;
+ *     struct fuse_timespec st_birthtim;
+ * };
+ * }
+ */
 public class fuse_stat {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_LONG$LAYOUT.withName("st_dev"),
         MemoryLayout.paddingLayout(32),
         Constants$root.C_LONG_LONG$LAYOUT.withName("st_ino"),
@@ -46,10 +68,22 @@ public class fuse_stat {
     public static VarHandle st_dev$VH() {
         return fuse_stat.st_dev$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int st_dev;
+     * }
+     */
     public static int st_dev$get(MemorySegment seg) {
         return (int)fuse_stat.st_dev$VH.get(seg);
     }
-    public static void st_dev$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int st_dev;
+     * }
+     */
+    public static void st_dev$set(MemorySegment seg, int x) {
         fuse_stat.st_dev$VH.set(seg, x);
     }
     public static int st_dev$get(MemorySegment seg, long index) {
@@ -62,10 +96,22 @@ public class fuse_stat {
     public static VarHandle st_ino$VH() {
         return fuse_stat.st_ino$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned long long st_ino;
+     * }
+     */
     public static long st_ino$get(MemorySegment seg) {
         return (long)fuse_stat.st_ino$VH.get(seg);
     }
-    public static void st_ino$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned long long st_ino;
+     * }
+     */
+    public static void st_ino$set(MemorySegment seg, long x) {
         fuse_stat.st_ino$VH.set(seg, x);
     }
     public static long st_ino$get(MemorySegment seg, long index) {
@@ -78,10 +124,22 @@ public class fuse_stat {
     public static VarHandle st_mode$VH() {
         return fuse_stat.st_mode$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int st_mode;
+     * }
+     */
     public static int st_mode$get(MemorySegment seg) {
         return (int)fuse_stat.st_mode$VH.get(seg);
     }
-    public static void st_mode$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int st_mode;
+     * }
+     */
+    public static void st_mode$set(MemorySegment seg, int x) {
         fuse_stat.st_mode$VH.set(seg, x);
     }
     public static int st_mode$get(MemorySegment seg, long index) {
@@ -94,10 +152,22 @@ public class fuse_stat {
     public static VarHandle st_nlink$VH() {
         return fuse_stat.st_nlink$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned short st_nlink;
+     * }
+     */
     public static short st_nlink$get(MemorySegment seg) {
         return (short)fuse_stat.st_nlink$VH.get(seg);
     }
-    public static void st_nlink$set( MemorySegment seg, short x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned short st_nlink;
+     * }
+     */
+    public static void st_nlink$set(MemorySegment seg, short x) {
         fuse_stat.st_nlink$VH.set(seg, x);
     }
     public static short st_nlink$get(MemorySegment seg, long index) {
@@ -110,10 +180,22 @@ public class fuse_stat {
     public static VarHandle st_uid$VH() {
         return fuse_stat.st_uid$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int st_uid;
+     * }
+     */
     public static int st_uid$get(MemorySegment seg) {
         return (int)fuse_stat.st_uid$VH.get(seg);
     }
-    public static void st_uid$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int st_uid;
+     * }
+     */
+    public static void st_uid$set(MemorySegment seg, int x) {
         fuse_stat.st_uid$VH.set(seg, x);
     }
     public static int st_uid$get(MemorySegment seg, long index) {
@@ -126,10 +208,22 @@ public class fuse_stat {
     public static VarHandle st_gid$VH() {
         return fuse_stat.st_gid$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int st_gid;
+     * }
+     */
     public static int st_gid$get(MemorySegment seg) {
         return (int)fuse_stat.st_gid$VH.get(seg);
     }
-    public static void st_gid$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int st_gid;
+     * }
+     */
+    public static void st_gid$set(MemorySegment seg, int x) {
         fuse_stat.st_gid$VH.set(seg, x);
     }
     public static int st_gid$get(MemorySegment seg, long index) {
@@ -142,10 +236,22 @@ public class fuse_stat {
     public static VarHandle st_rdev$VH() {
         return fuse_stat.st_rdev$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int st_rdev;
+     * }
+     */
     public static int st_rdev$get(MemorySegment seg) {
         return (int)fuse_stat.st_rdev$VH.get(seg);
     }
-    public static void st_rdev$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int st_rdev;
+     * }
+     */
+    public static void st_rdev$set(MemorySegment seg, int x) {
         fuse_stat.st_rdev$VH.set(seg, x);
     }
     public static int st_rdev$get(MemorySegment seg, long index) {
@@ -158,10 +264,22 @@ public class fuse_stat {
     public static VarHandle st_size$VH() {
         return fuse_stat.st_size$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * long long st_size;
+     * }
+     */
     public static long st_size$get(MemorySegment seg) {
         return (long)fuse_stat.st_size$VH.get(seg);
     }
-    public static void st_size$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * long long st_size;
+     * }
+     */
+    public static void st_size$set(MemorySegment seg, long x) {
         fuse_stat.st_size$VH.set(seg, x);
     }
     public static long st_size$get(MemorySegment seg, long index) {
@@ -183,10 +301,22 @@ public class fuse_stat {
     public static VarHandle st_blksize$VH() {
         return fuse_stat.st_blksize$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int st_blksize;
+     * }
+     */
     public static int st_blksize$get(MemorySegment seg) {
         return (int)fuse_stat.st_blksize$VH.get(seg);
     }
-    public static void st_blksize$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int st_blksize;
+     * }
+     */
+    public static void st_blksize$set(MemorySegment seg, int x) {
         fuse_stat.st_blksize$VH.set(seg, x);
     }
     public static int st_blksize$get(MemorySegment seg, long index) {
@@ -199,10 +329,22 @@ public class fuse_stat {
     public static VarHandle st_blocks$VH() {
         return fuse_stat.st_blocks$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * long long st_blocks;
+     * }
+     */
     public static long st_blocks$get(MemorySegment seg) {
         return (long)fuse_stat.st_blocks$VH.get(seg);
     }
-    public static void st_blocks$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * long long st_blocks;
+     * }
+     */
+    public static void st_blocks$set(MemorySegment seg, long x) {
         fuse_stat.st_blocks$VH.set(seg, x);
     }
     public static long st_blocks$get(MemorySegment seg, long index) {
@@ -216,7 +358,7 @@ public class fuse_stat {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
     public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }

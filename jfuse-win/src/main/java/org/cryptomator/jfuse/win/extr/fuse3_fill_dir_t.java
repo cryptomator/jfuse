@@ -2,8 +2,16 @@
 
 package org.cryptomator.jfuse.win.extr;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
 import java.lang.foreign.*;
-
+import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * int (*fuse3_fill_dir_t)(void* buf,char* name,struct fuse_stat* stbuf,long long off,enum fuse3_fill_dir_flags flags);
+ * }
+ */
 public interface fuse3_fill_dir_t {
 
     int apply(java.lang.foreign.MemorySegment buf, java.lang.foreign.MemorySegment name, java.lang.foreign.MemorySegment stbuf, long off, int flags);
@@ -14,7 +22,7 @@ public interface fuse3_fill_dir_t {
         MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
         return (java.lang.foreign.MemorySegment _buf, java.lang.foreign.MemorySegment _name, java.lang.foreign.MemorySegment _stbuf, long _off, int _flags) -> {
             try {
-                return (int)constants$0.fuse3_fill_dir_t$MH.invokeExact((MemorySegment)symbol, (java.lang.foreign.MemorySegment)_buf, (java.lang.foreign.MemorySegment)_name, (java.lang.foreign.MemorySegment)_stbuf, _off, _flags);
+                return (int)constants$0.fuse3_fill_dir_t$MH.invokeExact(symbol, _buf, _name, _stbuf, _off, _flags);
             } catch (Throwable ex$) {
                 throw new AssertionError("should not reach here", ex$);
             }
