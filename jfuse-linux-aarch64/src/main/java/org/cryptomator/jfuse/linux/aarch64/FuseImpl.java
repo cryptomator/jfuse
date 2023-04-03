@@ -39,11 +39,11 @@ final class FuseImpl extends Fuse {
 
 	@VisibleForTesting
 	FuseArgs parseArgs(List<String> cmdLineArgs) throws IllegalArgumentException {
-		var args = fuse_args.allocate(fuseScope);
+		var args = fuse_args.allocate(fuseArena);
 		var argc = cmdLineArgs.size();
-		var argv = fuseScope.allocateArray(ValueLayout.ADDRESS, argc + 1L);
+		var argv = fuseArena.allocateArray(ValueLayout.ADDRESS, argc + 1L);
 		for (int i = 0; i < argc; i++) {
-			var cString = fuseScope.allocateUtf8String(cmdLineArgs.get(i));
+			var cString = fuseArena.allocateUtf8String(cmdLineArgs.get(i));
 			argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
 		}
 		argv.setAtIndex(ValueLayout.ADDRESS, argc, MemorySegment.NULL);
@@ -51,7 +51,7 @@ final class FuseImpl extends Fuse {
 		fuse_args.argv$set(args, argv);
 		fuse_args.allocated$set(args, 0);
 
-		var opts = fuse_cmdline_opts.allocate(fuseScope);
+		var opts = fuse_cmdline_opts.allocate(fuseArena);
 		int parseResult = FuseFunctions.fuse_parse_cmdline(args, opts);
 		if (parseResult != 0) {
 			throw new IllegalArgumentException("fuse_parse_cmdline failed to parse " + String.join(" ", cmdLineArgs));
@@ -66,36 +66,36 @@ final class FuseImpl extends Fuse {
 	@Override
 	protected void bind(FuseOperations.Operation operation) {
 		switch (operation) {
-			case INIT -> fuse_operations.init$set(fuseOperationsStruct, fuse_operations.init.allocate(this::init, fuseScope.scope()));
-			case ACCESS -> fuse_operations.access$set(fuseOperationsStruct, fuse_operations.access.allocate(this::access, fuseScope.scope()));
-			case CHMOD -> fuse_operations.chmod$set(fuseOperationsStruct, fuse_operations.chmod.allocate(this::chmod, fuseScope.scope()));
-			case CHOWN -> fuse_operations.chown$set(fuseOperationsStruct, fuse_operations.chown.allocate(this::chown, fuseScope.scope()));
-			case CREATE -> fuse_operations.create$set(fuseOperationsStruct, fuse_operations.create.allocate(this::create, fuseScope.scope()));
-			case DESTROY -> fuse_operations.destroy$set(fuseOperationsStruct, fuse_operations.destroy.allocate(this::destroy, fuseScope.scope()));
-			case FLUSH -> fuse_operations.flush$set(fuseOperationsStruct, fuse_operations.flush.allocate(this::flush, fuseScope.scope()));
-			case FSYNC -> fuse_operations.fsync$set(fuseOperationsStruct, fuse_operations.fsync.allocate(this::fsync, fuseScope.scope()));
-			case FSYNCDIR -> fuse_operations.fsyncdir$set(fuseOperationsStruct, fuse_operations.fsyncdir.allocate(this::fsyncdir, fuseScope.scope()));
-			case GET_ATTR -> fuse_operations.getattr$set(fuseOperationsStruct, fuse_operations.getattr.allocate(this::getattr, fuseScope.scope()));
-			case GET_XATTR -> fuse_operations.getxattr$set(fuseOperationsStruct, fuse_operations.getxattr.allocate(this::getxattr, fuseScope.scope()));
-			case LIST_XATTR -> fuse_operations.listxattr$set(fuseOperationsStruct, fuse_operations.listxattr.allocate(this::listxattr, fuseScope.scope()));
-			case MKDIR -> fuse_operations.mkdir$set(fuseOperationsStruct, fuse_operations.mkdir.allocate(this::mkdir, fuseScope.scope()));
-			case OPEN -> fuse_operations.open$set(fuseOperationsStruct, fuse_operations.open.allocate(this::open, fuseScope.scope()));
-			case OPEN_DIR -> fuse_operations.opendir$set(fuseOperationsStruct, fuse_operations.opendir.allocate(this::opendir, fuseScope.scope()));
-			case READ -> fuse_operations.read$set(fuseOperationsStruct, fuse_operations.read.allocate(this::read, fuseScope.scope()));
-			case READ_DIR -> fuse_operations.readdir$set(fuseOperationsStruct, fuse_operations.readdir.allocate(this::readdir, fuseScope.scope()));
-			case READLINK -> fuse_operations.readlink$set(fuseOperationsStruct, fuse_operations.readlink.allocate(this::readlink, fuseScope.scope()));
-			case RELEASE -> fuse_operations.release$set(fuseOperationsStruct, fuse_operations.release.allocate(this::release, fuseScope.scope()));
-			case RELEASE_DIR -> fuse_operations.releasedir$set(fuseOperationsStruct, fuse_operations.releasedir.allocate(this::releasedir, fuseScope.scope()));
-			case REMOVE_XATTR -> fuse_operations.removexattr$set(fuseOperationsStruct, fuse_operations.removexattr.allocate(this::removexattr, fuseScope.scope()));
-			case RENAME -> fuse_operations.rename$set(fuseOperationsStruct, fuse_operations.rename.allocate(this::rename, fuseScope.scope()));
-			case RMDIR -> fuse_operations.rmdir$set(fuseOperationsStruct, fuse_operations.rmdir.allocate(this::rmdir, fuseScope.scope()));
-			case SET_XATTR -> fuse_operations.setxattr$set(fuseOperationsStruct, fuse_operations.setxattr.allocate(this::setxattr, fuseScope.scope()));
-			case STATFS -> fuse_operations.statfs$set(fuseOperationsStruct, fuse_operations.statfs.allocate(this::statfs, fuseScope.scope()));
-			case SYMLINK -> fuse_operations.symlink$set(fuseOperationsStruct, fuse_operations.symlink.allocate(this::symlink, fuseScope.scope()));
-			case TRUNCATE -> fuse_operations.truncate$set(fuseOperationsStruct, fuse_operations.truncate.allocate(this::truncate, fuseScope.scope()));
-			case UNLINK -> fuse_operations.unlink$set(fuseOperationsStruct, fuse_operations.unlink.allocate(this::unlink, fuseScope.scope()));
-			case UTIMENS -> fuse_operations.utimens$set(fuseOperationsStruct, fuse_operations.utimens.allocate(this::utimens, fuseScope.scope()));
-			case WRITE -> fuse_operations.write$set(fuseOperationsStruct, fuse_operations.write.allocate(this::write, fuseScope.scope()));
+			case INIT -> fuse_operations.init$set(fuseOperationsStruct, fuse_operations.init.allocate(this::init, fuseArena.scope()));
+			case ACCESS -> fuse_operations.access$set(fuseOperationsStruct, fuse_operations.access.allocate(this::access, fuseArena.scope()));
+			case CHMOD -> fuse_operations.chmod$set(fuseOperationsStruct, fuse_operations.chmod.allocate(this::chmod, fuseArena.scope()));
+			case CHOWN -> fuse_operations.chown$set(fuseOperationsStruct, fuse_operations.chown.allocate(this::chown, fuseArena.scope()));
+			case CREATE -> fuse_operations.create$set(fuseOperationsStruct, fuse_operations.create.allocate(this::create, fuseArena.scope()));
+			case DESTROY -> fuse_operations.destroy$set(fuseOperationsStruct, fuse_operations.destroy.allocate(this::destroy, fuseArena.scope()));
+			case FLUSH -> fuse_operations.flush$set(fuseOperationsStruct, fuse_operations.flush.allocate(this::flush, fuseArena.scope()));
+			case FSYNC -> fuse_operations.fsync$set(fuseOperationsStruct, fuse_operations.fsync.allocate(this::fsync, fuseArena.scope()));
+			case FSYNCDIR -> fuse_operations.fsyncdir$set(fuseOperationsStruct, fuse_operations.fsyncdir.allocate(this::fsyncdir, fuseArena.scope()));
+			case GET_ATTR -> fuse_operations.getattr$set(fuseOperationsStruct, fuse_operations.getattr.allocate(this::getattr, fuseArena.scope()));
+			case GET_XATTR -> fuse_operations.getxattr$set(fuseOperationsStruct, fuse_operations.getxattr.allocate(this::getxattr, fuseArena.scope()));
+			case LIST_XATTR -> fuse_operations.listxattr$set(fuseOperationsStruct, fuse_operations.listxattr.allocate(this::listxattr, fuseArena.scope()));
+			case MKDIR -> fuse_operations.mkdir$set(fuseOperationsStruct, fuse_operations.mkdir.allocate(this::mkdir, fuseArena.scope()));
+			case OPEN -> fuse_operations.open$set(fuseOperationsStruct, fuse_operations.open.allocate(this::open, fuseArena.scope()));
+			case OPEN_DIR -> fuse_operations.opendir$set(fuseOperationsStruct, fuse_operations.opendir.allocate(this::opendir, fuseArena.scope()));
+			case READ -> fuse_operations.read$set(fuseOperationsStruct, fuse_operations.read.allocate(this::read, fuseArena.scope()));
+			case READ_DIR -> fuse_operations.readdir$set(fuseOperationsStruct, fuse_operations.readdir.allocate(this::readdir, fuseArena.scope()));
+			case READLINK -> fuse_operations.readlink$set(fuseOperationsStruct, fuse_operations.readlink.allocate(this::readlink, fuseArena.scope()));
+			case RELEASE -> fuse_operations.release$set(fuseOperationsStruct, fuse_operations.release.allocate(this::release, fuseArena.scope()));
+			case RELEASE_DIR -> fuse_operations.releasedir$set(fuseOperationsStruct, fuse_operations.releasedir.allocate(this::releasedir, fuseArena.scope()));
+			case REMOVE_XATTR -> fuse_operations.removexattr$set(fuseOperationsStruct, fuse_operations.removexattr.allocate(this::removexattr, fuseArena.scope()));
+			case RENAME -> fuse_operations.rename$set(fuseOperationsStruct, fuse_operations.rename.allocate(this::rename, fuseArena.scope()));
+			case RMDIR -> fuse_operations.rmdir$set(fuseOperationsStruct, fuse_operations.rmdir.allocate(this::rmdir, fuseArena.scope()));
+			case SET_XATTR -> fuse_operations.setxattr$set(fuseOperationsStruct, fuse_operations.setxattr.allocate(this::setxattr, fuseArena.scope()));
+			case STATFS -> fuse_operations.statfs$set(fuseOperationsStruct, fuse_operations.statfs.allocate(this::statfs, fuseArena.scope()));
+			case SYMLINK -> fuse_operations.symlink$set(fuseOperationsStruct, fuse_operations.symlink.allocate(this::symlink, fuseArena.scope()));
+			case TRUNCATE -> fuse_operations.truncate$set(fuseOperationsStruct, fuse_operations.truncate.allocate(this::truncate, fuseArena.scope()));
+			case UNLINK -> fuse_operations.unlink$set(fuseOperationsStruct, fuse_operations.unlink.allocate(this::unlink, fuseArena.scope()));
+			case UTIMENS -> fuse_operations.utimens$set(fuseOperationsStruct, fuse_operations.utimens.allocate(this::utimens, fuseArena.scope()));
+			case WRITE -> fuse_operations.write$set(fuseOperationsStruct, fuse_operations.write.allocate(this::write, fuseArena.scope()));
 		}
 	}
 

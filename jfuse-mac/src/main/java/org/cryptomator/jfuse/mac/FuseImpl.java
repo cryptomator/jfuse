@@ -41,11 +41,11 @@ final class FuseImpl extends Fuse {
 
 	@VisibleForTesting
 	FuseArgs parseArgs(List<String> cmdLineArgs) throws IllegalArgumentException {
-		var args = fuse_args.allocate(fuseScope);
+		var args = fuse_args.allocate(fuseArena);
 		var argc = cmdLineArgs.size();
-		var argv = fuseScope.allocateArray(ValueLayout.ADDRESS, argc + 1L);
+		var argv = fuseArena.allocateArray(ValueLayout.ADDRESS, argc + 1L);
 		for (int i = 0; i < argc; i++) {
-			var cString = fuseScope.allocateUtf8String(cmdLineArgs.get(i));
+			var cString = fuseArena.allocateUtf8String(cmdLineArgs.get(i));
 			argv.setAtIndex(ValueLayout.ADDRESS, i, cString);
 		}
 		argv.setAtIndex(ValueLayout.ADDRESS, argc, MemorySegment.NULL);
@@ -53,9 +53,9 @@ final class FuseImpl extends Fuse {
 		fuse_args.argv$set(args, argv);
 		fuse_args.allocated$set(args, 0);
 
-		var multithreaded = fuseScope.allocate(JAVA_INT, 1);
-		var foreground = fuseScope.allocate(JAVA_INT, 1);
-		var mountPointPtr = fuseScope.allocate(ValueLayout.ADDRESS);
+		var multithreaded = fuseArena.allocate(JAVA_INT, 1);
+		var foreground = fuseArena.allocate(JAVA_INT, 1);
+		var mountPointPtr = fuseArena.allocate(ValueLayout.ADDRESS);
 		int parseResult = fuse_h.fuse_parse_cmdline(args, mountPointPtr, multithreaded, foreground);
 		if (parseResult != 0) {
 			throw new IllegalArgumentException("fuse_parse_cmdline failed to parse " + String.join(" ", cmdLineArgs));
@@ -67,7 +67,7 @@ final class FuseImpl extends Fuse {
 
 	@Override
 	protected void bind(FuseOperations.Operation operation) {
-		var fuseScope = this.fuseScope.scope();
+		var fuseScope = this.fuseArena.scope();
 		switch (operation) {
 			case INIT -> fuse_operations.init$set(fuseOperationsStruct, fuse_operations.init.allocate(this::init, fuseScope));
 			case ACCESS -> fuse_operations.access$set(fuseOperationsStruct, fuse_operations.access.allocate(this::access, fuseScope));

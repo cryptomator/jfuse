@@ -43,7 +43,7 @@ public abstract class Fuse implements AutoCloseable {
 	/**
 	 * The memory session associated with the lifecycle of this Fuse instance.
 	 */
-	protected final Arena fuseScope = Arena.openShared(); // TODO rename to fuseArena?
+	protected final Arena fuseArena = Arena.openShared();
 
 	/**
 	 * The file system operations invoked by this FUSE file system.
@@ -66,7 +66,7 @@ public abstract class Fuse implements AutoCloseable {
 	 */
 	protected Fuse(FuseOperations fuseOperations, Function<SegmentAllocator, MemorySegment> structAllocator) {
 		this.fuseOperations = new MountProbeObserver(fuseOperations, mountProbeSucceeded::countDown);
-		this.fuseOperationsStruct = structAllocator.apply(fuseScope);
+		this.fuseOperationsStruct = structAllocator.apply(fuseArena);
 		fuseOperations.supportedOperations().forEach(this::bind);
 	}
 
@@ -108,7 +108,7 @@ public abstract class Fuse implements AutoCloseable {
 	@Blocking
 	@MustBeInvokedByOverriders
 	public synchronized void mount(String progName, Path mountPoint, String... flags) throws FuseMountFailedException, IllegalArgumentException {
-		if (!fuseScope.scope().isAlive()) {
+		if (!fuseArena.scope().isAlive()) {
 			throw new IllegalStateException("Already closed"); //TODO: throw specialized exception
 		}
 
@@ -156,8 +156,9 @@ public abstract class Fuse implements AutoCloseable {
 	@Blocking
 	private int fuseLoop(FuseMount mount) {
 		AtomicInteger result = new AtomicInteger();
-		fuseScope.scope().whileAlive(() -> {
-			result.set(mount.loop());
+		fuseArena.scope().whileAlive(() -> {
+			int r = mount.loop();
+			result.set(r);
 		});
 		return result.get();
 	}
@@ -184,7 +185,7 @@ public abstract class Fuse implements AutoCloseable {
 	@Blocking
 	@MustBeInvokedByOverriders
 	public synchronized void close() throws TimeoutException {
-		if (!fuseScope.scope().isAlive()) {
+		if (!fuseArena.scope().isAlive()) {
 			return; // already closed
 		}
 		try {
@@ -199,7 +200,7 @@ public abstract class Fuse implements AutoCloseable {
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		} finally {
-			fuseScope.close();
+			fuseArena.close();
 		}
 	}
 
