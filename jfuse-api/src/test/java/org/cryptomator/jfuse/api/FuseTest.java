@@ -13,16 +13,18 @@ import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.Future;
 
 public class FuseTest {
 
-	private FuseOperations fuseOps = Mockito.mock(FuseOperations.class);
-	private Fuse fuse = Mockito.spy(new FuseStub(fuseOps));
+	private final FuseOperations fuseOps = Mockito.mock(FuseOperations.class);
+	private final FuseMount fuseMount = Mockito.spy(new FuseMountStub());
+	private final Fuse fuse = Mockito.spy(new FuseStub(fuseMount, fuseOps));
+	private final Path mountPoint = Mockito.mock(Path.class, "/mnt");
 
 	@Test
 	@DisplayName("waitForMountingToComplete() waits for getattr(\"/jfuse_mount_probe\")")
 	public void testWaitForMountingToComplete() throws IOException {
-		Path mountPoint = Mockito.mock(Path.class, "/mnt");
 		Path probePath = Mockito.mock(Path.class, "/mnt/jfuse_mount_probe");
 		FileSystem fs = Mockito.mock(FileSystem.class);
 		FileSystemProvider fsProv = Mockito.mock(FileSystemProvider.class);
@@ -39,16 +41,64 @@ public class FuseTest {
 			fuse.fuseOperations.getattr("/jfuse_mount_probe", Mockito.mock(Stat.class), Mockito.mock(FileInfo.class));
 			throw new NoSuchFileException("/mnt/jfuse_mount_probe still not found");
 		}).when(attrView).readAttributes();
+		Future<Integer> fuseLoop = Mockito.mock(Future.class);
+		Mockito.doReturn(false).when(fuseLoop).isDone();
 
-		Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> fuse.waitForMountingToComplete(mountPoint));
+		Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> fuse.waitForMountingToComplete(mountPoint, fuseLoop));
+		Mockito.verify(fuseLoop, Mockito.atLeastOnce()).isDone();
+	}
 
-		Mockito.verify(fuseOps).getattr(Mockito.eq("/jfuse_mount_probe"), Mockito.any(), Mockito.any());
+	@Test
+	@DisplayName("waitForMountingToComplete() waits returns immediately if fuse_loop fails")
+	public void testPrematurelyFuseLoopReturn() throws IOException {
+		Path probePath = Mockito.mock(Path.class, "/mnt/jfuse_mount_probe");
+		FileSystem fs = Mockito.mock(FileSystem.class);
+		FileSystemProvider fsProv = Mockito.mock(FileSystemProvider.class);
+		BasicFileAttributeView attrView = Mockito.mock(BasicFileAttributeView.class);
+		Mockito.doReturn(probePath).when(mountPoint).resolve("jfuse_mount_probe");
+		Mockito.doReturn(fs).when(probePath).getFileSystem();
+		Mockito.doReturn(fsProv).when(fs).provider();
+		Mockito.doReturn(attrView).when(fsProv).getFileAttributeView(probePath, BasicFileAttributeView.class);
+		Future<Integer> fuseLoop = Mockito.mock(Future.class);
+		Mockito.doReturn(true).when(fuseLoop).isDone();
+
+		Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> fuse.waitForMountingToComplete(mountPoint, fuseLoop));
+		Mockito.verify(fuseLoop, Mockito.atLeastOnce()).isDone();
+	}
+
+	@Test
+	@DisplayName("Already closed fuseMount throws IllegalStateException on mount")
+	public void testMountThrowsIllegalStateIfClosed() {
+		Assertions.assertDoesNotThrow(fuse::close);
+		Assertions.assertThrows(IllegalStateException.class, () -> fuse.mount("test3000", mountPoint));
+	}
+
+	@Test
+	@DisplayName("Already mounted fuseMount throws IllegalStateException on mount")
+	public void testMountThrowsIllegalStateIfAlreadyMounted() throws InterruptedException {
+		Mockito.doNothing().when(fuse).waitForMountingToComplete(Mockito.eq(mountPoint), Mockito.any());
+		Assertions.assertDoesNotThrow(() -> fuse.mount("test3000", mountPoint));
+		Assertions.assertThrows(IllegalStateException.class, () -> fuse.mount("test3000", mountPoint));
+	}
+
+	@Test
+	@DisplayName("If fuse_loop instantly returns with non-zero result, throw FuseMountFailedException")
+	public void testMountThrowsFuseMountFailedIfLoopReturnsNonZero() throws InterruptedException {
+		Mockito.doAnswer(invocation -> {
+			Thread.sleep(1000);
+			return null;
+		}).when(fuse).waitForMountingToComplete(Mockito.eq(mountPoint), Mockito.any());
+		Mockito.doReturn(1).when(fuseMount).loop();
+		Assertions.assertThrows(FuseMountFailedException.class, () -> fuse.mount("test3000", mountPoint));
 	}
 
 	private static class FuseStub extends Fuse {
 
-		protected FuseStub(FuseOperations fuseOperations) {
+		FuseMount fuseMount;
+
+		protected FuseStub(FuseMount mountStub, FuseOperations fuseOperations) {
 			super(fuseOperations, allocator -> allocator.allocate(0L));
+			this.fuseMount = mountStub;
 		}
 
 		@Override
@@ -58,23 +108,23 @@ public class FuseTest {
 
 		@Override
 		protected FuseMount mount(List<String> args) {
-			return new FuseMount() {
+			return fuseMount;
+		}
+	}
 
-				@Override
-				public int loop() {
-					return 0;
-				}
+	private record FuseMountStub() implements FuseMount {
 
-				@Override
-				public void unmount() {
-					// no-op
-				}
+		@Override
+		public int loop() {
+			return 0;
+		}
 
-				@Override
-				public void destroy() {
-					// no-op
-				}
-			};
+		@Override
+		public void unmount() {
+		}
+
+		@Override
+		public void destroy() {
 		}
 	}
 
