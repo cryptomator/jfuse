@@ -50,13 +50,6 @@
 		<module>jfuse</module>
 	</modules>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>ossrh.snapshots</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url> <!-- required for jacoco-maven-plugin -->
-		</pluginRepository>
-	</pluginRepositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.jetbrains</groupId>
@@ -147,7 +140,7 @@
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.9-SNAPSHOT</version> <!-- TODO 0.8.9 required for Java 20/21 -->
+					<version>0.8.9</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
