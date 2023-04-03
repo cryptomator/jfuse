@@ -206,7 +206,7 @@ public abstract class Fuse implements AutoCloseable {
 
 	/**
 	 * Decorates the {@link FuseOperations#getattr(String, Stat, FileInfo) getattr} call of a FuseOperations object
-	 * in order to detect accesses to {@value MOUNT_PROBE} system during {@link #waitForMountingToComplete(Path)}.
+	 * in order to detect accesses to {@value MOUNT_PROBE} system during {@link #waitForMountingToComplete(Path, Future)}}.
 	 *
 	 * @param delegate  The original FuseOperations object
 	 * @param onObserve Handler to invoke as soon as the desired call is detected
