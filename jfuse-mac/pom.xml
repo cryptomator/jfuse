@@ -69,9 +69,9 @@
 					<plugin>
 						<groupId>io.github.coffeelibs</groupId>
 						<artifactId>jextract-maven-plugin</artifactId>
-						<version>0.2.0</version>
+						<version>0.3.0</version>
 						<configuration>
-							<executable>${user.home}/.sdkman/candidates/java/19.ea.jextract/bin/jextract</executable>
+							<executable>/Users/sebastian/Documents/Cryptomator/jextract/build/jextract/bin/jextract</executable>
 							<headerSearchPaths>${mac.headerSearchPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
 							<targetPackage>org.cryptomator.jfuse.mac.extr</targetPackage>
@@ -121,24 +121,24 @@
 								<configuration>
 									<headerFile>${mac.headerSearchPath}/errno.h</headerFile>
 									<headerClassName>errno_h</headerClassName>
-									<includeMacros>
-										<includeMacro>ENOENT</includeMacro>
-										<includeMacro>ENOSYS</includeMacro>
-										<includeMacro>ENOMEM</includeMacro>
-										<includeMacro>EACCES</includeMacro>
-										<includeMacro>EIO</includeMacro>
-										<includeMacro>EROFS</includeMacro>
-										<includeMacro>EBADF</includeMacro>
-										<includeMacro>EEXIST</includeMacro>
-										<includeMacro>ENOTDIR</includeMacro>
-										<includeMacro>EISDIR</includeMacro>
-										<includeMacro>ENOTEMPTY</includeMacro>
-										<includeMacro>ENOTSUP</includeMacro>
-										<includeMacro>EINVAL</includeMacro>
-										<includeMacro>ERANGE</includeMacro>
-										<includeMacro>ENOLCK</includeMacro>
-										<includeMacro>ENAMETOOLONG</includeMacro>
-									</includeMacros>
+									<includeConstants>
+										<includeConstant>ENOENT</includeConstant>
+										<includeConstant>ENOSYS</includeConstant>
+										<includeConstant>ENOMEM</includeConstant>
+										<includeConstant>EACCES</includeConstant>
+										<includeConstant>EIO</includeConstant>
+										<includeConstant>EROFS</includeConstant>
+										<includeConstant>EBADF</includeConstant>
+										<includeConstant>EEXIST</includeConstant>
+										<includeConstant>ENOTDIR</includeConstant>
+										<includeConstant>EISDIR</includeConstant>
+										<includeConstant>ENOTEMPTY</includeConstant>
+										<includeConstant>ENOTSUP</includeConstant>
+										<includeConstant>EINVAL</includeConstant>
+										<includeConstant>ERANGE</includeConstant>
+										<includeConstant>ENOLCK</includeConstant>
+										<includeConstant>ENAMETOOLONG</includeConstant>
+									</includeConstants>
 								</configuration>
 							</execution>
 							<execution>
@@ -149,10 +149,10 @@
 								<configuration>
 									<headerFile>${mac.headerSearchPath}/sys/stat.h</headerFile>
 									<headerClassName>stat_h</headerClassName>
-									<includeMacros>
-										<includeMacro>UTIME_NOW</includeMacro>
-										<includeMacro>UTIME_OMIT</includeMacro>
-									</includeMacros>
+									<includeConstants>
+										<includeConstant>UTIME_NOW</includeConstant>
+										<includeConstant>UTIME_OMIT</includeConstant>
+									</includeConstants>
 								</configuration>
 							</execution>
 							<execution>
@@ -163,17 +163,17 @@
 								<configuration>
 									<headerFile>${mac.headerSearchPath}/fcntl.h</headerFile>
 									<headerClassName>fcntl_h</headerClassName>
-									<includeMacros>
-										<includeMacro>O_RDONLY</includeMacro>
-										<includeMacro>O_WRONLY</includeMacro>
-										<includeMacro>O_RDWR</includeMacro>
-										<includeMacro>O_APPEND</includeMacro>
-										<includeMacro>O_CREAT</includeMacro>
-										<includeMacro>O_TRUNC</includeMacro>
-										<includeMacro>O_EXCL</includeMacro>
-										<includeMacro>O_DSYNC</includeMacro>
-										<includeMacro>O_SYNC</includeMacro>
-									</includeMacros>
+									<includeConstants>
+										<includeConstant>O_RDONLY</includeConstant>
+										<includeConstant>O_WRONLY</includeConstant>
+										<includeConstant>O_RDWR</includeConstant>
+										<includeConstant>O_APPEND</includeConstant>
+										<includeConstant>O_CREAT</includeConstant>
+										<includeConstant>O_TRUNC</includeConstant>
+										<includeConstant>O_EXCL</includeConstant>
+										<includeConstant>O_DSYNC</includeConstant>
+										<includeConstant>O_SYNC</includeConstant>
+									</includeConstants>
 								</configuration>
 							</execution>
 						</executions>

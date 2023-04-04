@@ -9,22 +9,26 @@ import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
 public class fuse_h  {
 
-    /* package-private */ fuse_h() {}
-    public static OfByte C_CHAR = Constants$root.C_CHAR$LAYOUT;
-    public static OfShort C_SHORT = Constants$root.C_SHORT$LAYOUT;
-    public static OfInt C_INT = Constants$root.C_INT$LAYOUT;
-    public static OfLong C_LONG = Constants$root.C_LONG_LONG$LAYOUT;
-    public static OfLong C_LONG_LONG = Constants$root.C_LONG_LONG$LAYOUT;
-    public static OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
-    public static OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
-    public static OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
+    public static final OfByte C_CHAR = Constants$root.C_CHAR$LAYOUT;
+    public static final OfShort C_SHORT = Constants$root.C_SHORT$LAYOUT;
+    public static final OfInt C_INT = Constants$root.C_INT$LAYOUT;
+    public static final OfLong C_LONG = Constants$root.C_LONG_LONG$LAYOUT;
+    public static final OfLong C_LONG_LONG = Constants$root.C_LONG_LONG$LAYOUT;
+    public static final OfFloat C_FLOAT = Constants$root.C_FLOAT$LAYOUT;
+    public static final OfDouble C_DOUBLE = Constants$root.C_DOUBLE$LAYOUT;
+    public static final OfAddress C_POINTER = Constants$root.C_POINTER$LAYOUT;
     public static MethodHandle fuse_mount$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse_mount$MH,"fuse_mount");
     }
-    public static MemoryAddress fuse_mount ( Addressable mountpoint,  Addressable args) {
+    /**
+     * {@snippet :
+     * struct fuse_chan* fuse_mount(char* mountpoint, struct fuse_args* args);
+     * }
+     */
+    public static MemorySegment fuse_mount(MemorySegment mountpoint, MemorySegment args) {
         var mh$ = fuse_mount$MH();
         try {
-            return (java.lang.foreign.MemoryAddress)mh$.invokeExact(mountpoint, args);
+            return (java.lang.foreign.MemorySegment)mh$.invokeExact(mountpoint, args);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }
@@ -32,7 +36,12 @@ public class fuse_h  {
     public static MethodHandle fuse_unmount$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse_unmount$MH,"fuse_unmount");
     }
-    public static void fuse_unmount ( Addressable mountpoint,  Addressable ch) {
+    /**
+     * {@snippet :
+     * void fuse_unmount(char* mountpoint, struct fuse_chan* ch);
+     * }
+     */
+    public static void fuse_unmount(MemorySegment mountpoint, MemorySegment ch) {
         var mh$ = fuse_unmount$MH();
         try {
             mh$.invokeExact(mountpoint, ch);
@@ -43,7 +52,12 @@ public class fuse_h  {
     public static MethodHandle fuse_parse_cmdline$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse_parse_cmdline$MH,"fuse_parse_cmdline");
     }
-    public static int fuse_parse_cmdline ( Addressable args,  Addressable mountpoint,  Addressable multithreaded,  Addressable foreground) {
+    /**
+     * {@snippet :
+     * int fuse_parse_cmdline(struct fuse_args* args, char** mountpoint, int* multithreaded, int* foreground);
+     * }
+     */
+    public static int fuse_parse_cmdline(MemorySegment args, MemorySegment mountpoint, MemorySegment multithreaded, MemorySegment foreground) {
         var mh$ = fuse_parse_cmdline$MH();
         try {
             return (int)mh$.invokeExact(args, mountpoint, multithreaded, foreground);
@@ -54,10 +68,15 @@ public class fuse_h  {
     public static MethodHandle fuse_new$MH() {
         return RuntimeHelper.requireNonNull(constants$0.fuse_new$MH,"fuse_new");
     }
-    public static MemoryAddress fuse_new ( Addressable ch,  Addressable args,  Addressable op,  long op_size,  Addressable user_data) {
+    /**
+     * {@snippet :
+     * struct fuse* fuse_new(struct fuse_chan* ch, struct fuse_args* args, struct fuse_operations* op, size_t op_size, void* user_data);
+     * }
+     */
+    public static MemorySegment fuse_new(MemorySegment ch, MemorySegment args, MemorySegment op, long op_size, MemorySegment user_data) {
         var mh$ = fuse_new$MH();
         try {
-            return (java.lang.foreign.MemoryAddress)mh$.invokeExact(ch, args, op, op_size, user_data);
+            return (java.lang.foreign.MemorySegment)mh$.invokeExact(ch, args, op, op_size, user_data);
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }
@@ -65,7 +84,12 @@ public class fuse_h  {
     public static MethodHandle fuse_destroy$MH() {
         return RuntimeHelper.requireNonNull(constants$1.fuse_destroy$MH,"fuse_destroy");
     }
-    public static void fuse_destroy ( Addressable f) {
+    /**
+     * {@snippet :
+     * void fuse_destroy(struct fuse* f);
+     * }
+     */
+    public static void fuse_destroy(MemorySegment f) {
         var mh$ = fuse_destroy$MH();
         try {
             mh$.invokeExact(f);
@@ -76,7 +100,12 @@ public class fuse_h  {
     public static MethodHandle fuse_loop$MH() {
         return RuntimeHelper.requireNonNull(constants$1.fuse_loop$MH,"fuse_loop");
     }
-    public static int fuse_loop ( Addressable f) {
+    /**
+     * {@snippet :
+     * int fuse_loop(struct fuse* f);
+     * }
+     */
+    public static int fuse_loop(MemorySegment f) {
         var mh$ = fuse_loop$MH();
         try {
             return (int)mh$.invokeExact(f);
@@ -87,7 +116,12 @@ public class fuse_h  {
     public static MethodHandle fuse_exit$MH() {
         return RuntimeHelper.requireNonNull(constants$1.fuse_exit$MH,"fuse_exit");
     }
-    public static void fuse_exit ( Addressable f) {
+    /**
+     * {@snippet :
+     * void fuse_exit(struct fuse* f);
+     * }
+     */
+    public static void fuse_exit(MemorySegment f) {
         var mh$ = fuse_exit$MH();
         try {
             mh$.invokeExact(f);
@@ -98,7 +132,12 @@ public class fuse_h  {
     public static MethodHandle fuse_loop_mt$MH() {
         return RuntimeHelper.requireNonNull(constants$1.fuse_loop_mt$MH,"fuse_loop_mt");
     }
-    public static int fuse_loop_mt ( Addressable f) {
+    /**
+     * {@snippet :
+     * int fuse_loop_mt(struct fuse* f);
+     * }
+     */
+    public static int fuse_loop_mt(MemorySegment f) {
         var mh$ = fuse_loop_mt$MH();
         try {
             return (int)mh$.invokeExact(f);

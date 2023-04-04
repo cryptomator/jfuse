@@ -2,12 +2,31 @@
 
 package org.cryptomator.jfuse.win.extr;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
 import java.lang.foreign.*;
-
+import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct fuse3_file_info {
+ *     int flags;
+ *      *     unsigned int writepage;
+ *     unsigned int direct_io;
+ *     unsigned int keep_cache;
+ *     unsigned int flush;
+ *     unsigned int nonseekable;
+ *     unsigned int flock_release;
+ *     unsigned int padding;
+ *     unsigned long long fh;
+ *     unsigned long long lock_owner;
+ *     unsigned int poll_events;
+ * };
+ * }
+ */
 public class fuse3_file_info {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_LONG$LAYOUT.withName("flags"),
         MemoryLayout.structLayout(
             MemoryLayout.paddingLayout(1).withName("writepage"),
@@ -32,10 +51,22 @@ public class fuse3_file_info {
     public static VarHandle flags$VH() {
         return fuse3_file_info.flags$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int flags;
+     * }
+     */
     public static int flags$get(MemorySegment seg) {
         return (int)fuse3_file_info.flags$VH.get(seg);
     }
-    public static void flags$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int flags;
+     * }
+     */
+    public static void flags$set(MemorySegment seg, int x) {
         fuse3_file_info.flags$VH.set(seg, x);
     }
     public static int flags$get(MemorySegment seg, long index) {
@@ -48,10 +79,22 @@ public class fuse3_file_info {
     public static VarHandle fh$VH() {
         return fuse3_file_info.fh$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned long long fh;
+     * }
+     */
     public static long fh$get(MemorySegment seg) {
         return (long)fuse3_file_info.fh$VH.get(seg);
     }
-    public static void fh$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned long long fh;
+     * }
+     */
+    public static void fh$set(MemorySegment seg, long x) {
         fuse3_file_info.fh$VH.set(seg, x);
     }
     public static long fh$get(MemorySegment seg, long index) {
@@ -64,10 +107,22 @@ public class fuse3_file_info {
     public static VarHandle lock_owner$VH() {
         return fuse3_file_info.lock_owner$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned long long lock_owner;
+     * }
+     */
     public static long lock_owner$get(MemorySegment seg) {
         return (long)fuse3_file_info.lock_owner$VH.get(seg);
     }
-    public static void lock_owner$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned long long lock_owner;
+     * }
+     */
+    public static void lock_owner$set(MemorySegment seg, long x) {
         fuse3_file_info.lock_owner$VH.set(seg, x);
     }
     public static long lock_owner$get(MemorySegment seg, long index) {
@@ -80,10 +135,22 @@ public class fuse3_file_info {
     public static VarHandle poll_events$VH() {
         return fuse3_file_info.poll_events$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int poll_events;
+     * }
+     */
     public static int poll_events$get(MemorySegment seg) {
         return (int)fuse3_file_info.poll_events$VH.get(seg);
     }
-    public static void poll_events$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int poll_events;
+     * }
+     */
+    public static void poll_events$set(MemorySegment seg, int x) {
         fuse3_file_info.poll_events$VH.set(seg, x);
     }
     public static int poll_events$get(MemorySegment seg, long index) {
@@ -94,10 +161,10 @@ public class fuse3_file_info {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 

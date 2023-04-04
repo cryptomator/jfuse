@@ -7,9 +7,33 @@ import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct stat {
+ *     dev_t st_dev;
+ *     mode_t st_mode;
+ *     nlink_t st_nlink;
+ *     __darwin_ino64_t st_ino;
+ *     uid_t st_uid;
+ *     gid_t st_gid;
+ *     dev_t st_rdev;
+ *     struct timespec st_atimespec;
+ *     struct timespec st_mtimespec;
+ *     struct timespec st_ctimespec;
+ *     struct timespec st_birthtimespec;
+ *     off_t st_size;
+ *     blkcnt_t st_blocks;
+ *     blksize_t st_blksize;
+ *     __uint32_t st_flags;
+ *     __uint32_t st_gen;
+ *     __int32_t st_lspare;
+ *     __int64_t st_qspare[2];
+ * };
+ * }
+ */
 public class stat {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_INT$LAYOUT.withName("st_dev"),
         Constants$root.C_SHORT$LAYOUT.withName("st_mode"),
         Constants$root.C_SHORT$LAYOUT.withName("st_nlink"),
@@ -49,10 +73,22 @@ public class stat {
     public static VarHandle st_dev$VH() {
         return stat.st_dev$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * dev_t st_dev;
+     * }
+     */
     public static int st_dev$get(MemorySegment seg) {
         return (int)stat.st_dev$VH.get(seg);
     }
-    public static void st_dev$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * dev_t st_dev;
+     * }
+     */
+    public static void st_dev$set(MemorySegment seg, int x) {
         stat.st_dev$VH.set(seg, x);
     }
     public static int st_dev$get(MemorySegment seg, long index) {
@@ -65,10 +101,22 @@ public class stat {
     public static VarHandle st_mode$VH() {
         return stat.st_mode$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * mode_t st_mode;
+     * }
+     */
     public static short st_mode$get(MemorySegment seg) {
         return (short)stat.st_mode$VH.get(seg);
     }
-    public static void st_mode$set( MemorySegment seg, short x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * mode_t st_mode;
+     * }
+     */
+    public static void st_mode$set(MemorySegment seg, short x) {
         stat.st_mode$VH.set(seg, x);
     }
     public static short st_mode$get(MemorySegment seg, long index) {
@@ -81,10 +129,22 @@ public class stat {
     public static VarHandle st_nlink$VH() {
         return stat.st_nlink$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * nlink_t st_nlink;
+     * }
+     */
     public static short st_nlink$get(MemorySegment seg) {
         return (short)stat.st_nlink$VH.get(seg);
     }
-    public static void st_nlink$set( MemorySegment seg, short x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * nlink_t st_nlink;
+     * }
+     */
+    public static void st_nlink$set(MemorySegment seg, short x) {
         stat.st_nlink$VH.set(seg, x);
     }
     public static short st_nlink$get(MemorySegment seg, long index) {
@@ -97,10 +157,22 @@ public class stat {
     public static VarHandle st_ino$VH() {
         return stat.st_ino$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * __darwin_ino64_t st_ino;
+     * }
+     */
     public static long st_ino$get(MemorySegment seg) {
         return (long)stat.st_ino$VH.get(seg);
     }
-    public static void st_ino$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * __darwin_ino64_t st_ino;
+     * }
+     */
+    public static void st_ino$set(MemorySegment seg, long x) {
         stat.st_ino$VH.set(seg, x);
     }
     public static long st_ino$get(MemorySegment seg, long index) {
@@ -113,10 +185,22 @@ public class stat {
     public static VarHandle st_uid$VH() {
         return stat.st_uid$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * uid_t st_uid;
+     * }
+     */
     public static int st_uid$get(MemorySegment seg) {
         return (int)stat.st_uid$VH.get(seg);
     }
-    public static void st_uid$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * uid_t st_uid;
+     * }
+     */
+    public static void st_uid$set(MemorySegment seg, int x) {
         stat.st_uid$VH.set(seg, x);
     }
     public static int st_uid$get(MemorySegment seg, long index) {
@@ -129,10 +213,22 @@ public class stat {
     public static VarHandle st_gid$VH() {
         return stat.st_gid$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * gid_t st_gid;
+     * }
+     */
     public static int st_gid$get(MemorySegment seg) {
         return (int)stat.st_gid$VH.get(seg);
     }
-    public static void st_gid$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * gid_t st_gid;
+     * }
+     */
+    public static void st_gid$set(MemorySegment seg, int x) {
         stat.st_gid$VH.set(seg, x);
     }
     public static int st_gid$get(MemorySegment seg, long index) {
@@ -145,10 +241,22 @@ public class stat {
     public static VarHandle st_rdev$VH() {
         return stat.st_rdev$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * dev_t st_rdev;
+     * }
+     */
     public static int st_rdev$get(MemorySegment seg) {
         return (int)stat.st_rdev$VH.get(seg);
     }
-    public static void st_rdev$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * dev_t st_rdev;
+     * }
+     */
+    public static void st_rdev$set(MemorySegment seg, int x) {
         stat.st_rdev$VH.set(seg, x);
     }
     public static int st_rdev$get(MemorySegment seg, long index) {
@@ -173,10 +281,22 @@ public class stat {
     public static VarHandle st_size$VH() {
         return stat.st_size$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * off_t st_size;
+     * }
+     */
     public static long st_size$get(MemorySegment seg) {
         return (long)stat.st_size$VH.get(seg);
     }
-    public static void st_size$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * off_t st_size;
+     * }
+     */
+    public static void st_size$set(MemorySegment seg, long x) {
         stat.st_size$VH.set(seg, x);
     }
     public static long st_size$get(MemorySegment seg, long index) {
@@ -189,10 +309,22 @@ public class stat {
     public static VarHandle st_blocks$VH() {
         return stat.st_blocks$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * blkcnt_t st_blocks;
+     * }
+     */
     public static long st_blocks$get(MemorySegment seg) {
         return (long)stat.st_blocks$VH.get(seg);
     }
-    public static void st_blocks$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * blkcnt_t st_blocks;
+     * }
+     */
+    public static void st_blocks$set(MemorySegment seg, long x) {
         stat.st_blocks$VH.set(seg, x);
     }
     public static long st_blocks$get(MemorySegment seg, long index) {
@@ -205,10 +337,22 @@ public class stat {
     public static VarHandle st_blksize$VH() {
         return stat.st_blksize$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * blksize_t st_blksize;
+     * }
+     */
     public static int st_blksize$get(MemorySegment seg) {
         return (int)stat.st_blksize$VH.get(seg);
     }
-    public static void st_blksize$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * blksize_t st_blksize;
+     * }
+     */
+    public static void st_blksize$set(MemorySegment seg, int x) {
         stat.st_blksize$VH.set(seg, x);
     }
     public static int st_blksize$get(MemorySegment seg, long index) {
@@ -221,10 +365,22 @@ public class stat {
     public static VarHandle st_flags$VH() {
         return stat.st_flags$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * __uint32_t st_flags;
+     * }
+     */
     public static int st_flags$get(MemorySegment seg) {
         return (int)stat.st_flags$VH.get(seg);
     }
-    public static void st_flags$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * __uint32_t st_flags;
+     * }
+     */
+    public static void st_flags$set(MemorySegment seg, int x) {
         stat.st_flags$VH.set(seg, x);
     }
     public static int st_flags$get(MemorySegment seg, long index) {
@@ -237,10 +393,22 @@ public class stat {
     public static VarHandle st_gen$VH() {
         return stat.st_gen$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * __uint32_t st_gen;
+     * }
+     */
     public static int st_gen$get(MemorySegment seg) {
         return (int)stat.st_gen$VH.get(seg);
     }
-    public static void st_gen$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * __uint32_t st_gen;
+     * }
+     */
+    public static void st_gen$set(MemorySegment seg, int x) {
         stat.st_gen$VH.set(seg, x);
     }
     public static int st_gen$get(MemorySegment seg, long index) {
@@ -253,10 +421,22 @@ public class stat {
     public static VarHandle st_lspare$VH() {
         return stat.st_lspare$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * __int32_t st_lspare;
+     * }
+     */
     public static int st_lspare$get(MemorySegment seg) {
         return (int)stat.st_lspare$VH.get(seg);
     }
-    public static void st_lspare$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * __int32_t st_lspare;
+     * }
+     */
+    public static void st_lspare$set(MemorySegment seg, int x) {
         stat.st_lspare$VH.set(seg, x);
     }
     public static int st_lspare$get(MemorySegment seg, long index) {
@@ -270,10 +450,10 @@ public class stat {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 

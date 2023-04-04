@@ -10,13 +10,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 
 public class FuseMountImplTest {
 
 	private MockedStatic<fuse_h> fuseH;
 	private FuseArgs fuseArgs = Mockito.mock(FuseArgs.class);
-	private MemoryAddress fuse = MemoryAddress.ofLong(42L);
+	private MemorySegment fuse = MemorySegment.ofAddress(42L);
 	private FuseMountImpl fuseMount = new FuseMountImpl(fuse, fuseArgs);
 
 	@BeforeEach
@@ -71,7 +71,7 @@ public class FuseMountImplTest {
 	@Test
 	@DisplayName("FUSE 3.12 calls fuse_loop_mt")
 	public void testLoopMultiThreaded312() {
-		var loopCfg = MemoryAddress.ofLong(1337L);
+		var loopCfg = MemorySegment.ofAddress(1337L);
 		Mockito.doReturn(true).when(fuseArgs).multithreaded();
 		fuseH.when(fuse_h::fuse_version).thenReturn(312);
 		fuseH.when(fuse_h::fuse_loop_cfg_create).thenReturn(loopCfg);

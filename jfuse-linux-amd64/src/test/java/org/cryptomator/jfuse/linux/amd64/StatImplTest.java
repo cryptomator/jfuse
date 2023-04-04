@@ -9,8 +9,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -21,9 +21,9 @@ public class StatImplTest {
 	@ParameterizedTest(name = "{1}")
 	@MethodSource
 	public void testGetters(SetInMemorySegment<Number> setter, GetInStat<Number> getter, Number value) {
-		try (var scope = MemorySession.openConfined()) {
-			var segment = stat.allocate(scope);
-			var stat = new StatImpl(segment.address(), scope);
+		try (var arena = Arena.openConfined()) {
+			var segment = stat.allocate(arena);
+			var stat = new StatImpl(segment, arena.scope());
 
 			setter.accept(segment, value);
 
@@ -49,9 +49,9 @@ public class StatImplTest {
 	@ParameterizedTest(name = "{0}")
 	@MethodSource
 	public void testSetters(SetInStat<Number> setter, GetInMemorySegment<Number> getter, Number value) {
-		try (var scope = MemorySession.openConfined()) {
-			var segment = stat.allocate(scope);
-			var stat = new StatImpl(segment.address(), scope);
+		try (var arena = Arena.openConfined()) {
+			var segment = stat.allocate(arena);
+			var stat = new StatImpl(segment, arena.scope());
 
 			setter.accept(stat, value);
 

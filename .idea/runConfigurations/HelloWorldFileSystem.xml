@@ -1,10 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HelloWorldFileSystem" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
-    <option name="ALTERNATIVE_JRE_PATH" value="17" />
     <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.examples.HelloWorldFileSystem" />
     <module name="jfuse-examples" />
     <option name="PROGRAM_PARAMETERS" value="/Volumes/foo" />
-    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=info --enable-native-access=org.cryptomator.jfuse.linux.amd64,org.cryptomator.jfuse.mac,org.cryptomator.jfuse.win.amd64 --enable-preview" />
+    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=info --enable-native-access=org.cryptomator.jfuse.linux.amd64,org.cryptomator.jfuse.mac,org.cryptomator.jfuse.win --enable-preview" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

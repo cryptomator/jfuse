@@ -1,6 +1,5 @@
 package org.cryptomator.jfuse.win;
 
-import org.cryptomator.jfuse.win.WinErrno;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

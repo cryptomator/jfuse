@@ -2,12 +2,22 @@
 
 package org.cryptomator.jfuse.win.extr;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
 import java.lang.foreign.*;
-
+import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct fuse_timespec {
+ *     long long tv_sec;
+ *     long long tv_nsec;
+ * };
+ * }
+ */
 public class fuse_timespec {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_LONG_LONG$LAYOUT.withName("tv_sec"),
         Constants$root.C_LONG_LONG$LAYOUT.withName("tv_nsec")
     ).withName("fuse_timespec");
@@ -18,10 +28,22 @@ public class fuse_timespec {
     public static VarHandle tv_sec$VH() {
         return fuse_timespec.tv_sec$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * long long tv_sec;
+     * }
+     */
     public static long tv_sec$get(MemorySegment seg) {
         return (long)fuse_timespec.tv_sec$VH.get(seg);
     }
-    public static void tv_sec$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * long long tv_sec;
+     * }
+     */
+    public static void tv_sec$set(MemorySegment seg, long x) {
         fuse_timespec.tv_sec$VH.set(seg, x);
     }
     public static long tv_sec$get(MemorySegment seg, long index) {
@@ -34,10 +56,22 @@ public class fuse_timespec {
     public static VarHandle tv_nsec$VH() {
         return fuse_timespec.tv_nsec$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * long long tv_nsec;
+     * }
+     */
     public static long tv_nsec$get(MemorySegment seg) {
         return (long)fuse_timespec.tv_nsec$VH.get(seg);
     }
-    public static void tv_nsec$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * long long tv_nsec;
+     * }
+     */
+    public static void tv_nsec$set(MemorySegment seg, long x) {
         fuse_timespec.tv_nsec$VH.set(seg, x);
     }
     public static long tv_nsec$get(MemorySegment seg, long index) {
@@ -48,10 +82,10 @@ public class fuse_timespec {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 

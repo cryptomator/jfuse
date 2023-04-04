@@ -3,13 +3,12 @@ package org.cryptomator.jfuse.win;
 import org.cryptomator.jfuse.api.Statvfs;
 import org.cryptomator.jfuse.win.extr.fuse_statvfs;
 
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
-	public StatvfsImpl(MemoryAddress address, MemorySession scope) {
+	public StatvfsImpl(MemorySegment address, SegmentScope scope) {
 		this(fuse_statvfs.ofAddress(address, scope));
 	}
 

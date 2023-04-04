@@ -7,9 +7,26 @@ import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct fuse_conn_info {
+ *     unsigned int proto_major;
+ *     unsigned int proto_minor;
+ *     unsigned int max_write;
+ *     unsigned int max_read;
+ *     unsigned int max_readahead;
+ *     unsigned int capable;
+ *     unsigned int want;
+ *     unsigned int max_background;
+ *     unsigned int congestion_threshold;
+ *     unsigned int time_gran;
+ *     unsigned int reserved[22];
+ * };
+ * }
+ */
 public class fuse_conn_info {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_INT$LAYOUT.withName("proto_major"),
         Constants$root.C_INT$LAYOUT.withName("proto_minor"),
         Constants$root.C_INT$LAYOUT.withName("max_write"),
@@ -29,10 +46,22 @@ public class fuse_conn_info {
     public static VarHandle proto_major$VH() {
         return fuse_conn_info.proto_major$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int proto_major;
+     * }
+     */
     public static int proto_major$get(MemorySegment seg) {
         return (int)fuse_conn_info.proto_major$VH.get(seg);
     }
-    public static void proto_major$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int proto_major;
+     * }
+     */
+    public static void proto_major$set(MemorySegment seg, int x) {
         fuse_conn_info.proto_major$VH.set(seg, x);
     }
     public static int proto_major$get(MemorySegment seg, long index) {
@@ -45,10 +74,22 @@ public class fuse_conn_info {
     public static VarHandle proto_minor$VH() {
         return fuse_conn_info.proto_minor$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int proto_minor;
+     * }
+     */
     public static int proto_minor$get(MemorySegment seg) {
         return (int)fuse_conn_info.proto_minor$VH.get(seg);
     }
-    public static void proto_minor$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int proto_minor;
+     * }
+     */
+    public static void proto_minor$set(MemorySegment seg, int x) {
         fuse_conn_info.proto_minor$VH.set(seg, x);
     }
     public static int proto_minor$get(MemorySegment seg, long index) {
@@ -61,10 +102,22 @@ public class fuse_conn_info {
     public static VarHandle max_write$VH() {
         return fuse_conn_info.max_write$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int max_write;
+     * }
+     */
     public static int max_write$get(MemorySegment seg) {
         return (int)fuse_conn_info.max_write$VH.get(seg);
     }
-    public static void max_write$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int max_write;
+     * }
+     */
+    public static void max_write$set(MemorySegment seg, int x) {
         fuse_conn_info.max_write$VH.set(seg, x);
     }
     public static int max_write$get(MemorySegment seg, long index) {
@@ -77,10 +130,22 @@ public class fuse_conn_info {
     public static VarHandle max_read$VH() {
         return fuse_conn_info.max_read$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int max_read;
+     * }
+     */
     public static int max_read$get(MemorySegment seg) {
         return (int)fuse_conn_info.max_read$VH.get(seg);
     }
-    public static void max_read$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int max_read;
+     * }
+     */
+    public static void max_read$set(MemorySegment seg, int x) {
         fuse_conn_info.max_read$VH.set(seg, x);
     }
     public static int max_read$get(MemorySegment seg, long index) {
@@ -93,10 +158,22 @@ public class fuse_conn_info {
     public static VarHandle max_readahead$VH() {
         return fuse_conn_info.max_readahead$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int max_readahead;
+     * }
+     */
     public static int max_readahead$get(MemorySegment seg) {
         return (int)fuse_conn_info.max_readahead$VH.get(seg);
     }
-    public static void max_readahead$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int max_readahead;
+     * }
+     */
+    public static void max_readahead$set(MemorySegment seg, int x) {
         fuse_conn_info.max_readahead$VH.set(seg, x);
     }
     public static int max_readahead$get(MemorySegment seg, long index) {
@@ -109,10 +186,22 @@ public class fuse_conn_info {
     public static VarHandle capable$VH() {
         return fuse_conn_info.capable$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int capable;
+     * }
+     */
     public static int capable$get(MemorySegment seg) {
         return (int)fuse_conn_info.capable$VH.get(seg);
     }
-    public static void capable$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int capable;
+     * }
+     */
+    public static void capable$set(MemorySegment seg, int x) {
         fuse_conn_info.capable$VH.set(seg, x);
     }
     public static int capable$get(MemorySegment seg, long index) {
@@ -125,10 +214,22 @@ public class fuse_conn_info {
     public static VarHandle want$VH() {
         return fuse_conn_info.want$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int want;
+     * }
+     */
     public static int want$get(MemorySegment seg) {
         return (int)fuse_conn_info.want$VH.get(seg);
     }
-    public static void want$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int want;
+     * }
+     */
+    public static void want$set(MemorySegment seg, int x) {
         fuse_conn_info.want$VH.set(seg, x);
     }
     public static int want$get(MemorySegment seg, long index) {
@@ -141,10 +242,22 @@ public class fuse_conn_info {
     public static VarHandle max_background$VH() {
         return fuse_conn_info.max_background$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int max_background;
+     * }
+     */
     public static int max_background$get(MemorySegment seg) {
         return (int)fuse_conn_info.max_background$VH.get(seg);
     }
-    public static void max_background$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int max_background;
+     * }
+     */
+    public static void max_background$set(MemorySegment seg, int x) {
         fuse_conn_info.max_background$VH.set(seg, x);
     }
     public static int max_background$get(MemorySegment seg, long index) {
@@ -157,10 +270,22 @@ public class fuse_conn_info {
     public static VarHandle congestion_threshold$VH() {
         return fuse_conn_info.congestion_threshold$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int congestion_threshold;
+     * }
+     */
     public static int congestion_threshold$get(MemorySegment seg) {
         return (int)fuse_conn_info.congestion_threshold$VH.get(seg);
     }
-    public static void congestion_threshold$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int congestion_threshold;
+     * }
+     */
+    public static void congestion_threshold$set(MemorySegment seg, int x) {
         fuse_conn_info.congestion_threshold$VH.set(seg, x);
     }
     public static int congestion_threshold$get(MemorySegment seg, long index) {
@@ -173,10 +298,22 @@ public class fuse_conn_info {
     public static VarHandle time_gran$VH() {
         return fuse_conn_info.time_gran$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int time_gran;
+     * }
+     */
     public static int time_gran$get(MemorySegment seg) {
         return (int)fuse_conn_info.time_gran$VH.get(seg);
     }
-    public static void time_gran$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int time_gran;
+     * }
+     */
+    public static void time_gran$set(MemorySegment seg, int x) {
         fuse_conn_info.time_gran$VH.set(seg, x);
     }
     public static int time_gran$get(MemorySegment seg, long index) {
@@ -190,10 +327,10 @@ public class fuse_conn_info {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 

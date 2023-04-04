@@ -7,9 +7,29 @@ import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct fuse_file_info {
+ *     int flags;
+ *      *     unsigned int writepage;
+ *     unsigned int direct_io;
+ *     unsigned int keep_cache;
+ *     unsigned int flush;
+ *     unsigned int nonseekable;
+ *     unsigned int flock_release;
+ *     unsigned int cache_readdir;
+ *     unsigned int noflush;
+ *     unsigned int padding;
+ *     unsigned int padding2;
+ *     uint64_t fh;
+ *     uint64_t lock_owner;
+ *     uint32_t poll_events;
+ * };
+ * }
+ */
 public class fuse_file_info {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_INT$LAYOUT.withName("flags"),
         MemoryLayout.structLayout(
             MemoryLayout.paddingLayout(1).withName("writepage"),
@@ -36,10 +56,22 @@ public class fuse_file_info {
     public static VarHandle flags$VH() {
         return fuse_file_info.flags$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int flags;
+     * }
+     */
     public static int flags$get(MemorySegment seg) {
         return (int)fuse_file_info.flags$VH.get(seg);
     }
-    public static void flags$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int flags;
+     * }
+     */
+    public static void flags$set(MemorySegment seg, int x) {
         fuse_file_info.flags$VH.set(seg, x);
     }
     public static int flags$get(MemorySegment seg, long index) {
@@ -52,10 +84,22 @@ public class fuse_file_info {
     public static VarHandle fh$VH() {
         return fuse_file_info.fh$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * uint64_t fh;
+     * }
+     */
     public static long fh$get(MemorySegment seg) {
         return (long)fuse_file_info.fh$VH.get(seg);
     }
-    public static void fh$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * uint64_t fh;
+     * }
+     */
+    public static void fh$set(MemorySegment seg, long x) {
         fuse_file_info.fh$VH.set(seg, x);
     }
     public static long fh$get(MemorySegment seg, long index) {
@@ -68,10 +112,22 @@ public class fuse_file_info {
     public static VarHandle lock_owner$VH() {
         return fuse_file_info.lock_owner$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * uint64_t lock_owner;
+     * }
+     */
     public static long lock_owner$get(MemorySegment seg) {
         return (long)fuse_file_info.lock_owner$VH.get(seg);
     }
-    public static void lock_owner$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * uint64_t lock_owner;
+     * }
+     */
+    public static void lock_owner$set(MemorySegment seg, long x) {
         fuse_file_info.lock_owner$VH.set(seg, x);
     }
     public static long lock_owner$get(MemorySegment seg, long index) {
@@ -84,10 +140,22 @@ public class fuse_file_info {
     public static VarHandle poll_events$VH() {
         return fuse_file_info.poll_events$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * uint32_t poll_events;
+     * }
+     */
     public static int poll_events$get(MemorySegment seg) {
         return (int)fuse_file_info.poll_events$VH.get(seg);
     }
-    public static void poll_events$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * uint32_t poll_events;
+     * }
+     */
+    public static void poll_events$set(MemorySegment seg, int x) {
         fuse_file_info.poll_events$VH.set(seg, x);
     }
     public static int poll_events$get(MemorySegment seg, long index) {
@@ -98,10 +166,10 @@ public class fuse_file_info {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 

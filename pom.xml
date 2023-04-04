@@ -66,7 +66,7 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-inline</artifactId>
-			<version>4.7.0</version>
+			<version>5.2.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -79,7 +79,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.10.1</version>
 					<configuration>
-						<release>19</release>
+						<release>20</release>
 						<encoding>UTF-8</encoding>
 						<showWarnings>true</showWarnings>
 						<compilerArgs>
@@ -140,7 +140,7 @@
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.8</version>
+					<version>0.8.9</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -170,7 +170,7 @@
 				</executions>
 				<configuration>
 					<excludePackageNames>*.extr:*.extr.*</excludePackageNames>
-					<release>19</release>
+					<release>20</release>
 					<additionalOptions>
 						<option>--enable-preview</option>
 					</additionalOptions>

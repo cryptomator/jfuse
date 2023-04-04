@@ -7,9 +7,39 @@ import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct fuse3_config {
+ *     int set_gid;
+ *     unsigned int gid;
+ *     int set_uid;
+ *     unsigned int uid;
+ *     int set_mode;
+ *     unsigned int umask;
+ *     double entry_timeout;
+ *     double negative_timeout;
+ *     double attr_timeout;
+ *     int intr;
+ *     int intr_signal;
+ *     int remember;
+ *     int hard_remove;
+ *     int use_ino;
+ *     int readdir_ino;
+ *     int direct_io;
+ *     int kernel_cache;
+ *     int auto_cache;
+ *     int ac_attr_timeout_set;
+ *     double ac_attr_timeout;
+ *     int nullpath_ok;
+ *     int show_help;
+ *     char* modules;
+ *     int debug;
+ * };
+ * }
+ */
 public class fuse3_config {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_LONG$LAYOUT.withName("set_gid"),
         Constants$root.C_LONG$LAYOUT.withName("gid"),
         Constants$root.C_LONG$LAYOUT.withName("set_uid"),
@@ -43,10 +73,22 @@ public class fuse3_config {
     public static VarHandle set_gid$VH() {
         return fuse3_config.set_gid$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int set_gid;
+     * }
+     */
     public static int set_gid$get(MemorySegment seg) {
         return (int)fuse3_config.set_gid$VH.get(seg);
     }
-    public static void set_gid$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int set_gid;
+     * }
+     */
+    public static void set_gid$set(MemorySegment seg, int x) {
         fuse3_config.set_gid$VH.set(seg, x);
     }
     public static int set_gid$get(MemorySegment seg, long index) {
@@ -59,10 +101,22 @@ public class fuse3_config {
     public static VarHandle gid$VH() {
         return fuse3_config.gid$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int gid;
+     * }
+     */
     public static int gid$get(MemorySegment seg) {
         return (int)fuse3_config.gid$VH.get(seg);
     }
-    public static void gid$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int gid;
+     * }
+     */
+    public static void gid$set(MemorySegment seg, int x) {
         fuse3_config.gid$VH.set(seg, x);
     }
     public static int gid$get(MemorySegment seg, long index) {
@@ -75,10 +129,22 @@ public class fuse3_config {
     public static VarHandle set_uid$VH() {
         return fuse3_config.set_uid$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int set_uid;
+     * }
+     */
     public static int set_uid$get(MemorySegment seg) {
         return (int)fuse3_config.set_uid$VH.get(seg);
     }
-    public static void set_uid$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int set_uid;
+     * }
+     */
+    public static void set_uid$set(MemorySegment seg, int x) {
         fuse3_config.set_uid$VH.set(seg, x);
     }
     public static int set_uid$get(MemorySegment seg, long index) {
@@ -91,10 +157,22 @@ public class fuse3_config {
     public static VarHandle uid$VH() {
         return fuse3_config.uid$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int uid;
+     * }
+     */
     public static int uid$get(MemorySegment seg) {
         return (int)fuse3_config.uid$VH.get(seg);
     }
-    public static void uid$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int uid;
+     * }
+     */
+    public static void uid$set(MemorySegment seg, int x) {
         fuse3_config.uid$VH.set(seg, x);
     }
     public static int uid$get(MemorySegment seg, long index) {
@@ -107,10 +185,22 @@ public class fuse3_config {
     public static VarHandle set_mode$VH() {
         return fuse3_config.set_mode$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int set_mode;
+     * }
+     */
     public static int set_mode$get(MemorySegment seg) {
         return (int)fuse3_config.set_mode$VH.get(seg);
     }
-    public static void set_mode$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int set_mode;
+     * }
+     */
+    public static void set_mode$set(MemorySegment seg, int x) {
         fuse3_config.set_mode$VH.set(seg, x);
     }
     public static int set_mode$get(MemorySegment seg, long index) {
@@ -123,10 +213,22 @@ public class fuse3_config {
     public static VarHandle umask$VH() {
         return fuse3_config.umask$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned int umask;
+     * }
+     */
     public static int umask$get(MemorySegment seg) {
         return (int)fuse3_config.umask$VH.get(seg);
     }
-    public static void umask$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned int umask;
+     * }
+     */
+    public static void umask$set(MemorySegment seg, int x) {
         fuse3_config.umask$VH.set(seg, x);
     }
     public static int umask$get(MemorySegment seg, long index) {
@@ -139,10 +241,22 @@ public class fuse3_config {
     public static VarHandle entry_timeout$VH() {
         return fuse3_config.entry_timeout$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * double entry_timeout;
+     * }
+     */
     public static double entry_timeout$get(MemorySegment seg) {
         return (double)fuse3_config.entry_timeout$VH.get(seg);
     }
-    public static void entry_timeout$set( MemorySegment seg, double x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * double entry_timeout;
+     * }
+     */
+    public static void entry_timeout$set(MemorySegment seg, double x) {
         fuse3_config.entry_timeout$VH.set(seg, x);
     }
     public static double entry_timeout$get(MemorySegment seg, long index) {
@@ -155,10 +269,22 @@ public class fuse3_config {
     public static VarHandle negative_timeout$VH() {
         return fuse3_config.negative_timeout$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * double negative_timeout;
+     * }
+     */
     public static double negative_timeout$get(MemorySegment seg) {
         return (double)fuse3_config.negative_timeout$VH.get(seg);
     }
-    public static void negative_timeout$set( MemorySegment seg, double x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * double negative_timeout;
+     * }
+     */
+    public static void negative_timeout$set(MemorySegment seg, double x) {
         fuse3_config.negative_timeout$VH.set(seg, x);
     }
     public static double negative_timeout$get(MemorySegment seg, long index) {
@@ -171,10 +297,22 @@ public class fuse3_config {
     public static VarHandle attr_timeout$VH() {
         return fuse3_config.attr_timeout$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * double attr_timeout;
+     * }
+     */
     public static double attr_timeout$get(MemorySegment seg) {
         return (double)fuse3_config.attr_timeout$VH.get(seg);
     }
-    public static void attr_timeout$set( MemorySegment seg, double x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * double attr_timeout;
+     * }
+     */
+    public static void attr_timeout$set(MemorySegment seg, double x) {
         fuse3_config.attr_timeout$VH.set(seg, x);
     }
     public static double attr_timeout$get(MemorySegment seg, long index) {
@@ -187,10 +325,22 @@ public class fuse3_config {
     public static VarHandle intr$VH() {
         return fuse3_config.intr$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int intr;
+     * }
+     */
     public static int intr$get(MemorySegment seg) {
         return (int)fuse3_config.intr$VH.get(seg);
     }
-    public static void intr$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int intr;
+     * }
+     */
+    public static void intr$set(MemorySegment seg, int x) {
         fuse3_config.intr$VH.set(seg, x);
     }
     public static int intr$get(MemorySegment seg, long index) {
@@ -203,10 +353,22 @@ public class fuse3_config {
     public static VarHandle intr_signal$VH() {
         return fuse3_config.intr_signal$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int intr_signal;
+     * }
+     */
     public static int intr_signal$get(MemorySegment seg) {
         return (int)fuse3_config.intr_signal$VH.get(seg);
     }
-    public static void intr_signal$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int intr_signal;
+     * }
+     */
+    public static void intr_signal$set(MemorySegment seg, int x) {
         fuse3_config.intr_signal$VH.set(seg, x);
     }
     public static int intr_signal$get(MemorySegment seg, long index) {
@@ -219,10 +381,22 @@ public class fuse3_config {
     public static VarHandle remember$VH() {
         return fuse3_config.remember$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int remember;
+     * }
+     */
     public static int remember$get(MemorySegment seg) {
         return (int)fuse3_config.remember$VH.get(seg);
     }
-    public static void remember$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int remember;
+     * }
+     */
+    public static void remember$set(MemorySegment seg, int x) {
         fuse3_config.remember$VH.set(seg, x);
     }
     public static int remember$get(MemorySegment seg, long index) {
@@ -235,10 +409,22 @@ public class fuse3_config {
     public static VarHandle hard_remove$VH() {
         return fuse3_config.hard_remove$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int hard_remove;
+     * }
+     */
     public static int hard_remove$get(MemorySegment seg) {
         return (int)fuse3_config.hard_remove$VH.get(seg);
     }
-    public static void hard_remove$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int hard_remove;
+     * }
+     */
+    public static void hard_remove$set(MemorySegment seg, int x) {
         fuse3_config.hard_remove$VH.set(seg, x);
     }
     public static int hard_remove$get(MemorySegment seg, long index) {
@@ -251,10 +437,22 @@ public class fuse3_config {
     public static VarHandle use_ino$VH() {
         return fuse3_config.use_ino$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int use_ino;
+     * }
+     */
     public static int use_ino$get(MemorySegment seg) {
         return (int)fuse3_config.use_ino$VH.get(seg);
     }
-    public static void use_ino$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int use_ino;
+     * }
+     */
+    public static void use_ino$set(MemorySegment seg, int x) {
         fuse3_config.use_ino$VH.set(seg, x);
     }
     public static int use_ino$get(MemorySegment seg, long index) {
@@ -267,10 +465,22 @@ public class fuse3_config {
     public static VarHandle readdir_ino$VH() {
         return fuse3_config.readdir_ino$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int readdir_ino;
+     * }
+     */
     public static int readdir_ino$get(MemorySegment seg) {
         return (int)fuse3_config.readdir_ino$VH.get(seg);
     }
-    public static void readdir_ino$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int readdir_ino;
+     * }
+     */
+    public static void readdir_ino$set(MemorySegment seg, int x) {
         fuse3_config.readdir_ino$VH.set(seg, x);
     }
     public static int readdir_ino$get(MemorySegment seg, long index) {
@@ -283,10 +493,22 @@ public class fuse3_config {
     public static VarHandle direct_io$VH() {
         return fuse3_config.direct_io$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int direct_io;
+     * }
+     */
     public static int direct_io$get(MemorySegment seg) {
         return (int)fuse3_config.direct_io$VH.get(seg);
     }
-    public static void direct_io$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int direct_io;
+     * }
+     */
+    public static void direct_io$set(MemorySegment seg, int x) {
         fuse3_config.direct_io$VH.set(seg, x);
     }
     public static int direct_io$get(MemorySegment seg, long index) {
@@ -299,10 +521,22 @@ public class fuse3_config {
     public static VarHandle kernel_cache$VH() {
         return fuse3_config.kernel_cache$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int kernel_cache;
+     * }
+     */
     public static int kernel_cache$get(MemorySegment seg) {
         return (int)fuse3_config.kernel_cache$VH.get(seg);
     }
-    public static void kernel_cache$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int kernel_cache;
+     * }
+     */
+    public static void kernel_cache$set(MemorySegment seg, int x) {
         fuse3_config.kernel_cache$VH.set(seg, x);
     }
     public static int kernel_cache$get(MemorySegment seg, long index) {
@@ -315,10 +549,22 @@ public class fuse3_config {
     public static VarHandle auto_cache$VH() {
         return fuse3_config.auto_cache$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int auto_cache;
+     * }
+     */
     public static int auto_cache$get(MemorySegment seg) {
         return (int)fuse3_config.auto_cache$VH.get(seg);
     }
-    public static void auto_cache$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int auto_cache;
+     * }
+     */
+    public static void auto_cache$set(MemorySegment seg, int x) {
         fuse3_config.auto_cache$VH.set(seg, x);
     }
     public static int auto_cache$get(MemorySegment seg, long index) {
@@ -331,10 +577,22 @@ public class fuse3_config {
     public static VarHandle ac_attr_timeout_set$VH() {
         return fuse3_config.ac_attr_timeout_set$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int ac_attr_timeout_set;
+     * }
+     */
     public static int ac_attr_timeout_set$get(MemorySegment seg) {
         return (int)fuse3_config.ac_attr_timeout_set$VH.get(seg);
     }
-    public static void ac_attr_timeout_set$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int ac_attr_timeout_set;
+     * }
+     */
+    public static void ac_attr_timeout_set$set(MemorySegment seg, int x) {
         fuse3_config.ac_attr_timeout_set$VH.set(seg, x);
     }
     public static int ac_attr_timeout_set$get(MemorySegment seg, long index) {
@@ -347,10 +605,22 @@ public class fuse3_config {
     public static VarHandle ac_attr_timeout$VH() {
         return fuse3_config.ac_attr_timeout$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * double ac_attr_timeout;
+     * }
+     */
     public static double ac_attr_timeout$get(MemorySegment seg) {
         return (double)fuse3_config.ac_attr_timeout$VH.get(seg);
     }
-    public static void ac_attr_timeout$set( MemorySegment seg, double x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * double ac_attr_timeout;
+     * }
+     */
+    public static void ac_attr_timeout$set(MemorySegment seg, double x) {
         fuse3_config.ac_attr_timeout$VH.set(seg, x);
     }
     public static double ac_attr_timeout$get(MemorySegment seg, long index) {
@@ -363,10 +633,22 @@ public class fuse3_config {
     public static VarHandle nullpath_ok$VH() {
         return fuse3_config.nullpath_ok$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int nullpath_ok;
+     * }
+     */
     public static int nullpath_ok$get(MemorySegment seg) {
         return (int)fuse3_config.nullpath_ok$VH.get(seg);
     }
-    public static void nullpath_ok$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int nullpath_ok;
+     * }
+     */
+    public static void nullpath_ok$set(MemorySegment seg, int x) {
         fuse3_config.nullpath_ok$VH.set(seg, x);
     }
     public static int nullpath_ok$get(MemorySegment seg, long index) {
@@ -379,10 +661,22 @@ public class fuse3_config {
     public static VarHandle show_help$VH() {
         return fuse3_config.show_help$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int show_help;
+     * }
+     */
     public static int show_help$get(MemorySegment seg) {
         return (int)fuse3_config.show_help$VH.get(seg);
     }
-    public static void show_help$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int show_help;
+     * }
+     */
+    public static void show_help$set(MemorySegment seg, int x) {
         fuse3_config.show_help$VH.set(seg, x);
     }
     public static int show_help$get(MemorySegment seg, long index) {
@@ -395,26 +689,50 @@ public class fuse3_config {
     public static VarHandle modules$VH() {
         return fuse3_config.modules$VH;
     }
-    public static MemoryAddress modules$get(MemorySegment seg) {
-        return (java.lang.foreign.MemoryAddress)fuse3_config.modules$VH.get(seg);
+    /**
+     * Getter for field:
+     * {@snippet :
+     * char* modules;
+     * }
+     */
+    public static MemorySegment modules$get(MemorySegment seg) {
+        return (java.lang.foreign.MemorySegment)fuse3_config.modules$VH.get(seg);
     }
-    public static void modules$set( MemorySegment seg, MemoryAddress x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * char* modules;
+     * }
+     */
+    public static void modules$set(MemorySegment seg, MemorySegment x) {
         fuse3_config.modules$VH.set(seg, x);
     }
-    public static MemoryAddress modules$get(MemorySegment seg, long index) {
-        return (java.lang.foreign.MemoryAddress)fuse3_config.modules$VH.get(seg.asSlice(index*sizeof()));
+    public static MemorySegment modules$get(MemorySegment seg, long index) {
+        return (java.lang.foreign.MemorySegment)fuse3_config.modules$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void modules$set(MemorySegment seg, long index, MemoryAddress x) {
+    public static void modules$set(MemorySegment seg, long index, MemorySegment x) {
         fuse3_config.modules$VH.set(seg.asSlice(index*sizeof()), x);
     }
     static final VarHandle debug$VH = $struct$LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("debug"));
     public static VarHandle debug$VH() {
         return fuse3_config.debug$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int debug;
+     * }
+     */
     public static int debug$get(MemorySegment seg) {
         return (int)fuse3_config.debug$VH.get(seg);
     }
-    public static void debug$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int debug;
+     * }
+     */
+    public static void debug$set(MemorySegment seg, int x) {
         fuse3_config.debug$VH.set(seg, x);
     }
     public static int debug$get(MemorySegment seg, long index) {
@@ -425,10 +743,10 @@ public class fuse3_config {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 
