@@ -7,9 +7,17 @@ import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct timespec {
+ *     __time_t tv_sec;
+ *     __syscall_slong_t tv_nsec;
+ * };
+ * }
+ */
 public class timespec {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_LONG_LONG$LAYOUT.withName("tv_sec"),
         Constants$root.C_LONG_LONG$LAYOUT.withName("tv_nsec")
     ).withName("timespec");
@@ -20,10 +28,22 @@ public class timespec {
     public static VarHandle tv_sec$VH() {
         return timespec.tv_sec$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * __time_t tv_sec;
+     * }
+     */
     public static long tv_sec$get(MemorySegment seg) {
         return (long)timespec.tv_sec$VH.get(seg);
     }
-    public static void tv_sec$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * __time_t tv_sec;
+     * }
+     */
+    public static void tv_sec$set(MemorySegment seg, long x) {
         timespec.tv_sec$VH.set(seg, x);
     }
     public static long tv_sec$get(MemorySegment seg, long index) {
@@ -36,10 +56,22 @@ public class timespec {
     public static VarHandle tv_nsec$VH() {
         return timespec.tv_nsec$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * __syscall_slong_t tv_nsec;
+     * }
+     */
     public static long tv_nsec$get(MemorySegment seg) {
         return (long)timespec.tv_nsec$VH.get(seg);
     }
-    public static void tv_nsec$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * __syscall_slong_t tv_nsec;
+     * }
+     */
+    public static void tv_nsec$set(MemorySegment seg, long x) {
         timespec.tv_nsec$VH.set(seg, x);
     }
     public static long tv_nsec$get(MemorySegment seg, long index) {
@@ -50,10 +82,10 @@ public class timespec {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 

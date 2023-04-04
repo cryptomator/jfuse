@@ -5,13 +5,12 @@ import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.TimeSpec;
 import org.cryptomator.jfuse.linux.aarch64.extr.stat;
 
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 record StatImpl(MemorySegment segment) implements Stat {
 
-	public StatImpl(MemoryAddress address, MemorySession scope) {
+	public StatImpl(MemorySegment address, SegmentScope scope) {
 		this(stat.ofAddress(address, scope));
 	}
 

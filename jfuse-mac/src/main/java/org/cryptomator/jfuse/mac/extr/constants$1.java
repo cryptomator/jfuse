@@ -7,8 +7,10 @@ import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
-class constants$1 {
+final class constants$1 {
 
+    // Suppresses default constructor, ensuring non-instantiability.
+    private constants$1() {}
     static final FunctionDescriptor fuse_destroy$FUNC = FunctionDescriptor.ofVoid(
         Constants$root.C_POINTER$LAYOUT
     );

@@ -9,8 +9,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -21,9 +21,9 @@ public class StatvfsImplTest {
 	@ParameterizedTest(name = "{1}")
 	@MethodSource
 	public void testGetters(SetInMemorySegment<Number> setter, GetInStatvfs<Number> getter, Number value, long expected) {
-		try (var scope = MemorySession.openConfined()) {
-			var segment = statvfs.allocate(scope);
-			var statvfs = new StatvfsImpl(segment.address(), scope);
+		try (var arena = Arena.openConfined()) {
+			var segment = statvfs.allocate(arena);
+			var statvfs = new StatvfsImpl(segment, arena.scope());
 
 			setter.accept(segment, value);
 
@@ -57,9 +57,9 @@ public class StatvfsImplTest {
 	@ParameterizedTest(name = "{0}")
 	@MethodSource
 	public void testSetters(SetInStatvfs<Number> setter, GetInMemorySegment<Number> getter, Number value, long expected) {
-		try (var scope = MemorySession.openConfined()) {
-			var segment = statvfs.allocate(scope);
-			var statvfs = new StatvfsImpl(segment.address(), scope);
+		try (var arena = Arena.openConfined()) {
+			var segment = statvfs.allocate(arena);
+			var statvfs = new StatvfsImpl(segment, arena.scope());
 
 			setter.accept(statvfs, value.longValue());
 

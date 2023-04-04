@@ -3,15 +3,14 @@ package org.cryptomator.jfuse.mac;
 import org.cryptomator.jfuse.api.Statvfs;
 import org.cryptomator.jfuse.mac.extr.statvfs;
 
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
 	private static final long MAX_UINT = 0xFFFFFFFFL;
 
-	public StatvfsImpl(MemoryAddress address, MemorySession scope) {
+	public StatvfsImpl(MemorySegment address, SegmentScope scope) {
 		this(statvfs.ofAddress(address, scope));
 	}
 

@@ -7,8 +7,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import java.lang.foreign.SegmentAllocator;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,7 +43,7 @@ public abstract class Fuse implements AutoCloseable {
 	/**
 	 * The memory session associated with the lifecycle of this Fuse instance.
 	 */
-	protected final MemorySession fuseScope = MemorySession.openShared();
+	protected final Arena fuseArena = Arena.openShared();
 
 	/**
 	 * The file system operations invoked by this FUSE file system.
@@ -66,7 +66,7 @@ public abstract class Fuse implements AutoCloseable {
 	 */
 	protected Fuse(FuseOperations fuseOperations, Function<SegmentAllocator, MemorySegment> structAllocator) {
 		this.fuseOperations = new MountProbeObserver(fuseOperations, mountProbeSucceeded::countDown);
-		this.fuseOperationsStruct = structAllocator.apply(fuseScope);
+		this.fuseOperationsStruct = structAllocator.apply(fuseArena);
 		fuseOperations.supportedOperations().forEach(this::bind);
 	}
 
@@ -108,7 +108,7 @@ public abstract class Fuse implements AutoCloseable {
 	@Blocking
 	@MustBeInvokedByOverriders
 	public synchronized void mount(String progName, Path mountPoint, String... flags) throws FuseMountFailedException, IllegalArgumentException {
-		if (!fuseScope.isAlive()) {
+		if (!fuseArena.scope().isAlive()) {
 			throw new IllegalStateException("Already closed"); //TODO: throw specialized exception
 		}
 
@@ -156,8 +156,9 @@ public abstract class Fuse implements AutoCloseable {
 	@Blocking
 	private int fuseLoop(FuseMount mount) {
 		AtomicInteger result = new AtomicInteger();
-		fuseScope.whileAlive(() -> {
-			result.set(mount.loop());
+		fuseArena.scope().whileAlive(() -> {
+			int r = mount.loop();
+			result.set(r);
 		});
 		return result.get();
 	}
@@ -184,7 +185,7 @@ public abstract class Fuse implements AutoCloseable {
 	@Blocking
 	@MustBeInvokedByOverriders
 	public synchronized void close() throws TimeoutException {
-		if (!fuseScope.isAlive()) {
+		if (!fuseArena.scope().isAlive()) {
 			return; // already closed
 		}
 		try {
@@ -199,13 +200,13 @@ public abstract class Fuse implements AutoCloseable {
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		} finally {
-			fuseScope.close();
+			fuseArena.close();
 		}
 	}
 
 	/**
 	 * Decorates the {@link FuseOperations#getattr(String, Stat, FileInfo) getattr} call of a FuseOperations object
-	 * in order to detect accesses to {@value MOUNT_PROBE} system during {@link #waitForMountingToComplete(Path)}.
+	 * in order to detect accesses to {@value MOUNT_PROBE} system during {@link #waitForMountingToComplete(Path, Future)}}.
 	 *
 	 * @param delegate  The original FuseOperations object
 	 * @param onObserve Handler to invoke as soon as the desired call is detected

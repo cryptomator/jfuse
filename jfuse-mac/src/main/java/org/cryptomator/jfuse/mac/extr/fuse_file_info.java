@@ -7,9 +7,26 @@ import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 import java.lang.foreign.*;
 import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * struct fuse_file_info {
+ *     int flags;
+ *     unsigned long fh_old;
+ *     int writepage;
+ *      *     unsigned int direct_io;
+ *     unsigned int keep_cache;
+ *     unsigned int flush;
+ *     unsigned int nonseekable;
+ *     unsigned int flock_release;
+ *     unsigned int padding;
+ *     uint64_t fh;
+ *     uint64_t lock_owner;
+ * };
+ * }
+ */
 public class fuse_file_info {
 
-    static final  GroupLayout $struct$LAYOUT = MemoryLayout.structLayout(
+    static final StructLayout $struct$LAYOUT = MemoryLayout.structLayout(
         Constants$root.C_INT$LAYOUT.withName("flags"),
         MemoryLayout.paddingLayout(32),
         Constants$root.C_LONG_LONG$LAYOUT.withName("fh_old"),
@@ -32,10 +49,22 @@ public class fuse_file_info {
     public static VarHandle flags$VH() {
         return fuse_file_info.flags$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int flags;
+     * }
+     */
     public static int flags$get(MemorySegment seg) {
         return (int)fuse_file_info.flags$VH.get(seg);
     }
-    public static void flags$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int flags;
+     * }
+     */
+    public static void flags$set(MemorySegment seg, int x) {
         fuse_file_info.flags$VH.set(seg, x);
     }
     public static int flags$get(MemorySegment seg, long index) {
@@ -48,10 +77,22 @@ public class fuse_file_info {
     public static VarHandle fh_old$VH() {
         return fuse_file_info.fh_old$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * unsigned long fh_old;
+     * }
+     */
     public static long fh_old$get(MemorySegment seg) {
         return (long)fuse_file_info.fh_old$VH.get(seg);
     }
-    public static void fh_old$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * unsigned long fh_old;
+     * }
+     */
+    public static void fh_old$set(MemorySegment seg, long x) {
         fuse_file_info.fh_old$VH.set(seg, x);
     }
     public static long fh_old$get(MemorySegment seg, long index) {
@@ -64,10 +105,22 @@ public class fuse_file_info {
     public static VarHandle writepage$VH() {
         return fuse_file_info.writepage$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * int writepage;
+     * }
+     */
     public static int writepage$get(MemorySegment seg) {
         return (int)fuse_file_info.writepage$VH.get(seg);
     }
-    public static void writepage$set( MemorySegment seg, int x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * int writepage;
+     * }
+     */
+    public static void writepage$set(MemorySegment seg, int x) {
         fuse_file_info.writepage$VH.set(seg, x);
     }
     public static int writepage$get(MemorySegment seg, long index) {
@@ -80,10 +133,22 @@ public class fuse_file_info {
     public static VarHandle fh$VH() {
         return fuse_file_info.fh$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * uint64_t fh;
+     * }
+     */
     public static long fh$get(MemorySegment seg) {
         return (long)fuse_file_info.fh$VH.get(seg);
     }
-    public static void fh$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * uint64_t fh;
+     * }
+     */
+    public static void fh$set(MemorySegment seg, long x) {
         fuse_file_info.fh$VH.set(seg, x);
     }
     public static long fh$get(MemorySegment seg, long index) {
@@ -96,10 +161,22 @@ public class fuse_file_info {
     public static VarHandle lock_owner$VH() {
         return fuse_file_info.lock_owner$VH;
     }
+    /**
+     * Getter for field:
+     * {@snippet :
+     * uint64_t lock_owner;
+     * }
+     */
     public static long lock_owner$get(MemorySegment seg) {
         return (long)fuse_file_info.lock_owner$VH.get(seg);
     }
-    public static void lock_owner$set( MemorySegment seg, long x) {
+    /**
+     * Setter for field:
+     * {@snippet :
+     * uint64_t lock_owner;
+     * }
+     */
+    public static void lock_owner$set(MemorySegment seg, long x) {
         fuse_file_info.lock_owner$VH.set(seg, x);
     }
     public static long lock_owner$get(MemorySegment seg, long index) {
@@ -110,10 +187,10 @@ public class fuse_file_info {
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(int len, SegmentAllocator allocator) {
+    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
         return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
     }
-    public static MemorySegment ofAddress(MemoryAddress addr, MemorySession session) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, session); }
+    public static MemorySegment ofAddress(MemorySegment addr, SegmentScope scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
 }
 
 

@@ -1,8 +1,8 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
-import java.lang.foreign.Addressable;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 import java.lang.invoke.MethodHandle;
 
@@ -24,7 +24,7 @@ class FuseFunctions {
 	private FuseFunctions() {
 		var lookup = SymbolLookup.loaderLookup();
 		var linker = Linker.nativeLinker();
-		this.fuse_parse_cmdline = lookup.lookup("fuse_parse_cmdline")
+		this.fuse_parse_cmdline = lookup.find("fuse_parse_cmdline")
 				.map(symbol -> linker.downcallHandle(symbol, FUSE_PARSE_CMDLINE))
 				.orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol fuse_parse_cmdline"));
 	}
@@ -33,7 +33,7 @@ class FuseFunctions {
 		private static final FuseFunctions INSTANCE = new FuseFunctions();
 	}
 
-	public static int fuse_parse_cmdline(Addressable args, Addressable opts) {
+	public static int fuse_parse_cmdline(MemorySegment args, MemorySegment opts) {
 		try {
 			return (int) Holder.INSTANCE.fuse_parse_cmdline.invokeExact(args, opts);
 		} catch (Throwable e) {

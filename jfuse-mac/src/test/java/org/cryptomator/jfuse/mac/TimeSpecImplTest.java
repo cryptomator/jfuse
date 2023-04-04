@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import java.time.Instant;
 
 public class TimeSpecImplTest {
@@ -14,8 +14,8 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test get()")
 	public void testGet() {
-		try (var scope = MemorySession.openConfined()) {
-			var timeSpec = new TimeSpecImpl(timespec.allocate(scope));
+		try (var arena = Arena.openConfined()) {
+			var timeSpec = new TimeSpecImpl(timespec.allocate(arena));
 			timespec.tv_sec$set(timeSpec.segment(), 123L);
 			timespec.tv_nsec$set(timeSpec.segment(), 456L);
 
@@ -29,8 +29,8 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test set()")
 	public void testSet() {
-		try (var scope = MemorySession.openConfined()) {
-			var timeSpec = new TimeSpecImpl(timespec.allocate(scope));
+		try (var arena = Arena.openConfined()) {
+			var timeSpec = new TimeSpecImpl(timespec.allocate(arena));
 			timespec.tv_sec$set(timeSpec.segment(), 0L);
 			timespec.tv_nsec$set(timeSpec.segment(), 0L);
 
@@ -44,8 +44,8 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test isUtimeOmit()")
 	public void testIsUtimeOmit() {
-		try (var scope = MemorySession.openConfined()) {
-			var timeSpec = new TimeSpecImpl(timespec.allocate(scope));
+		try (var arena = Arena.openConfined()) {
+			var timeSpec = new TimeSpecImpl(timespec.allocate(arena));
 			timespec.tv_sec$set(timeSpec.segment(), 123L);
 			timespec.tv_nsec$set(timeSpec.segment(), stat_h.UTIME_OMIT());
 
@@ -57,8 +57,8 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test isUtimeNow()")
 	public void testIsUtimeNow() {
-		try (var scope = MemorySession.openConfined()) {
-			var timeSpec = new TimeSpecImpl(timespec.allocate(scope));
+		try (var arena = Arena.openConfined()) {
+			var timeSpec = new TimeSpecImpl(timespec.allocate(arena));
 			timespec.tv_sec$set(timeSpec.segment(), 123L);
 			timespec.tv_nsec$set(timeSpec.segment(), stat_h.UTIME_NOW());
 

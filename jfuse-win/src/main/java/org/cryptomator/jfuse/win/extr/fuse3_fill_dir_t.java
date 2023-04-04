@@ -2,19 +2,27 @@
 
 package org.cryptomator.jfuse.win.extr;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
 import java.lang.foreign.*;
-
+import static java.lang.foreign.ValueLayout.*;
+/**
+ * {@snippet :
+ * int (*fuse3_fill_dir_t)(void* buf,char* name,struct fuse_stat* stbuf,long long off,enum fuse3_fill_dir_flags flags);
+ * }
+ */
 public interface fuse3_fill_dir_t {
 
-    int apply(java.lang.foreign.MemoryAddress buf, java.lang.foreign.MemoryAddress name, java.lang.foreign.MemoryAddress stbuf, long off, int flags);
-    static MemorySegment allocate(fuse3_fill_dir_t fi, MemorySession session) {
-        return RuntimeHelper.upcallStub(fuse3_fill_dir_t.class, fi, constants$0.fuse3_fill_dir_t$FUNC, session);
+    int apply(java.lang.foreign.MemorySegment buf, java.lang.foreign.MemorySegment name, java.lang.foreign.MemorySegment stbuf, long off, int flags);
+    static MemorySegment allocate(fuse3_fill_dir_t fi, SegmentScope scope) {
+        return RuntimeHelper.upcallStub(fuse3_fill_dir_t.class, fi, constants$0.fuse3_fill_dir_t$FUNC, scope);
     }
-    static fuse3_fill_dir_t ofAddress(MemoryAddress addr, MemorySession session) {
-        MemorySegment symbol = MemorySegment.ofAddress(addr, 0, session);
-        return (java.lang.foreign.MemoryAddress _buf, java.lang.foreign.MemoryAddress _name, java.lang.foreign.MemoryAddress _stbuf, long _off, int _flags) -> {
+    static fuse3_fill_dir_t ofAddress(MemorySegment addr, SegmentScope scope) {
+        MemorySegment symbol = MemorySegment.ofAddress(addr.address(), 0, scope);
+        return (java.lang.foreign.MemorySegment _buf, java.lang.foreign.MemorySegment _name, java.lang.foreign.MemorySegment _stbuf, long _off, int _flags) -> {
             try {
-                return (int)constants$0.fuse3_fill_dir_t$MH.invokeExact((Addressable)symbol, (java.lang.foreign.Addressable)_buf, (java.lang.foreign.Addressable)_name, (java.lang.foreign.Addressable)_stbuf, _off, _flags);
+                return (int)constants$0.fuse3_fill_dir_t$MH.invokeExact(symbol, _buf, _name, _stbuf, _off, _flags);
             } catch (Throwable ex$) {
                 throw new AssertionError("should not reach here", ex$);
             }
