@@ -12,12 +12,8 @@ record FuseMountImpl(MemorySegment fuse, FuseArgs fuseArgs) implements FuseMount
 	@Override
 	public int loop() {
 		if (fuseArgs.multiThreaded()) {
-			try (var arena = Arena.openConfined()) {
-				var loopCfg = fuse3_loop_config.allocate(arena);
-				fuse3_loop_config.clone_fd$set(loopCfg,0);
-				fuse3_loop_config.max_idle_threads$set(loopCfg, 5);
-				return fuse_h.fuse3_loop_mt(fuse, loopCfg);
-			}
+			//We cannot use fuse3_loop_mt(fuse, fuseconfig) due to https://github.com/cryptomator/jfuse/issues/31
+			return fuse_h.fuse3_loop_mt_31(fuse, 0);
 		} else {
 			return fuse_h.fuse3_loop(fuse);
 		}
