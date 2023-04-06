@@ -25,13 +25,13 @@ final class constants$1 {
         "fuse3_loop",
         constants$1.fuse3_loop$FUNC
     );
-    static final FunctionDescriptor fuse3_loop_mt$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
+    static final FunctionDescriptor fuse3_loop_mt_31$FUNC = FunctionDescriptor.of(Constants$root.C_LONG$LAYOUT,
         Constants$root.C_POINTER$LAYOUT,
-        Constants$root.C_POINTER$LAYOUT
+        Constants$root.C_LONG$LAYOUT
     );
-    static final MethodHandle fuse3_loop_mt$MH = RuntimeHelper.downcallHandle(
-        "fuse3_loop_mt",
-        constants$1.fuse3_loop_mt$FUNC
+    static final MethodHandle fuse3_loop_mt_31$MH = RuntimeHelper.downcallHandle(
+        "fuse3_loop_mt_31",
+        constants$1.fuse3_loop_mt_31$FUNC
     );
     static final FunctionDescriptor fuse3_exit$FUNC = FunctionDescriptor.ofVoid(
         Constants$root.C_POINTER$LAYOUT

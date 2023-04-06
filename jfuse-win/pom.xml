@@ -89,7 +89,7 @@
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>WINFSP_DLL_INTERNAL</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=33</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=31</cPreprocessorMacro>
 										<cPreprocessorMacro>CYGFUSE</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
@@ -98,7 +98,7 @@
 										<includeFunction>fuse3_mount</includeFunction>
 										<includeFunction>fuse3_get_session</includeFunction>
 										<includeFunction>fuse3_loop</includeFunction>
-										<includeFunction>fuse3_loop_mt</includeFunction>
+										<includeFunction>fuse3_loop_mt_31</includeFunction>
 										<includeFunction>fuse3_exit</includeFunction>
 										<includeFunction>fuse3_unmount</includeFunction>
 										<includeFunction>fuse3_destroy</includeFunction>
