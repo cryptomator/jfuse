@@ -43,7 +43,7 @@ public abstract class Fuse implements AutoCloseable {
 	/**
 	 * The memory session associated with the lifecycle of this Fuse instance.
 	 */
-	protected final Arena fuseArena = Arena.openShared();
+	protected final Arena fuseArena = Arena.ofShared();
 
 	/**
 	 * The file system operations invoked by this FUSE file system.
@@ -156,11 +156,9 @@ public abstract class Fuse implements AutoCloseable {
 	@Blocking
 	private int fuseLoop(FuseMount mount) {
 		AtomicInteger result = new AtomicInteger();
-		fuseArena.scope().whileAlive(() -> {
-			int r = mount.loop();
-			result.set(r);
-		});
-		return result.get();
+		int r = mount.loop();
+		result.set(r);
+		return r;
 	}
 
 	/**
