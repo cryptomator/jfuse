@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.win;
 
 import org.cryptomator.jfuse.api.TimeSpec;
-import org.cryptomator.jfuse.win.extr.fuse_timespec;
+import org.cryptomator.jfuse.win.extr.fuse3.fuse_timespec;
 
 import java.lang.foreign.MemorySegment;
 import java.time.Instant;

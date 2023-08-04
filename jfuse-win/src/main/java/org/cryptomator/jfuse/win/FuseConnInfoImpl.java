@@ -1,14 +1,14 @@
 package org.cryptomator.jfuse.win;
 
 import org.cryptomator.jfuse.api.FuseConnInfo;
-import org.cryptomator.jfuse.win.extr.fuse3_conn_info;
+import org.cryptomator.jfuse.win.extr.fuse3.fuse3_conn_info;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
 
-	public FuseConnInfoImpl(MemorySegment address, SegmentScope scope) {
+	public FuseConnInfoImpl(MemorySegment address, Arena scope) {
 		this(fuse3_conn_info.ofAddress(address, scope));
 	}
 

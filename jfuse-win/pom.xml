@@ -76,7 +76,7 @@
 							<executable>${jextract.executable}</executable>
 							<headerSearchPaths>${win.ucrtHeaderPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
-							<targetPackage>org.cryptomator.jfuse.win.extr</targetPackage>
+							<targetPackage>org.cryptomator.jfuse.win.extr.fuse3</targetPackage>
 						</configuration>
 						<executions>
 							<execution>
@@ -145,6 +145,7 @@
 									<goal>sources</goal>
 								</goals>
 								<configuration>
+									<targetPackage>org.cryptomator.jfuse.win.extr.errno</targetPackage>
 									<headerFile>${win.ucrtHeaderPath}/errno.h</headerFile>
 									<headerClassName>errno_h</headerClassName>
 									<includeConstants>
@@ -173,6 +174,7 @@
 									<goal>sources</goal>
 								</goals>
 								<configuration>
+									<targetPackage>org.cryptomator.jfuse.win.extr.fcntl</targetPackage>
 									<headerFile>${win.ucrtHeaderPath}/fcntl.h</headerFile>
 									<headerClassName>fcntl_h</headerClassName>
 									<includeConstants>

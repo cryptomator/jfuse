@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.win;
 
 import org.cryptomator.jfuse.api.Errno;
-import org.cryptomator.jfuse.win.extr.errno_h;
+import org.cryptomator.jfuse.win.extr.errno.errno_h;
 
 record WinErrno() implements Errno {
 
