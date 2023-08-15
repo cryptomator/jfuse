@@ -170,7 +170,7 @@
 				</executions>
 				<configuration>
 					<excludePackageNames>*.extr:*.extr.*</excludePackageNames>
-					<release>20</release>
+					<release>21</release>
 					<additionalOptions>
 						<option>--enable-preview</option>
 					</additionalOptions>
