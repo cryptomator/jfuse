@@ -206,22 +206,24 @@ class FuseImpl extends Fuse {
 	@VisibleForTesting
 	int getxattr(MemorySegment path, MemorySegment name, MemorySegment value, long size) {
 		try (var arena = Arena.ofConfined()) {
-			return fuseOperations.getxattr(path.getUtf8String(0), name.getUtf8String(0), value.asSlice(0, size).asByteBuffer());
+			var val = value.reinterpret(size, arena, null).asByteBuffer();
+			return fuseOperations.getxattr(path.getUtf8String(0), name.getUtf8String(0), val);
 		}
 	}
 
 	@VisibleForTesting
 	int setxattr(MemorySegment path, MemorySegment name, MemorySegment value, long size, int flags) {
 		try (var arena = Arena.ofConfined()) {
-
-			return fuseOperations.setxattr(path.getUtf8String(0), name.getUtf8String(0), value.asSlice(0, size).asByteBuffer(), flags);
+			var val = value.reinterpret(size, arena, null).asByteBuffer();
+			return fuseOperations.setxattr(path.getUtf8String(0), name.getUtf8String(0), val, flags);
 		}
 	}
 
 	@VisibleForTesting
 	int listxattr(MemorySegment path, MemorySegment value, long size) {
 		try (var arena = Arena.ofConfined()) {
-			return fuseOperations.listxattr(path.getUtf8String(0), value.asSlice(0, size).asByteBuffer());
+			var val = value.reinterpret(size, arena, null).asByteBuffer();
+			return fuseOperations.listxattr(path.getUtf8String(0), val);
 		}
 	}
 
@@ -248,8 +250,7 @@ class FuseImpl extends Fuse {
 
 	private int read(MemorySegment path, MemorySegment buf, long size, long offset, MemorySegment fi) {
 		try (var arena = Arena.ofConfined()) {
-
-			var buffer = buf.reinterpret(size,arena,null).asByteBuffer();
+			var buffer = buf.reinterpret(size, arena, null).asByteBuffer();
 			return fuseOperations.read(path.getUtf8String(0), buffer, size, offset, new FileInfoImpl(fi, arena));
 		}
 	}
@@ -262,7 +263,7 @@ class FuseImpl extends Fuse {
 
 	private int readlink(MemorySegment path, MemorySegment buf, long len) {
 		try (var arena = Arena.ofConfined()) {
-			var buffer = buf.reinterpret(len,arena,null).asByteBuffer();
+			var buffer = buf.reinterpret(len, arena, null).asByteBuffer();
 			return fuseOperations.readlink(path.getUtf8String(0), buffer, len);
 		}
 	}
@@ -323,7 +324,7 @@ class FuseImpl extends Fuse {
 
 	private int write(MemorySegment path, MemorySegment buf, long size, long offset, MemorySegment fi) {
 		try (var arena = Arena.ofConfined()) {
-			var buffer = buf.reinterpret(size, arena,null).asByteBuffer();
+			var buffer = buf.reinterpret(size, arena, null).asByteBuffer();
 			return fuseOperations.write(path.getUtf8String(0), buffer, size, offset, new FileInfoImpl(fi, arena));
 		}
 	}
