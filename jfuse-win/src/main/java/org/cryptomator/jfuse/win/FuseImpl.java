@@ -20,7 +20,6 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static java.lang.foreign.ValueLayout.JAVA_INT;
-import static java.lang.foreign.ValueLayout.JAVA_LONG;
 
 class FuseImpl extends Fuse {
 
@@ -80,36 +79,65 @@ class FuseImpl extends Fuse {
 	@Override
 	protected void bind(FuseOperations.Operation operation) {
 		switch (operation) {
-			case INIT -> fuse3_operations.init$set(fuseOperationsStruct, fuse3_operations.init.allocate(this::init, fuseArena));
+			case INIT ->
+					fuse3_operations.init$set(fuseOperationsStruct, fuse3_operations.init.allocate(this::init, fuseArena));
 			case ACCESS -> fuse3_operations.access$set(fuseOperationsStruct, MemorySegment.NULL);
-			case CHMOD -> fuse3_operations.chmod$set(fuseOperationsStruct, fuse3_operations.chmod.allocate(this::chmod, fuseArena));
-			case CHOWN -> fuse3_operations.chown$set(fuseOperationsStruct, fuse3_operations.chown.allocate(this::chown, fuseArena));
-			case CREATE -> fuse3_operations.create$set(fuseOperationsStruct, fuse3_operations.create.allocate(this::create, fuseArena));
-			case DESTROY -> fuse3_operations.destroy$set(fuseOperationsStruct, fuse3_operations.destroy.allocate(this::destroy, fuseArena));
-			case FLUSH -> fuse3_operations.flush$set(fuseOperationsStruct, fuse3_operations.flush.allocate(this::flush, fuseArena));
-			case FSYNC -> fuse3_operations.fsync$set(fuseOperationsStruct, fuse3_operations.fsync.allocate(this::fsync, fuseArena));
-			case FSYNCDIR -> fuse3_operations.fsyncdir$set(fuseOperationsStruct, fuse3_operations.fsyncdir.allocate(this::fsyncdir, fuseArena));
-			case GET_ATTR -> fuse3_operations.getattr$set(fuseOperationsStruct, fuse3_operations.getattr.allocate(this::getattr, fuseArena));
-			case GET_XATTR -> fuse3_operations.getxattr$set(fuseOperationsStruct, fuse3_operations.getxattr.allocate(this::getxattr, fuseArena));
-			case LIST_XATTR -> fuse3_operations.listxattr$set(fuseOperationsStruct, fuse3_operations.listxattr.allocate(this::listxattr, fuseArena));
-			case MKDIR -> fuse3_operations.mkdir$set(fuseOperationsStruct, fuse3_operations.mkdir.allocate(this::mkdir, fuseArena));
-			case OPEN -> fuse3_operations.open$set(fuseOperationsStruct, fuse3_operations.open.allocate(this::open, fuseArena));
-			case OPEN_DIR -> fuse3_operations.opendir$set(fuseOperationsStruct, fuse3_operations.opendir.allocate(this::opendir, fuseArena));
-			case READ -> fuse3_operations.read$set(fuseOperationsStruct, fuse3_operations.read.allocate(this::read, fuseArena));
-			case READ_DIR -> fuse3_operations.readdir$set(fuseOperationsStruct, fuse3_operations.readdir.allocate(this::readdir, fuseArena));
-			case READLINK -> fuse3_operations.readlink$set(fuseOperationsStruct, fuse3_operations.readlink.allocate(this::readlink, fuseArena));
-			case RELEASE -> fuse3_operations.release$set(fuseOperationsStruct, fuse3_operations.release.allocate(this::release, fuseArena));
-			case RELEASE_DIR -> fuse3_operations.releasedir$set(fuseOperationsStruct, fuse3_operations.releasedir.allocate(this::releasedir, fuseArena));
-			case REMOVE_XATTR -> fuse3_operations.removexattr$set(fuseOperationsStruct, fuse3_operations.removexattr.allocate(this::removexattr, fuseArena));
-			case RENAME -> fuse3_operations.rename$set(fuseOperationsStruct, fuse3_operations.rename.allocate(this::rename, fuseArena));
-			case RMDIR -> fuse3_operations.rmdir$set(fuseOperationsStruct, fuse3_operations.rmdir.allocate(this::rmdir, fuseArena));
-			case SET_XATTR -> fuse3_operations.setxattr$set(fuseOperationsStruct, fuse3_operations.setxattr.allocate(this::setxattr, fuseArena));
-			case STATFS -> fuse3_operations.statfs$set(fuseOperationsStruct, fuse3_operations.statfs.allocate(this::statfs, fuseArena));
-			case SYMLINK -> fuse3_operations.symlink$set(fuseOperationsStruct, fuse3_operations.symlink.allocate(this::symlink, fuseArena));
-			case TRUNCATE -> fuse3_operations.truncate$set(fuseOperationsStruct, fuse3_operations.truncate.allocate(this::truncate, fuseArena));
-			case UNLINK -> fuse3_operations.unlink$set(fuseOperationsStruct, fuse3_operations.unlink.allocate(this::unlink, fuseArena));
-			case UTIMENS -> fuse3_operations.utimens$set(fuseOperationsStruct, fuse3_operations.utimens.allocate(this::utimens, fuseArena));
-			case WRITE -> fuse3_operations.write$set(fuseOperationsStruct, fuse3_operations.write.allocate(this::write, fuseArena));
+			case CHMOD ->
+					fuse3_operations.chmod$set(fuseOperationsStruct, fuse3_operations.chmod.allocate(this::chmod, fuseArena));
+			case CHOWN ->
+					fuse3_operations.chown$set(fuseOperationsStruct, fuse3_operations.chown.allocate(this::chown, fuseArena));
+			case CREATE ->
+					fuse3_operations.create$set(fuseOperationsStruct, fuse3_operations.create.allocate(this::create, fuseArena));
+			case DESTROY ->
+					fuse3_operations.destroy$set(fuseOperationsStruct, fuse3_operations.destroy.allocate(this::destroy, fuseArena));
+			case FLUSH ->
+					fuse3_operations.flush$set(fuseOperationsStruct, fuse3_operations.flush.allocate(this::flush, fuseArena));
+			case FSYNC ->
+					fuse3_operations.fsync$set(fuseOperationsStruct, fuse3_operations.fsync.allocate(this::fsync, fuseArena));
+			case FSYNCDIR ->
+					fuse3_operations.fsyncdir$set(fuseOperationsStruct, fuse3_operations.fsyncdir.allocate(this::fsyncdir, fuseArena));
+			case GET_ATTR ->
+					fuse3_operations.getattr$set(fuseOperationsStruct, fuse3_operations.getattr.allocate(this::getattr, fuseArena));
+			case GET_XATTR ->
+					fuse3_operations.getxattr$set(fuseOperationsStruct, fuse3_operations.getxattr.allocate(this::getxattr, fuseArena));
+			case LIST_XATTR ->
+					fuse3_operations.listxattr$set(fuseOperationsStruct, fuse3_operations.listxattr.allocate(this::listxattr, fuseArena));
+			case MKDIR ->
+					fuse3_operations.mkdir$set(fuseOperationsStruct, fuse3_operations.mkdir.allocate(this::mkdir, fuseArena));
+			case OPEN ->
+					fuse3_operations.open$set(fuseOperationsStruct, fuse3_operations.open.allocate(this::open, fuseArena));
+			case OPEN_DIR ->
+					fuse3_operations.opendir$set(fuseOperationsStruct, fuse3_operations.opendir.allocate(this::opendir, fuseArena));
+			case READ ->
+					fuse3_operations.read$set(fuseOperationsStruct, fuse3_operations.read.allocate(this::read, fuseArena));
+			case READ_DIR ->
+					fuse3_operations.readdir$set(fuseOperationsStruct, fuse3_operations.readdir.allocate(this::readdir, fuseArena));
+			case READLINK ->
+					fuse3_operations.readlink$set(fuseOperationsStruct, fuse3_operations.readlink.allocate(this::readlink, fuseArena));
+			case RELEASE ->
+					fuse3_operations.release$set(fuseOperationsStruct, fuse3_operations.release.allocate(this::release, fuseArena));
+			case RELEASE_DIR ->
+					fuse3_operations.releasedir$set(fuseOperationsStruct, fuse3_operations.releasedir.allocate(this::releasedir, fuseArena));
+			case REMOVE_XATTR ->
+					fuse3_operations.removexattr$set(fuseOperationsStruct, fuse3_operations.removexattr.allocate(this::removexattr, fuseArena));
+			case RENAME ->
+					fuse3_operations.rename$set(fuseOperationsStruct, fuse3_operations.rename.allocate(this::rename, fuseArena));
+			case RMDIR ->
+					fuse3_operations.rmdir$set(fuseOperationsStruct, fuse3_operations.rmdir.allocate(this::rmdir, fuseArena));
+			case SET_XATTR ->
+					fuse3_operations.setxattr$set(fuseOperationsStruct, fuse3_operations.setxattr.allocate(this::setxattr, fuseArena));
+			case STATFS ->
+					fuse3_operations.statfs$set(fuseOperationsStruct, fuse3_operations.statfs.allocate(this::statfs, fuseArena));
+			case SYMLINK ->
+					fuse3_operations.symlink$set(fuseOperationsStruct, fuse3_operations.symlink.allocate(this::symlink, fuseArena));
+			case TRUNCATE ->
+					fuse3_operations.truncate$set(fuseOperationsStruct, fuse3_operations.truncate.allocate(this::truncate, fuseArena));
+			case UNLINK ->
+					fuse3_operations.unlink$set(fuseOperationsStruct, fuse3_operations.unlink.allocate(this::unlink, fuseArena));
+			case UTIMENS ->
+					fuse3_operations.utimens$set(fuseOperationsStruct, fuse3_operations.utimens.allocate(this::utimens, fuseArena));
+			case WRITE ->
+					fuse3_operations.write$set(fuseOperationsStruct, fuse3_operations.write.allocate(this::write, fuseArena));
 		}
 	}
 
