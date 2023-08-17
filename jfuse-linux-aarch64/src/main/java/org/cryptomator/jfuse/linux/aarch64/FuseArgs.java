@@ -14,7 +14,7 @@ record FuseArgs(MemorySegment args, MemorySegment cmdLineOpts) {
 		var argc = fuse_args.argc$get(args);
 		var argv = fuse_args.argv$get(args);
 		for (int i = 0; i < argc; i++) {
-			var cString = argv.getAtIndex(ValueLayout.ADDRESS.withoutTargetLayout().withName("arg[%d]".formatted(i)), i).reinterpret(Long.MAX_VALUE);
+			var cString = argv.getAtIndex(ValueLayout.ADDRESS.withoutTargetLayout(), i).reinterpret(Long.MAX_VALUE);
 			sb.append("arg[").append(i).append("] = ").append(cString.getUtf8String(0)).append(", ");
 		}
 		sb.append("mountPoint = ").append(mountPoint().getUtf8String(0));
