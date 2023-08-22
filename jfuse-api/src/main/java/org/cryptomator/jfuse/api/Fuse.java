@@ -23,7 +23,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -125,7 +124,7 @@ public abstract class Fuse implements AutoCloseable {
 
 		try {
 			var fuseMount = this.mount(args);
-			Future<Integer> fuseLoop = executor.submit(() -> fuseLoop(fuseMount));
+			Future<Integer> fuseLoop = executor.submit(fuseMount::loop);
 			waitForMountingToComplete(mountPoint, fuseLoop);
 			if (fuseLoop.isDone()) {
 				throw new FuseMountFailedException("fuse_loop() returned prematurely with non-zero exit code " + fuseLoop.get());
@@ -151,14 +150,6 @@ public abstract class Fuse implements AutoCloseable {
 				// noop
 			}
 		} while (!fuseLoop.isDone() && !mountProbeSucceeded.await(200, TimeUnit.MILLISECONDS));
-	}
-
-	@Blocking
-	private int fuseLoop(FuseMount mount) {
-		AtomicInteger result = new AtomicInteger();
-		int r = mount.loop();
-		result.set(r);
-		return r;
 	}
 
 	/**
