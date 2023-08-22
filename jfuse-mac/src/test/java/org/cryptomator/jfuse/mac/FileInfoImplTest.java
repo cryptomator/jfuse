@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.mac;
 
-import org.cryptomator.jfuse.mac.extr.fcntl_h;
-import org.cryptomator.jfuse.mac.extr.fuse_file_info;
+import org.cryptomator.jfuse.mac.extr.fcntl.fcntl_h;
+import org.cryptomator.jfuse.mac.extr.fuse.fuse_file_info;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,7 +20,7 @@ public class FileInfoImplTest {
 	@MethodSource("testGetOpenFlagParams")
 	@DisplayName("test getOpenFlags()")
 	public void testGetOpenFlags(int flags, Set<OpenOption> expectedResult) {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var fi = new FileInfoImpl(fuse_file_info.allocate(arena));
 			fuse_file_info.flags$set(fi.segment(), flags);
 

@@ -2,14 +2,14 @@ package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.TimeSpec;
-import org.cryptomator.jfuse.mac.extr.stat;
+import org.cryptomator.jfuse.mac.extr.fuse.stat;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 record StatImpl(MemorySegment segment) implements Stat {
 
-	public StatImpl(MemorySegment address, SegmentScope scope) {
+	public StatImpl(MemorySegment address, Arena scope) {
 		this(stat.ofAddress(address, scope));
 	}
 
