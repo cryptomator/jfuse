@@ -11,9 +11,7 @@ import org.cryptomator.jfuse.mac.extr.fuse.timespec;
 import org.cryptomator.jfuse.mac.extr.stat.stat_h;
 import org.jetbrains.annotations.VisibleForTesting;
 
-import java.lang.foreign.AddressLayout;
 import java.lang.foreign.Arena;
-import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.util.List;
