@@ -165,6 +165,7 @@
 										<includeConstant>ERANGE</includeConstant>
 										<includeConstant>ENOLCK</includeConstant>
 										<includeConstant>ENAMETOOLONG</includeConstant>
+										<includeConstant>ENODATA</includeConstant>
 									</includeConstants>
 								</configuration>
 							</execution>
