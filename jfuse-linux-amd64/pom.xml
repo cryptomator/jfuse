@@ -71,7 +71,7 @@
 						<artifactId>jextract-maven-plugin</artifactId>
 						<version>0.3.0</version>
 						<configuration>
-							<executable>/Users/sebastian/Documents/Cryptomator/jextract/build/jextract/bin/jextract</executable>
+							<executable>/Users/sebastian/git/github.com/openjdk/jextract/build/jextract/bin/jextract</executable>
 							<headerSearchPaths>${linux.headerSearchPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
 							<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.fuse3</targetPackage>
