@@ -74,7 +74,6 @@
 							<executable>/Users/sebastian/git/github.com/openjdk/jextract/build/jextract/bin/jextract</executable>
 							<headerSearchPaths>${linux.headerSearchPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
-							<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.fuse3</targetPackage>
 						</configuration>
 						<executions>
 							<execution>
@@ -85,6 +84,7 @@
 								<configuration>
 									<headerFile>${project.parent.basedir}/libfuse3/include/fuse.h</headerFile>
 									<headerClassName>fuse_h</headerClassName>
+									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.fuse3</targetPackage>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
 										<cPreprocessorMacro>FUSE_USE_VERSION=312</cPreprocessorMacro>
@@ -192,6 +192,7 @@
 								<configuration>
 									<headerFile>${linux.headerSearchPath}/fcntl.h</headerFile>
 									<headerClassName>fcntl_h</headerClassName>
+									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.fcntl</targetPackage>
 									<includeConstants>
 										<includeMacro>O_RDONLY</includeMacro>
 										<includeMacro>O_WRONLY</includeMacro>
