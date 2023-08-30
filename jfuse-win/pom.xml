@@ -14,7 +14,7 @@
 	<url>https://github.com/cryptomator/jfuse/tree/develop/jfuse-win</url>
 
 	<properties>
-		<win.ucrtHeaderPath>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</win.ucrtHeaderPath>
+		<win.ucrtHeaderPath>C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt</win.ucrtHeaderPath>
 		<jextract.executable>C:\Users\Arbeit\Skymatic\jextract\build\jextract\bin\jextract.bat</jextract.executable>
 	</properties>
 
