@@ -84,4 +84,9 @@ record MacErrno() implements Errno {
 	public int enametoolong() {
 		return errno_h.ENAMETOOLONG();
 	}
+
+	@Override
+	public int enodata() {
+		return errno_h.ENODATA();
+	}
 }

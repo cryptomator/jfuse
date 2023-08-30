@@ -165,6 +165,7 @@
 										<includeMacro>ERANGE</includeMacro>
 										<includeMacro>ENOLCK</includeMacro>
 										<includeMacro>ENAMETOOLONG</includeMacro>
+										<includeMacro>ENODATA</includeMacro>
 									</includeConstants>
 								</configuration>
 							</execution>
@@ -231,5 +232,4 @@
 			</build>
 		</profile>
 	</profiles>
-
 </project>

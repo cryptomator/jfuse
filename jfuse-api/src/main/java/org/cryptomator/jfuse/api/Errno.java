@@ -124,4 +124,11 @@ public interface Errno {
 	 */
 	int enametoolong();
 
+	/**
+	 * The named attribute does not exist, or the process has no access to this attribute;
+	 *
+	 * @return error constant {@code ENODATA}
+	 */
+	int enodata();
+
 }

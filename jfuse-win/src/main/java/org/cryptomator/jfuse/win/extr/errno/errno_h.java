@@ -139,6 +139,14 @@ public class errno_h  {
     }
     /**
      * {@snippet :
+     * #define ENODATA 120
+     * }
+     */
+    public static int ENODATA() {
+        return (int)120L;
+    }
+    /**
+     * {@snippet :
      * #define ENOTSUP 129
      * }
      */

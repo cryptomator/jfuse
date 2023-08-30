@@ -145,6 +145,14 @@ public class errno_h  {
     public static int ENOSYS() {
         return (int)78L;
     }
+    /**
+     * {@snippet :
+     * #define ENODATA 96
+     * }
+     */
+    public static int ENODATA() {
+        return (int)96L;
+    }
 }
 
 
