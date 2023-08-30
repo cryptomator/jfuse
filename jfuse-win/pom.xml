@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse-parent</artifactId>
-		<version>0.5.1</version>
+		<version>0.6.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-win</artifactId>
@@ -14,7 +14,7 @@
 	<url>https://github.com/cryptomator/jfuse/tree/develop/jfuse-win</url>
 
 	<properties>
-		<win.ucrtHeaderPath>C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt</win.ucrtHeaderPath>
+		<win.ucrtHeaderPath>C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt</win.ucrtHeaderPath>
 		<jextract.executable>C:\Users\Arbeit\Skymatic\jextract\build\jextract\bin\jextract.bat</jextract.executable>
 	</properties>
 
@@ -76,7 +76,7 @@
 							<executable>${jextract.executable}</executable>
 							<headerSearchPaths>${win.ucrtHeaderPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
-							<targetPackage>org.cryptomator.jfuse.win.extr</targetPackage>
+							<targetPackage>org.cryptomator.jfuse.win.extr.fuse3</targetPackage>
 						</configuration>
 						<executions>
 							<execution>
@@ -145,6 +145,7 @@
 									<goal>sources</goal>
 								</goals>
 								<configuration>
+									<targetPackage>org.cryptomator.jfuse.win.extr.errno</targetPackage>
 									<headerFile>${win.ucrtHeaderPath}/errno.h</headerFile>
 									<headerClassName>errno_h</headerClassName>
 									<includeConstants>
@@ -164,6 +165,7 @@
 										<includeConstant>ERANGE</includeConstant>
 										<includeConstant>ENOLCK</includeConstant>
 										<includeConstant>ENAMETOOLONG</includeConstant>
+										<includeConstant>ENODATA</includeConstant>
 									</includeConstants>
 								</configuration>
 							</execution>
@@ -173,6 +175,7 @@
 									<goal>sources</goal>
 								</goals>
 								<configuration>
+									<targetPackage>org.cryptomator.jfuse.win.extr.fcntl</targetPackage>
 									<headerFile>${win.ucrtHeaderPath}/fcntl.h</headerFile>
 									<headerClassName>fcntl_h</headerClassName>
 									<includeConstants>

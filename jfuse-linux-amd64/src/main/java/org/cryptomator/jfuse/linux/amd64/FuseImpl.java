@@ -5,12 +5,12 @@ import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.api.FuseOperations;
-import org.cryptomator.jfuse.linux.amd64.extr.fuse_args;
-import org.cryptomator.jfuse.linux.amd64.extr.fuse_cmdline_opts;
-import org.cryptomator.jfuse.linux.amd64.extr.fuse_h;
-import org.cryptomator.jfuse.linux.amd64.extr.fuse_operations;
-import org.cryptomator.jfuse.linux.amd64.extr.stat_h;
-import org.cryptomator.jfuse.linux.amd64.extr.timespec;
+import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_args;
+import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_h;
+import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_operations;
+import org.cryptomator.jfuse.linux.amd64.extr.fuse3.timespec;
+import org.cryptomator.jfuse.linux.amd64.extr.fuse3_lowlevel.fuse_cmdline_opts;
+import org.cryptomator.jfuse.linux.amd64.extr.stat.stat_h;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.lang.foreign.Arena;
@@ -66,45 +66,45 @@ final class FuseImpl extends Fuse {
 	@Override
 	protected void bind(FuseOperations.Operation operation) {
 		switch (operation) {
-			case INIT -> fuse_operations.init$set(fuseOperationsStruct, fuse_operations.init.allocate(this::init, fuseArena.scope()));
-			case ACCESS -> fuse_operations.access$set(fuseOperationsStruct, fuse_operations.access.allocate(this::access, fuseArena.scope()));
-			case CHMOD -> fuse_operations.chmod$set(fuseOperationsStruct, fuse_operations.chmod.allocate(this::chmod, fuseArena.scope()));
-			case CHOWN -> fuse_operations.chown$set(fuseOperationsStruct, fuse_operations.chown.allocate(this::chown, fuseArena.scope()));
-			case CREATE -> fuse_operations.create$set(fuseOperationsStruct, fuse_operations.create.allocate(this::create, fuseArena.scope()));
-			case DESTROY -> fuse_operations.destroy$set(fuseOperationsStruct, fuse_operations.destroy.allocate(this::destroy, fuseArena.scope()));
-			case FLUSH -> fuse_operations.flush$set(fuseOperationsStruct, fuse_operations.flush.allocate(this::flush, fuseArena.scope()));
-			case FSYNC -> fuse_operations.fsync$set(fuseOperationsStruct, fuse_operations.fsync.allocate(this::fsync, fuseArena.scope()));
-			case FSYNCDIR -> fuse_operations.fsyncdir$set(fuseOperationsStruct, fuse_operations.fsyncdir.allocate(this::fsyncdir, fuseArena.scope()));
-			case GET_ATTR -> fuse_operations.getattr$set(fuseOperationsStruct, fuse_operations.getattr.allocate(this::getattr, fuseArena.scope()));
-			case GET_XATTR -> fuse_operations.getxattr$set(fuseOperationsStruct, fuse_operations.getxattr.allocate(this::getxattr, fuseArena.scope()));
-			case LIST_XATTR -> fuse_operations.listxattr$set(fuseOperationsStruct, fuse_operations.listxattr.allocate(this::listxattr, fuseArena.scope()));
-			case MKDIR -> fuse_operations.mkdir$set(fuseOperationsStruct, fuse_operations.mkdir.allocate(this::mkdir, fuseArena.scope()));
-			case OPEN -> fuse_operations.open$set(fuseOperationsStruct, fuse_operations.open.allocate(this::open, fuseArena.scope()));
-			case OPEN_DIR -> fuse_operations.opendir$set(fuseOperationsStruct, fuse_operations.opendir.allocate(this::opendir, fuseArena.scope()));
-			case READ -> fuse_operations.read$set(fuseOperationsStruct, fuse_operations.read.allocate(this::read, fuseArena.scope()));
-			case READ_DIR -> fuse_operations.readdir$set(fuseOperationsStruct, fuse_operations.readdir.allocate(this::readdir, fuseArena.scope()));
-			case READLINK -> fuse_operations.readlink$set(fuseOperationsStruct, fuse_operations.readlink.allocate(this::readlink, fuseArena.scope()));
-			case RELEASE -> fuse_operations.release$set(fuseOperationsStruct, fuse_operations.release.allocate(this::release, fuseArena.scope()));
-			case RELEASE_DIR -> fuse_operations.releasedir$set(fuseOperationsStruct, fuse_operations.releasedir.allocate(this::releasedir, fuseArena.scope()));
-			case REMOVE_XATTR -> fuse_operations.removexattr$set(fuseOperationsStruct, fuse_operations.removexattr.allocate(this::removexattr, fuseArena.scope()));
-			case RENAME -> fuse_operations.rename$set(fuseOperationsStruct, fuse_operations.rename.allocate(this::rename, fuseArena.scope()));
-			case RMDIR -> fuse_operations.rmdir$set(fuseOperationsStruct, fuse_operations.rmdir.allocate(this::rmdir, fuseArena.scope()));
-			case SET_XATTR -> fuse_operations.setxattr$set(fuseOperationsStruct, fuse_operations.setxattr.allocate(this::setxattr, fuseArena.scope()));
-			case STATFS -> fuse_operations.statfs$set(fuseOperationsStruct, fuse_operations.statfs.allocate(this::statfs, fuseArena.scope()));
-			case SYMLINK -> fuse_operations.symlink$set(fuseOperationsStruct, fuse_operations.symlink.allocate(this::symlink, fuseArena.scope()));
-			case TRUNCATE -> fuse_operations.truncate$set(fuseOperationsStruct, fuse_operations.truncate.allocate(this::truncate, fuseArena.scope()));
-			case UNLINK -> fuse_operations.unlink$set(fuseOperationsStruct, fuse_operations.unlink.allocate(this::unlink, fuseArena.scope()));
-			case UTIMENS -> fuse_operations.utimens$set(fuseOperationsStruct, fuse_operations.utimens.allocate(this::utimens, fuseArena.scope()));
-			case WRITE -> fuse_operations.write$set(fuseOperationsStruct, fuse_operations.write.allocate(this::write, fuseArena.scope()));
+			case INIT -> fuse_operations.init$set(fuseOperationsStruct, fuse_operations.init.allocate(this::init, fuseArena));
+			case ACCESS -> fuse_operations.access$set(fuseOperationsStruct, fuse_operations.access.allocate(this::access, fuseArena));
+			case CHMOD -> fuse_operations.chmod$set(fuseOperationsStruct, fuse_operations.chmod.allocate(this::chmod, fuseArena));
+			case CHOWN -> fuse_operations.chown$set(fuseOperationsStruct, fuse_operations.chown.allocate(this::chown, fuseArena));
+			case CREATE -> fuse_operations.create$set(fuseOperationsStruct, fuse_operations.create.allocate(this::create, fuseArena));
+			case DESTROY -> fuse_operations.destroy$set(fuseOperationsStruct, fuse_operations.destroy.allocate(this::destroy, fuseArena));
+			case FLUSH -> fuse_operations.flush$set(fuseOperationsStruct, fuse_operations.flush.allocate(this::flush, fuseArena));
+			case FSYNC -> fuse_operations.fsync$set(fuseOperationsStruct, fuse_operations.fsync.allocate(this::fsync, fuseArena));
+			case FSYNCDIR -> fuse_operations.fsyncdir$set(fuseOperationsStruct, fuse_operations.fsyncdir.allocate(this::fsyncdir, fuseArena));
+			case GET_ATTR -> fuse_operations.getattr$set(fuseOperationsStruct, fuse_operations.getattr.allocate(this::getattr, fuseArena));
+			case GET_XATTR -> fuse_operations.getxattr$set(fuseOperationsStruct, fuse_operations.getxattr.allocate(this::getxattr, fuseArena));
+			case LIST_XATTR -> fuse_operations.listxattr$set(fuseOperationsStruct, fuse_operations.listxattr.allocate(this::listxattr, fuseArena));
+			case MKDIR -> fuse_operations.mkdir$set(fuseOperationsStruct, fuse_operations.mkdir.allocate(this::mkdir, fuseArena));
+			case OPEN -> fuse_operations.open$set(fuseOperationsStruct, fuse_operations.open.allocate(this::open, fuseArena));
+			case OPEN_DIR -> fuse_operations.opendir$set(fuseOperationsStruct, fuse_operations.opendir.allocate(this::opendir, fuseArena));
+			case READ -> fuse_operations.read$set(fuseOperationsStruct, fuse_operations.read.allocate(this::read, fuseArena));
+			case READ_DIR -> fuse_operations.readdir$set(fuseOperationsStruct, fuse_operations.readdir.allocate(this::readdir, fuseArena));
+			case READLINK -> fuse_operations.readlink$set(fuseOperationsStruct, fuse_operations.readlink.allocate(this::readlink, fuseArena));
+			case RELEASE -> fuse_operations.release$set(fuseOperationsStruct, fuse_operations.release.allocate(this::release, fuseArena));
+			case RELEASE_DIR -> fuse_operations.releasedir$set(fuseOperationsStruct, fuse_operations.releasedir.allocate(this::releasedir, fuseArena));
+			case REMOVE_XATTR -> fuse_operations.removexattr$set(fuseOperationsStruct, fuse_operations.removexattr.allocate(this::removexattr, fuseArena));
+			case RENAME -> fuse_operations.rename$set(fuseOperationsStruct, fuse_operations.rename.allocate(this::rename, fuseArena));
+			case RMDIR -> fuse_operations.rmdir$set(fuseOperationsStruct, fuse_operations.rmdir.allocate(this::rmdir, fuseArena));
+			case SET_XATTR -> fuse_operations.setxattr$set(fuseOperationsStruct, fuse_operations.setxattr.allocate(this::setxattr, fuseArena));
+			case STATFS -> fuse_operations.statfs$set(fuseOperationsStruct, fuse_operations.statfs.allocate(this::statfs, fuseArena));
+			case SYMLINK -> fuse_operations.symlink$set(fuseOperationsStruct, fuse_operations.symlink.allocate(this::symlink, fuseArena));
+			case TRUNCATE -> fuse_operations.truncate$set(fuseOperationsStruct, fuse_operations.truncate.allocate(this::truncate, fuseArena));
+			case UNLINK -> fuse_operations.unlink$set(fuseOperationsStruct, fuse_operations.unlink.allocate(this::unlink, fuseArena));
+			case UTIMENS -> fuse_operations.utimens$set(fuseOperationsStruct, fuse_operations.utimens.allocate(this::utimens, fuseArena));
+			case WRITE -> fuse_operations.write$set(fuseOperationsStruct, fuse_operations.write.allocate(this::write, fuseArena));
 		}
 	}
 
 	@VisibleForTesting
 	MemorySegment init(MemorySegment conn, MemorySegment cfg) {
-		try (var arena = Arena.openConfined()) {
-			var connInfo = new FuseConnInfoImpl(conn, arena.scope());
+		try (var arena = Arena.ofConfined()) {
+			var connInfo = new FuseConnInfoImpl(conn, arena);
 			connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
-			var config = new FuseConfigImpl(cfg, arena.scope());
+			var config = new FuseConfigImpl(cfg, arena);
 			fuseOperations.init(connInfo, config);
 		}
 		return MemorySegment.NULL;
@@ -115,21 +115,21 @@ final class FuseImpl extends Fuse {
 	}
 
 	private int chmod(MemorySegment path, int mode, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.chmod(path.getUtf8String(0), mode, new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.chmod(path.getUtf8String(0), mode, new FileInfoImpl(fi, arena));
 		}
 	}
 
 	@VisibleForTesting
 	int chown(MemorySegment path, int uid, int gid, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.chown(path.getUtf8String(0), uid, gid, new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.chown(path.getUtf8String(0), uid, gid, new FileInfoImpl(fi, arena));
 		}
 	}
 
 	private int create(MemorySegment path, int mode, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.create(path.getUtf8String(0), mode, new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.create(path.getUtf8String(0), mode, new FileInfoImpl(fi, arena));
 		}
 	}
 
@@ -139,53 +139,47 @@ final class FuseImpl extends Fuse {
 
 	@VisibleForTesting
 	int flush(MemorySegment path, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.flush(path.getUtf8String(0), new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.flush(path.getUtf8String(0), new FileInfoImpl(fi, arena));
 		}
 	}
 
 	@VisibleForTesting
 	int fsync(MemorySegment path, int datasync, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.fsync(path.getUtf8String(0), datasync, new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.fsync(path.getUtf8String(0), datasync, new FileInfoImpl(fi, arena));
 		}
 	}
 
 	@VisibleForTesting
 	int fsyncdir(MemorySegment path, int datasync, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.fsyncdir(path.getUtf8String(0), datasync, new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.fsyncdir(path.getUtf8String(0), datasync, new FileInfoImpl(fi, arena));
 		}
 	}
 
 	private int getattr(MemorySegment path, MemorySegment stat, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.getattr(path.getUtf8String(0), new StatImpl(stat, arena.scope()), new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.getattr(path.getUtf8String(0), new StatImpl(stat, arena), new FileInfoImpl(fi, arena));
 		}
 	}
 
 	@VisibleForTesting
 	int getxattr(MemorySegment path, MemorySegment name, MemorySegment value, long size) {
-		try (var arena = Arena.openConfined()) {
-			var buffer = MemorySegment.ofAddress(value.address(), size, arena.scope()).asByteBuffer();
-			return fuseOperations.getxattr(path.getUtf8String(0), name.getUtf8String(0), buffer);
-		}
+		var val = value.reinterpret(size).asByteBuffer();
+		return fuseOperations.getxattr(path.getUtf8String(0), name.getUtf8String(0), val);
 	}
 
 	@VisibleForTesting
 	int setxattr(MemorySegment path, MemorySegment name, MemorySegment value, long size, int flags) {
-		try (var arena = Arena.openConfined()) {
-			var buffer = MemorySegment.ofAddress(value.address(), size, arena.scope()).asByteBuffer();
-			return fuseOperations.setxattr(path.getUtf8String(0), name.getUtf8String(0), buffer, flags);
-		}
+		var val = value.reinterpret(size).asByteBuffer();
+		return fuseOperations.setxattr(path.getUtf8String(0), name.getUtf8String(0), val, flags);
 	}
 
 	@VisibleForTesting
 	int listxattr(MemorySegment path, MemorySegment value, long size) {
-		try (var arena = Arena.openConfined()) {
-			var buffer = MemorySegment.ofAddress(value.address(), size, arena.scope()).asByteBuffer();
-			return fuseOperations.listxattr(path.getUtf8String(0), buffer);
-		}
+		var val = value.reinterpret(size).asByteBuffer();
+		return fuseOperations.listxattr(path.getUtf8String(0), val);
 	}
 
 	@VisibleForTesting
@@ -198,46 +192,44 @@ final class FuseImpl extends Fuse {
 	}
 
 	private int open(MemorySegment path, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.open(path.getUtf8String(0), new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.open(path.getUtf8String(0), new FileInfoImpl(fi, arena));
 		}
 	}
 
 	private int opendir(MemorySegment path, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.opendir(path.getUtf8String(0), new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.opendir(path.getUtf8String(0), new FileInfoImpl(fi, arena));
 		}
 	}
 
 	private int read(MemorySegment path, MemorySegment buf, long size, long offset, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			var buffer = MemorySegment.ofAddress(buf.address(), size, arena.scope()).asByteBuffer();
-			return fuseOperations.read(path.getUtf8String(0), buffer, size, offset, new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			var buffer = buf.reinterpret(size).asByteBuffer();
+			return fuseOperations.read(path.getUtf8String(0), buffer, size, offset, new FileInfoImpl(fi, arena));
 		}
 	}
 
 	private int readdir(MemorySegment path, MemorySegment buf, MemorySegment filler, long offset, MemorySegment fi, int flags) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, arena), offset, new FileInfoImpl(fi, arena.scope()), flags);
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.readdir(path.getUtf8String(0), new DirFillerImpl(buf, filler, arena), offset, new FileInfoImpl(fi, arena), flags);
 		}
 	}
 
 	private int readlink(MemorySegment path, MemorySegment buf, long len) {
-		try (var arena = Arena.openConfined()) {
-			var buffer = MemorySegment.ofAddress(buf.address(), len, arena.scope()).asByteBuffer();
-			return fuseOperations.readlink(path.getUtf8String(0), buffer, len);
-		}
+		var buffer = buf.reinterpret(len).asByteBuffer();
+		return fuseOperations.readlink(path.getUtf8String(0), buffer, len);
 	}
 
 	private int release(MemorySegment path, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.release(path.getUtf8String(0), new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.release(path.getUtf8String(0), new FileInfoImpl(fi, arena));
 		}
 	}
 
 	private int releasedir(MemorySegment path, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.releasedir(path.getUtf8String(0), new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.releasedir(path.getUtf8String(0), new FileInfoImpl(fi, arena));
 		}
 	}
 
@@ -250,8 +242,8 @@ final class FuseImpl extends Fuse {
 	}
 
 	private int statfs(MemorySegment path, MemorySegment statvfs) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.statfs(path.getUtf8String(0), new StatvfsImpl(statvfs, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.statfs(path.getUtf8String(0), new StatvfsImpl(statvfs, arena));
 		}
 	}
 
@@ -260,8 +252,8 @@ final class FuseImpl extends Fuse {
 	}
 
 	private int truncate(MemorySegment path, long size, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			return fuseOperations.truncate(path.getUtf8String(0), size, new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			return fuseOperations.truncate(path.getUtf8String(0), size, new FileInfoImpl(fi, arena));
 		}
 	}
 
@@ -271,26 +263,26 @@ final class FuseImpl extends Fuse {
 
 	@VisibleForTesting
 	int utimens(MemorySegment path, MemorySegment times, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			if (MemorySegment.NULL.equals(times)) {
-				// set both times to current time (using on-heap memory segments)
-				var segment = MemorySegment.allocateNative(timespec.$LAYOUT().byteSize(), arena.scope());
+				// set both times to current time
+				var segment = arena.allocate(timespec.$LAYOUT());
 				timespec.tv_sec$set(segment, 0);
 				timespec.tv_nsec$set(segment, stat_h.UTIME_NOW());
 				var time = new TimeSpecImpl(segment);
-				return fuseOperations.utimens(path.getUtf8String(0), time, time, new FileInfoImpl(fi, arena.scope()));
+				return fuseOperations.utimens(path.getUtf8String(0), time, time, new FileInfoImpl(fi, arena));
 			} else {
 				var time0 = times.asSlice(0, timespec.$LAYOUT().byteSize());
 				var time1 = times.asSlice(timespec.$LAYOUT().byteSize(), timespec.$LAYOUT().byteSize());
-				return fuseOperations.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), new FileInfoImpl(fi, arena.scope()));
+				return fuseOperations.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), new FileInfoImpl(fi, arena));
 			}
 		}
 	}
 
 	private int write(MemorySegment path, MemorySegment buf, long size, long offset, MemorySegment fi) {
-		try (var arena = Arena.openConfined()) {
-			var buffer = MemorySegment.ofAddress(buf.address(), size, arena.scope()).asByteBuffer();
-			return fuseOperations.write(path.getUtf8String(0), buffer, size, offset, new FileInfoImpl(fi, arena.scope()));
+		try (var arena = Arena.ofConfined()) {
+			var buffer = buf.reinterpret(size).asByteBuffer();
+			return fuseOperations.write(path.getUtf8String(0), buffer, size, offset, new FileInfoImpl(fi, arena));
 		}
 	}
 

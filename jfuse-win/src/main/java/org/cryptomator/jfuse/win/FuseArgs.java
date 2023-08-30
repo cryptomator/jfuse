@@ -14,10 +14,10 @@ record FuseArgs(MemorySegment args, MemorySegment mountPoint, boolean multiThrea
 		var argc = fuse_args.argc$get(args);
 		var argv = fuse_args.argv$get(args);
 		for (int i = 0; i < argc; i++) {
-			var cString = argv.getAtIndex(ValueLayout.ADDRESS.asUnbounded(), i);
+			var cString = argv.getAtIndex(ValueLayout.ADDRESS, i).reinterpret(Long.MAX_VALUE);
 			sb.append("arg[").append(i).append("] = ").append(cString.getUtf8String(0)).append(", ");
 		}
-		sb.append("mountPoint = ").append(mountPoint().getUtf8String(0));
+		sb.append("mountPoint = ").append(mountPoint().reinterpret(Long.MAX_VALUE).getUtf8String(0)).append(", ");
 		sb.append("singlethreaded = ").append(!multiThreaded);
 		return sb.toString();
 	}

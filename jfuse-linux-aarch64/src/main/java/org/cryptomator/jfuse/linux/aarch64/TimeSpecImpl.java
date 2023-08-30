@@ -1,8 +1,8 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
 import org.cryptomator.jfuse.api.TimeSpec;
-import org.cryptomator.jfuse.linux.aarch64.extr.stat_h;
-import org.cryptomator.jfuse.linux.aarch64.extr.timespec;
+import org.cryptomator.jfuse.linux.aarch64.extr.stat.stat_h;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.timespec;
 
 import java.lang.foreign.MemorySegment;
 import java.time.Instant;

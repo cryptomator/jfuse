@@ -2,14 +2,14 @@ package org.cryptomator.jfuse.win;
 
 import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.TimeSpec;
-import org.cryptomator.jfuse.win.extr.fuse_stat;
+import org.cryptomator.jfuse.win.extr.fuse3.fuse_stat;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 record StatImpl(MemorySegment segment) implements Stat {
 
-	public StatImpl(MemorySegment address, SegmentScope scope) {
+	public StatImpl(MemorySegment address, Arena scope) {
 		this(fuse_stat.ofAddress(address, scope));
 	}
 

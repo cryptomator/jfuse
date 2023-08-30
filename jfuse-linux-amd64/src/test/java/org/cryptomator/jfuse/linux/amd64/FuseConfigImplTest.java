@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.linux.amd64;
 
 import org.cryptomator.jfuse.api.FuseConfig;
-import org.cryptomator.jfuse.linux.amd64.extr.fuse_config;
+import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
@@ -21,9 +21,9 @@ public class FuseConfigImplTest {
 	@ParameterizedTest(name = "{1}")
 	@MethodSource
 	public void testGetters(SetInMemorySegment<Number> setter, GetInFuseConfig<Number> getter, Number value) {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var segment = fuse_config.allocate(arena);
-			var fuseConfig = new FuseConfigImpl(segment, arena.scope());
+			var fuseConfig = new FuseConfigImpl(segment, arena);
 
 			setter.accept(segment, value);
 

@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.Errno;
-import org.cryptomator.jfuse.mac.extr.errno_h;
+import org.cryptomator.jfuse.mac.extr.errno.errno_h;
 
 record MacErrno() implements Errno {
 
@@ -83,5 +83,10 @@ record MacErrno() implements Errno {
 	@Override
 	public int enametoolong() {
 		return errno_h.ENAMETOOLONG();
+	}
+
+	@Override
+	public int enodata() {
+		return errno_h.ENODATA();
 	}
 }

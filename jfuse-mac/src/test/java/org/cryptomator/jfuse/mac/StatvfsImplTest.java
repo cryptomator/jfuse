@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.Statvfs;
-import org.cryptomator.jfuse.mac.extr.statvfs;
+import org.cryptomator.jfuse.mac.extr.fuse.statvfs;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
@@ -21,9 +21,9 @@ public class StatvfsImplTest {
 	@ParameterizedTest(name = "{1}")
 	@MethodSource
 	public void testGetters(SetInMemorySegment<Number> setter, GetInStatvfs<Number> getter, Number value, long expected) {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var segment = statvfs.allocate(arena);
-			var statvfs = new StatvfsImpl(segment, arena.scope());
+			var statvfs = new StatvfsImpl(segment, arena);
 
 			setter.accept(segment, value);
 
@@ -57,9 +57,9 @@ public class StatvfsImplTest {
 	@ParameterizedTest(name = "{0}")
 	@MethodSource
 	public void testSetters(SetInStatvfs<Number> setter, GetInMemorySegment<Number> getter, Number value, long expected) {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var segment = statvfs.allocate(arena);
-			var statvfs = new StatvfsImpl(segment, arena.scope());
+			var statvfs = new StatvfsImpl(segment, arena);
 
 			setter.accept(statvfs, value.longValue());
 

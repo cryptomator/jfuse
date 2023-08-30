@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.FuseMount;
-import org.cryptomator.jfuse.mac.extr.fuse_h;
+import org.cryptomator.jfuse.mac.extr.fuse.fuse_h;
 
 import java.lang.foreign.MemorySegment;
 

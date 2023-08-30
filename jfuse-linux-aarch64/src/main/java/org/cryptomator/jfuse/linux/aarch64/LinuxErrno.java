@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
 import org.cryptomator.jfuse.api.Errno;
-import org.cryptomator.jfuse.linux.aarch64.extr.errno_h;
+import org.cryptomator.jfuse.linux.aarch64.extr.errno.errno_h;
 
 record LinuxErrno() implements Errno {
 
@@ -83,5 +83,10 @@ record LinuxErrno() implements Errno {
 	@Override
 	public int enametoolong() {
 		return errno_h.ENAMETOOLONG();
+	}
+
+	@Override
+	public int enodata() {
+		return errno_h.ENODATA();
 	}
 }

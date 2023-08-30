@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.FuseConnInfo;
-import org.cryptomator.jfuse.mac.extr.fuse_conn_info;
+import org.cryptomator.jfuse.mac.extr.fuse.fuse_conn_info;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
@@ -21,9 +21,9 @@ public class FuseConnInfoImplTest {
 	@ParameterizedTest(name = "{1}")
 	@MethodSource
 	public void testGetters(SetInMemorySegment setter, GetInConnInfo getter) {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var segment = fuse_conn_info.allocate(arena);
-			var connInfo = new FuseConnInfoImpl(segment, arena.scope());
+			var connInfo = new FuseConnInfoImpl(segment, arena);
 
 			setter.accept(segment, 42);
 
@@ -53,9 +53,9 @@ public class FuseConnInfoImplTest {
 	@ParameterizedTest(name = "{0}")
 	@MethodSource
 	public void testSetters(SetInConnInfo setter, GetInMemorySegment getter) {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var segment = fuse_conn_info.allocate(arena);
-			var connInfo = new FuseConnInfoImpl(segment, arena.scope());
+			var connInfo = new FuseConnInfoImpl(segment, arena);
 
 			setter.accept(connInfo, 42);
 

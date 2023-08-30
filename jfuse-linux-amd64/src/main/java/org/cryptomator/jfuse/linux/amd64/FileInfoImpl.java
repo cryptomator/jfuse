@@ -1,11 +1,11 @@
 package org.cryptomator.jfuse.linux.amd64;
 
 import org.cryptomator.jfuse.api.FileInfo;
-import org.cryptomator.jfuse.linux.amd64.extr.fcntl_h;
-import org.cryptomator.jfuse.linux.amd64.extr.fuse_file_info;
+import org.cryptomator.jfuse.linux.amd64.extr.fcntl.fcntl_h;
+import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_file_info;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.nio.file.StandardOpenOption;
 import java.util.EnumSet;
 import java.util.Set;
@@ -22,7 +22,7 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 	private static final int O_SYNC = fcntl_h.O_SYNC();
 	private static final int O_DSYNC = fcntl_h.O_DSYNC();
 
-	public FileInfoImpl(MemorySegment address, SegmentScope scope) {
+	public FileInfoImpl(MemorySegment address, Arena scope) {
 		this(fuse_file_info.ofAddress(address, scope));
 	}
 

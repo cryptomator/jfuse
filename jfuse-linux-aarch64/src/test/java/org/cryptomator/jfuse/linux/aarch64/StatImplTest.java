@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
 import org.cryptomator.jfuse.api.Stat;
-import org.cryptomator.jfuse.linux.aarch64.extr.stat;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.stat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
@@ -21,9 +21,9 @@ public class StatImplTest {
 	@ParameterizedTest(name = "{1}")
 	@MethodSource
 	public void testGetters(SetInMemorySegment<Number> setter, GetInStat<Number> getter, Number value) {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var segment = stat.allocate(arena);
-			var stat = new StatImpl(segment, arena.scope());
+			var stat = new StatImpl(segment, arena);
 
 			setter.accept(segment, value);
 
@@ -49,9 +49,9 @@ public class StatImplTest {
 	@ParameterizedTest(name = "{0}")
 	@MethodSource
 	public void testSetters(SetInStat<Number> setter, GetInMemorySegment<Number> getter, Number value) {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var segment = stat.allocate(arena);
-			var stat = new StatImpl(segment, arena.scope());
+			var stat = new StatImpl(segment, arena);
 
 			setter.accept(stat, value);
 

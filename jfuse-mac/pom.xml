@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse-parent</artifactId>
-		<version>0.5.1</version>
+		<version>0.6.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-mac</artifactId>
@@ -71,10 +71,9 @@
 						<artifactId>jextract-maven-plugin</artifactId>
 						<version>0.3.0</version>
 						<configuration>
-							<executable>/Users/sebastian/Documents/Cryptomator/jextract/build/jextract/bin/jextract</executable>
+							<executable>/Users/sebastian/git/github.com/openjdk/jextract/build/jextract/bin/jextract</executable>
 							<headerSearchPaths>${mac.headerSearchPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
-							<targetPackage>org.cryptomator.jfuse.mac.extr</targetPackage>
 						</configuration>
 						<executions>
 							<execution>
@@ -84,6 +83,7 @@
 								</goals>
 								<configuration>
 									<headerFile>${project.parent.basedir}/libfuse2/include/fuse.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.mac.extr.fuse</targetPackage>
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
@@ -120,6 +120,7 @@
 								</goals>
 								<configuration>
 									<headerFile>${mac.headerSearchPath}/errno.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.mac.extr.errno</targetPackage>
 									<headerClassName>errno_h</headerClassName>
 									<includeConstants>
 										<includeConstant>ENOENT</includeConstant>
@@ -138,6 +139,7 @@
 										<includeConstant>ERANGE</includeConstant>
 										<includeConstant>ENOLCK</includeConstant>
 										<includeConstant>ENAMETOOLONG</includeConstant>
+										<includeConstant>ENODATA</includeConstant>
 									</includeConstants>
 								</configuration>
 							</execution>
@@ -148,6 +150,7 @@
 								</goals>
 								<configuration>
 									<headerFile>${mac.headerSearchPath}/sys/stat.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.mac.extr.stat</targetPackage>
 									<headerClassName>stat_h</headerClassName>
 									<includeConstants>
 										<includeConstant>UTIME_NOW</includeConstant>
@@ -162,6 +165,7 @@
 								</goals>
 								<configuration>
 									<headerFile>${mac.headerSearchPath}/fcntl.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.mac.extr.fcntl</targetPackage>
 									<headerClassName>fcntl_h</headerClassName>
 									<includeConstants>
 										<includeConstant>O_RDONLY</includeConstant>
