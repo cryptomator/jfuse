@@ -16,7 +16,7 @@ public class LinuxErrnoTest {
 	@DisplayName("make sure no errno method is not a stub")
 	@ParameterizedTest(name = "{0}()")
 	@MethodSource("errnoNameProvider")
-	public void testErrnoIsImplemented(String methodName) throws ReflectiveOperationException {
+	public void testErrnoIsNotZero(String methodName) throws ReflectiveOperationException {
 		var errno = new LinuxErrno();
 		var method = LinuxErrno.class.getMethod(methodName);
 

@@ -15,7 +15,7 @@ public class MacErrnoTest {
 	@DisplayName("make sure errno method is not a stub")
 	@ParameterizedTest(name = "{0}()")
 	@MethodSource("errnoNameProvider")
-	public void testErrnoIsImplemented(String methodName) throws ReflectiveOperationException {
+	public void testErrnoIsNotZero(String methodName) throws ReflectiveOperationException {
 		var errno = new MacErrno();
 		var method = MacErrno.class.getMethod(methodName);
 
