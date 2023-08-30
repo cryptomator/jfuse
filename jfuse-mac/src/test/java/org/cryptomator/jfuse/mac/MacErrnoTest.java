@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 public class MacErrnoTest {
 
-	@DisplayName("make sure errno method is not a stub")
+	@DisplayName("make sure method is not a stub")
 	@ParameterizedTest(name = "{0}()")
 	@MethodSource("errnoNameProvider")
 	public void testErrnoIsNotZero(String methodName) throws ReflectiveOperationException {

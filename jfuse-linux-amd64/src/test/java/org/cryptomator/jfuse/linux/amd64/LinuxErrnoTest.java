@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 public class LinuxErrnoTest {
 
-	@DisplayName("make sure no errno method is not a stub")
+	@DisplayName("make sure method is not a stub")
 	@ParameterizedTest(name = "{0}()")
 	@MethodSource("errnoNameProvider")
 	public void testErrnoIsNotZero(String methodName) throws ReflectiveOperationException {
