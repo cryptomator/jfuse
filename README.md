@@ -6,11 +6,11 @@
 
 # jFUSE
 
-Zero-Dependency Java bindings for FUSE using [JEP 434](https://openjdk.org/jeps/434).
+Zero-Dependency Java bindings for FUSE using [JEP 4442](https://openjdk.org/jeps/442).
 
 ## Status
 
-This is currently an experimental library requiring JDK 20. As long as the [Foreign Function & Memory API](https://openjdk.org/jeps/434) is incubating, the required JDK will increase.
+This is currently an experimental library requiring JDK 21. As long as the [Foreign Function & Memory API](https://openjdk.org/jeps/442) is incubating, the required JDK will increase.
 Older JDK versions are *not supported*. Please refer to an older version of this lib, if you  are interested in using it with an older JDK. Older versions will not receive patches or any kind of support, though!
 
 We attempt to support libfuse 3.x on Linux and Windows while also remaining compatible with libfuse 2.x on macOS, leading to some compromises in the API.

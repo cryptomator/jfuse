@@ -1,8 +1,8 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.TimeSpec;
-import org.cryptomator.jfuse.mac.extr.stat_h;
-import org.cryptomator.jfuse.mac.extr.timespec;
+import org.cryptomator.jfuse.mac.extr.stat.stat_h;
+import org.cryptomator.jfuse.mac.extr.fuse.timespec;
 import java.lang.foreign.MemorySegment;
 
 import java.time.Instant;

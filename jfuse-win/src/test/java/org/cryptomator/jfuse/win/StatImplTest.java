@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.win;
 
 import org.cryptomator.jfuse.api.Stat;
-import org.cryptomator.jfuse.win.extr.fuse_stat;
+import org.cryptomator.jfuse.win.extr.fuse3.fuse_stat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
@@ -21,9 +21,9 @@ public class StatImplTest {
 	@ParameterizedTest(name = "{1}")
 	@MethodSource
 	public void testGetters(SetInMemorySegment<Number> setter, GetInStat<Number> getter, Number value) {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var segment = fuse_stat.allocate(arena);
-			var stat = new StatImpl(segment, arena.scope());
+			var stat = new StatImpl(segment, arena);
 
 			setter.accept(segment, value);
 
@@ -49,9 +49,9 @@ public class StatImplTest {
 	@ParameterizedTest(name = "{0}")
 	@MethodSource
 	public void testSetters(SetInStat<Number> setter, GetInMemorySegment<Number> getter, Number value) {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var segment = fuse_stat.allocate(arena);
-			var stat = new StatImpl(segment, arena.scope());
+			var stat = new StatImpl(segment, arena);
 
 			setter.accept(stat, value);
 

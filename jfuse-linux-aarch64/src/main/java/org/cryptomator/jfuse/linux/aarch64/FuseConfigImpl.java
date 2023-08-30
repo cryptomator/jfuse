@@ -1,14 +1,14 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
 import org.cryptomator.jfuse.api.FuseConfig;
-import org.cryptomator.jfuse.linux.aarch64.extr.fuse_config;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_config;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 record FuseConfigImpl(MemorySegment segment) implements FuseConfig {
 
-	public FuseConfigImpl(MemorySegment address, SegmentScope scope) {
+	public FuseConfigImpl(MemorySegment address, Arena scope) {
 		this(fuse_config.ofAddress(address, scope));
 	}
 

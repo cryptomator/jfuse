@@ -1,8 +1,8 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
 import org.cryptomator.jfuse.api.FuseMount;
-import org.cryptomator.jfuse.linux.aarch64.extr.fuse_h;
-import org.cryptomator.jfuse.linux.aarch64.extr.fuse_loop_config_v1;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_h;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_loop_config_v1;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
@@ -20,7 +20,7 @@ record FuseMountImpl(MemorySegment fuse, FuseArgs fuseArgs) implements FuseMount
 			return fuse_h.fuse_loop(fuse);
 		} else if (fuse_h.fuse_version() < FUSE_3_12) {
 			// FUSE 3.2
-			try (var arena = Arena.openConfined()) {
+			try (var arena = Arena.ofConfined()) {
 				var loopCfg = fuse_loop_config_v1.allocate(arena);
 				fuse_loop_config_v1.clone_fd$set(loopCfg, fuseArgs.cloneFd());
 				fuse_loop_config_v1.max_idle_threads$set(loopCfg, fuseArgs.maxIdleThreads());

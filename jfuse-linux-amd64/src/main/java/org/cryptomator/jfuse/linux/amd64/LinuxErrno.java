@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.linux.amd64;
 
 import org.cryptomator.jfuse.api.Errno;
-import org.cryptomator.jfuse.linux.amd64.extr.errno_h;
+import org.cryptomator.jfuse.linux.amd64.extr.errno.errno_h;
 
 record LinuxErrno() implements Errno {
 

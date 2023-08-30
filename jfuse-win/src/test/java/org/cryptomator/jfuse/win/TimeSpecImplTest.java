@@ -1,6 +1,6 @@
 package org.cryptomator.jfuse.win;
 
-import org.cryptomator.jfuse.win.extr.fuse_timespec;
+import org.cryptomator.jfuse.win.extr.fuse3.fuse_timespec;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test get()")
 	public void testGet() {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var timeSpec = new TimeSpecImpl(fuse_timespec.allocate(arena));
 			fuse_timespec.tv_sec$set(timeSpec.segment(), 123L);
 			fuse_timespec.tv_nsec$set(timeSpec.segment(), 456L);
@@ -28,7 +28,7 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test set()")
 	public void testSet() {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var timeSpec = new TimeSpecImpl(fuse_timespec.allocate(arena));
 			fuse_timespec.tv_sec$set(timeSpec.segment(), 0L);
 			fuse_timespec.tv_nsec$set(timeSpec.segment(), 0L);
@@ -43,7 +43,7 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test isUtimeOmit()")
 	public void testIsUtimeOmit() {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var timeSpec = new TimeSpecImpl(fuse_timespec.allocate(arena));
 
 			Assertions.assertFalse(timeSpec.isUtimeOmit());
@@ -53,7 +53,7 @@ public class TimeSpecImplTest {
 	@Test
 	@DisplayName("test isUtimeNow()")
 	public void testIsUtimeNow() {
-		try (var arena = Arena.openConfined()) {
+		try (var arena = Arena.ofConfined()) {
 			var timeSpec = new TimeSpecImpl(fuse_timespec.allocate(arena));
 
 			Assertions.assertFalse(timeSpec.isUtimeNow());

@@ -1,8 +1,8 @@
 package org.cryptomator.jfuse.win;
 
 import org.cryptomator.jfuse.api.FuseMount;
-import org.cryptomator.jfuse.win.extr.fuse3_loop_config;
-import org.cryptomator.jfuse.win.extr.fuse_h;
+import org.cryptomator.jfuse.win.extr.fuse3.fuse3_loop_config;
+import org.cryptomator.jfuse.win.extr.fuse3.fuse_h;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;

@@ -1,14 +1,14 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
 import org.cryptomator.jfuse.api.Statvfs;
-import org.cryptomator.jfuse.linux.aarch64.extr.statvfs;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.statvfs;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
-	public StatvfsImpl(MemorySegment address, SegmentScope scope) {
+	public StatvfsImpl(MemorySegment address, Arena scope) {
 		this(statvfs.ofAddress(address, scope));
 	}
 

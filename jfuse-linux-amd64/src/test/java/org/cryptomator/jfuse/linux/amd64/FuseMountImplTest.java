@@ -1,6 +1,6 @@
 package org.cryptomator.jfuse.linux.amd64;
 
-import org.cryptomator.jfuse.linux.amd64.extr.fuse_h;
+import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_h;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
