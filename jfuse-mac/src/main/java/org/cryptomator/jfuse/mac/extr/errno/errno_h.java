@@ -147,6 +147,14 @@ public class errno_h  {
     }
     /**
      * {@snippet :
+     * #define ENOATTR 93
+     * }
+     */
+    public static int ENOATTR() {
+        return (int)93L;
+    }
+    /**
+     * {@snippet :
      * #define ENODATA 96
      * }
      */

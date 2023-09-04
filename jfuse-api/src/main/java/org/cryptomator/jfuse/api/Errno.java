@@ -131,4 +131,11 @@ public interface Errno {
 	 */
 	int enodata();
 
+	/**
+	 * The named attribute does not exist, or the process has no access to this attribute;
+	 *
+	 * @return error constant {@code ENOATTR}
+	 */
+	int enoattr();
+
 }
