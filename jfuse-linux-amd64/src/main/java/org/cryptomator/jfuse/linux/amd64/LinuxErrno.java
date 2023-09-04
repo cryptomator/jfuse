@@ -100,4 +100,9 @@ record LinuxErrno() implements Errno {
 	public int enoattr() {
 		return enodata();
 	}
+
+	@Override
+	public int e2big() {
+		return errno_h.E2BIG();
+	}
 }

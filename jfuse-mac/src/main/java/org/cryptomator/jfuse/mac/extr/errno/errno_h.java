@@ -35,6 +35,14 @@ public class errno_h  {
     }
     /**
      * {@snippet :
+     * #define E2BIG 7
+     * }
+     */
+    public static int E2BIG() {
+        return (int)7L;
+    }
+    /**
+     * {@snippet :
      * #define EBADF 9
      * }
      */

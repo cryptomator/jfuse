@@ -141,6 +141,7 @@
 										<includeConstant>ENAMETOOLONG</includeConstant>
 										<includeConstant>ENODATA</includeConstant>
 										<includeConstant>ENOATTR</includeConstant>
+										<includeConstant>E2BIG</includeConstant>
 									</includeConstants>
 								</configuration>
 							</execution>

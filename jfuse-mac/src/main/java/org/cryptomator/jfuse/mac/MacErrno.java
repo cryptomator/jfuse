@@ -94,4 +94,9 @@ record MacErrno() implements Errno {
 	public int enoattr() {
 		return errno_h.ENOATTR();
 	}
+
+	@Override
+	public int e2big() {
+		return errno_h.E2BIG();
+	}
 }

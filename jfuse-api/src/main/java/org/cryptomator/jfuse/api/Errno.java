@@ -138,4 +138,11 @@ public interface Errno {
 	 */
 	int enoattr();
 
+	/**
+	 * Argument list too long
+	 *
+	 * @return error constant {@code E2BIG}
+	 */
+	int e2big();
+
 }
