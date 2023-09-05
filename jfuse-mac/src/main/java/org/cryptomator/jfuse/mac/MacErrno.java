@@ -89,4 +89,14 @@ record MacErrno() implements Errno {
 	public int enodata() {
 		return errno_h.ENODATA();
 	}
+
+	@Override
+	public int enoattr() {
+		return errno_h.ENOATTR();
+	}
+
+	@Override
+	public int e2big() {
+		return errno_h.E2BIG();
+	}
 }

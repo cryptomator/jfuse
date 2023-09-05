@@ -89,4 +89,20 @@ record LinuxErrno() implements Errno {
 	public int enodata() {
 		return errno_h.ENODATA();
 	}
+
+	/**
+	 * Alias for {@link #enodata()}
+	 * @return error constant ENODATA
+	 * @deprecated Use {@link #enodata()} instead
+	 */
+	@Override
+	@Deprecated
+	public int enoattr() {
+		return enodata();
+	}
+
+	@Override
+	public int e2big() {
+		return errno_h.E2BIG();
+	}
 }
