@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse-parent</artifactId>
-		<version>0.6.0</version>
+		<version>0.6.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-mac</artifactId>
@@ -140,6 +140,8 @@
 										<includeConstant>ENOLCK</includeConstant>
 										<includeConstant>ENAMETOOLONG</includeConstant>
 										<includeConstant>ENODATA</includeConstant>
+										<includeConstant>ENOATTR</includeConstant>
+										<includeConstant>E2BIG</includeConstant>
 									</includeConstants>
 								</configuration>
 							</execution>

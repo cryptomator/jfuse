@@ -35,6 +35,14 @@ public class errno_h  {
     }
     /**
      * {@snippet :
+     * #define E2BIG 7
+     * }
+     */
+    public static int E2BIG() {
+        return (int)7L;
+    }
+    /**
+     * {@snippet :
      * #define EBADF 9
      * }
      */
@@ -144,6 +152,14 @@ public class errno_h  {
      */
     public static int ENOSYS() {
         return (int)78L;
+    }
+    /**
+     * {@snippet :
+     * #define ENOATTR 93
+     * }
+     */
+    public static int ENOATTR() {
+        return (int)93L;
     }
     /**
      * {@snippet :
