@@ -22,23 +22,21 @@ public class FallbackLibLoadingIT {
 	@Test
 	@EnabledOnOs(OS.LINUX)
 	@DisplayName("loads fuse lib from java.library.path, if not calling FuseBuilder.setLibraryPath(...)")
-	public void loadFromJavaLibraryPathOnLinux(@TempDir Path p) throws IOException, TimeoutException {
-		loadFromJavaLibraryPath(p, "libfuse3.so");
+	public void loadFromJavaLibraryPathOnLinux() throws IOException, TimeoutException {
+		loadFromJavaLibraryPath("libfuse3.so");
 	}
 
 	@Test
 	@EnabledOnOs(OS.MAC)
 	@DisplayName("loads fuse lib from java.library.path, if not calling FuseBuilder.setLibraryPath(...)")
-	public void loadFromJavaLibraryPathOnMacOS(@TempDir Path p) throws IOException, TimeoutException {
-		loadFromJavaLibraryPath(p, "libfuse-t.dylib");
+	public void loadFromJavaLibraryPathOnMacOS() throws IOException, TimeoutException {
+		loadFromJavaLibraryPath("libfuse-t.dylib");
 	}
 
-	private void loadFromJavaLibraryPath(Path tmpLibPath, String libFileName) throws IOException, TimeoutException {
-		var libPath = System.getProperty("fuse.lib.path");
-		var symlinkPath = tmpLibPath.resolve(libFileName);
-		Files.createSymbolicLink(symlinkPath, Path.of(libPath));
-
-		System.setProperty("java.library.path", tmpLibPath.toString());
+	private void loadFromJavaLibraryPath(String libFileName) throws IOException, TimeoutException {
+		// symlink ./${libName} -> ${fuse.lib.path}
+		var symlinkPath = Path.of(System.getProperty("user.dir"), libFileName);
+		Files.createSymbolicLink(symlinkPath, Path.of(System.getProperty("fuse.lib.path")));
 
 		var builder = Fuse.builder();
 		var fs = new RandomFileSystem(builder.errno());
