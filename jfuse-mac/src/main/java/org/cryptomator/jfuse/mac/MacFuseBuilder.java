@@ -8,9 +8,6 @@ import org.cryptomator.jfuse.api.platforms.Architecture;
 import org.cryptomator.jfuse.api.platforms.OperatingSystem;
 import org.cryptomator.jfuse.api.platforms.SupportedPlatform;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 /**
  * Builds FUSE file system instances on macOS.
  */
@@ -18,8 +15,8 @@ import java.nio.file.Path;
 @SupportedPlatform(os = OperatingSystem.MAC, arch = Architecture.ARM64)
 public class MacFuseBuilder implements FuseBuilder {
 
-	private static final String DEFAULT_MACFUSE_PATH = "/usr/local/lib/libfuse.dylib";
-	private static final String DEFAULT_FUSET_PATH = "/usr/local/lib/libfuse-t.dylib";
+	private static final String DEFAULT_MACFUSE_LIBNAME = "fuse";
+	private static final String DEFAULT_FUSET_LIBNAMNE = "fuse-t";
 	private static final Errno ERRNO = new MacErrno();
 	private String libraryPath;
 
@@ -43,12 +40,17 @@ public class MacFuseBuilder implements FuseBuilder {
 	public Fuse build(FuseOperations fuseOperations) throws UnsatisfiedLinkError {
 		if (libraryPath != null) {
 			System.load(libraryPath);
-		} else if (Files.exists(Path.of(DEFAULT_MACFUSE_PATH))) {
-			System.load(DEFAULT_MACFUSE_PATH);
-		} else if (Files.exists(Path.of(DEFAULT_FUSET_PATH))) {
-			System.load(DEFAULT_FUSET_PATH);
 		} else {
-			System.loadLibrary("fuse");
+			try {
+				System.loadLibrary(DEFAULT_MACFUSE_LIBNAME);
+			} catch (UnsatisfiedLinkError errorLoadingMacFuse) {
+				try {
+					System.loadLibrary(DEFAULT_FUSET_LIBNAMNE);
+				} catch (UnsatisfiedLinkError errorLoadingFuseT) {
+					errorLoadingFuseT.addSuppressed(errorLoadingMacFuse);
+					throw errorLoadingFuseT;
+				}
+			}
 		}
 		return new FuseImpl(fuseOperations);
 	}
