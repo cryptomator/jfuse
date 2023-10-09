@@ -76,7 +76,13 @@ public class FuseTest {
 	@Test
 	@DisplayName("Already mounted fuseMount throws IllegalStateException on mount")
 	public void testMountThrowsIllegalStateIfAlreadyMounted() throws InterruptedException {
+		// mount probe succeeds immediately...
 		Mockito.doNothing().when(fuse).waitForMountingToComplete(Mockito.eq(mountPoint), Mockito.any());
+		// ... before fuse_loop returns
+		Mockito.doAnswer(_ -> {
+			Thread.sleep(1000);
+			return 0;
+		}).when(fuseMount).loop();
 		Assertions.assertDoesNotThrow(() -> fuse.mount("test3000", mountPoint));
 		Assertions.assertThrows(IllegalStateException.class, () -> fuse.mount("test3000", mountPoint));
 	}
@@ -84,10 +90,12 @@ public class FuseTest {
 	@Test
 	@DisplayName("If fuse_loop instantly returns with non-zero result, throw FuseMountFailedException")
 	public void testMountThrowsFuseMountFailedIfLoopReturnsNonZero() throws InterruptedException {
+		// mount probe takes a while...
 		Mockito.doAnswer(_ -> {
 			Thread.sleep(1000);
 			return null;
 		}).when(fuse).waitForMountingToComplete(Mockito.eq(mountPoint), Mockito.any());
+		// ... but fuse_loop returns immediately (with error)
 		Mockito.doReturn(1).when(fuseMount).loop();
 		Assertions.assertThrows(FuseMountFailedException.class, () -> fuse.mount("test3000", mountPoint));
 	}
