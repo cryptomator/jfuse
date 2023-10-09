@@ -33,10 +33,10 @@ public class FuseTest {
 		Mockito.doReturn(fs).when(probePath).getFileSystem();
 		Mockito.doReturn(fsProv).when(fs).provider();
 		Mockito.doReturn(attrView).when(fsProv).getFileAttributeView(probePath, BasicFileAttributeView.class);
-		Mockito.doAnswer(invocation -> {
+		Mockito.doAnswer(_ -> {
 			// first attempt: not yet mounted
 			throw new NoSuchFileException("/mnt/jfuse_mount_probe not found");
-		}).doAnswer(invocation -> {
+		}).doAnswer(_ -> {
 			// second attempt: simulate hitting getattr
 			fuse.fuseOperations.getattr("/jfuse_mount_probe", Mockito.mock(Stat.class), Mockito.mock(FileInfo.class));
 			throw new NoSuchFileException("/mnt/jfuse_mount_probe still not found");
@@ -50,7 +50,7 @@ public class FuseTest {
 
 	@Test
 	@DisplayName("waitForMountingToComplete() waits returns immediately if fuse_loop fails")
-	public void testPrematurelyFuseLoopReturn() throws IOException {
+	public void testPrematurelyFuseLoopReturn() {
 		Path probePath = Mockito.mock(Path.class, "/mnt/jfuse_mount_probe");
 		FileSystem fs = Mockito.mock(FileSystem.class);
 		FileSystemProvider fsProv = Mockito.mock(FileSystemProvider.class);
@@ -84,7 +84,7 @@ public class FuseTest {
 	@Test
 	@DisplayName("If fuse_loop instantly returns with non-zero result, throw FuseMountFailedException")
 	public void testMountThrowsFuseMountFailedIfLoopReturnsNonZero() throws InterruptedException {
-		Mockito.doAnswer(invocation -> {
+		Mockito.doAnswer(_ -> {
 			Thread.sleep(1000);
 			return null;
 		}).when(fuse).waitForMountingToComplete(Mockito.eq(mountPoint), Mockito.any());
