@@ -117,14 +117,14 @@ final class FuseImpl extends Fuse {
 
 	private int chmod(MemorySegment path, int mode, MemorySegment fi) {
 		try (var arena = Arena.ofConfined()) {
-			return fuseOperations.chmod(path.getUtf8String(0), mode, new FileInfoImpl(fi, arena));
+			return fuseOperations.chmod(path.getUtf8String(0), mode, FileInfoImpl.of(fi, arena));
 		}
 	}
 
 	@VisibleForTesting
 	int chown(MemorySegment path, int uid, int gid, MemorySegment fi) {
 		try (var arena = Arena.ofConfined()) {
-			return fuseOperations.chown(path.getUtf8String(0), uid, gid, new FileInfoImpl(fi, arena));
+			return fuseOperations.chown(path.getUtf8String(0), uid, gid, FileInfoImpl.of(fi, arena));
 		}
 	}
 
@@ -161,7 +161,7 @@ final class FuseImpl extends Fuse {
 
 	private int getattr(MemorySegment path, MemorySegment stat, MemorySegment fi) {
 		try (var arena = Arena.ofConfined()) {
-			return fuseOperations.getattr(path.getUtf8String(0), new StatImpl(stat, arena), new FileInfoImpl(fi, arena));
+			return fuseOperations.getattr(path.getUtf8String(0), new StatImpl(stat, arena), FileInfoImpl.of(fi, arena));
 		}
 	}
 
@@ -254,7 +254,7 @@ final class FuseImpl extends Fuse {
 
 	private int truncate(MemorySegment path, long size, MemorySegment fi) {
 		try (var arena = Arena.ofConfined()) {
-			return fuseOperations.truncate(path.getUtf8String(0), size, new FileInfoImpl(fi, arena));
+			return fuseOperations.truncate(path.getUtf8String(0), size, FileInfoImpl.of(fi, arena));
 		}
 	}
 
@@ -272,11 +272,11 @@ final class FuseImpl extends Fuse {
 				timespec.tv_sec$set(segment, 0);
 				timespec.tv_nsec$set(segment, stat_h.UTIME_NOW());
 				var time = new TimeSpecImpl(segment);
-				return fuseOperations.utimens(path.getUtf8String(0), time, time, new FileInfoImpl(fi, arena));
+				return fuseOperations.utimens(path.getUtf8String(0), time, time, FileInfoImpl.of(fi, arena));
 			} else {
 				var time0 = times.asSlice(0, timespec.$LAYOUT().byteSize());
 				var time1 = times.asSlice(timespec.$LAYOUT().byteSize(), timespec.$LAYOUT().byteSize());
-				return fuseOperations.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), new FileInfoImpl(fi, arena));
+				return fuseOperations.utimens(path.getUtf8String(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), FileInfoImpl.of(fi, arena));
 			}
 		}
 	}
