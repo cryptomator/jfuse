@@ -155,7 +155,7 @@ final class FuseImpl extends Fuse {
 	@VisibleForTesting
 	int fsyncdir(MemorySegment path, int datasync, MemorySegment fi) {
 		try (var arena = Arena.ofConfined()) {
-			return fuseOperations.fsyncdir(path.getUtf8String(0), datasync, new FileInfoImpl(fi, arena));
+			return fuseOperations.fsyncdir(MemoryUtils.toUtf8StringOrNull(path), datasync, new FileInfoImpl(fi, arena));
 		}
 	}
 
