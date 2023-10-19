@@ -5,6 +5,7 @@ import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.api.FuseOperations;
+import org.cryptomator.jfuse.api.util.MemoryUtils;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_args;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_h;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_operations;
@@ -229,7 +230,7 @@ final class FuseImpl extends Fuse {
 
 	private int releasedir(MemorySegment path, MemorySegment fi) {
 		try (var arena = Arena.ofConfined()) {
-			return fuseOperations.releasedir(path.getUtf8String(0), new FileInfoImpl(fi, arena));
+			return fuseOperations.releasedir(MemoryUtils.toUtf8StringOrNull(path), new FileInfoImpl(fi, arena));
 		}
 	}
 
