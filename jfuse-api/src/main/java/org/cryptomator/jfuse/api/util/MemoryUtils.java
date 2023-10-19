@@ -13,6 +13,6 @@ public class MemoryUtils {
 
 	@Nullable
 	public static String toUtf8StringOrNull(MemorySegment string) {
-		return MemorySegment.NULL.equals(string) ? null : string.getUtf8String(0);
+		return toUtf8StringOrNull(string, 0);
 	}
 }
