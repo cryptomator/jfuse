@@ -3,6 +3,7 @@ package org.cryptomator.jfuse.linux.aarch64;
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.linux.aarch64.extr.fcntl.fcntl_h;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_file_info;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
@@ -21,6 +22,18 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 	private static final int O_EXCL = fcntl_h.O_EXCL();
 	private static final int O_SYNC = fcntl_h.O_SYNC();
 	private static final int O_DSYNC = fcntl_h.O_DSYNC();
+
+	/**
+	 * Factory method to map native memory to an {@link FileInfo} object
+	 *
+	 * @param address the {@link MemorySegment} representing the starting address
+	 * @param scope   the {@link Arena} in which this object will be alive
+	 * @return an {@link FileInfo} object or {@code null} if {@code address} is a NULL pointer
+	 */
+	@Nullable
+	public static FileInfoImpl of(MemorySegment address, Arena scope) {
+		return MemorySegment.NULL.equals(address) ? null : new FileInfoImpl(address, scope);
+	}
 
 	public FileInfoImpl(MemorySegment address, Arena scope) {
 		this(fuse_file_info.ofAddress(address, scope));
