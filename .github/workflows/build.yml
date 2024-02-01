@@ -21,7 +21,7 @@ jobs:
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
         run: mvn -B verify -Dfuse.lib.path="/lib/x86_64-linux-gnu/libfuse3.so.3"
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage-linux-amd64
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
@@ -45,7 +45,7 @@ jobs:
           brew install fuse-t
       - name: Maven build
         run: mvn -B verify -Dfuse.lib.path="/usr/local/lib/libfuse-t.dylib"
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage-mac
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
@@ -67,7 +67,7 @@ jobs:
       - name: Maven build
         shell: bash # surprise, running maven in pwsh is crappy, see https://stackoverflow.com/q/6347985/4014509
         run: mvn -B verify -Dfuse.lib.path="C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll"
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage-win
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
@@ -87,20 +87,20 @@ jobs:
           distribution: 'zulu'
           cache: 'maven'
       - name: Cache SonarCloud packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: coverage-linux-amd64
           path: coverage/linux-amd64
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: coverage-mac
           path: coverage/mac
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: coverage-win
           path: coverage/win
