@@ -11,22 +11,22 @@ record StatImpl(MemorySegment segment) implements Stat {
 
 	@Override
 	public TimeSpec aTime() {
-		return new TimeSpecImpl(fuse_stat.st_atim$slice(segment));
+		return new TimeSpecImpl(fuse_stat.st_atim(segment));
 	}
 
 	@Override
 	public TimeSpec cTime() {
-		return new TimeSpecImpl(fuse_stat.st_ctim$slice(segment));
+		return new TimeSpecImpl(fuse_stat.st_ctim(segment));
 	}
 
 	@Override
 	public TimeSpec mTime() {
-		return new TimeSpecImpl(fuse_stat.st_mtim$slice(segment));
+		return new TimeSpecImpl(fuse_stat.st_mtim(segment));
 	}
 
 	@Override
 	public TimeSpec birthTime() {
-		return new TimeSpecImpl(fuse_stat.st_birthtim$slice(segment));
+		return new TimeSpecImpl(fuse_stat.st_birthtim(segment));
 	}
 
 	@Override

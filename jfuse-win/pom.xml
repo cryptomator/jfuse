@@ -15,7 +15,7 @@
 
 	<properties>
 		<win.ucrtHeaderPath>C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt</win.ucrtHeaderPath>
-		<jextract.executable>C:\Users\Arbeit\Skymatic\jextract\build\jextract\bin\jextract.bat</jextract.executable>
+		<jextract.executable>C:\Users\Arbeit\Programs\jextract-22\bin\jextract.bat</jextract.executable>
 	</properties>
 
 	<dependencies>

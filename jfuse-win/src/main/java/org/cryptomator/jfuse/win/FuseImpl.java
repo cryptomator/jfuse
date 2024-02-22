@@ -248,9 +248,8 @@ class FuseImpl extends Fuse {
 		try (var arena = Arena.ofConfined()) {
 			// On Windows we know for sure that WinFSP will call this function only with
 			// valid times: https://github.com/winfsp/winfsp/discussions/445
-			var times = fuse_timespec.allocateArray(2, arena);
-			var times0 = fuse_timespec.asSlice(times, 0);
-			var times1 = fuse_timespec.asSlice(times, 1);
+			var time0 = fuse_timespec.asSlice(times, 0);
+			var time1 = fuse_timespec.asSlice(times, 1);
 			return fuseOperations.utimens(path.getString(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), FileInfoImpl.ofNullable(fi));
 		}
 	}
