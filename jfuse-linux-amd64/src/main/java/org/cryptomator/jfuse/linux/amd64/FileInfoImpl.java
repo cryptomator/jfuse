@@ -5,7 +5,6 @@ import org.cryptomator.jfuse.linux.amd64.extr.fcntl.fcntl_h;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_file_info;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.nio.file.StandardOpenOption;
 import java.util.EnumSet;
@@ -24,34 +23,29 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 	private static final int O_DSYNC = fcntl_h.O_DSYNC();
 
 	/**
-	 * Factory method to map native memory to an {@link FileInfo} object
+	 * Null-safe factory method to map native memory to an {@link FileInfo} object
 	 *
 	 * @param address the {@link MemorySegment} representing the starting address
-	 * @param scope   the {@link Arena} in which this object will be alive
 	 * @return an {@link FileInfo} object or {@code null} if {@code address} is a NULL pointer
 	 */
 	@Nullable
-	public static FileInfoImpl of(MemorySegment address, Arena scope) {
-		return MemorySegment.NULL.equals(address) ? null : new FileInfoImpl(address, scope);
-	}
-
-	public FileInfoImpl(MemorySegment address, Arena scope) {
-		this(fuse_file_info.ofAddress(address, scope));
+	public static FileInfoImpl ofNullable(MemorySegment address) {
+		return MemorySegment.NULL.equals(address) ? null : new FileInfoImpl(address);
 	}
 
 	@Override
 	public long getFh() {
-		return fuse_file_info.fh$get(segment);
+		return fuse_file_info.fh(segment);
 	}
 
 	@Override
 	public void setFh(long fh) {
-		fuse_file_info.fh$set(segment, fh);
+		fuse_file_info.fh(segment, fh);
 	}
 
 	@Override
 	public int getFlags() {
-		return fuse_file_info.flags$get(segment);
+		return fuse_file_info.flags(segment);
 	}
 
 	@Override
@@ -91,7 +85,7 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 
 	@Override
 	public long getLockOwner() {
-		return fuse_file_info.lock_owner$get(segment);
+		return fuse_file_info.lock_owner(segment);
 	}
 
 }

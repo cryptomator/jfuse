@@ -23,7 +23,7 @@ public class FuseConnInfoImplTest {
 	public void testGetters(SetInMemorySegment setter, GetInConnInfo getter) {
 		try (var arena = Arena.ofConfined()) {
 			var segment = fuse_conn_info.allocate(arena);
-			var connInfo = new FuseConnInfoImpl(segment, arena);
+			var connInfo = new FuseConnInfoImpl(segment);
 
 			setter.accept(segment, 42);
 
@@ -33,15 +33,15 @@ public class FuseConnInfoImplTest {
 
 	public static Stream<Arguments> testGetters() {
 		return Stream.of(
-				Arguments.arguments((SetInMemorySegment) fuse_conn_info::proto_major$set, Named.of("protoMajor()", (GetInConnInfo) FuseConnInfo::protoMajor)),
-				Arguments.arguments((SetInMemorySegment) fuse_conn_info::proto_minor$set, Named.of("protoMinor()", (GetInConnInfo) FuseConnInfo::protoMinor)),
-				Arguments.arguments((SetInMemorySegment) fuse_conn_info::capable$set, Named.of("capable()", (GetInConnInfo) FuseConnInfo::capable)),
-				Arguments.arguments((SetInMemorySegment) fuse_conn_info::max_write$set, Named.of("maxWrite()", (GetInConnInfo) FuseConnInfo::maxWrite)),
-				Arguments.arguments((SetInMemorySegment) fuse_conn_info::max_readahead$set, Named.of("maxReadahead()", (GetInConnInfo) FuseConnInfo::maxReadahead)),
-				Arguments.arguments((SetInMemorySegment) fuse_conn_info::max_background$set, Named.of("maxBackground()", (GetInConnInfo) FuseConnInfo::maxBackground)),
-				Arguments.arguments((SetInMemorySegment) fuse_conn_info::congestion_threshold$set, Named.of("congestionThreshold()", (GetInConnInfo) FuseConnInfo::congestionThreshold)),
-				Arguments.arguments((SetInMemorySegment) fuse_conn_info::async_read$set, Named.of("asyncRead()", (GetInConnInfo) FuseConnInfo::asyncRead)),
-				Arguments.arguments((SetInMemorySegment) fuse_conn_info::want$set, Named.of("want()", (GetInConnInfo) FuseConnInfo::want))
+				Arguments.arguments((SetInMemorySegment) fuse_conn_info::proto_major, Named.of("protoMajor()", (GetInConnInfo) FuseConnInfo::protoMajor)),
+				Arguments.arguments((SetInMemorySegment) fuse_conn_info::proto_minor, Named.of("protoMinor()", (GetInConnInfo) FuseConnInfo::protoMinor)),
+				Arguments.arguments((SetInMemorySegment) fuse_conn_info::capable, Named.of("capable()", (GetInConnInfo) FuseConnInfo::capable)),
+				Arguments.arguments((SetInMemorySegment) fuse_conn_info::max_write, Named.of("maxWrite()", (GetInConnInfo) FuseConnInfo::maxWrite)),
+				Arguments.arguments((SetInMemorySegment) fuse_conn_info::max_readahead, Named.of("maxReadahead()", (GetInConnInfo) FuseConnInfo::maxReadahead)),
+				Arguments.arguments((SetInMemorySegment) fuse_conn_info::max_background, Named.of("maxBackground()", (GetInConnInfo) FuseConnInfo::maxBackground)),
+				Arguments.arguments((SetInMemorySegment) fuse_conn_info::congestion_threshold, Named.of("congestionThreshold()", (GetInConnInfo) FuseConnInfo::congestionThreshold)),
+				Arguments.arguments((SetInMemorySegment) fuse_conn_info::async_read, Named.of("asyncRead()", (GetInConnInfo) FuseConnInfo::asyncRead)),
+				Arguments.arguments((SetInMemorySegment) fuse_conn_info::want, Named.of("want()", (GetInConnInfo) FuseConnInfo::want))
 		);
 	}
 
@@ -55,7 +55,7 @@ public class FuseConnInfoImplTest {
 	public void testSetters(SetInConnInfo setter, GetInMemorySegment getter) {
 		try (var arena = Arena.ofConfined()) {
 			var segment = fuse_conn_info.allocate(arena);
-			var connInfo = new FuseConnInfoImpl(segment, arena);
+			var connInfo = new FuseConnInfoImpl(segment);
 
 			setter.accept(connInfo, 42);
 
@@ -65,12 +65,12 @@ public class FuseConnInfoImplTest {
 
 	public static Stream<Arguments> testSetters() {
 		return Stream.of(
-				Arguments.arguments(Named.of("setWant()", (SetInConnInfo) FuseConnInfo::setWant), (GetInMemorySegment) fuse_conn_info::want$get),
-				Arguments.arguments(Named.of("setMaxWrite()", (SetInConnInfo) FuseConnInfo::setMaxWrite), (GetInMemorySegment) fuse_conn_info::max_write$get),
-				Arguments.arguments(Named.of("setMaxReadahead()", (SetInConnInfo) FuseConnInfo::setMaxReadahead), (GetInMemorySegment) fuse_conn_info::max_readahead$get),
-				Arguments.arguments(Named.of("setMaxBackground()", (SetInConnInfo) FuseConnInfo::setMaxBackground), (GetInMemorySegment) fuse_conn_info::max_background$get),
-				Arguments.arguments(Named.of("setCongestionThreshold()", (SetInConnInfo) FuseConnInfo::setCongestionThreshold), (GetInMemorySegment) fuse_conn_info::congestion_threshold$get),
-				Arguments.arguments(Named.of("setAsyncRead()", (SetInConnInfo) FuseConnInfo::setAsyncRead), (GetInMemorySegment) fuse_conn_info::async_read$get)
+				Arguments.arguments(Named.of("setWant()", (SetInConnInfo) FuseConnInfo::setWant), (GetInMemorySegment) fuse_conn_info::want),
+				Arguments.arguments(Named.of("setMaxWrite()", (SetInConnInfo) FuseConnInfo::setMaxWrite), (GetInMemorySegment) fuse_conn_info::max_write),
+				Arguments.arguments(Named.of("setMaxReadahead()", (SetInConnInfo) FuseConnInfo::setMaxReadahead), (GetInMemorySegment) fuse_conn_info::max_readahead),
+				Arguments.arguments(Named.of("setMaxBackground()", (SetInConnInfo) FuseConnInfo::setMaxBackground), (GetInMemorySegment) fuse_conn_info::max_background),
+				Arguments.arguments(Named.of("setCongestionThreshold()", (SetInConnInfo) FuseConnInfo::setCongestionThreshold), (GetInMemorySegment) fuse_conn_info::congestion_threshold),
+				Arguments.arguments(Named.of("setAsyncRead()", (SetInConnInfo) FuseConnInfo::setAsyncRead), (GetInMemorySegment) fuse_conn_info::async_read)
 		);
 	}
 

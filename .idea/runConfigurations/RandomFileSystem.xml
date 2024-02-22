@@ -3,7 +3,7 @@
     <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.examples.RandomFileSystem" />
     <module name="jfuse-examples" />
     <option name="PROGRAM_PARAMETERS" value="/Volumes/random" />
-    <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=debug -Djava.library.path=/usr/local/lib --enable-native-access=org.cryptomator.jfuse.mac --enable-preview" />
+    <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=debug -Djava.library.path=/usr/local/lib --enable-native-access=org.cryptomator.jfuse.mac" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="org.cryptomator.jfuse.examples.*" />

@@ -22,7 +22,7 @@ public class FileInfoImplTest {
 	public void testGetOpenFlags(int flags, Set<OpenOption> expectedResult) {
 		try (var arena = Arena.ofConfined()) {
 			var fi = new FileInfoImpl(fuse_file_info.allocate(arena));
-			fuse_file_info.flags$set(fi.segment(), flags);
+			fuse_file_info.flags(fi.segment(), flags);
 
 			var result = fi.getOpenFlags();
 

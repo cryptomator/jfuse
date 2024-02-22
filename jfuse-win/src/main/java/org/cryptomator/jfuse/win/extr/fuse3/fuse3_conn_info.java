@@ -38,7 +38,7 @@ public class fuse3_conn_info {
      * unsigned int proto_major;
      * }
      */
-    public static int proto_major$get(MemorySegment seg) {
+    public static int proto_major(MemorySegment seg) {
         return (int)constants$5.const$5.get(seg);
     }
     /**
@@ -47,13 +47,13 @@ public class fuse3_conn_info {
      * unsigned int proto_major;
      * }
      */
-    public static void proto_major$set(MemorySegment seg, int x) {
+    public static void proto_major(MemorySegment seg, int x) {
         constants$5.const$5.set(seg, x);
     }
-    public static int proto_major$get(MemorySegment seg, long index) {
+    public static int proto_major(MemorySegment seg, long index) {
         return (int)constants$5.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void proto_major$set(MemorySegment seg, long index, int x) {
+    public static void proto_major(MemorySegment seg, long index, int x) {
         constants$5.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle proto_minor$VH() {
@@ -65,7 +65,7 @@ public class fuse3_conn_info {
      * unsigned int proto_minor;
      * }
      */
-    public static int proto_minor$get(MemorySegment seg) {
+    public static int proto_minor(MemorySegment seg) {
         return (int)constants$6.const$0.get(seg);
     }
     /**
@@ -74,13 +74,13 @@ public class fuse3_conn_info {
      * unsigned int proto_minor;
      * }
      */
-    public static void proto_minor$set(MemorySegment seg, int x) {
+    public static void proto_minor(MemorySegment seg, int x) {
         constants$6.const$0.set(seg, x);
     }
-    public static int proto_minor$get(MemorySegment seg, long index) {
+    public static int proto_minor(MemorySegment seg, long index) {
         return (int)constants$6.const$0.get(seg.asSlice(index*sizeof()));
     }
-    public static void proto_minor$set(MemorySegment seg, long index, int x) {
+    public static void proto_minor(MemorySegment seg, long index, int x) {
         constants$6.const$0.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle max_write$VH() {
@@ -92,7 +92,7 @@ public class fuse3_conn_info {
      * unsigned int max_write;
      * }
      */
-    public static int max_write$get(MemorySegment seg) {
+    public static int max_write(MemorySegment seg) {
         return (int)constants$6.const$1.get(seg);
     }
     /**
@@ -101,13 +101,13 @@ public class fuse3_conn_info {
      * unsigned int max_write;
      * }
      */
-    public static void max_write$set(MemorySegment seg, int x) {
+    public static void max_write(MemorySegment seg, int x) {
         constants$6.const$1.set(seg, x);
     }
-    public static int max_write$get(MemorySegment seg, long index) {
+    public static int max_write(MemorySegment seg, long index) {
         return (int)constants$6.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void max_write$set(MemorySegment seg, long index, int x) {
+    public static void max_write(MemorySegment seg, long index, int x) {
         constants$6.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle max_read$VH() {
@@ -119,7 +119,7 @@ public class fuse3_conn_info {
      * unsigned int max_read;
      * }
      */
-    public static int max_read$get(MemorySegment seg) {
+    public static int max_read(MemorySegment seg) {
         return (int)constants$6.const$2.get(seg);
     }
     /**
@@ -128,13 +128,13 @@ public class fuse3_conn_info {
      * unsigned int max_read;
      * }
      */
-    public static void max_read$set(MemorySegment seg, int x) {
+    public static void max_read(MemorySegment seg, int x) {
         constants$6.const$2.set(seg, x);
     }
-    public static int max_read$get(MemorySegment seg, long index) {
+    public static int max_read(MemorySegment seg, long index) {
         return (int)constants$6.const$2.get(seg.asSlice(index*sizeof()));
     }
-    public static void max_read$set(MemorySegment seg, long index, int x) {
+    public static void max_read(MemorySegment seg, long index, int x) {
         constants$6.const$2.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle max_readahead$VH() {
@@ -146,7 +146,7 @@ public class fuse3_conn_info {
      * unsigned int max_readahead;
      * }
      */
-    public static int max_readahead$get(MemorySegment seg) {
+    public static int max_readahead(MemorySegment seg) {
         return (int)constants$6.const$3.get(seg);
     }
     /**
@@ -155,13 +155,13 @@ public class fuse3_conn_info {
      * unsigned int max_readahead;
      * }
      */
-    public static void max_readahead$set(MemorySegment seg, int x) {
+    public static void max_readahead(MemorySegment seg, int x) {
         constants$6.const$3.set(seg, x);
     }
-    public static int max_readahead$get(MemorySegment seg, long index) {
+    public static int max_readahead(MemorySegment seg, long index) {
         return (int)constants$6.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void max_readahead$set(MemorySegment seg, long index, int x) {
+    public static void max_readahead(MemorySegment seg, long index, int x) {
         constants$6.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle capable$VH() {
@@ -173,7 +173,7 @@ public class fuse3_conn_info {
      * unsigned int capable;
      * }
      */
-    public static int capable$get(MemorySegment seg) {
+    public static int capable(MemorySegment seg) {
         return (int)constants$6.const$4.get(seg);
     }
     /**
@@ -182,13 +182,13 @@ public class fuse3_conn_info {
      * unsigned int capable;
      * }
      */
-    public static void capable$set(MemorySegment seg, int x) {
+    public static void capable(MemorySegment seg, int x) {
         constants$6.const$4.set(seg, x);
     }
-    public static int capable$get(MemorySegment seg, long index) {
+    public static int capable(MemorySegment seg, long index) {
         return (int)constants$6.const$4.get(seg.asSlice(index*sizeof()));
     }
-    public static void capable$set(MemorySegment seg, long index, int x) {
+    public static void capable(MemorySegment seg, long index, int x) {
         constants$6.const$4.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle want$VH() {
@@ -200,7 +200,7 @@ public class fuse3_conn_info {
      * unsigned int want;
      * }
      */
-    public static int want$get(MemorySegment seg) {
+    public static int want(MemorySegment seg) {
         return (int)constants$6.const$5.get(seg);
     }
     /**
@@ -209,13 +209,13 @@ public class fuse3_conn_info {
      * unsigned int want;
      * }
      */
-    public static void want$set(MemorySegment seg, int x) {
+    public static void want(MemorySegment seg, int x) {
         constants$6.const$5.set(seg, x);
     }
-    public static int want$get(MemorySegment seg, long index) {
+    public static int want(MemorySegment seg, long index) {
         return (int)constants$6.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void want$set(MemorySegment seg, long index, int x) {
+    public static void want(MemorySegment seg, long index, int x) {
         constants$6.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle max_background$VH() {
@@ -227,7 +227,7 @@ public class fuse3_conn_info {
      * unsigned int max_background;
      * }
      */
-    public static int max_background$get(MemorySegment seg) {
+    public static int max_background(MemorySegment seg) {
         return (int)constants$7.const$0.get(seg);
     }
     /**
@@ -236,13 +236,13 @@ public class fuse3_conn_info {
      * unsigned int max_background;
      * }
      */
-    public static void max_background$set(MemorySegment seg, int x) {
+    public static void max_background(MemorySegment seg, int x) {
         constants$7.const$0.set(seg, x);
     }
-    public static int max_background$get(MemorySegment seg, long index) {
+    public static int max_background(MemorySegment seg, long index) {
         return (int)constants$7.const$0.get(seg.asSlice(index*sizeof()));
     }
-    public static void max_background$set(MemorySegment seg, long index, int x) {
+    public static void max_background(MemorySegment seg, long index, int x) {
         constants$7.const$0.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle congestion_threshold$VH() {
@@ -254,7 +254,7 @@ public class fuse3_conn_info {
      * unsigned int congestion_threshold;
      * }
      */
-    public static int congestion_threshold$get(MemorySegment seg) {
+    public static int congestion_threshold(MemorySegment seg) {
         return (int)constants$7.const$1.get(seg);
     }
     /**
@@ -263,13 +263,13 @@ public class fuse3_conn_info {
      * unsigned int congestion_threshold;
      * }
      */
-    public static void congestion_threshold$set(MemorySegment seg, int x) {
+    public static void congestion_threshold(MemorySegment seg, int x) {
         constants$7.const$1.set(seg, x);
     }
-    public static int congestion_threshold$get(MemorySegment seg, long index) {
+    public static int congestion_threshold(MemorySegment seg, long index) {
         return (int)constants$7.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void congestion_threshold$set(MemorySegment seg, long index, int x) {
+    public static void congestion_threshold(MemorySegment seg, long index, int x) {
         constants$7.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle time_gran$VH() {
@@ -281,7 +281,7 @@ public class fuse3_conn_info {
      * unsigned int time_gran;
      * }
      */
-    public static int time_gran$get(MemorySegment seg) {
+    public static int time_gran(MemorySegment seg) {
         return (int)constants$7.const$2.get(seg);
     }
     /**
@@ -290,13 +290,13 @@ public class fuse3_conn_info {
      * unsigned int time_gran;
      * }
      */
-    public static void time_gran$set(MemorySegment seg, int x) {
+    public static void time_gran(MemorySegment seg, int x) {
         constants$7.const$2.set(seg, x);
     }
-    public static int time_gran$get(MemorySegment seg, long index) {
+    public static int time_gran(MemorySegment seg, long index) {
         return (int)constants$7.const$2.get(seg.asSlice(index*sizeof()));
     }
-    public static void time_gran$set(MemorySegment seg, long index, int x) {
+    public static void time_gran(MemorySegment seg, long index, int x) {
         constants$7.const$2.set(seg.asSlice(index*sizeof()), x);
     }
     public static MemorySegment reserved$slice(MemorySegment seg) {

@@ -22,8 +22,8 @@ record FuseMountImpl(MemorySegment fuse, FuseArgs fuseArgs) implements FuseMount
 			// FUSE 3.2
 			try (var arena = Arena.ofConfined()) {
 				var loopCfg = fuse_loop_config_v1.allocate(arena);
-				fuse_loop_config_v1.clone_fd$set(loopCfg, fuseArgs.cloneFd());
-				fuse_loop_config_v1.max_idle_threads$set(loopCfg, fuseArgs.maxIdleThreads());
+				fuse_loop_config_v1.clone_fd(loopCfg, fuseArgs.cloneFd());
+				fuse_loop_config_v1.max_idle_threads(loopCfg, fuseArgs.maxIdleThreads());
 				return fuse_h.fuse_loop_mt(fuse, loopCfg);
 			}
 		} else {

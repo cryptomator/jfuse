@@ -29,7 +29,7 @@ public class fuse3_loop_config {
      * int clone_fd;
      * }
      */
-    public static int clone_fd$get(MemorySegment seg) {
+    public static int clone_fd(MemorySegment seg) {
         return (int)constants$5.const$2.get(seg);
     }
     /**
@@ -38,13 +38,13 @@ public class fuse3_loop_config {
      * int clone_fd;
      * }
      */
-    public static void clone_fd$set(MemorySegment seg, int x) {
+    public static void clone_fd(MemorySegment seg, int x) {
         constants$5.const$2.set(seg, x);
     }
-    public static int clone_fd$get(MemorySegment seg, long index) {
+    public static int clone_fd(MemorySegment seg, long index) {
         return (int)constants$5.const$2.get(seg.asSlice(index*sizeof()));
     }
-    public static void clone_fd$set(MemorySegment seg, long index, int x) {
+    public static void clone_fd(MemorySegment seg, long index, int x) {
         constants$5.const$2.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle max_idle_threads$VH() {
@@ -56,7 +56,7 @@ public class fuse3_loop_config {
      * unsigned int max_idle_threads;
      * }
      */
-    public static int max_idle_threads$get(MemorySegment seg) {
+    public static int max_idle_threads(MemorySegment seg) {
         return (int)constants$5.const$3.get(seg);
     }
     /**
@@ -65,13 +65,13 @@ public class fuse3_loop_config {
      * unsigned int max_idle_threads;
      * }
      */
-    public static void max_idle_threads$set(MemorySegment seg, int x) {
+    public static void max_idle_threads(MemorySegment seg, int x) {
         constants$5.const$3.set(seg, x);
     }
-    public static int max_idle_threads$get(MemorySegment seg, long index) {
+    public static int max_idle_threads(MemorySegment seg, long index) {
         return (int)constants$5.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void max_idle_threads$set(MemorySegment seg, long index, int x) {
+    public static void max_idle_threads(MemorySegment seg, long index, int x) {
         constants$5.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }

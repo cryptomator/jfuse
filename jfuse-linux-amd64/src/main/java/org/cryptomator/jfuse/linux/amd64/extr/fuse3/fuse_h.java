@@ -2,245 +2,725 @@
 
 package org.cryptomator.jfuse.linux.amd64.extr.fuse3;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
-import java.nio.ByteOrder;
+import java.lang.invoke.*;
 import java.lang.foreign.*;
-import static java.lang.foreign.ValueLayout.*;
-public class fuse_h  {
+import java.nio.ByteOrder;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
 
-    public static final OfByte C_CHAR = JAVA_BYTE;
-    public static final OfShort C_SHORT = JAVA_SHORT;
-    public static final OfInt C_INT = JAVA_INT;
-    public static final OfLong C_LONG = JAVA_LONG;
-    public static final OfLong C_LONG_LONG = JAVA_LONG;
-    public static final OfFloat C_FLOAT = JAVA_FLOAT;
-    public static final OfDouble C_DOUBLE = JAVA_DOUBLE;
-    public static final AddressLayout C_POINTER = RuntimeHelper.POINTER;
-    public static MethodHandle fuse_version$MH() {
-        return RuntimeHelper.requireNonNull(constants$4.const$3,"fuse_version");
+import static java.lang.foreign.ValueLayout.*;
+import static java.lang.foreign.MemoryLayout.PathElement.*;
+
+public class fuse_h {
+
+    fuse_h() {
+        // Should not be called directly
+    }
+
+    static final Arena LIBRARY_ARENA = Arena.ofAuto();
+    static final boolean TRACE_DOWNCALLS = Boolean.getBoolean("jextract.trace.downcalls");
+
+    static void traceDowncall(String name, Object... args) {
+         String traceArgs = Arrays.stream(args)
+                       .map(Object::toString)
+                       .collect(Collectors.joining(", "));
+         System.out.printf("%s(%s)\n", name, traceArgs);
+    }
+
+    static MemorySegment findOrThrow(String symbol) {
+        return SYMBOL_LOOKUP.find(symbol)
+            .orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol: " + symbol));
+    }
+
+    static MethodHandle upcallHandle(Class<?> fi, String name, FunctionDescriptor fdesc) {
+        try {
+            return MethodHandles.lookup().findVirtual(fi, name, fdesc.toMethodType());
+        } catch (ReflectiveOperationException ex) {
+            throw new AssertionError(ex);
+        }
+    }
+
+    static MemoryLayout align(MemoryLayout layout, long align) {
+        return switch (layout) {
+            case PaddingLayout p -> p;
+            case ValueLayout v -> v.withByteAlignment(align);
+            case GroupLayout g -> {
+                MemoryLayout[] alignedMembers = g.memberLayouts().stream()
+                        .map(m -> align(m, align)).toArray(MemoryLayout[]::new);
+                yield g instanceof StructLayout ?
+                        MemoryLayout.structLayout(alignedMembers) : MemoryLayout.unionLayout(alignedMembers);
+            }
+            case SequenceLayout s -> MemoryLayout.sequenceLayout(s.elementCount(), align(s.elementLayout(), align));
+        };
+    }
+
+    static final SymbolLookup SYMBOL_LOOKUP = SymbolLookup.loaderLookup()
+            .or(Linker.nativeLinker().defaultLookup());
+
+    public static final ValueLayout.OfBoolean C_BOOL = ValueLayout.JAVA_BOOLEAN;
+    public static final ValueLayout.OfByte C_CHAR = ValueLayout.JAVA_BYTE;
+    public static final ValueLayout.OfShort C_SHORT = ValueLayout.JAVA_SHORT;
+    public static final ValueLayout.OfInt C_INT = ValueLayout.JAVA_INT;
+    public static final ValueLayout.OfLong C_LONG_LONG = ValueLayout.JAVA_LONG;
+    public static final ValueLayout.OfFloat C_FLOAT = ValueLayout.JAVA_FLOAT;
+    public static final ValueLayout.OfDouble C_DOUBLE = ValueLayout.JAVA_DOUBLE;
+    public static final AddressLayout C_POINTER = ValueLayout.ADDRESS
+            .withTargetLayout(MemoryLayout.sequenceLayout(java.lang.Long.MAX_VALUE, JAVA_BYTE));
+    public static final ValueLayout.OfLong C_LONG = ValueLayout.JAVA_LONG;
+
+    private static class fuse_version {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
+            fuse_h.C_INT    );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_version"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * int fuse_version()
+     * }
+     */
+    public static FunctionDescriptor fuse_version$descriptor() {
+        return fuse_version.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * int fuse_version()
+     * }
+     */
+    public static MethodHandle fuse_version$handle() {
+        return fuse_version.HANDLE;
     }
     /**
-     * {@snippet :
-     * int fuse_version();
+     * {@snippet lang=c :
+     * int fuse_version()
      * }
      */
     public static int fuse_version() {
-        var mh$ = fuse_version$MH();
+        var mh$ = fuse_version.HANDLE;
         try {
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_version");
+            }
             return (int)mh$.invokeExact();
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_loop_cfg_create$MH() {
-        return RuntimeHelper.requireNonNull(constants$4.const$5,"fuse_loop_cfg_create");
+
+    private static class fuse_loop_cfg_create {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
+            fuse_h.C_POINTER    );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_loop_cfg_create"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * struct fuse_loop_config *fuse_loop_cfg_create()
+     * }
+     */
+    public static FunctionDescriptor fuse_loop_cfg_create$descriptor() {
+        return fuse_loop_cfg_create.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * struct fuse_loop_config *fuse_loop_cfg_create()
+     * }
+     */
+    public static MethodHandle fuse_loop_cfg_create$handle() {
+        return fuse_loop_cfg_create.HANDLE;
     }
     /**
-     * {@snippet :
-     * struct fuse_loop_config* fuse_loop_cfg_create();
+     * {@snippet lang=c :
+     * struct fuse_loop_config *fuse_loop_cfg_create()
      * }
      */
     public static MemorySegment fuse_loop_cfg_create() {
-        var mh$ = fuse_loop_cfg_create$MH();
+        var mh$ = fuse_loop_cfg_create.HANDLE;
         try {
-            return (java.lang.foreign.MemorySegment)mh$.invokeExact();
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_loop_cfg_create");
+            }
+            return (MemorySegment)mh$.invokeExact();
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_loop_cfg_destroy$MH() {
-        return RuntimeHelper.requireNonNull(constants$5.const$1,"fuse_loop_cfg_destroy");
+
+    private static class fuse_loop_cfg_destroy {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
+            fuse_h.C_POINTER
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_loop_cfg_destroy"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * void fuse_loop_cfg_destroy(struct fuse_loop_config *config)
+     * }
+     */
+    public static FunctionDescriptor fuse_loop_cfg_destroy$descriptor() {
+        return fuse_loop_cfg_destroy.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * void fuse_loop_cfg_destroy(struct fuse_loop_config *config)
+     * }
+     */
+    public static MethodHandle fuse_loop_cfg_destroy$handle() {
+        return fuse_loop_cfg_destroy.HANDLE;
     }
     /**
-     * {@snippet :
-     * void fuse_loop_cfg_destroy(struct fuse_loop_config* config);
+     * {@snippet lang=c :
+     * void fuse_loop_cfg_destroy(struct fuse_loop_config *config)
      * }
      */
     public static void fuse_loop_cfg_destroy(MemorySegment config) {
-        var mh$ = fuse_loop_cfg_destroy$MH();
+        var mh$ = fuse_loop_cfg_destroy.HANDLE;
         try {
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_loop_cfg_destroy", config);
+            }
             mh$.invokeExact(config);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_loop_cfg_set_max_threads$MH() {
-        return RuntimeHelper.requireNonNull(constants$5.const$3,"fuse_loop_cfg_set_max_threads");
+
+    private static class fuse_loop_cfg_set_max_threads {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
+            fuse_h.C_POINTER,
+            fuse_h.C_INT
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_loop_cfg_set_max_threads"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * void fuse_loop_cfg_set_max_threads(struct fuse_loop_config *config, unsigned int value)
+     * }
+     */
+    public static FunctionDescriptor fuse_loop_cfg_set_max_threads$descriptor() {
+        return fuse_loop_cfg_set_max_threads.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * void fuse_loop_cfg_set_max_threads(struct fuse_loop_config *config, unsigned int value)
+     * }
+     */
+    public static MethodHandle fuse_loop_cfg_set_max_threads$handle() {
+        return fuse_loop_cfg_set_max_threads.HANDLE;
     }
     /**
-     * {@snippet :
-     * void fuse_loop_cfg_set_max_threads(struct fuse_loop_config* config, unsigned int value);
+     * {@snippet lang=c :
+     * void fuse_loop_cfg_set_max_threads(struct fuse_loop_config *config, unsigned int value)
      * }
      */
     public static void fuse_loop_cfg_set_max_threads(MemorySegment config, int value) {
-        var mh$ = fuse_loop_cfg_set_max_threads$MH();
+        var mh$ = fuse_loop_cfg_set_max_threads.HANDLE;
         try {
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_loop_cfg_set_max_threads", config, value);
+            }
             mh$.invokeExact(config, value);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_loop_cfg_set_clone_fd$MH() {
-        return RuntimeHelper.requireNonNull(constants$5.const$4,"fuse_loop_cfg_set_clone_fd");
+
+    private static class fuse_loop_cfg_set_clone_fd {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
+            fuse_h.C_POINTER,
+            fuse_h.C_INT
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_loop_cfg_set_clone_fd"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * void fuse_loop_cfg_set_clone_fd(struct fuse_loop_config *config, unsigned int value)
+     * }
+     */
+    public static FunctionDescriptor fuse_loop_cfg_set_clone_fd$descriptor() {
+        return fuse_loop_cfg_set_clone_fd.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * void fuse_loop_cfg_set_clone_fd(struct fuse_loop_config *config, unsigned int value)
+     * }
+     */
+    public static MethodHandle fuse_loop_cfg_set_clone_fd$handle() {
+        return fuse_loop_cfg_set_clone_fd.HANDLE;
     }
     /**
-     * {@snippet :
-     * void fuse_loop_cfg_set_clone_fd(struct fuse_loop_config* config, unsigned int value);
+     * {@snippet lang=c :
+     * void fuse_loop_cfg_set_clone_fd(struct fuse_loop_config *config, unsigned int value)
      * }
      */
     public static void fuse_loop_cfg_set_clone_fd(MemorySegment config, int value) {
-        var mh$ = fuse_loop_cfg_set_clone_fd$MH();
+        var mh$ = fuse_loop_cfg_set_clone_fd.HANDLE;
         try {
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_loop_cfg_set_clone_fd", config, value);
+            }
             mh$.invokeExact(config, value);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_lib_help$MH() {
-        return RuntimeHelper.requireNonNull(constants$36.const$0,"fuse_lib_help");
+
+    private static class fuse_lib_help {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
+            fuse_h.C_POINTER
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_lib_help"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * void fuse_lib_help(struct fuse_args *args)
+     * }
+     */
+    public static FunctionDescriptor fuse_lib_help$descriptor() {
+        return fuse_lib_help.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * void fuse_lib_help(struct fuse_args *args)
+     * }
+     */
+    public static MethodHandle fuse_lib_help$handle() {
+        return fuse_lib_help.HANDLE;
     }
     /**
-     * {@snippet :
-     * void fuse_lib_help(struct fuse_args* args);
+     * {@snippet lang=c :
+     * void fuse_lib_help(struct fuse_args *args)
      * }
      */
     public static void fuse_lib_help(MemorySegment args) {
-        var mh$ = fuse_lib_help$MH();
+        var mh$ = fuse_lib_help.HANDLE;
         try {
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_lib_help", args);
+            }
             mh$.invokeExact(args);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_new$MH() {
-        return RuntimeHelper.requireNonNull(constants$36.const$2,"fuse_new");
+
+    private static class fuse_new {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
+            fuse_h.C_POINTER,
+            fuse_h.C_POINTER,
+            fuse_h.C_POINTER,
+            fuse_h.C_LONG,
+            fuse_h.C_POINTER
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_new"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * struct fuse *fuse_new(struct fuse_args *args, const struct fuse_operations *op, size_t op_size, void *private_data)
+     * }
+     */
+    public static FunctionDescriptor fuse_new$descriptor() {
+        return fuse_new.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * struct fuse *fuse_new(struct fuse_args *args, const struct fuse_operations *op, size_t op_size, void *private_data)
+     * }
+     */
+    public static MethodHandle fuse_new$handle() {
+        return fuse_new.HANDLE;
     }
     /**
-     * {@snippet :
-     * struct fuse* fuse_new(struct fuse_args* args, struct fuse_operations* op, unsigned long op_size, void* private_data);
+     * {@snippet lang=c :
+     * struct fuse *fuse_new(struct fuse_args *args, const struct fuse_operations *op, size_t op_size, void *private_data)
      * }
      */
     public static MemorySegment fuse_new(MemorySegment args, MemorySegment op, long op_size, MemorySegment private_data) {
-        var mh$ = fuse_new$MH();
+        var mh$ = fuse_new.HANDLE;
         try {
-            return (java.lang.foreign.MemorySegment)mh$.invokeExact(args, op, op_size, private_data);
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_new", args, op, op_size, private_data);
+            }
+            return (MemorySegment)mh$.invokeExact(args, op, op_size, private_data);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_mount$MH() {
-        return RuntimeHelper.requireNonNull(constants$36.const$3,"fuse_mount");
+
+    private static class fuse_mount {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
+            fuse_h.C_INT,
+            fuse_h.C_POINTER,
+            fuse_h.C_POINTER
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_mount"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * int fuse_mount(struct fuse *f, const char *mountpoint)
+     * }
+     */
+    public static FunctionDescriptor fuse_mount$descriptor() {
+        return fuse_mount.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * int fuse_mount(struct fuse *f, const char *mountpoint)
+     * }
+     */
+    public static MethodHandle fuse_mount$handle() {
+        return fuse_mount.HANDLE;
     }
     /**
-     * {@snippet :
-     * int fuse_mount(struct fuse* f, char* mountpoint);
+     * {@snippet lang=c :
+     * int fuse_mount(struct fuse *f, const char *mountpoint)
      * }
      */
     public static int fuse_mount(MemorySegment f, MemorySegment mountpoint) {
-        var mh$ = fuse_mount$MH();
+        var mh$ = fuse_mount.HANDLE;
         try {
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_mount", f, mountpoint);
+            }
             return (int)mh$.invokeExact(f, mountpoint);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_unmount$MH() {
-        return RuntimeHelper.requireNonNull(constants$36.const$4,"fuse_unmount");
+
+    private static class fuse_unmount {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
+            fuse_h.C_POINTER
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_unmount"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * void fuse_unmount(struct fuse *f)
+     * }
+     */
+    public static FunctionDescriptor fuse_unmount$descriptor() {
+        return fuse_unmount.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * void fuse_unmount(struct fuse *f)
+     * }
+     */
+    public static MethodHandle fuse_unmount$handle() {
+        return fuse_unmount.HANDLE;
     }
     /**
-     * {@snippet :
-     * void fuse_unmount(struct fuse* f);
+     * {@snippet lang=c :
+     * void fuse_unmount(struct fuse *f)
      * }
      */
     public static void fuse_unmount(MemorySegment f) {
-        var mh$ = fuse_unmount$MH();
+        var mh$ = fuse_unmount.HANDLE;
         try {
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_unmount", f);
+            }
             mh$.invokeExact(f);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_destroy$MH() {
-        return RuntimeHelper.requireNonNull(constants$36.const$5,"fuse_destroy");
+
+    private static class fuse_destroy {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
+            fuse_h.C_POINTER
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_destroy"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * void fuse_destroy(struct fuse *f)
+     * }
+     */
+    public static FunctionDescriptor fuse_destroy$descriptor() {
+        return fuse_destroy.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * void fuse_destroy(struct fuse *f)
+     * }
+     */
+    public static MethodHandle fuse_destroy$handle() {
+        return fuse_destroy.HANDLE;
     }
     /**
-     * {@snippet :
-     * void fuse_destroy(struct fuse* f);
+     * {@snippet lang=c :
+     * void fuse_destroy(struct fuse *f)
      * }
      */
     public static void fuse_destroy(MemorySegment f) {
-        var mh$ = fuse_destroy$MH();
+        var mh$ = fuse_destroy.HANDLE;
         try {
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_destroy", f);
+            }
             mh$.invokeExact(f);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_loop$MH() {
-        return RuntimeHelper.requireNonNull(constants$37.const$0,"fuse_loop");
+
+    private static class fuse_loop {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
+            fuse_h.C_INT,
+            fuse_h.C_POINTER
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_loop"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * int fuse_loop(struct fuse *f)
+     * }
+     */
+    public static FunctionDescriptor fuse_loop$descriptor() {
+        return fuse_loop.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * int fuse_loop(struct fuse *f)
+     * }
+     */
+    public static MethodHandle fuse_loop$handle() {
+        return fuse_loop.HANDLE;
     }
     /**
-     * {@snippet :
-     * int fuse_loop(struct fuse* f);
+     * {@snippet lang=c :
+     * int fuse_loop(struct fuse *f)
      * }
      */
     public static int fuse_loop(MemorySegment f) {
-        var mh$ = fuse_loop$MH();
+        var mh$ = fuse_loop.HANDLE;
         try {
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_loop", f);
+            }
             return (int)mh$.invokeExact(f);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_exit$MH() {
-        return RuntimeHelper.requireNonNull(constants$37.const$1,"fuse_exit");
+
+    private static class fuse_exit {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
+            fuse_h.C_POINTER
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_exit"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * void fuse_exit(struct fuse *f)
+     * }
+     */
+    public static FunctionDescriptor fuse_exit$descriptor() {
+        return fuse_exit.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * void fuse_exit(struct fuse *f)
+     * }
+     */
+    public static MethodHandle fuse_exit$handle() {
+        return fuse_exit.HANDLE;
     }
     /**
-     * {@snippet :
-     * void fuse_exit(struct fuse* f);
+     * {@snippet lang=c :
+     * void fuse_exit(struct fuse *f)
      * }
      */
     public static void fuse_exit(MemorySegment f) {
-        var mh$ = fuse_exit$MH();
+        var mh$ = fuse_exit.HANDLE;
         try {
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_exit", f);
+            }
             mh$.invokeExact(f);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_loop_mt$MH() {
-        return RuntimeHelper.requireNonNull(constants$37.const$2,"fuse_loop_mt");
+
+    private static class fuse_loop_mt {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
+            fuse_h.C_INT,
+            fuse_h.C_POINTER,
+            fuse_h.C_POINTER
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_loop_mt"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * int fuse_loop_mt(struct fuse *f, struct fuse_loop_config *config)
+     * }
+     */
+    public static FunctionDescriptor fuse_loop_mt$descriptor() {
+        return fuse_loop_mt.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * int fuse_loop_mt(struct fuse *f, struct fuse_loop_config *config)
+     * }
+     */
+    public static MethodHandle fuse_loop_mt$handle() {
+        return fuse_loop_mt.HANDLE;
     }
     /**
-     * {@snippet :
-     * int fuse_loop_mt(struct fuse* f, struct fuse_loop_config* config);
+     * {@snippet lang=c :
+     * int fuse_loop_mt(struct fuse *f, struct fuse_loop_config *config)
      * }
      */
     public static int fuse_loop_mt(MemorySegment f, MemorySegment config) {
-        var mh$ = fuse_loop_mt$MH();
+        var mh$ = fuse_loop_mt.HANDLE;
         try {
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_loop_mt", f, config);
+            }
             return (int)mh$.invokeExact(f, config);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
-    public static MethodHandle fuse_get_session$MH() {
-        return RuntimeHelper.requireNonNull(constants$37.const$4,"fuse_get_session");
+
+    private static class fuse_get_session {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
+            fuse_h.C_POINTER,
+            fuse_h.C_POINTER
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse_h.findOrThrow("fuse_get_session"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * struct fuse_session *fuse_get_session(struct fuse *f)
+     * }
+     */
+    public static FunctionDescriptor fuse_get_session$descriptor() {
+        return fuse_get_session.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * struct fuse_session *fuse_get_session(struct fuse *f)
+     * }
+     */
+    public static MethodHandle fuse_get_session$handle() {
+        return fuse_get_session.HANDLE;
     }
     /**
-     * {@snippet :
-     * struct fuse_session* fuse_get_session(struct fuse* f);
+     * {@snippet lang=c :
+     * struct fuse_session *fuse_get_session(struct fuse *f)
      * }
      */
     public static MemorySegment fuse_get_session(MemorySegment f) {
-        var mh$ = fuse_get_session$MH();
+        var mh$ = fuse_get_session.HANDLE;
         try {
-            return (java.lang.foreign.MemorySegment)mh$.invokeExact(f);
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_get_session", f);
+            }
+            return (MemorySegment)mh$.invokeExact(f);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
 }
-
 

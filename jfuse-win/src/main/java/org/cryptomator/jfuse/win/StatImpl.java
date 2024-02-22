@@ -9,10 +9,6 @@ import java.lang.foreign.MemorySegment;
 
 record StatImpl(MemorySegment segment) implements Stat {
 
-	public StatImpl(MemorySegment address, Arena scope) {
-		this(fuse_stat.ofAddress(address, scope));
-	}
-
 	@Override
 	public TimeSpec aTime() {
 		return new TimeSpecImpl(fuse_stat.st_atim$slice(segment));
@@ -35,52 +31,52 @@ record StatImpl(MemorySegment segment) implements Stat {
 
 	@Override
 	public void setMode(int mode) {
-		fuse_stat.st_mode$set(segment, mode);
+		fuse_stat.st_mode(segment, mode);
 	}
 
 	@Override
 	public int getMode() {
-		return fuse_stat.st_mode$get(segment);
+		return fuse_stat.st_mode(segment);
 	}
 
 	@Override
 	public void setUid(int uid) {
-		fuse_stat.st_uid$set(segment, uid);
+		fuse_stat.st_uid(segment, uid);
 	}
 
 	@Override
 	public int getUid() {
-		return fuse_stat.st_uid$get(segment);
+		return fuse_stat.st_uid(segment);
 	}
 
 	@Override
 	public void setGid(int gid) {
-		fuse_stat.st_gid$set(segment, gid);
+		fuse_stat.st_gid(segment, gid);
 	}
 
 	@Override
 	public int getGid() {
-		return fuse_stat.st_gid$get(segment);
+		return fuse_stat.st_gid(segment);
 	}
 
 	@Override
 	public void setNLink(short count) {
-		fuse_stat.st_nlink$set(segment, count);
+		fuse_stat.st_nlink(segment, count);
 	}
 
 	@Override
 	public long getNLink() {
-		return fuse_stat.st_nlink$get(segment);
+		return fuse_stat.st_nlink(segment);
 	}
 
 	@Override
 	public void setSize(long size) {
-		fuse_stat.st_size$set(segment, size);
+		fuse_stat.st_size(segment, size);
 	}
 
 	@Override
 	public long getSize() {
-		return fuse_stat.st_size$get(segment);
+		return fuse_stat.st_size(segment);
 	}
 
 }

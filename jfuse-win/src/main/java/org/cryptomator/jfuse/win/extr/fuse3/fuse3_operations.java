@@ -90,7 +90,7 @@ public class fuse3_operations {
      * int (*getattr)(char*,struct fuse_stat*,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment getattr$get(MemorySegment seg) {
+    public static MemorySegment getattr(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$12.const$5.get(seg);
     }
     /**
@@ -99,17 +99,17 @@ public class fuse3_operations {
      * int (*getattr)(char*,struct fuse_stat*,struct fuse3_file_info*);
      * }
      */
-    public static void getattr$set(MemorySegment seg, MemorySegment x) {
+    public static void getattr(MemorySegment seg, MemorySegment x) {
         constants$12.const$5.set(seg, x);
     }
-    public static MemorySegment getattr$get(MemorySegment seg, long index) {
+    public static MemorySegment getattr(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$12.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void getattr$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void getattr(MemorySegment seg, long index, MemorySegment x) {
         constants$12.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static getattr getattr(MemorySegment segment, Arena scope) {
-        return getattr.ofAddress(getattr$get(segment), scope);
+        return getattr.ofAddress(getattr(segment), scope);
     }
     /**
      * {@snippet :
@@ -143,7 +143,7 @@ public class fuse3_operations {
      * int (*readlink)(char*,char*,unsigned long long);
      * }
      */
-    public static MemorySegment readlink$get(MemorySegment seg) {
+    public static MemorySegment readlink(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$13.const$3.get(seg);
     }
     /**
@@ -152,17 +152,17 @@ public class fuse3_operations {
      * int (*readlink)(char*,char*,unsigned long long);
      * }
      */
-    public static void readlink$set(MemorySegment seg, MemorySegment x) {
+    public static void readlink(MemorySegment seg, MemorySegment x) {
         constants$13.const$3.set(seg, x);
     }
-    public static MemorySegment readlink$get(MemorySegment seg, long index) {
+    public static MemorySegment readlink(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$13.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void readlink$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void readlink(MemorySegment seg, long index, MemorySegment x) {
         constants$13.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static readlink readlink(MemorySegment segment, Arena scope) {
-        return readlink.ofAddress(readlink$get(segment), scope);
+        return readlink.ofAddress(readlink(segment), scope);
     }
     /**
      * {@snippet :
@@ -196,7 +196,7 @@ public class fuse3_operations {
      * int (*mknod)(char*,unsigned int,unsigned int);
      * }
      */
-    public static MemorySegment mknod$get(MemorySegment seg) {
+    public static MemorySegment mknod(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$14.const$1.get(seg);
     }
     /**
@@ -205,17 +205,17 @@ public class fuse3_operations {
      * int (*mknod)(char*,unsigned int,unsigned int);
      * }
      */
-    public static void mknod$set(MemorySegment seg, MemorySegment x) {
+    public static void mknod(MemorySegment seg, MemorySegment x) {
         constants$14.const$1.set(seg, x);
     }
-    public static MemorySegment mknod$get(MemorySegment seg, long index) {
+    public static MemorySegment mknod(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$14.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void mknod$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void mknod(MemorySegment seg, long index, MemorySegment x) {
         constants$14.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static mknod mknod(MemorySegment segment, Arena scope) {
-        return mknod.ofAddress(mknod$get(segment), scope);
+        return mknod.ofAddress(mknod(segment), scope);
     }
     /**
      * {@snippet :
@@ -249,7 +249,7 @@ public class fuse3_operations {
      * int (*mkdir)(char*,unsigned int);
      * }
      */
-    public static MemorySegment mkdir$get(MemorySegment seg) {
+    public static MemorySegment mkdir(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$14.const$5.get(seg);
     }
     /**
@@ -258,17 +258,17 @@ public class fuse3_operations {
      * int (*mkdir)(char*,unsigned int);
      * }
      */
-    public static void mkdir$set(MemorySegment seg, MemorySegment x) {
+    public static void mkdir(MemorySegment seg, MemorySegment x) {
         constants$14.const$5.set(seg, x);
     }
-    public static MemorySegment mkdir$get(MemorySegment seg, long index) {
+    public static MemorySegment mkdir(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$14.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void mkdir$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void mkdir(MemorySegment seg, long index, MemorySegment x) {
         constants$14.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static mkdir mkdir(MemorySegment segment, Arena scope) {
-        return mkdir.ofAddress(mkdir$get(segment), scope);
+        return mkdir.ofAddress(mkdir(segment), scope);
     }
     /**
      * {@snippet :
@@ -302,7 +302,7 @@ public class fuse3_operations {
      * int (*unlink)(char*);
      * }
      */
-    public static MemorySegment unlink$get(MemorySegment seg) {
+    public static MemorySegment unlink(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$15.const$3.get(seg);
     }
     /**
@@ -311,17 +311,17 @@ public class fuse3_operations {
      * int (*unlink)(char*);
      * }
      */
-    public static void unlink$set(MemorySegment seg, MemorySegment x) {
+    public static void unlink(MemorySegment seg, MemorySegment x) {
         constants$15.const$3.set(seg, x);
     }
-    public static MemorySegment unlink$get(MemorySegment seg, long index) {
+    public static MemorySegment unlink(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$15.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void unlink$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void unlink(MemorySegment seg, long index, MemorySegment x) {
         constants$15.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static unlink unlink(MemorySegment segment, Arena scope) {
-        return unlink.ofAddress(unlink$get(segment), scope);
+        return unlink.ofAddress(unlink(segment), scope);
     }
     /**
      * {@snippet :
@@ -355,7 +355,7 @@ public class fuse3_operations {
      * int (*rmdir)(char*);
      * }
      */
-    public static MemorySegment rmdir$get(MemorySegment seg) {
+    public static MemorySegment rmdir(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$15.const$5.get(seg);
     }
     /**
@@ -364,17 +364,17 @@ public class fuse3_operations {
      * int (*rmdir)(char*);
      * }
      */
-    public static void rmdir$set(MemorySegment seg, MemorySegment x) {
+    public static void rmdir(MemorySegment seg, MemorySegment x) {
         constants$15.const$5.set(seg, x);
     }
-    public static MemorySegment rmdir$get(MemorySegment seg, long index) {
+    public static MemorySegment rmdir(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$15.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void rmdir$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void rmdir(MemorySegment seg, long index, MemorySegment x) {
         constants$15.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static rmdir rmdir(MemorySegment segment, Arena scope) {
-        return rmdir.ofAddress(rmdir$get(segment), scope);
+        return rmdir.ofAddress(rmdir(segment), scope);
     }
     /**
      * {@snippet :
@@ -408,7 +408,7 @@ public class fuse3_operations {
      * int (*symlink)(char*,char*);
      * }
      */
-    public static MemorySegment symlink$get(MemorySegment seg) {
+    public static MemorySegment symlink(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$16.const$3.get(seg);
     }
     /**
@@ -417,17 +417,17 @@ public class fuse3_operations {
      * int (*symlink)(char*,char*);
      * }
      */
-    public static void symlink$set(MemorySegment seg, MemorySegment x) {
+    public static void symlink(MemorySegment seg, MemorySegment x) {
         constants$16.const$3.set(seg, x);
     }
-    public static MemorySegment symlink$get(MemorySegment seg, long index) {
+    public static MemorySegment symlink(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$16.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void symlink$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void symlink(MemorySegment seg, long index, MemorySegment x) {
         constants$16.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static symlink symlink(MemorySegment segment, Arena scope) {
-        return symlink.ofAddress(symlink$get(segment), scope);
+        return symlink.ofAddress(symlink(segment), scope);
     }
     /**
      * {@snippet :
@@ -461,7 +461,7 @@ public class fuse3_operations {
      * int (*rename)(char*,char*,unsigned int);
      * }
      */
-    public static MemorySegment rename$get(MemorySegment seg) {
+    public static MemorySegment rename(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$17.const$1.get(seg);
     }
     /**
@@ -470,17 +470,17 @@ public class fuse3_operations {
      * int (*rename)(char*,char*,unsigned int);
      * }
      */
-    public static void rename$set(MemorySegment seg, MemorySegment x) {
+    public static void rename(MemorySegment seg, MemorySegment x) {
         constants$17.const$1.set(seg, x);
     }
-    public static MemorySegment rename$get(MemorySegment seg, long index) {
+    public static MemorySegment rename(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$17.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void rename$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void rename(MemorySegment seg, long index, MemorySegment x) {
         constants$17.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static rename rename(MemorySegment segment, Arena scope) {
-        return rename.ofAddress(rename$get(segment), scope);
+        return rename.ofAddress(rename(segment), scope);
     }
     /**
      * {@snippet :
@@ -514,7 +514,7 @@ public class fuse3_operations {
      * int (*link)(char*,char*);
      * }
      */
-    public static MemorySegment link$get(MemorySegment seg) {
+    public static MemorySegment link(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$17.const$3.get(seg);
     }
     /**
@@ -523,17 +523,17 @@ public class fuse3_operations {
      * int (*link)(char*,char*);
      * }
      */
-    public static void link$set(MemorySegment seg, MemorySegment x) {
+    public static void link(MemorySegment seg, MemorySegment x) {
         constants$17.const$3.set(seg, x);
     }
-    public static MemorySegment link$get(MemorySegment seg, long index) {
+    public static MemorySegment link(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$17.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void link$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void link(MemorySegment seg, long index, MemorySegment x) {
         constants$17.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static link link(MemorySegment segment, Arena scope) {
-        return link.ofAddress(link$get(segment), scope);
+        return link.ofAddress(link(segment), scope);
     }
     /**
      * {@snippet :
@@ -567,7 +567,7 @@ public class fuse3_operations {
      * int (*chmod)(char*,unsigned int,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment chmod$get(MemorySegment seg) {
+    public static MemorySegment chmod(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$18.const$1.get(seg);
     }
     /**
@@ -576,17 +576,17 @@ public class fuse3_operations {
      * int (*chmod)(char*,unsigned int,struct fuse3_file_info*);
      * }
      */
-    public static void chmod$set(MemorySegment seg, MemorySegment x) {
+    public static void chmod(MemorySegment seg, MemorySegment x) {
         constants$18.const$1.set(seg, x);
     }
-    public static MemorySegment chmod$get(MemorySegment seg, long index) {
+    public static MemorySegment chmod(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$18.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void chmod$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void chmod(MemorySegment seg, long index, MemorySegment x) {
         constants$18.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static chmod chmod(MemorySegment segment, Arena scope) {
-        return chmod.ofAddress(chmod$get(segment), scope);
+        return chmod.ofAddress(chmod(segment), scope);
     }
     /**
      * {@snippet :
@@ -620,7 +620,7 @@ public class fuse3_operations {
      * int (*chown)(char*,unsigned int,unsigned int,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment chown$get(MemorySegment seg) {
+    public static MemorySegment chown(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$18.const$5.get(seg);
     }
     /**
@@ -629,17 +629,17 @@ public class fuse3_operations {
      * int (*chown)(char*,unsigned int,unsigned int,struct fuse3_file_info*);
      * }
      */
-    public static void chown$set(MemorySegment seg, MemorySegment x) {
+    public static void chown(MemorySegment seg, MemorySegment x) {
         constants$18.const$5.set(seg, x);
     }
-    public static MemorySegment chown$get(MemorySegment seg, long index) {
+    public static MemorySegment chown(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$18.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void chown$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void chown(MemorySegment seg, long index, MemorySegment x) {
         constants$18.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static chown chown(MemorySegment segment, Arena scope) {
-        return chown.ofAddress(chown$get(segment), scope);
+        return chown.ofAddress(chown(segment), scope);
     }
     /**
      * {@snippet :
@@ -673,7 +673,7 @@ public class fuse3_operations {
      * int (*truncate)(char*,long long,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment truncate$get(MemorySegment seg) {
+    public static MemorySegment truncate(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$19.const$3.get(seg);
     }
     /**
@@ -682,17 +682,17 @@ public class fuse3_operations {
      * int (*truncate)(char*,long long,struct fuse3_file_info*);
      * }
      */
-    public static void truncate$set(MemorySegment seg, MemorySegment x) {
+    public static void truncate(MemorySegment seg, MemorySegment x) {
         constants$19.const$3.set(seg, x);
     }
-    public static MemorySegment truncate$get(MemorySegment seg, long index) {
+    public static MemorySegment truncate(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$19.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void truncate$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void truncate(MemorySegment seg, long index, MemorySegment x) {
         constants$19.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static truncate truncate(MemorySegment segment, Arena scope) {
-        return truncate.ofAddress(truncate$get(segment), scope);
+        return truncate.ofAddress(truncate(segment), scope);
     }
     /**
      * {@snippet :
@@ -726,7 +726,7 @@ public class fuse3_operations {
      * int (*open)(char*,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment open$get(MemorySegment seg) {
+    public static MemorySegment open(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$19.const$5.get(seg);
     }
     /**
@@ -735,17 +735,17 @@ public class fuse3_operations {
      * int (*open)(char*,struct fuse3_file_info*);
      * }
      */
-    public static void open$set(MemorySegment seg, MemorySegment x) {
+    public static void open(MemorySegment seg, MemorySegment x) {
         constants$19.const$5.set(seg, x);
     }
-    public static MemorySegment open$get(MemorySegment seg, long index) {
+    public static MemorySegment open(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$19.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void open$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void open(MemorySegment seg, long index, MemorySegment x) {
         constants$19.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static open open(MemorySegment segment, Arena scope) {
-        return open.ofAddress(open$get(segment), scope);
+        return open.ofAddress(open(segment), scope);
     }
     /**
      * {@snippet :
@@ -779,7 +779,7 @@ public class fuse3_operations {
      * int (*read)(char*,char*,unsigned long long,long long,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment read$get(MemorySegment seg) {
+    public static MemorySegment read(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$20.const$3.get(seg);
     }
     /**
@@ -788,17 +788,17 @@ public class fuse3_operations {
      * int (*read)(char*,char*,unsigned long long,long long,struct fuse3_file_info*);
      * }
      */
-    public static void read$set(MemorySegment seg, MemorySegment x) {
+    public static void read(MemorySegment seg, MemorySegment x) {
         constants$20.const$3.set(seg, x);
     }
-    public static MemorySegment read$get(MemorySegment seg, long index) {
+    public static MemorySegment read(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$20.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void read$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void read(MemorySegment seg, long index, MemorySegment x) {
         constants$20.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static read read(MemorySegment segment, Arena scope) {
-        return read.ofAddress(read$get(segment), scope);
+        return read.ofAddress(read(segment), scope);
     }
     /**
      * {@snippet :
@@ -832,7 +832,7 @@ public class fuse3_operations {
      * int (*write)(char*,char*,unsigned long long,long long,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment write$get(MemorySegment seg) {
+    public static MemorySegment write(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$20.const$5.get(seg);
     }
     /**
@@ -841,17 +841,17 @@ public class fuse3_operations {
      * int (*write)(char*,char*,unsigned long long,long long,struct fuse3_file_info*);
      * }
      */
-    public static void write$set(MemorySegment seg, MemorySegment x) {
+    public static void write(MemorySegment seg, MemorySegment x) {
         constants$20.const$5.set(seg, x);
     }
-    public static MemorySegment write$get(MemorySegment seg, long index) {
+    public static MemorySegment write(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$20.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void write$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void write(MemorySegment seg, long index, MemorySegment x) {
         constants$20.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static write write(MemorySegment segment, Arena scope) {
-        return write.ofAddress(write$get(segment), scope);
+        return write.ofAddress(write(segment), scope);
     }
     /**
      * {@snippet :
@@ -885,7 +885,7 @@ public class fuse3_operations {
      * int (*statfs)(char*,struct fuse_statvfs*);
      * }
      */
-    public static MemorySegment statfs$get(MemorySegment seg) {
+    public static MemorySegment statfs(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$21.const$1.get(seg);
     }
     /**
@@ -894,17 +894,17 @@ public class fuse3_operations {
      * int (*statfs)(char*,struct fuse_statvfs*);
      * }
      */
-    public static void statfs$set(MemorySegment seg, MemorySegment x) {
+    public static void statfs(MemorySegment seg, MemorySegment x) {
         constants$21.const$1.set(seg, x);
     }
-    public static MemorySegment statfs$get(MemorySegment seg, long index) {
+    public static MemorySegment statfs(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$21.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void statfs$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void statfs(MemorySegment seg, long index, MemorySegment x) {
         constants$21.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static statfs statfs(MemorySegment segment, Arena scope) {
-        return statfs.ofAddress(statfs$get(segment), scope);
+        return statfs.ofAddress(statfs(segment), scope);
     }
     /**
      * {@snippet :
@@ -938,7 +938,7 @@ public class fuse3_operations {
      * int (*flush)(char*,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment flush$get(MemorySegment seg) {
+    public static MemorySegment flush(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$21.const$3.get(seg);
     }
     /**
@@ -947,17 +947,17 @@ public class fuse3_operations {
      * int (*flush)(char*,struct fuse3_file_info*);
      * }
      */
-    public static void flush$set(MemorySegment seg, MemorySegment x) {
+    public static void flush(MemorySegment seg, MemorySegment x) {
         constants$21.const$3.set(seg, x);
     }
-    public static MemorySegment flush$get(MemorySegment seg, long index) {
+    public static MemorySegment flush(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$21.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void flush$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void flush(MemorySegment seg, long index, MemorySegment x) {
         constants$21.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static flush flush(MemorySegment segment, Arena scope) {
-        return flush.ofAddress(flush$get(segment), scope);
+        return flush.ofAddress(flush(segment), scope);
     }
     /**
      * {@snippet :
@@ -991,7 +991,7 @@ public class fuse3_operations {
      * int (*release)(char*,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment release$get(MemorySegment seg) {
+    public static MemorySegment release(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$21.const$5.get(seg);
     }
     /**
@@ -1000,17 +1000,17 @@ public class fuse3_operations {
      * int (*release)(char*,struct fuse3_file_info*);
      * }
      */
-    public static void release$set(MemorySegment seg, MemorySegment x) {
+    public static void release(MemorySegment seg, MemorySegment x) {
         constants$21.const$5.set(seg, x);
     }
-    public static MemorySegment release$get(MemorySegment seg, long index) {
+    public static MemorySegment release(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$21.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void release$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void release(MemorySegment seg, long index, MemorySegment x) {
         constants$21.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static release release(MemorySegment segment, Arena scope) {
-        return release.ofAddress(release$get(segment), scope);
+        return release.ofAddress(release(segment), scope);
     }
     /**
      * {@snippet :
@@ -1044,7 +1044,7 @@ public class fuse3_operations {
      * int (*fsync)(char*,int,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment fsync$get(MemorySegment seg) {
+    public static MemorySegment fsync(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$22.const$1.get(seg);
     }
     /**
@@ -1053,17 +1053,17 @@ public class fuse3_operations {
      * int (*fsync)(char*,int,struct fuse3_file_info*);
      * }
      */
-    public static void fsync$set(MemorySegment seg, MemorySegment x) {
+    public static void fsync(MemorySegment seg, MemorySegment x) {
         constants$22.const$1.set(seg, x);
     }
-    public static MemorySegment fsync$get(MemorySegment seg, long index) {
+    public static MemorySegment fsync(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$22.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void fsync$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void fsync(MemorySegment seg, long index, MemorySegment x) {
         constants$22.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static fsync fsync(MemorySegment segment, Arena scope) {
-        return fsync.ofAddress(fsync$get(segment), scope);
+        return fsync.ofAddress(fsync(segment), scope);
     }
     /**
      * {@snippet :
@@ -1097,7 +1097,7 @@ public class fuse3_operations {
      * int (*setxattr)(char*,char*,char*,unsigned long long,int);
      * }
      */
-    public static MemorySegment setxattr$get(MemorySegment seg) {
+    public static MemorySegment setxattr(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$22.const$3.get(seg);
     }
     /**
@@ -1106,17 +1106,17 @@ public class fuse3_operations {
      * int (*setxattr)(char*,char*,char*,unsigned long long,int);
      * }
      */
-    public static void setxattr$set(MemorySegment seg, MemorySegment x) {
+    public static void setxattr(MemorySegment seg, MemorySegment x) {
         constants$22.const$3.set(seg, x);
     }
-    public static MemorySegment setxattr$get(MemorySegment seg, long index) {
+    public static MemorySegment setxattr(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$22.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void setxattr$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void setxattr(MemorySegment seg, long index, MemorySegment x) {
         constants$22.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static setxattr setxattr(MemorySegment segment, Arena scope) {
-        return setxattr.ofAddress(setxattr$get(segment), scope);
+        return setxattr.ofAddress(setxattr(segment), scope);
     }
     /**
      * {@snippet :
@@ -1150,7 +1150,7 @@ public class fuse3_operations {
      * int (*getxattr)(char*,char*,char*,unsigned long long);
      * }
      */
-    public static MemorySegment getxattr$get(MemorySegment seg) {
+    public static MemorySegment getxattr(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$23.const$1.get(seg);
     }
     /**
@@ -1159,17 +1159,17 @@ public class fuse3_operations {
      * int (*getxattr)(char*,char*,char*,unsigned long long);
      * }
      */
-    public static void getxattr$set(MemorySegment seg, MemorySegment x) {
+    public static void getxattr(MemorySegment seg, MemorySegment x) {
         constants$23.const$1.set(seg, x);
     }
-    public static MemorySegment getxattr$get(MemorySegment seg, long index) {
+    public static MemorySegment getxattr(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$23.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void getxattr$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void getxattr(MemorySegment seg, long index, MemorySegment x) {
         constants$23.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static getxattr getxattr(MemorySegment segment, Arena scope) {
-        return getxattr.ofAddress(getxattr$get(segment), scope);
+        return getxattr.ofAddress(getxattr(segment), scope);
     }
     /**
      * {@snippet :
@@ -1203,7 +1203,7 @@ public class fuse3_operations {
      * int (*listxattr)(char*,char*,unsigned long long);
      * }
      */
-    public static MemorySegment listxattr$get(MemorySegment seg) {
+    public static MemorySegment listxattr(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$23.const$3.get(seg);
     }
     /**
@@ -1212,17 +1212,17 @@ public class fuse3_operations {
      * int (*listxattr)(char*,char*,unsigned long long);
      * }
      */
-    public static void listxattr$set(MemorySegment seg, MemorySegment x) {
+    public static void listxattr(MemorySegment seg, MemorySegment x) {
         constants$23.const$3.set(seg, x);
     }
-    public static MemorySegment listxattr$get(MemorySegment seg, long index) {
+    public static MemorySegment listxattr(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$23.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void listxattr$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void listxattr(MemorySegment seg, long index, MemorySegment x) {
         constants$23.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static listxattr listxattr(MemorySegment segment, Arena scope) {
-        return listxattr.ofAddress(listxattr$get(segment), scope);
+        return listxattr.ofAddress(listxattr(segment), scope);
     }
     /**
      * {@snippet :
@@ -1256,7 +1256,7 @@ public class fuse3_operations {
      * int (*removexattr)(char*,char*);
      * }
      */
-    public static MemorySegment removexattr$get(MemorySegment seg) {
+    public static MemorySegment removexattr(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$23.const$5.get(seg);
     }
     /**
@@ -1265,17 +1265,17 @@ public class fuse3_operations {
      * int (*removexattr)(char*,char*);
      * }
      */
-    public static void removexattr$set(MemorySegment seg, MemorySegment x) {
+    public static void removexattr(MemorySegment seg, MemorySegment x) {
         constants$23.const$5.set(seg, x);
     }
-    public static MemorySegment removexattr$get(MemorySegment seg, long index) {
+    public static MemorySegment removexattr(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$23.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void removexattr$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void removexattr(MemorySegment seg, long index, MemorySegment x) {
         constants$23.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static removexattr removexattr(MemorySegment segment, Arena scope) {
-        return removexattr.ofAddress(removexattr$get(segment), scope);
+        return removexattr.ofAddress(removexattr(segment), scope);
     }
     /**
      * {@snippet :
@@ -1309,7 +1309,7 @@ public class fuse3_operations {
      * int (*opendir)(char*,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment opendir$get(MemorySegment seg) {
+    public static MemorySegment opendir(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$24.const$1.get(seg);
     }
     /**
@@ -1318,17 +1318,17 @@ public class fuse3_operations {
      * int (*opendir)(char*,struct fuse3_file_info*);
      * }
      */
-    public static void opendir$set(MemorySegment seg, MemorySegment x) {
+    public static void opendir(MemorySegment seg, MemorySegment x) {
         constants$24.const$1.set(seg, x);
     }
-    public static MemorySegment opendir$get(MemorySegment seg, long index) {
+    public static MemorySegment opendir(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$24.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void opendir$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void opendir(MemorySegment seg, long index, MemorySegment x) {
         constants$24.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static opendir opendir(MemorySegment segment, Arena scope) {
-        return opendir.ofAddress(opendir$get(segment), scope);
+        return opendir.ofAddress(opendir(segment), scope);
     }
     /**
      * {@snippet :
@@ -1362,7 +1362,7 @@ public class fuse3_operations {
      * int (*readdir)(char*,void*,int (*)(void*,char*,struct fuse_stat*,long long,enum fuse3_fill_dir_flags),long long,struct fuse3_file_info*,enum fuse3_readdir_flags);
      * }
      */
-    public static MemorySegment readdir$get(MemorySegment seg) {
+    public static MemorySegment readdir(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$24.const$5.get(seg);
     }
     /**
@@ -1371,17 +1371,17 @@ public class fuse3_operations {
      * int (*readdir)(char*,void*,int (*)(void*,char*,struct fuse_stat*,long long,enum fuse3_fill_dir_flags),long long,struct fuse3_file_info*,enum fuse3_readdir_flags);
      * }
      */
-    public static void readdir$set(MemorySegment seg, MemorySegment x) {
+    public static void readdir(MemorySegment seg, MemorySegment x) {
         constants$24.const$5.set(seg, x);
     }
-    public static MemorySegment readdir$get(MemorySegment seg, long index) {
+    public static MemorySegment readdir(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$24.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void readdir$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void readdir(MemorySegment seg, long index, MemorySegment x) {
         constants$24.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static readdir readdir(MemorySegment segment, Arena scope) {
-        return readdir.ofAddress(readdir$get(segment), scope);
+        return readdir.ofAddress(readdir(segment), scope);
     }
     /**
      * {@snippet :
@@ -1415,7 +1415,7 @@ public class fuse3_operations {
      * int (*releasedir)(char*,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment releasedir$get(MemorySegment seg) {
+    public static MemorySegment releasedir(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$25.const$1.get(seg);
     }
     /**
@@ -1424,17 +1424,17 @@ public class fuse3_operations {
      * int (*releasedir)(char*,struct fuse3_file_info*);
      * }
      */
-    public static void releasedir$set(MemorySegment seg, MemorySegment x) {
+    public static void releasedir(MemorySegment seg, MemorySegment x) {
         constants$25.const$1.set(seg, x);
     }
-    public static MemorySegment releasedir$get(MemorySegment seg, long index) {
+    public static MemorySegment releasedir(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$25.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void releasedir$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void releasedir(MemorySegment seg, long index, MemorySegment x) {
         constants$25.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static releasedir releasedir(MemorySegment segment, Arena scope) {
-        return releasedir.ofAddress(releasedir$get(segment), scope);
+        return releasedir.ofAddress(releasedir(segment), scope);
     }
     /**
      * {@snippet :
@@ -1468,7 +1468,7 @@ public class fuse3_operations {
      * int (*fsyncdir)(char*,int,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment fsyncdir$get(MemorySegment seg) {
+    public static MemorySegment fsyncdir(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$25.const$3.get(seg);
     }
     /**
@@ -1477,17 +1477,17 @@ public class fuse3_operations {
      * int (*fsyncdir)(char*,int,struct fuse3_file_info*);
      * }
      */
-    public static void fsyncdir$set(MemorySegment seg, MemorySegment x) {
+    public static void fsyncdir(MemorySegment seg, MemorySegment x) {
         constants$25.const$3.set(seg, x);
     }
-    public static MemorySegment fsyncdir$get(MemorySegment seg, long index) {
+    public static MemorySegment fsyncdir(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$25.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void fsyncdir$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void fsyncdir(MemorySegment seg, long index, MemorySegment x) {
         constants$25.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static fsyncdir fsyncdir(MemorySegment segment, Arena scope) {
-        return fsyncdir.ofAddress(fsyncdir$get(segment), scope);
+        return fsyncdir.ofAddress(fsyncdir(segment), scope);
     }
     /**
      * {@snippet :
@@ -1521,7 +1521,7 @@ public class fuse3_operations {
      * void* (*init)(struct fuse3_conn_info*,struct fuse3_config*);
      * }
      */
-    public static MemorySegment init$get(MemorySegment seg) {
+    public static MemorySegment init(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$26.const$1.get(seg);
     }
     /**
@@ -1530,17 +1530,17 @@ public class fuse3_operations {
      * void* (*init)(struct fuse3_conn_info*,struct fuse3_config*);
      * }
      */
-    public static void init$set(MemorySegment seg, MemorySegment x) {
+    public static void init(MemorySegment seg, MemorySegment x) {
         constants$26.const$1.set(seg, x);
     }
-    public static MemorySegment init$get(MemorySegment seg, long index) {
+    public static MemorySegment init(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$26.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void init$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void init(MemorySegment seg, long index, MemorySegment x) {
         constants$26.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static init init(MemorySegment segment, Arena scope) {
-        return init.ofAddress(init$get(segment), scope);
+        return init.ofAddress(init(segment), scope);
     }
     /**
      * {@snippet :
@@ -1574,7 +1574,7 @@ public class fuse3_operations {
      * void (*destroy)(void*);
      * }
      */
-    public static MemorySegment destroy$get(MemorySegment seg) {
+    public static MemorySegment destroy(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$26.const$5.get(seg);
     }
     /**
@@ -1583,17 +1583,17 @@ public class fuse3_operations {
      * void (*destroy)(void*);
      * }
      */
-    public static void destroy$set(MemorySegment seg, MemorySegment x) {
+    public static void destroy(MemorySegment seg, MemorySegment x) {
         constants$26.const$5.set(seg, x);
     }
-    public static MemorySegment destroy$get(MemorySegment seg, long index) {
+    public static MemorySegment destroy(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$26.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void destroy$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void destroy(MemorySegment seg, long index, MemorySegment x) {
         constants$26.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static destroy destroy(MemorySegment segment, Arena scope) {
-        return destroy.ofAddress(destroy$get(segment), scope);
+        return destroy.ofAddress(destroy(segment), scope);
     }
     /**
      * {@snippet :
@@ -1627,7 +1627,7 @@ public class fuse3_operations {
      * int (*access)(char*,int);
      * }
      */
-    public static MemorySegment access$get(MemorySegment seg) {
+    public static MemorySegment access(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$27.const$1.get(seg);
     }
     /**
@@ -1636,17 +1636,17 @@ public class fuse3_operations {
      * int (*access)(char*,int);
      * }
      */
-    public static void access$set(MemorySegment seg, MemorySegment x) {
+    public static void access(MemorySegment seg, MemorySegment x) {
         constants$27.const$1.set(seg, x);
     }
-    public static MemorySegment access$get(MemorySegment seg, long index) {
+    public static MemorySegment access(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$27.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void access$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void access(MemorySegment seg, long index, MemorySegment x) {
         constants$27.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static access access(MemorySegment segment, Arena scope) {
-        return access.ofAddress(access$get(segment), scope);
+        return access.ofAddress(access(segment), scope);
     }
     /**
      * {@snippet :
@@ -1680,7 +1680,7 @@ public class fuse3_operations {
      * int (*create)(char*,unsigned int,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment create$get(MemorySegment seg) {
+    public static MemorySegment create(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$27.const$3.get(seg);
     }
     /**
@@ -1689,17 +1689,17 @@ public class fuse3_operations {
      * int (*create)(char*,unsigned int,struct fuse3_file_info*);
      * }
      */
-    public static void create$set(MemorySegment seg, MemorySegment x) {
+    public static void create(MemorySegment seg, MemorySegment x) {
         constants$27.const$3.set(seg, x);
     }
-    public static MemorySegment create$get(MemorySegment seg, long index) {
+    public static MemorySegment create(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$27.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void create$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void create(MemorySegment seg, long index, MemorySegment x) {
         constants$27.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static create create(MemorySegment segment, Arena scope) {
-        return create.ofAddress(create$get(segment), scope);
+        return create.ofAddress(create(segment), scope);
     }
     /**
      * {@snippet :
@@ -1733,7 +1733,7 @@ public class fuse3_operations {
      * int (*lock)(char*,struct fuse3_file_info*,int,struct fuse_flock*);
      * }
      */
-    public static MemorySegment lock$get(MemorySegment seg) {
+    public static MemorySegment lock(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$28.const$1.get(seg);
     }
     /**
@@ -1742,17 +1742,17 @@ public class fuse3_operations {
      * int (*lock)(char*,struct fuse3_file_info*,int,struct fuse_flock*);
      * }
      */
-    public static void lock$set(MemorySegment seg, MemorySegment x) {
+    public static void lock(MemorySegment seg, MemorySegment x) {
         constants$28.const$1.set(seg, x);
     }
-    public static MemorySegment lock$get(MemorySegment seg, long index) {
+    public static MemorySegment lock(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$28.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void lock$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void lock(MemorySegment seg, long index, MemorySegment x) {
         constants$28.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static lock lock(MemorySegment segment, Arena scope) {
-        return lock.ofAddress(lock$get(segment), scope);
+        return lock.ofAddress(lock(segment), scope);
     }
     /**
      * {@snippet :
@@ -1786,7 +1786,7 @@ public class fuse3_operations {
      * int (*utimens)(char*,struct fuse_timespec*,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment utimens$get(MemorySegment seg) {
+    public static MemorySegment utimens(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$28.const$3.get(seg);
     }
     /**
@@ -1795,17 +1795,17 @@ public class fuse3_operations {
      * int (*utimens)(char*,struct fuse_timespec*,struct fuse3_file_info*);
      * }
      */
-    public static void utimens$set(MemorySegment seg, MemorySegment x) {
+    public static void utimens(MemorySegment seg, MemorySegment x) {
         constants$28.const$3.set(seg, x);
     }
-    public static MemorySegment utimens$get(MemorySegment seg, long index) {
+    public static MemorySegment utimens(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$28.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void utimens$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void utimens(MemorySegment seg, long index, MemorySegment x) {
         constants$28.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static utimens utimens(MemorySegment segment, Arena scope) {
-        return utimens.ofAddress(utimens$get(segment), scope);
+        return utimens.ofAddress(utimens(segment), scope);
     }
     /**
      * {@snippet :
@@ -1839,7 +1839,7 @@ public class fuse3_operations {
      * int (*bmap)(char*,unsigned long long,unsigned long long*);
      * }
      */
-    public static MemorySegment bmap$get(MemorySegment seg) {
+    public static MemorySegment bmap(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$28.const$5.get(seg);
     }
     /**
@@ -1848,17 +1848,17 @@ public class fuse3_operations {
      * int (*bmap)(char*,unsigned long long,unsigned long long*);
      * }
      */
-    public static void bmap$set(MemorySegment seg, MemorySegment x) {
+    public static void bmap(MemorySegment seg, MemorySegment x) {
         constants$28.const$5.set(seg, x);
     }
-    public static MemorySegment bmap$get(MemorySegment seg, long index) {
+    public static MemorySegment bmap(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$28.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void bmap$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void bmap(MemorySegment seg, long index, MemorySegment x) {
         constants$28.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static bmap bmap(MemorySegment segment, Arena scope) {
-        return bmap.ofAddress(bmap$get(segment), scope);
+        return bmap.ofAddress(bmap(segment), scope);
     }
     /**
      * {@snippet :
@@ -1892,7 +1892,7 @@ public class fuse3_operations {
      * int (*ioctl)(char*,int,void*,struct fuse3_file_info*,unsigned int,void*);
      * }
      */
-    public static MemorySegment ioctl$get(MemorySegment seg) {
+    public static MemorySegment ioctl(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$29.const$3.get(seg);
     }
     /**
@@ -1901,17 +1901,17 @@ public class fuse3_operations {
      * int (*ioctl)(char*,int,void*,struct fuse3_file_info*,unsigned int,void*);
      * }
      */
-    public static void ioctl$set(MemorySegment seg, MemorySegment x) {
+    public static void ioctl(MemorySegment seg, MemorySegment x) {
         constants$29.const$3.set(seg, x);
     }
-    public static MemorySegment ioctl$get(MemorySegment seg, long index) {
+    public static MemorySegment ioctl(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$29.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void ioctl$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void ioctl(MemorySegment seg, long index, MemorySegment x) {
         constants$29.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static ioctl ioctl(MemorySegment segment, Arena scope) {
-        return ioctl.ofAddress(ioctl$get(segment), scope);
+        return ioctl.ofAddress(ioctl(segment), scope);
     }
     /**
      * {@snippet :
@@ -1945,7 +1945,7 @@ public class fuse3_operations {
      * int (*poll)(char*,struct fuse3_file_info*,struct fuse3_pollhandle*,unsigned int*);
      * }
      */
-    public static MemorySegment poll$get(MemorySegment seg) {
+    public static MemorySegment poll(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$30.const$1.get(seg);
     }
     /**
@@ -1954,17 +1954,17 @@ public class fuse3_operations {
      * int (*poll)(char*,struct fuse3_file_info*,struct fuse3_pollhandle*,unsigned int*);
      * }
      */
-    public static void poll$set(MemorySegment seg, MemorySegment x) {
+    public static void poll(MemorySegment seg, MemorySegment x) {
         constants$30.const$1.set(seg, x);
     }
-    public static MemorySegment poll$get(MemorySegment seg, long index) {
+    public static MemorySegment poll(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$30.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void poll$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void poll(MemorySegment seg, long index, MemorySegment x) {
         constants$30.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static poll poll(MemorySegment segment, Arena scope) {
-        return poll.ofAddress(poll$get(segment), scope);
+        return poll.ofAddress(poll(segment), scope);
     }
     /**
      * {@snippet :
@@ -1998,7 +1998,7 @@ public class fuse3_operations {
      * int (*write_buf)(char*,struct fuse3_bufvec*,long long,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment write_buf$get(MemorySegment seg) {
+    public static MemorySegment write_buf(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$30.const$5.get(seg);
     }
     /**
@@ -2007,17 +2007,17 @@ public class fuse3_operations {
      * int (*write_buf)(char*,struct fuse3_bufvec*,long long,struct fuse3_file_info*);
      * }
      */
-    public static void write_buf$set(MemorySegment seg, MemorySegment x) {
+    public static void write_buf(MemorySegment seg, MemorySegment x) {
         constants$30.const$5.set(seg, x);
     }
-    public static MemorySegment write_buf$get(MemorySegment seg, long index) {
+    public static MemorySegment write_buf(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$30.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void write_buf$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void write_buf(MemorySegment seg, long index, MemorySegment x) {
         constants$30.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static write_buf write_buf(MemorySegment segment, Arena scope) {
-        return write_buf.ofAddress(write_buf$get(segment), scope);
+        return write_buf.ofAddress(write_buf(segment), scope);
     }
     /**
      * {@snippet :
@@ -2051,7 +2051,7 @@ public class fuse3_operations {
      * int (*read_buf)(char*,struct fuse3_bufvec**,unsigned long long,long long,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment read_buf$get(MemorySegment seg) {
+    public static MemorySegment read_buf(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$31.const$1.get(seg);
     }
     /**
@@ -2060,17 +2060,17 @@ public class fuse3_operations {
      * int (*read_buf)(char*,struct fuse3_bufvec**,unsigned long long,long long,struct fuse3_file_info*);
      * }
      */
-    public static void read_buf$set(MemorySegment seg, MemorySegment x) {
+    public static void read_buf(MemorySegment seg, MemorySegment x) {
         constants$31.const$1.set(seg, x);
     }
-    public static MemorySegment read_buf$get(MemorySegment seg, long index) {
+    public static MemorySegment read_buf(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$31.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void read_buf$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void read_buf(MemorySegment seg, long index, MemorySegment x) {
         constants$31.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static read_buf read_buf(MemorySegment segment, Arena scope) {
-        return read_buf.ofAddress(read_buf$get(segment), scope);
+        return read_buf.ofAddress(read_buf(segment), scope);
     }
     /**
      * {@snippet :
@@ -2104,7 +2104,7 @@ public class fuse3_operations {
      * int (*flock)(char*,struct fuse3_file_info*,int);
      * }
      */
-    public static MemorySegment flock$get(MemorySegment seg) {
+    public static MemorySegment flock(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$31.const$3.get(seg);
     }
     /**
@@ -2113,17 +2113,17 @@ public class fuse3_operations {
      * int (*flock)(char*,struct fuse3_file_info*,int);
      * }
      */
-    public static void flock$set(MemorySegment seg, MemorySegment x) {
+    public static void flock(MemorySegment seg, MemorySegment x) {
         constants$31.const$3.set(seg, x);
     }
-    public static MemorySegment flock$get(MemorySegment seg, long index) {
+    public static MemorySegment flock(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$31.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void flock$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void flock(MemorySegment seg, long index, MemorySegment x) {
         constants$31.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static flock flock(MemorySegment segment, Arena scope) {
-        return flock.ofAddress(flock$get(segment), scope);
+        return flock.ofAddress(flock(segment), scope);
     }
     /**
      * {@snippet :
@@ -2157,7 +2157,7 @@ public class fuse3_operations {
      * int (*fallocate)(char*,int,long long,long long,struct fuse3_file_info*);
      * }
      */
-    public static MemorySegment fallocate$get(MemorySegment seg) {
+    public static MemorySegment fallocate(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$32.const$1.get(seg);
     }
     /**
@@ -2166,17 +2166,17 @@ public class fuse3_operations {
      * int (*fallocate)(char*,int,long long,long long,struct fuse3_file_info*);
      * }
      */
-    public static void fallocate$set(MemorySegment seg, MemorySegment x) {
+    public static void fallocate(MemorySegment seg, MemorySegment x) {
         constants$32.const$1.set(seg, x);
     }
-    public static MemorySegment fallocate$get(MemorySegment seg, long index) {
+    public static MemorySegment fallocate(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$32.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void fallocate$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void fallocate(MemorySegment seg, long index, MemorySegment x) {
         constants$32.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static fallocate fallocate(MemorySegment segment, Arena scope) {
-        return fallocate.ofAddress(fallocate$get(segment), scope);
+        return fallocate.ofAddress(fallocate(segment), scope);
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
     public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }

@@ -52,7 +52,6 @@
 					<additionalOptions>
 						<option>--module org.cryptomator.jfuse</option>
 						<option>--expand-requires transitive</option>
-						<option>--enable-preview</option>
 					</additionalOptions>
 					<includeDependencySources>true</includeDependencySources>
 					<dependencySourceIncludes>

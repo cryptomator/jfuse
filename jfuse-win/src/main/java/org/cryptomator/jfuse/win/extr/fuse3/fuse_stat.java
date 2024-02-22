@@ -41,7 +41,7 @@ public class fuse_stat {
      * unsigned int st_dev;
      * }
      */
-    public static int st_dev$get(MemorySegment seg) {
+    public static int st_dev(MemorySegment seg) {
         return (int)constants$0.const$4.get(seg);
     }
     /**
@@ -50,13 +50,13 @@ public class fuse_stat {
      * unsigned int st_dev;
      * }
      */
-    public static void st_dev$set(MemorySegment seg, int x) {
+    public static void st_dev(MemorySegment seg, int x) {
         constants$0.const$4.set(seg, x);
     }
-    public static int st_dev$get(MemorySegment seg, long index) {
+    public static int st_dev(MemorySegment seg, long index) {
         return (int)constants$0.const$4.get(seg.asSlice(index*sizeof()));
     }
-    public static void st_dev$set(MemorySegment seg, long index, int x) {
+    public static void st_dev(MemorySegment seg, long index, int x) {
         constants$0.const$4.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle st_ino$VH() {
@@ -68,7 +68,7 @@ public class fuse_stat {
      * unsigned long long st_ino;
      * }
      */
-    public static long st_ino$get(MemorySegment seg) {
+    public static long st_ino(MemorySegment seg) {
         return (long)constants$0.const$5.get(seg);
     }
     /**
@@ -77,13 +77,13 @@ public class fuse_stat {
      * unsigned long long st_ino;
      * }
      */
-    public static void st_ino$set(MemorySegment seg, long x) {
+    public static void st_ino(MemorySegment seg, long x) {
         constants$0.const$5.set(seg, x);
     }
-    public static long st_ino$get(MemorySegment seg, long index) {
+    public static long st_ino(MemorySegment seg, long index) {
         return (long)constants$0.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void st_ino$set(MemorySegment seg, long index, long x) {
+    public static void st_ino(MemorySegment seg, long index, long x) {
         constants$0.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle st_mode$VH() {
@@ -95,7 +95,7 @@ public class fuse_stat {
      * unsigned int st_mode;
      * }
      */
-    public static int st_mode$get(MemorySegment seg) {
+    public static int st_mode(MemorySegment seg) {
         return (int)constants$1.const$0.get(seg);
     }
     /**
@@ -104,13 +104,13 @@ public class fuse_stat {
      * unsigned int st_mode;
      * }
      */
-    public static void st_mode$set(MemorySegment seg, int x) {
+    public static void st_mode(MemorySegment seg, int x) {
         constants$1.const$0.set(seg, x);
     }
-    public static int st_mode$get(MemorySegment seg, long index) {
+    public static int st_mode(MemorySegment seg, long index) {
         return (int)constants$1.const$0.get(seg.asSlice(index*sizeof()));
     }
-    public static void st_mode$set(MemorySegment seg, long index, int x) {
+    public static void st_mode(MemorySegment seg, long index, int x) {
         constants$1.const$0.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle st_nlink$VH() {
@@ -122,7 +122,7 @@ public class fuse_stat {
      * unsigned short st_nlink;
      * }
      */
-    public static short st_nlink$get(MemorySegment seg) {
+    public static short st_nlink(MemorySegment seg) {
         return (short)constants$1.const$1.get(seg);
     }
     /**
@@ -131,13 +131,13 @@ public class fuse_stat {
      * unsigned short st_nlink;
      * }
      */
-    public static void st_nlink$set(MemorySegment seg, short x) {
+    public static void st_nlink(MemorySegment seg, short x) {
         constants$1.const$1.set(seg, x);
     }
-    public static short st_nlink$get(MemorySegment seg, long index) {
+    public static short st_nlink(MemorySegment seg, long index) {
         return (short)constants$1.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void st_nlink$set(MemorySegment seg, long index, short x) {
+    public static void st_nlink(MemorySegment seg, long index, short x) {
         constants$1.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle st_uid$VH() {
@@ -149,7 +149,7 @@ public class fuse_stat {
      * unsigned int st_uid;
      * }
      */
-    public static int st_uid$get(MemorySegment seg) {
+    public static int st_uid(MemorySegment seg) {
         return (int)constants$1.const$2.get(seg);
     }
     /**
@@ -158,13 +158,13 @@ public class fuse_stat {
      * unsigned int st_uid;
      * }
      */
-    public static void st_uid$set(MemorySegment seg, int x) {
+    public static void st_uid(MemorySegment seg, int x) {
         constants$1.const$2.set(seg, x);
     }
-    public static int st_uid$get(MemorySegment seg, long index) {
+    public static int st_uid(MemorySegment seg, long index) {
         return (int)constants$1.const$2.get(seg.asSlice(index*sizeof()));
     }
-    public static void st_uid$set(MemorySegment seg, long index, int x) {
+    public static void st_uid(MemorySegment seg, long index, int x) {
         constants$1.const$2.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle st_gid$VH() {
@@ -176,7 +176,7 @@ public class fuse_stat {
      * unsigned int st_gid;
      * }
      */
-    public static int st_gid$get(MemorySegment seg) {
+    public static int st_gid(MemorySegment seg) {
         return (int)constants$1.const$3.get(seg);
     }
     /**
@@ -185,13 +185,13 @@ public class fuse_stat {
      * unsigned int st_gid;
      * }
      */
-    public static void st_gid$set(MemorySegment seg, int x) {
+    public static void st_gid(MemorySegment seg, int x) {
         constants$1.const$3.set(seg, x);
     }
-    public static int st_gid$get(MemorySegment seg, long index) {
+    public static int st_gid(MemorySegment seg, long index) {
         return (int)constants$1.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void st_gid$set(MemorySegment seg, long index, int x) {
+    public static void st_gid(MemorySegment seg, long index, int x) {
         constants$1.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle st_rdev$VH() {
@@ -203,7 +203,7 @@ public class fuse_stat {
      * unsigned int st_rdev;
      * }
      */
-    public static int st_rdev$get(MemorySegment seg) {
+    public static int st_rdev(MemorySegment seg) {
         return (int)constants$1.const$4.get(seg);
     }
     /**
@@ -212,13 +212,13 @@ public class fuse_stat {
      * unsigned int st_rdev;
      * }
      */
-    public static void st_rdev$set(MemorySegment seg, int x) {
+    public static void st_rdev(MemorySegment seg, int x) {
         constants$1.const$4.set(seg, x);
     }
-    public static int st_rdev$get(MemorySegment seg, long index) {
+    public static int st_rdev(MemorySegment seg, long index) {
         return (int)constants$1.const$4.get(seg.asSlice(index*sizeof()));
     }
-    public static void st_rdev$set(MemorySegment seg, long index, int x) {
+    public static void st_rdev(MemorySegment seg, long index, int x) {
         constants$1.const$4.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle st_size$VH() {
@@ -230,7 +230,7 @@ public class fuse_stat {
      * long long st_size;
      * }
      */
-    public static long st_size$get(MemorySegment seg) {
+    public static long st_size(MemorySegment seg) {
         return (long)constants$1.const$5.get(seg);
     }
     /**
@@ -239,13 +239,13 @@ public class fuse_stat {
      * long long st_size;
      * }
      */
-    public static void st_size$set(MemorySegment seg, long x) {
+    public static void st_size(MemorySegment seg, long x) {
         constants$1.const$5.set(seg, x);
     }
-    public static long st_size$get(MemorySegment seg, long index) {
+    public static long st_size(MemorySegment seg, long index) {
         return (long)constants$1.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void st_size$set(MemorySegment seg, long index, long x) {
+    public static void st_size(MemorySegment seg, long index, long x) {
         constants$1.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static MemorySegment st_atim$slice(MemorySegment seg) {
@@ -266,7 +266,7 @@ public class fuse_stat {
      * int st_blksize;
      * }
      */
-    public static int st_blksize$get(MemorySegment seg) {
+    public static int st_blksize(MemorySegment seg) {
         return (int)constants$2.const$0.get(seg);
     }
     /**
@@ -275,13 +275,13 @@ public class fuse_stat {
      * int st_blksize;
      * }
      */
-    public static void st_blksize$set(MemorySegment seg, int x) {
+    public static void st_blksize(MemorySegment seg, int x) {
         constants$2.const$0.set(seg, x);
     }
-    public static int st_blksize$get(MemorySegment seg, long index) {
+    public static int st_blksize(MemorySegment seg, long index) {
         return (int)constants$2.const$0.get(seg.asSlice(index*sizeof()));
     }
-    public static void st_blksize$set(MemorySegment seg, long index, int x) {
+    public static void st_blksize(MemorySegment seg, long index, int x) {
         constants$2.const$0.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle st_blocks$VH() {
@@ -293,7 +293,7 @@ public class fuse_stat {
      * long long st_blocks;
      * }
      */
-    public static long st_blocks$get(MemorySegment seg) {
+    public static long st_blocks(MemorySegment seg) {
         return (long)constants$2.const$1.get(seg);
     }
     /**
@@ -302,13 +302,13 @@ public class fuse_stat {
      * long long st_blocks;
      * }
      */
-    public static void st_blocks$set(MemorySegment seg, long x) {
+    public static void st_blocks(MemorySegment seg, long x) {
         constants$2.const$1.set(seg, x);
     }
-    public static long st_blocks$get(MemorySegment seg, long index) {
+    public static long st_blocks(MemorySegment seg, long index) {
         return (long)constants$2.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void st_blocks$set(MemorySegment seg, long index, long x) {
+    public static void st_blocks(MemorySegment seg, long index, long x) {
         constants$2.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static MemorySegment st_birthtim$slice(MemorySegment seg) {

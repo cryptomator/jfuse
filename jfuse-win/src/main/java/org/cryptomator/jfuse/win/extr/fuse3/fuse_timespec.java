@@ -29,7 +29,7 @@ public class fuse_timespec {
      * long long tv_sec;
      * }
      */
-    public static long tv_sec$get(MemorySegment seg) {
+    public static long tv_sec(MemorySegment seg) {
         return (long)constants$0.const$1.get(seg);
     }
     /**
@@ -38,13 +38,13 @@ public class fuse_timespec {
      * long long tv_sec;
      * }
      */
-    public static void tv_sec$set(MemorySegment seg, long x) {
+    public static void tv_sec(MemorySegment seg, long x) {
         constants$0.const$1.set(seg, x);
     }
-    public static long tv_sec$get(MemorySegment seg, long index) {
+    public static long tv_sec(MemorySegment seg, long index) {
         return (long)constants$0.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void tv_sec$set(MemorySegment seg, long index, long x) {
+    public static void tv_sec(MemorySegment seg, long index, long x) {
         constants$0.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle tv_nsec$VH() {
@@ -56,7 +56,7 @@ public class fuse_timespec {
      * long long tv_nsec;
      * }
      */
-    public static long tv_nsec$get(MemorySegment seg) {
+    public static long tv_nsec(MemorySegment seg) {
         return (long)constants$0.const$2.get(seg);
     }
     /**
@@ -65,13 +65,13 @@ public class fuse_timespec {
      * long long tv_nsec;
      * }
      */
-    public static void tv_nsec$set(MemorySegment seg, long x) {
+    public static void tv_nsec(MemorySegment seg, long x) {
         constants$0.const$2.set(seg, x);
     }
-    public static long tv_nsec$get(MemorySegment seg, long index) {
+    public static long tv_nsec(MemorySegment seg, long index) {
         return (long)constants$0.const$2.get(seg.asSlice(index*sizeof()));
     }
-    public static void tv_nsec$set(MemorySegment seg, long index, long x) {
+    public static void tv_nsec(MemorySegment seg, long index, long x) {
         constants$0.const$2.set(seg.asSlice(index*sizeof()), x);
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }

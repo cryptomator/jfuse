@@ -22,14 +22,14 @@ record TimeSpecImpl(MemorySegment segment) implements TimeSpec {
 
 	@Override
 	public void set(Instant newValue) {
-		fuse_timespec.tv_sec$set(segment, newValue.getEpochSecond());
-		fuse_timespec.tv_nsec$set(segment, newValue.getNano());
+		fuse_timespec.tv_sec(segment, newValue.getEpochSecond());
+		fuse_timespec.tv_nsec(segment, newValue.getNano());
 	}
 
 	@Override
 	public Instant get() {
-		var seconds = fuse_timespec.tv_sec$get(segment);
-		var nanos = fuse_timespec.tv_nsec$get(segment);
+		var seconds = fuse_timespec.tv_sec(segment);
+		var nanos = fuse_timespec.tv_nsec(segment);
 		return Instant.ofEpochSecond(seconds, nanos);
 	}
 

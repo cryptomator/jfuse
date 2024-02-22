@@ -10,8 +10,8 @@ Zero-Dependency Java bindings for FUSE using [JEP 442](https://openjdk.org/jeps/
 
 ## Status
 
-This is currently an experimental library requiring JDK 21. As long as the [Foreign Function & Memory API](https://openjdk.org/jeps/442) is incubating, the required JDK will increase.
-Older JDK versions are *not supported*. Please refer to an older version of this lib, if you  are interested in using it with an older JDK. Older versions will not receive patches or any kind of support, though!
+This lib makes use of the [Foreign Function & Memory API](https://openjdk.org/jeps/454), requiring at least JDK 22.
+Older JDK versions are *not supported*. Please refer to an older version of this lib, if you  are interested in using it with an older JDK (with `--enable-preview`). Older versions will not receive patches or any kind of support, though!
 
 We attempt to support libfuse 3.x on Linux and Windows while also remaining compatible with libfuse 2.x on macOS, leading to some compromises in the API.
 
@@ -97,7 +97,6 @@ During runtime, you will need to add allow native access from platform-specific 
 java -p path/to/mods \
   -m com.example.mymodule/com.example.mymodule \
   --enable-native-access=org.cryptomator.jfuse.mac \
-  --enable-preview
 ```
 
 ## Supported Platforms

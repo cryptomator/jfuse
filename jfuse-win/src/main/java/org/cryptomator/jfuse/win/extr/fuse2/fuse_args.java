@@ -30,7 +30,7 @@ public class fuse_args {
      * int argc;
      * }
      */
-    public static int argc$get(MemorySegment seg) {
+    public static int argc(MemorySegment seg) {
         return (int)constants$0.const$1.get(seg);
     }
     /**
@@ -39,13 +39,13 @@ public class fuse_args {
      * int argc;
      * }
      */
-    public static void argc$set(MemorySegment seg, int x) {
+    public static void argc(MemorySegment seg, int x) {
         constants$0.const$1.set(seg, x);
     }
-    public static int argc$get(MemorySegment seg, long index) {
+    public static int argc(MemorySegment seg, long index) {
         return (int)constants$0.const$1.get(seg.asSlice(index*sizeof()));
     }
-    public static void argc$set(MemorySegment seg, long index, int x) {
+    public static void argc(MemorySegment seg, long index, int x) {
         constants$0.const$1.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle argv$VH() {
@@ -57,7 +57,7 @@ public class fuse_args {
      * char** argv;
      * }
      */
-    public static MemorySegment argv$get(MemorySegment seg) {
+    public static MemorySegment argv(MemorySegment seg) {
         return (java.lang.foreign.MemorySegment)constants$0.const$2.get(seg);
     }
     /**
@@ -66,13 +66,13 @@ public class fuse_args {
      * char** argv;
      * }
      */
-    public static void argv$set(MemorySegment seg, MemorySegment x) {
+    public static void argv(MemorySegment seg, MemorySegment x) {
         constants$0.const$2.set(seg, x);
     }
-    public static MemorySegment argv$get(MemorySegment seg, long index) {
+    public static MemorySegment argv(MemorySegment seg, long index) {
         return (java.lang.foreign.MemorySegment)constants$0.const$2.get(seg.asSlice(index*sizeof()));
     }
-    public static void argv$set(MemorySegment seg, long index, MemorySegment x) {
+    public static void argv(MemorySegment seg, long index, MemorySegment x) {
         constants$0.const$2.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle allocated$VH() {
@@ -84,7 +84,7 @@ public class fuse_args {
      * int allocated;
      * }
      */
-    public static int allocated$get(MemorySegment seg) {
+    public static int allocated(MemorySegment seg) {
         return (int)constants$0.const$3.get(seg);
     }
     /**
@@ -93,13 +93,13 @@ public class fuse_args {
      * int allocated;
      * }
      */
-    public static void allocated$set(MemorySegment seg, int x) {
+    public static void allocated(MemorySegment seg, int x) {
         constants$0.const$3.set(seg, x);
     }
-    public static int allocated$get(MemorySegment seg, long index) {
+    public static int allocated(MemorySegment seg, long index) {
         return (int)constants$0.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void allocated$set(MemorySegment seg, long index, int x) {
+    public static void allocated(MemorySegment seg, long index, int x) {
         constants$0.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }

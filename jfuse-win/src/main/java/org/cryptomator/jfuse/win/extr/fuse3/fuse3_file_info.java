@@ -38,7 +38,7 @@ public class fuse3_file_info {
      * int flags;
      * }
      */
-    public static int flags$get(MemorySegment seg) {
+    public static int flags(MemorySegment seg) {
         return (int)constants$4.const$3.get(seg);
     }
     /**
@@ -47,13 +47,13 @@ public class fuse3_file_info {
      * int flags;
      * }
      */
-    public static void flags$set(MemorySegment seg, int x) {
+    public static void flags(MemorySegment seg, int x) {
         constants$4.const$3.set(seg, x);
     }
-    public static int flags$get(MemorySegment seg, long index) {
+    public static int flags(MemorySegment seg, long index) {
         return (int)constants$4.const$3.get(seg.asSlice(index*sizeof()));
     }
-    public static void flags$set(MemorySegment seg, long index, int x) {
+    public static void flags(MemorySegment seg, long index, int x) {
         constants$4.const$3.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle fh$VH() {
@@ -65,7 +65,7 @@ public class fuse3_file_info {
      * unsigned long long fh;
      * }
      */
-    public static long fh$get(MemorySegment seg) {
+    public static long fh(MemorySegment seg) {
         return (long)constants$4.const$4.get(seg);
     }
     /**
@@ -74,13 +74,13 @@ public class fuse3_file_info {
      * unsigned long long fh;
      * }
      */
-    public static void fh$set(MemorySegment seg, long x) {
+    public static void fh(MemorySegment seg, long x) {
         constants$4.const$4.set(seg, x);
     }
-    public static long fh$get(MemorySegment seg, long index) {
+    public static long fh(MemorySegment seg, long index) {
         return (long)constants$4.const$4.get(seg.asSlice(index*sizeof()));
     }
-    public static void fh$set(MemorySegment seg, long index, long x) {
+    public static void fh(MemorySegment seg, long index, long x) {
         constants$4.const$4.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle lock_owner$VH() {
@@ -92,7 +92,7 @@ public class fuse3_file_info {
      * unsigned long long lock_owner;
      * }
      */
-    public static long lock_owner$get(MemorySegment seg) {
+    public static long lock_owner(MemorySegment seg) {
         return (long)constants$4.const$5.get(seg);
     }
     /**
@@ -101,13 +101,13 @@ public class fuse3_file_info {
      * unsigned long long lock_owner;
      * }
      */
-    public static void lock_owner$set(MemorySegment seg, long x) {
+    public static void lock_owner(MemorySegment seg, long x) {
         constants$4.const$5.set(seg, x);
     }
-    public static long lock_owner$get(MemorySegment seg, long index) {
+    public static long lock_owner(MemorySegment seg, long index) {
         return (long)constants$4.const$5.get(seg.asSlice(index*sizeof()));
     }
-    public static void lock_owner$set(MemorySegment seg, long index, long x) {
+    public static void lock_owner(MemorySegment seg, long index, long x) {
         constants$4.const$5.set(seg.asSlice(index*sizeof()), x);
     }
     public static VarHandle poll_events$VH() {
@@ -119,7 +119,7 @@ public class fuse3_file_info {
      * unsigned int poll_events;
      * }
      */
-    public static int poll_events$get(MemorySegment seg) {
+    public static int poll_events(MemorySegment seg) {
         return (int)constants$5.const$0.get(seg);
     }
     /**
@@ -128,13 +128,13 @@ public class fuse3_file_info {
      * unsigned int poll_events;
      * }
      */
-    public static void poll_events$set(MemorySegment seg, int x) {
+    public static void poll_events(MemorySegment seg, int x) {
         constants$5.const$0.set(seg, x);
     }
-    public static int poll_events$get(MemorySegment seg, long index) {
+    public static int poll_events(MemorySegment seg, long index) {
         return (int)constants$5.const$0.get(seg.asSlice(index*sizeof()));
     }
-    public static void poll_events$set(MemorySegment seg, long index, int x) {
+    public static void poll_events(MemorySegment seg, long index, int x) {
         constants$5.const$0.set(seg.asSlice(index*sizeof()), x);
     }
     public static long sizeof() { return $LAYOUT().byteSize(); }
