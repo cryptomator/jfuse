@@ -5,7 +5,6 @@ import org.cryptomator.jfuse.linux.aarch64.extr.fuse3_lowlevel.fuse_cmdline_opts
 
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
-import java.nio.charset.StandardCharsets;
 
 record FuseArgs(MemorySegment args, MemorySegment cmdLineOpts) {
 
