@@ -6,7 +6,7 @@
 
 # jFUSE
 
-Zero-Dependency Java bindings for FUSE using [JEP 442](https://openjdk.org/jeps/442).
+Zero-Dependency Java bindings for FUSE using [JEP 454](https://openjdk.org/jeps/454).
 
 ## Status
 
