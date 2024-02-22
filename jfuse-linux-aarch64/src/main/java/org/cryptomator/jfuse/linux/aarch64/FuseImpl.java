@@ -242,11 +242,6 @@ final class FuseImpl extends Fuse {
 				var segment = timespec.allocate(arena);
 				timespec.tv_sec(segment, 0);
 				timespec.tv_nsec(segment, stat_h.UTIME_NOW());
-
-				var times = timespec.allocateArray(2, arena);
-				var times0 = timespec.asSlice(times, 0);
-				var times1 = timespec.asSlice(times, 1);
-
 				var time = new TimeSpecImpl(segment);
 				return fuseOperations.utimens(path.getString(0), time, time, FileInfoImpl.ofNullable(fi));
 			} else {
