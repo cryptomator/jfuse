@@ -130,4 +130,4 @@ Otherwise, you'd need to add a copy of the module. Make sure to open it to the a
 
 ## Alternatives
 
-This library is not ready for production use. Currently, your best bet would be the awesome [jnr-fuse](https://github.com/SerCeMan/jnr-fuse), which will eventually become the benchmark we want to beat.
+Over the past few years, we relied on [jnr-fuse](https://github.com/SerCeMan/jnr-fuse) ourselves and can recommend using it for platforms that aren't supported by jFUSE. It has also become the benchmark that we wanted to beat regarding performance and API design.
