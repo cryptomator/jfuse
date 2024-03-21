@@ -8,7 +8,7 @@ public class MemoryUtils {
 
 	@Nullable
 	public static String toUtf8StringOrNull(MemorySegment string, long offset) {
-		return MemorySegment.NULL.equals(string) ? null : string.getUtf8String(offset);
+		return MemorySegment.NULL.equals(string) ? null : string.getString(offset);
 	}
 
 	@Nullable

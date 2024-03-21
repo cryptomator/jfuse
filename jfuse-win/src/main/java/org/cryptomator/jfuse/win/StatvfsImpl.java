@@ -8,68 +8,64 @@ import java.lang.foreign.MemorySegment;
 
 record StatvfsImpl(MemorySegment segment) implements Statvfs {
 
-	public StatvfsImpl(MemorySegment address, Arena scope) {
-		this(fuse_statvfs.ofAddress(address, scope));
-	}
-
 	@Override
 	public long getBsize() {
-		return fuse_statvfs.f_bsize$get(segment);
+		return fuse_statvfs.f_bsize(segment);
 	}
 
 	@Override
 	public void setBsize(long bsize) {
-		fuse_statvfs.f_bsize$set(segment, bsize);
+		fuse_statvfs.f_bsize(segment, bsize);
 	}
 
 	@Override
 	public long getFrsize() {
-		return fuse_statvfs.f_frsize$get(segment);
+		return fuse_statvfs.f_frsize(segment);
 	}
 
 	@Override
 	public void setFrsize(long frsize) {
-		fuse_statvfs.f_frsize$set(segment, frsize);
+		fuse_statvfs.f_frsize(segment, frsize);
 	}
 
 	@Override
 	public long getBlocks() {
-		return fuse_statvfs.f_blocks$get(segment);
+		return fuse_statvfs.f_blocks(segment);
 	}
 
 	@Override
 	public void setBlocks(long blocks) {
-		fuse_statvfs.f_blocks$set(segment, blocks);
+		fuse_statvfs.f_blocks(segment, blocks);
 	}
 
 	@Override
 	public long getBfree() {
-		return fuse_statvfs.f_bfree$get(segment);
+		return fuse_statvfs.f_bfree(segment);
 	}
 
 	@Override
 	public void setBfree(long bfree) {
-		fuse_statvfs.f_bfree$set(segment, bfree);
+		fuse_statvfs.f_bfree(segment, bfree);
 	}
 
 	@Override
 	public long getBavail() {
-		return fuse_statvfs.f_bavail$get(segment);
+		return fuse_statvfs.f_bavail(segment);
 	}
 
 	@Override
 	public void setBavail(long bavail) {
-		fuse_statvfs.f_bavail$set(segment, bavail);
+		fuse_statvfs.f_bavail(segment, bavail);
 	}
 
 	@Override
 	public long getNameMax() {
-		return fuse_statvfs.f_namemax$get(segment);
+		return fuse_statvfs.f_namemax(segment);
 	}
 
 	@Override
 	public void setNameMax(long namemax) {
-		fuse_statvfs.f_namemax$set(segment, namemax);
+		fuse_statvfs.f_namemax(segment, namemax);
 	}
 
 }

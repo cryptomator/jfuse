@@ -6,11 +6,30 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "06:00"
-      timezone: "UTC"
+      timezone: "Etc/UTC"
     groups:
-      maven-dependencies:
+      java-test-dependencies:
+        patterns:
+          - "org.junit.jupiter:*"
+          - "org.mockito:*"
+      maven-build-plugins:
+        patterns:
+          - "org.apache.maven.plugins:*"
+          - "org.jacoco:jacoco-maven-plugin"
+          - "io.github.coffeelibs:jextract-maven-plugin"
+          - "org.sonatype.plugins:nexus-staging-maven-plugin"
+          - "org.codehaus.mojo:exec-maven-plugin"
+      java-production-dependencies:
         patterns:
           - "*"
+        exclude-patterns:
+          - "org.junit.jupiter:*"
+          - "org.mockito:*"
+          - "org.apache.maven.plugins:*"
+          - "org.jacoco:jacoco-maven-plugin"
+          - "io.github.coffeelibs:jextract-maven-plugin"
+          - "org.sonatype.plugins:nexus-staging-maven-plugin"
+          - "org.codehaus.mojo:exec-maven-plugin"
 
   - package-ecosystem: "github-actions"
     directory: "/" # even for `.github/workflows`

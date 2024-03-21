@@ -2,324 +2,728 @@
 
 package org.cryptomator.jfuse.win.extr.fuse3;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
-import java.nio.ByteOrder;
+import java.lang.invoke.*;
 import java.lang.foreign.*;
+import java.nio.ByteOrder;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
+
 import static java.lang.foreign.ValueLayout.*;
+import static java.lang.foreign.MemoryLayout.PathElement.*;
+
 /**
- * {@snippet :
+ * {@snippet lang=c :
  * struct fuse_stat {
- *     unsigned int st_dev;
- *     unsigned long long st_ino;
- *     unsigned int st_mode;
- *     unsigned short st_nlink;
- *     unsigned int st_uid;
- *     unsigned int st_gid;
- *     unsigned int st_rdev;
- *     long long st_size;
+ *     fuse_dev_t st_dev;
+ *     fuse_ino_t st_ino;
+ *     fuse_mode_t st_mode;
+ *     fuse_nlink_t st_nlink;
+ *     fuse_uid_t st_uid;
+ *     fuse_gid_t st_gid;
+ *     fuse_dev_t st_rdev;
+ *     fuse_off_t st_size;
  *     struct fuse_timespec st_atim;
  *     struct fuse_timespec st_mtim;
  *     struct fuse_timespec st_ctim;
- *     int st_blksize;
- *     long long st_blocks;
+ *     fuse_blksize_t st_blksize;
+ *     fuse_blkcnt_t st_blocks;
  *     struct fuse_timespec st_birthtim;
- * };
+ * }
  * }
  */
 public class fuse_stat {
 
-    public static MemoryLayout $LAYOUT() {
-        return constants$0.const$3;
+    fuse_stat() {
+        // Should not be called directly
     }
-    public static VarHandle st_dev$VH() {
-        return constants$0.const$4;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * unsigned int st_dev;
-     * }
-     */
-    public static int st_dev$get(MemorySegment seg) {
-        return (int)constants$0.const$4.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * unsigned int st_dev;
-     * }
-     */
-    public static void st_dev$set(MemorySegment seg, int x) {
-        constants$0.const$4.set(seg, x);
-    }
-    public static int st_dev$get(MemorySegment seg, long index) {
-        return (int)constants$0.const$4.get(seg.asSlice(index*sizeof()));
-    }
-    public static void st_dev$set(MemorySegment seg, long index, int x) {
-        constants$0.const$4.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static VarHandle st_ino$VH() {
-        return constants$0.const$5;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * unsigned long long st_ino;
-     * }
-     */
-    public static long st_ino$get(MemorySegment seg) {
-        return (long)constants$0.const$5.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * unsigned long long st_ino;
-     * }
-     */
-    public static void st_ino$set(MemorySegment seg, long x) {
-        constants$0.const$5.set(seg, x);
-    }
-    public static long st_ino$get(MemorySegment seg, long index) {
-        return (long)constants$0.const$5.get(seg.asSlice(index*sizeof()));
-    }
-    public static void st_ino$set(MemorySegment seg, long index, long x) {
-        constants$0.const$5.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static VarHandle st_mode$VH() {
-        return constants$1.const$0;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * unsigned int st_mode;
-     * }
-     */
-    public static int st_mode$get(MemorySegment seg) {
-        return (int)constants$1.const$0.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * unsigned int st_mode;
-     * }
-     */
-    public static void st_mode$set(MemorySegment seg, int x) {
-        constants$1.const$0.set(seg, x);
-    }
-    public static int st_mode$get(MemorySegment seg, long index) {
-        return (int)constants$1.const$0.get(seg.asSlice(index*sizeof()));
-    }
-    public static void st_mode$set(MemorySegment seg, long index, int x) {
-        constants$1.const$0.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static VarHandle st_nlink$VH() {
-        return constants$1.const$1;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * unsigned short st_nlink;
-     * }
-     */
-    public static short st_nlink$get(MemorySegment seg) {
-        return (short)constants$1.const$1.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * unsigned short st_nlink;
-     * }
-     */
-    public static void st_nlink$set(MemorySegment seg, short x) {
-        constants$1.const$1.set(seg, x);
-    }
-    public static short st_nlink$get(MemorySegment seg, long index) {
-        return (short)constants$1.const$1.get(seg.asSlice(index*sizeof()));
-    }
-    public static void st_nlink$set(MemorySegment seg, long index, short x) {
-        constants$1.const$1.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static VarHandle st_uid$VH() {
-        return constants$1.const$2;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * unsigned int st_uid;
-     * }
-     */
-    public static int st_uid$get(MemorySegment seg) {
-        return (int)constants$1.const$2.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * unsigned int st_uid;
-     * }
-     */
-    public static void st_uid$set(MemorySegment seg, int x) {
-        constants$1.const$2.set(seg, x);
-    }
-    public static int st_uid$get(MemorySegment seg, long index) {
-        return (int)constants$1.const$2.get(seg.asSlice(index*sizeof()));
-    }
-    public static void st_uid$set(MemorySegment seg, long index, int x) {
-        constants$1.const$2.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static VarHandle st_gid$VH() {
-        return constants$1.const$3;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * unsigned int st_gid;
-     * }
-     */
-    public static int st_gid$get(MemorySegment seg) {
-        return (int)constants$1.const$3.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * unsigned int st_gid;
-     * }
-     */
-    public static void st_gid$set(MemorySegment seg, int x) {
-        constants$1.const$3.set(seg, x);
-    }
-    public static int st_gid$get(MemorySegment seg, long index) {
-        return (int)constants$1.const$3.get(seg.asSlice(index*sizeof()));
-    }
-    public static void st_gid$set(MemorySegment seg, long index, int x) {
-        constants$1.const$3.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static VarHandle st_rdev$VH() {
-        return constants$1.const$4;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * unsigned int st_rdev;
-     * }
-     */
-    public static int st_rdev$get(MemorySegment seg) {
-        return (int)constants$1.const$4.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * unsigned int st_rdev;
-     * }
-     */
-    public static void st_rdev$set(MemorySegment seg, int x) {
-        constants$1.const$4.set(seg, x);
-    }
-    public static int st_rdev$get(MemorySegment seg, long index) {
-        return (int)constants$1.const$4.get(seg.asSlice(index*sizeof()));
-    }
-    public static void st_rdev$set(MemorySegment seg, long index, int x) {
-        constants$1.const$4.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static VarHandle st_size$VH() {
-        return constants$1.const$5;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * long long st_size;
-     * }
-     */
-    public static long st_size$get(MemorySegment seg) {
-        return (long)constants$1.const$5.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * long long st_size;
-     * }
-     */
-    public static void st_size$set(MemorySegment seg, long x) {
-        constants$1.const$5.set(seg, x);
-    }
-    public static long st_size$get(MemorySegment seg, long index) {
-        return (long)constants$1.const$5.get(seg.asSlice(index*sizeof()));
-    }
-    public static void st_size$set(MemorySegment seg, long index, long x) {
-        constants$1.const$5.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static MemorySegment st_atim$slice(MemorySegment seg) {
-        return seg.asSlice(48, 16);
-    }
-    public static MemorySegment st_mtim$slice(MemorySegment seg) {
-        return seg.asSlice(64, 16);
-    }
-    public static MemorySegment st_ctim$slice(MemorySegment seg) {
-        return seg.asSlice(80, 16);
-    }
-    public static VarHandle st_blksize$VH() {
-        return constants$2.const$0;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * int st_blksize;
-     * }
-     */
-    public static int st_blksize$get(MemorySegment seg) {
-        return (int)constants$2.const$0.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * int st_blksize;
-     * }
-     */
-    public static void st_blksize$set(MemorySegment seg, int x) {
-        constants$2.const$0.set(seg, x);
-    }
-    public static int st_blksize$get(MemorySegment seg, long index) {
-        return (int)constants$2.const$0.get(seg.asSlice(index*sizeof()));
-    }
-    public static void st_blksize$set(MemorySegment seg, long index, int x) {
-        constants$2.const$0.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static VarHandle st_blocks$VH() {
-        return constants$2.const$1;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * long long st_blocks;
-     * }
-     */
-    public static long st_blocks$get(MemorySegment seg) {
-        return (long)constants$2.const$1.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * long long st_blocks;
-     * }
-     */
-    public static void st_blocks$set(MemorySegment seg, long x) {
-        constants$2.const$1.set(seg, x);
-    }
-    public static long st_blocks$get(MemorySegment seg, long index) {
-        return (long)constants$2.const$1.get(seg.asSlice(index*sizeof()));
-    }
-    public static void st_blocks$set(MemorySegment seg, long index, long x) {
-        constants$2.const$1.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static MemorySegment st_birthtim$slice(MemorySegment seg) {
-        return seg.asSlice(112, 16);
-    }
-    public static long sizeof() { return $LAYOUT().byteSize(); }
-    public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
-        return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
-    }
-    public static MemorySegment ofAddress(MemorySegment addr, Arena scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
-}
 
+    private static final GroupLayout $LAYOUT = MemoryLayout.structLayout(
+        fuse_h.C_INT.withName("st_dev"),
+        MemoryLayout.paddingLayout(4),
+        fuse_h.C_LONG_LONG.withName("st_ino"),
+        fuse_h.C_INT.withName("st_mode"),
+        fuse_h.C_SHORT.withName("st_nlink"),
+        MemoryLayout.paddingLayout(2),
+        fuse_h.C_INT.withName("st_uid"),
+        fuse_h.C_INT.withName("st_gid"),
+        fuse_h.C_INT.withName("st_rdev"),
+        MemoryLayout.paddingLayout(4),
+        fuse_h.C_LONG_LONG.withName("st_size"),
+        fuse_timespec.layout().withName("st_atim"),
+        fuse_timespec.layout().withName("st_mtim"),
+        fuse_timespec.layout().withName("st_ctim"),
+        fuse_h.C_INT.withName("st_blksize"),
+        MemoryLayout.paddingLayout(4),
+        fuse_h.C_LONG_LONG.withName("st_blocks"),
+        fuse_timespec.layout().withName("st_birthtim")
+    ).withName("fuse_stat");
+
+    /**
+     * The layout of this struct
+     */
+    public static final GroupLayout layout() {
+        return $LAYOUT;
+    }
+
+    private static final OfInt st_dev$LAYOUT = (OfInt)$LAYOUT.select(groupElement("st_dev"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * fuse_dev_t st_dev
+     * }
+     */
+    public static final OfInt st_dev$layout() {
+        return st_dev$LAYOUT;
+    }
+
+    private static final long st_dev$OFFSET = 0;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * fuse_dev_t st_dev
+     * }
+     */
+    public static final long st_dev$offset() {
+        return st_dev$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * fuse_dev_t st_dev
+     * }
+     */
+    public static int st_dev(MemorySegment struct) {
+        return struct.get(st_dev$LAYOUT, st_dev$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * fuse_dev_t st_dev
+     * }
+     */
+    public static void st_dev(MemorySegment struct, int fieldValue) {
+        struct.set(st_dev$LAYOUT, st_dev$OFFSET, fieldValue);
+    }
+
+    private static final OfLong st_ino$LAYOUT = (OfLong)$LAYOUT.select(groupElement("st_ino"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * fuse_ino_t st_ino
+     * }
+     */
+    public static final OfLong st_ino$layout() {
+        return st_ino$LAYOUT;
+    }
+
+    private static final long st_ino$OFFSET = 8;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * fuse_ino_t st_ino
+     * }
+     */
+    public static final long st_ino$offset() {
+        return st_ino$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * fuse_ino_t st_ino
+     * }
+     */
+    public static long st_ino(MemorySegment struct) {
+        return struct.get(st_ino$LAYOUT, st_ino$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * fuse_ino_t st_ino
+     * }
+     */
+    public static void st_ino(MemorySegment struct, long fieldValue) {
+        struct.set(st_ino$LAYOUT, st_ino$OFFSET, fieldValue);
+    }
+
+    private static final OfInt st_mode$LAYOUT = (OfInt)$LAYOUT.select(groupElement("st_mode"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * fuse_mode_t st_mode
+     * }
+     */
+    public static final OfInt st_mode$layout() {
+        return st_mode$LAYOUT;
+    }
+
+    private static final long st_mode$OFFSET = 16;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * fuse_mode_t st_mode
+     * }
+     */
+    public static final long st_mode$offset() {
+        return st_mode$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * fuse_mode_t st_mode
+     * }
+     */
+    public static int st_mode(MemorySegment struct) {
+        return struct.get(st_mode$LAYOUT, st_mode$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * fuse_mode_t st_mode
+     * }
+     */
+    public static void st_mode(MemorySegment struct, int fieldValue) {
+        struct.set(st_mode$LAYOUT, st_mode$OFFSET, fieldValue);
+    }
+
+    private static final OfShort st_nlink$LAYOUT = (OfShort)$LAYOUT.select(groupElement("st_nlink"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * fuse_nlink_t st_nlink
+     * }
+     */
+    public static final OfShort st_nlink$layout() {
+        return st_nlink$LAYOUT;
+    }
+
+    private static final long st_nlink$OFFSET = 20;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * fuse_nlink_t st_nlink
+     * }
+     */
+    public static final long st_nlink$offset() {
+        return st_nlink$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * fuse_nlink_t st_nlink
+     * }
+     */
+    public static short st_nlink(MemorySegment struct) {
+        return struct.get(st_nlink$LAYOUT, st_nlink$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * fuse_nlink_t st_nlink
+     * }
+     */
+    public static void st_nlink(MemorySegment struct, short fieldValue) {
+        struct.set(st_nlink$LAYOUT, st_nlink$OFFSET, fieldValue);
+    }
+
+    private static final OfInt st_uid$LAYOUT = (OfInt)$LAYOUT.select(groupElement("st_uid"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * fuse_uid_t st_uid
+     * }
+     */
+    public static final OfInt st_uid$layout() {
+        return st_uid$LAYOUT;
+    }
+
+    private static final long st_uid$OFFSET = 24;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * fuse_uid_t st_uid
+     * }
+     */
+    public static final long st_uid$offset() {
+        return st_uid$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * fuse_uid_t st_uid
+     * }
+     */
+    public static int st_uid(MemorySegment struct) {
+        return struct.get(st_uid$LAYOUT, st_uid$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * fuse_uid_t st_uid
+     * }
+     */
+    public static void st_uid(MemorySegment struct, int fieldValue) {
+        struct.set(st_uid$LAYOUT, st_uid$OFFSET, fieldValue);
+    }
+
+    private static final OfInt st_gid$LAYOUT = (OfInt)$LAYOUT.select(groupElement("st_gid"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * fuse_gid_t st_gid
+     * }
+     */
+    public static final OfInt st_gid$layout() {
+        return st_gid$LAYOUT;
+    }
+
+    private static final long st_gid$OFFSET = 28;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * fuse_gid_t st_gid
+     * }
+     */
+    public static final long st_gid$offset() {
+        return st_gid$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * fuse_gid_t st_gid
+     * }
+     */
+    public static int st_gid(MemorySegment struct) {
+        return struct.get(st_gid$LAYOUT, st_gid$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * fuse_gid_t st_gid
+     * }
+     */
+    public static void st_gid(MemorySegment struct, int fieldValue) {
+        struct.set(st_gid$LAYOUT, st_gid$OFFSET, fieldValue);
+    }
+
+    private static final OfInt st_rdev$LAYOUT = (OfInt)$LAYOUT.select(groupElement("st_rdev"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * fuse_dev_t st_rdev
+     * }
+     */
+    public static final OfInt st_rdev$layout() {
+        return st_rdev$LAYOUT;
+    }
+
+    private static final long st_rdev$OFFSET = 32;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * fuse_dev_t st_rdev
+     * }
+     */
+    public static final long st_rdev$offset() {
+        return st_rdev$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * fuse_dev_t st_rdev
+     * }
+     */
+    public static int st_rdev(MemorySegment struct) {
+        return struct.get(st_rdev$LAYOUT, st_rdev$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * fuse_dev_t st_rdev
+     * }
+     */
+    public static void st_rdev(MemorySegment struct, int fieldValue) {
+        struct.set(st_rdev$LAYOUT, st_rdev$OFFSET, fieldValue);
+    }
+
+    private static final OfLong st_size$LAYOUT = (OfLong)$LAYOUT.select(groupElement("st_size"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * fuse_off_t st_size
+     * }
+     */
+    public static final OfLong st_size$layout() {
+        return st_size$LAYOUT;
+    }
+
+    private static final long st_size$OFFSET = 40;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * fuse_off_t st_size
+     * }
+     */
+    public static final long st_size$offset() {
+        return st_size$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * fuse_off_t st_size
+     * }
+     */
+    public static long st_size(MemorySegment struct) {
+        return struct.get(st_size$LAYOUT, st_size$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * fuse_off_t st_size
+     * }
+     */
+    public static void st_size(MemorySegment struct, long fieldValue) {
+        struct.set(st_size$LAYOUT, st_size$OFFSET, fieldValue);
+    }
+
+    private static final GroupLayout st_atim$LAYOUT = (GroupLayout)$LAYOUT.select(groupElement("st_atim"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_atim
+     * }
+     */
+    public static final GroupLayout st_atim$layout() {
+        return st_atim$LAYOUT;
+    }
+
+    private static final long st_atim$OFFSET = 48;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_atim
+     * }
+     */
+    public static final long st_atim$offset() {
+        return st_atim$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_atim
+     * }
+     */
+    public static MemorySegment st_atim(MemorySegment struct) {
+        return struct.asSlice(st_atim$OFFSET, st_atim$LAYOUT.byteSize());
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_atim
+     * }
+     */
+    public static void st_atim(MemorySegment struct, MemorySegment fieldValue) {
+        MemorySegment.copy(fieldValue, 0L, struct, st_atim$OFFSET, st_atim$LAYOUT.byteSize());
+    }
+
+    private static final GroupLayout st_mtim$LAYOUT = (GroupLayout)$LAYOUT.select(groupElement("st_mtim"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_mtim
+     * }
+     */
+    public static final GroupLayout st_mtim$layout() {
+        return st_mtim$LAYOUT;
+    }
+
+    private static final long st_mtim$OFFSET = 64;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_mtim
+     * }
+     */
+    public static final long st_mtim$offset() {
+        return st_mtim$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_mtim
+     * }
+     */
+    public static MemorySegment st_mtim(MemorySegment struct) {
+        return struct.asSlice(st_mtim$OFFSET, st_mtim$LAYOUT.byteSize());
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_mtim
+     * }
+     */
+    public static void st_mtim(MemorySegment struct, MemorySegment fieldValue) {
+        MemorySegment.copy(fieldValue, 0L, struct, st_mtim$OFFSET, st_mtim$LAYOUT.byteSize());
+    }
+
+    private static final GroupLayout st_ctim$LAYOUT = (GroupLayout)$LAYOUT.select(groupElement("st_ctim"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_ctim
+     * }
+     */
+    public static final GroupLayout st_ctim$layout() {
+        return st_ctim$LAYOUT;
+    }
+
+    private static final long st_ctim$OFFSET = 80;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_ctim
+     * }
+     */
+    public static final long st_ctim$offset() {
+        return st_ctim$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_ctim
+     * }
+     */
+    public static MemorySegment st_ctim(MemorySegment struct) {
+        return struct.asSlice(st_ctim$OFFSET, st_ctim$LAYOUT.byteSize());
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_ctim
+     * }
+     */
+    public static void st_ctim(MemorySegment struct, MemorySegment fieldValue) {
+        MemorySegment.copy(fieldValue, 0L, struct, st_ctim$OFFSET, st_ctim$LAYOUT.byteSize());
+    }
+
+    private static final OfInt st_blksize$LAYOUT = (OfInt)$LAYOUT.select(groupElement("st_blksize"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * fuse_blksize_t st_blksize
+     * }
+     */
+    public static final OfInt st_blksize$layout() {
+        return st_blksize$LAYOUT;
+    }
+
+    private static final long st_blksize$OFFSET = 96;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * fuse_blksize_t st_blksize
+     * }
+     */
+    public static final long st_blksize$offset() {
+        return st_blksize$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * fuse_blksize_t st_blksize
+     * }
+     */
+    public static int st_blksize(MemorySegment struct) {
+        return struct.get(st_blksize$LAYOUT, st_blksize$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * fuse_blksize_t st_blksize
+     * }
+     */
+    public static void st_blksize(MemorySegment struct, int fieldValue) {
+        struct.set(st_blksize$LAYOUT, st_blksize$OFFSET, fieldValue);
+    }
+
+    private static final OfLong st_blocks$LAYOUT = (OfLong)$LAYOUT.select(groupElement("st_blocks"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * fuse_blkcnt_t st_blocks
+     * }
+     */
+    public static final OfLong st_blocks$layout() {
+        return st_blocks$LAYOUT;
+    }
+
+    private static final long st_blocks$OFFSET = 104;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * fuse_blkcnt_t st_blocks
+     * }
+     */
+    public static final long st_blocks$offset() {
+        return st_blocks$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * fuse_blkcnt_t st_blocks
+     * }
+     */
+    public static long st_blocks(MemorySegment struct) {
+        return struct.get(st_blocks$LAYOUT, st_blocks$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * fuse_blkcnt_t st_blocks
+     * }
+     */
+    public static void st_blocks(MemorySegment struct, long fieldValue) {
+        struct.set(st_blocks$LAYOUT, st_blocks$OFFSET, fieldValue);
+    }
+
+    private static final GroupLayout st_birthtim$LAYOUT = (GroupLayout)$LAYOUT.select(groupElement("st_birthtim"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_birthtim
+     * }
+     */
+    public static final GroupLayout st_birthtim$layout() {
+        return st_birthtim$LAYOUT;
+    }
+
+    private static final long st_birthtim$OFFSET = 112;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_birthtim
+     * }
+     */
+    public static final long st_birthtim$offset() {
+        return st_birthtim$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_birthtim
+     * }
+     */
+    public static MemorySegment st_birthtim(MemorySegment struct) {
+        return struct.asSlice(st_birthtim$OFFSET, st_birthtim$LAYOUT.byteSize());
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * struct fuse_timespec st_birthtim
+     * }
+     */
+    public static void st_birthtim(MemorySegment struct, MemorySegment fieldValue) {
+        MemorySegment.copy(fieldValue, 0L, struct, st_birthtim$OFFSET, st_birthtim$LAYOUT.byteSize());
+    }
+
+    /**
+     * Obtains a slice of {@code arrayParam} which selects the array element at {@code index}.
+     * The returned segment has address {@code arrayParam.address() + index * layout().byteSize()}
+     */
+    public static MemorySegment asSlice(MemorySegment array, long index) {
+        return array.asSlice(layout().byteSize() * index);
+    }
+
+    /**
+     * The size (in bytes) of this struct
+     */
+    public static long sizeof() { return layout().byteSize(); }
+
+    /**
+     * Allocate a segment of size {@code layout().byteSize()} using {@code allocator}
+     */
+    public static MemorySegment allocate(SegmentAllocator allocator) {
+        return allocator.allocate(layout());
+    }
+
+    /**
+     * Allocate an array of size {@code elementCount} using {@code allocator}.
+     * The returned segment has size {@code elementCount * layout().byteSize()}.
+     */
+    public static MemorySegment allocateArray(long elementCount, SegmentAllocator allocator) {
+        return allocator.allocate(MemoryLayout.sequenceLayout(elementCount, layout()));
+    }
+
+    /**
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * The returned segment has size {@code layout().byteSize()}
+     */
+    public static MemorySegment reinterpret(MemorySegment addr, Arena arena, Consumer<MemorySegment> cleanup) {
+        return reinterpret(addr, 1, arena, cleanup);
+    }
+
+    /**
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * The returned segment has size {@code elementCount * layout().byteSize()}
+     */
+    public static MemorySegment reinterpret(MemorySegment addr, long elementCount, Arena arena, Consumer<MemorySegment> cleanup) {
+        return addr.reinterpret(layout().byteSize() * elementCount, arena, cleanup);
+    }
+}
 

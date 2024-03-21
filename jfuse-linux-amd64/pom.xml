@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse-parent</artifactId>
-		<version>0.6.3</version>
+		<version>0.7.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-linux-amd64</artifactId>
@@ -24,6 +24,18 @@
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>@{surefire.jacoco.args} -javaagent:${net.bytebuddy:byte-buddy-agent:jar} --enable-native-access=org.cryptomator.jfuse.linux.amd64</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<profiles>
 		<profile>
@@ -69,7 +81,7 @@
 					<plugin>
 						<groupId>io.github.coffeelibs</groupId>
 						<artifactId>jextract-maven-plugin</artifactId>
-						<version>0.3.0</version>
+						<version>0.4.0</version>
 						<configuration>
 							<executable>/Users/sebastian/git/github.com/openjdk/jextract/build/jextract/bin/jextract</executable>
 							<headerSearchPaths>${linux.headerSearchPath}</headerSearchPaths>

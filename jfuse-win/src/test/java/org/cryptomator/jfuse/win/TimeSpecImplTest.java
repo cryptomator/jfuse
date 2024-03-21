@@ -15,8 +15,8 @@ public class TimeSpecImplTest {
 	public void testGet() {
 		try (var arena = Arena.ofConfined()) {
 			var timeSpec = new TimeSpecImpl(fuse_timespec.allocate(arena));
-			fuse_timespec.tv_sec$set(timeSpec.segment(), 123L);
-			fuse_timespec.tv_nsec$set(timeSpec.segment(), 456L);
+			fuse_timespec.tv_sec(timeSpec.segment(), 123L);
+			fuse_timespec.tv_nsec(timeSpec.segment(), 456L);
 
 			var result = timeSpec.get();
 
@@ -30,13 +30,13 @@ public class TimeSpecImplTest {
 	public void testSet() {
 		try (var arena = Arena.ofConfined()) {
 			var timeSpec = new TimeSpecImpl(fuse_timespec.allocate(arena));
-			fuse_timespec.tv_sec$set(timeSpec.segment(), 0L);
-			fuse_timespec.tv_nsec$set(timeSpec.segment(), 0L);
+			fuse_timespec.tv_sec(timeSpec.segment(), 0L);
+			fuse_timespec.tv_nsec(timeSpec.segment(), 0L);
 
 			timeSpec.set(Instant.ofEpochSecond(123L, 456L));
 
-			Assertions.assertEquals(123L, fuse_timespec.tv_sec$get(timeSpec.segment()));
-			Assertions.assertEquals(456L, fuse_timespec.tv_nsec$get(timeSpec.segment()));
+			Assertions.assertEquals(123L, fuse_timespec.tv_sec(timeSpec.segment()));
+			Assertions.assertEquals(456L, fuse_timespec.tv_nsec(timeSpec.segment()));
 		}
 	}
 

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse-parent</artifactId>
-		<version>0.6.3</version>
+		<version>0.7.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse</artifactId>
@@ -52,7 +52,6 @@
 					<additionalOptions>
 						<option>--module org.cryptomator.jfuse</option>
 						<option>--expand-requires transitive</option>
-						<option>--enable-preview</option>
 					</additionalOptions>
 					<includeDependencySources>true</includeDependencySources>
 					<dependencySourceIncludes>

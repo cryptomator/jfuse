@@ -2,93 +2,152 @@
 
 package org.cryptomator.jfuse.mac.extr.fcntl;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
-import java.nio.ByteOrder;
+import java.lang.invoke.*;
 import java.lang.foreign.*;
-import static java.lang.foreign.ValueLayout.*;
-public class fcntl_h  {
+import java.nio.ByteOrder;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
 
-    public static final OfByte C_CHAR = JAVA_BYTE;
-    public static final OfShort C_SHORT = JAVA_SHORT;
-    public static final OfInt C_INT = JAVA_INT;
-    public static final OfLong C_LONG = JAVA_LONG;
-    public static final OfLong C_LONG_LONG = JAVA_LONG;
-    public static final OfFloat C_FLOAT = JAVA_FLOAT;
-    public static final OfDouble C_DOUBLE = JAVA_DOUBLE;
-    public static final AddressLayout C_POINTER = RuntimeHelper.POINTER;
+import static java.lang.foreign.ValueLayout.*;
+import static java.lang.foreign.MemoryLayout.PathElement.*;
+
+public class fcntl_h {
+
+    fcntl_h() {
+        // Should not be called directly
+    }
+
+    static final Arena LIBRARY_ARENA = Arena.ofAuto();
+    static final boolean TRACE_DOWNCALLS = Boolean.getBoolean("jextract.trace.downcalls");
+
+    static void traceDowncall(String name, Object... args) {
+         String traceArgs = Arrays.stream(args)
+                       .map(Object::toString)
+                       .collect(Collectors.joining(", "));
+         System.out.printf("%s(%s)\n", name, traceArgs);
+    }
+
+    static MemorySegment findOrThrow(String symbol) {
+        return SYMBOL_LOOKUP.find(symbol)
+            .orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol: " + symbol));
+    }
+
+    static MethodHandle upcallHandle(Class<?> fi, String name, FunctionDescriptor fdesc) {
+        try {
+            return MethodHandles.lookup().findVirtual(fi, name, fdesc.toMethodType());
+        } catch (ReflectiveOperationException ex) {
+            throw new AssertionError(ex);
+        }
+    }
+
+    static MemoryLayout align(MemoryLayout layout, long align) {
+        return switch (layout) {
+            case PaddingLayout p -> p;
+            case ValueLayout v -> v.withByteAlignment(align);
+            case GroupLayout g -> {
+                MemoryLayout[] alignedMembers = g.memberLayouts().stream()
+                        .map(m -> align(m, align)).toArray(MemoryLayout[]::new);
+                yield g instanceof StructLayout ?
+                        MemoryLayout.structLayout(alignedMembers) : MemoryLayout.unionLayout(alignedMembers);
+            }
+            case SequenceLayout s -> MemoryLayout.sequenceLayout(s.elementCount(), align(s.elementLayout(), align));
+        };
+    }
+
+    static final SymbolLookup SYMBOL_LOOKUP = SymbolLookup.loaderLookup()
+            .or(Linker.nativeLinker().defaultLookup());
+
+    public static final ValueLayout.OfBoolean C_BOOL = ValueLayout.JAVA_BOOLEAN;
+    public static final ValueLayout.OfByte C_CHAR = ValueLayout.JAVA_BYTE;
+    public static final ValueLayout.OfShort C_SHORT = ValueLayout.JAVA_SHORT;
+    public static final ValueLayout.OfInt C_INT = ValueLayout.JAVA_INT;
+    public static final ValueLayout.OfLong C_LONG_LONG = ValueLayout.JAVA_LONG;
+    public static final ValueLayout.OfFloat C_FLOAT = ValueLayout.JAVA_FLOAT;
+    public static final ValueLayout.OfDouble C_DOUBLE = ValueLayout.JAVA_DOUBLE;
+    public static final AddressLayout C_POINTER = ValueLayout.ADDRESS
+            .withTargetLayout(MemoryLayout.sequenceLayout(java.lang.Long.MAX_VALUE, JAVA_BYTE));
+    public static final ValueLayout.OfLong C_LONG = ValueLayout.JAVA_LONG;
+    private static final int O_RDONLY = (int)0L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define O_RDONLY 0
      * }
      */
     public static int O_RDONLY() {
-        return (int)0L;
+        return O_RDONLY;
     }
+    private static final int O_WRONLY = (int)1L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define O_WRONLY 1
      * }
      */
     public static int O_WRONLY() {
-        return (int)1L;
+        return O_WRONLY;
     }
+    private static final int O_RDWR = (int)2L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define O_RDWR 2
      * }
      */
     public static int O_RDWR() {
-        return (int)2L;
+        return O_RDWR;
     }
+    private static final int O_APPEND = (int)8L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define O_APPEND 8
      * }
      */
     public static int O_APPEND() {
-        return (int)8L;
+        return O_APPEND;
     }
+    private static final int O_SYNC = (int)128L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define O_SYNC 128
      * }
      */
     public static int O_SYNC() {
-        return (int)128L;
+        return O_SYNC;
     }
+    private static final int O_CREAT = (int)512L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define O_CREAT 512
      * }
      */
     public static int O_CREAT() {
-        return (int)512L;
+        return O_CREAT;
     }
+    private static final int O_TRUNC = (int)1024L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define O_TRUNC 1024
      * }
      */
     public static int O_TRUNC() {
-        return (int)1024L;
+        return O_TRUNC;
     }
+    private static final int O_EXCL = (int)2048L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define O_EXCL 2048
      * }
      */
     public static int O_EXCL() {
-        return (int)2048L;
+        return O_EXCL;
     }
+    private static final int O_DSYNC = (int)4194304L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define O_DSYNC 4194304
      * }
      */
     public static int O_DSYNC() {
-        return (int)4194304L;
+        return O_DSYNC;
     }
 }
-
 

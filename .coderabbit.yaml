@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/coderabbit-overrides.v2.json
+language: "en"
+reviews:
+  path_filters:
+    - "!**/extr/**"
+  auto_review:
+      enabled: true
+chat:
+    auto_reply: true

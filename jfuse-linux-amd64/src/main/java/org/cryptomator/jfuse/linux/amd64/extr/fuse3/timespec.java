@@ -2,84 +2,172 @@
 
 package org.cryptomator.jfuse.linux.amd64.extr.fuse3;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
-import java.nio.ByteOrder;
+import java.lang.invoke.*;
 import java.lang.foreign.*;
+import java.nio.ByteOrder;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
+
 import static java.lang.foreign.ValueLayout.*;
+import static java.lang.foreign.MemoryLayout.PathElement.*;
+
 /**
- * {@snippet :
+ * {@snippet lang=c :
  * struct timespec {
- *     long tv_sec;
- *     long tv_nsec;
- * };
+ *     __time_t tv_sec;
+ *     __syscall_slong_t tv_nsec;
+ * }
  * }
  */
 public class timespec {
 
-    public static MemoryLayout $LAYOUT() {
-        return constants$0.const$4;
+    timespec() {
+        // Should not be called directly
     }
-    public static VarHandle tv_sec$VH() {
-        return constants$0.const$5;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * long tv_sec;
-     * }
-     */
-    public static long tv_sec$get(MemorySegment seg) {
-        return (long)constants$0.const$5.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * long tv_sec;
-     * }
-     */
-    public static void tv_sec$set(MemorySegment seg, long x) {
-        constants$0.const$5.set(seg, x);
-    }
-    public static long tv_sec$get(MemorySegment seg, long index) {
-        return (long)constants$0.const$5.get(seg.asSlice(index*sizeof()));
-    }
-    public static void tv_sec$set(MemorySegment seg, long index, long x) {
-        constants$0.const$5.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static VarHandle tv_nsec$VH() {
-        return constants$1.const$0;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * long tv_nsec;
-     * }
-     */
-    public static long tv_nsec$get(MemorySegment seg) {
-        return (long)constants$1.const$0.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * long tv_nsec;
-     * }
-     */
-    public static void tv_nsec$set(MemorySegment seg, long x) {
-        constants$1.const$0.set(seg, x);
-    }
-    public static long tv_nsec$get(MemorySegment seg, long index) {
-        return (long)constants$1.const$0.get(seg.asSlice(index*sizeof()));
-    }
-    public static void tv_nsec$set(MemorySegment seg, long index, long x) {
-        constants$1.const$0.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static long sizeof() { return $LAYOUT().byteSize(); }
-    public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
-        return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
-    }
-    public static MemorySegment ofAddress(MemorySegment addr, Arena scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
-}
 
+    private static final GroupLayout $LAYOUT = MemoryLayout.structLayout(
+        fuse_h.C_LONG.withName("tv_sec"),
+        fuse_h.C_LONG.withName("tv_nsec")
+    ).withName("timespec");
+
+    /**
+     * The layout of this struct
+     */
+    public static final GroupLayout layout() {
+        return $LAYOUT;
+    }
+
+    private static final OfLong tv_sec$LAYOUT = (OfLong)$LAYOUT.select(groupElement("tv_sec"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * __time_t tv_sec
+     * }
+     */
+    public static final OfLong tv_sec$layout() {
+        return tv_sec$LAYOUT;
+    }
+
+    private static final long tv_sec$OFFSET = 0;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * __time_t tv_sec
+     * }
+     */
+    public static final long tv_sec$offset() {
+        return tv_sec$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * __time_t tv_sec
+     * }
+     */
+    public static long tv_sec(MemorySegment struct) {
+        return struct.get(tv_sec$LAYOUT, tv_sec$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * __time_t tv_sec
+     * }
+     */
+    public static void tv_sec(MemorySegment struct, long fieldValue) {
+        struct.set(tv_sec$LAYOUT, tv_sec$OFFSET, fieldValue);
+    }
+
+    private static final OfLong tv_nsec$LAYOUT = (OfLong)$LAYOUT.select(groupElement("tv_nsec"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * __syscall_slong_t tv_nsec
+     * }
+     */
+    public static final OfLong tv_nsec$layout() {
+        return tv_nsec$LAYOUT;
+    }
+
+    private static final long tv_nsec$OFFSET = 8;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * __syscall_slong_t tv_nsec
+     * }
+     */
+    public static final long tv_nsec$offset() {
+        return tv_nsec$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * __syscall_slong_t tv_nsec
+     * }
+     */
+    public static long tv_nsec(MemorySegment struct) {
+        return struct.get(tv_nsec$LAYOUT, tv_nsec$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * __syscall_slong_t tv_nsec
+     * }
+     */
+    public static void tv_nsec(MemorySegment struct, long fieldValue) {
+        struct.set(tv_nsec$LAYOUT, tv_nsec$OFFSET, fieldValue);
+    }
+
+    /**
+     * Obtains a slice of {@code arrayParam} which selects the array element at {@code index}.
+     * The returned segment has address {@code arrayParam.address() + index * layout().byteSize()}
+     */
+    public static MemorySegment asSlice(MemorySegment array, long index) {
+        return array.asSlice(layout().byteSize() * index);
+    }
+
+    /**
+     * The size (in bytes) of this struct
+     */
+    public static long sizeof() { return layout().byteSize(); }
+
+    /**
+     * Allocate a segment of size {@code layout().byteSize()} using {@code allocator}
+     */
+    public static MemorySegment allocate(SegmentAllocator allocator) {
+        return allocator.allocate(layout());
+    }
+
+    /**
+     * Allocate an array of size {@code elementCount} using {@code allocator}.
+     * The returned segment has size {@code elementCount * layout().byteSize()}.
+     */
+    public static MemorySegment allocateArray(long elementCount, SegmentAllocator allocator) {
+        return allocator.allocate(MemoryLayout.sequenceLayout(elementCount, layout()));
+    }
+
+    /**
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * The returned segment has size {@code layout().byteSize()}
+     */
+    public static MemorySegment reinterpret(MemorySegment addr, Arena arena, Consumer<MemorySegment> cleanup) {
+        return reinterpret(addr, 1, arena, cleanup);
+    }
+
+    /**
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * The returned segment has size {@code elementCount * layout().byteSize()}
+     */
+    public static MemorySegment reinterpret(MemorySegment addr, long elementCount, Arena arena, Consumer<MemorySegment> cleanup) {
+        return addr.reinterpret(layout().byteSize() * elementCount, arena, cleanup);
+    }
+}
 

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse-parent</artifactId>
-		<version>0.6.3</version>
+		<version>0.7.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-win</artifactId>
@@ -15,7 +15,7 @@
 
 	<properties>
 		<win.ucrtHeaderPath>C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt</win.ucrtHeaderPath>
-		<jextract.executable>C:\Users\Arbeit\Skymatic\jextract\build\jextract\bin\jextract.bat</jextract.executable>
+		<jextract.executable>C:\Users\Arbeit\Programs\jextract-22\bin\jextract.bat</jextract.executable>
 	</properties>
 
 	<dependencies>
@@ -25,6 +25,18 @@
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>@{surefire.jacoco.args} -javaagent:${net.bytebuddy:byte-buddy-agent:jar} --enable-native-access=org.cryptomator.jfuse.win</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<profiles>
 		<profile>
@@ -71,7 +83,7 @@
 					<plugin>
 						<groupId>io.github.coffeelibs</groupId>
 						<artifactId>jextract-maven-plugin</artifactId>
-						<version>0.3.0</version>
+						<version>0.4.0</version>
 						<configuration>
 							<executable>${jextract.executable}</executable>
 							<headerSearchPaths>${win.ucrtHeaderPath}</headerSearchPaths>

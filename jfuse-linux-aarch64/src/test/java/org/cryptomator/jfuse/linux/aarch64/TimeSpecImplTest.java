@@ -16,8 +16,8 @@ public class TimeSpecImplTest {
 	public void testGet() {
 		try (var arena = Arena.ofConfined()) {
 			var timeSpec = new TimeSpecImpl(timespec.allocate(arena));
-			timespec.tv_sec$set(timeSpec.segment(), 123L);
-			timespec.tv_nsec$set(timeSpec.segment(), 456L);
+			timespec.tv_sec(timeSpec.segment(), 123L);
+			timespec.tv_nsec(timeSpec.segment(), 456L);
 
 			var result = timeSpec.get();
 
@@ -31,13 +31,13 @@ public class TimeSpecImplTest {
 	public void testSet() {
 		try (var arena = Arena.ofConfined()) {
 			var timeSpec = new TimeSpecImpl(timespec.allocate(arena));
-			timespec.tv_sec$set(timeSpec.segment(), 0L);
-			timespec.tv_nsec$set(timeSpec.segment(), 0L);
+			timespec.tv_sec(timeSpec.segment(), 0L);
+			timespec.tv_nsec(timeSpec.segment(), 0L);
 
 			timeSpec.set(Instant.ofEpochSecond(123L, 456L));
 
-			Assertions.assertEquals(123L, timespec.tv_sec$get(timeSpec.segment()));
-			Assertions.assertEquals(456L, timespec.tv_nsec$get(timeSpec.segment()));
+			Assertions.assertEquals(123L, timespec.tv_sec(timeSpec.segment()));
+			Assertions.assertEquals(456L, timespec.tv_nsec(timeSpec.segment()));
 		}
 	}
 
@@ -46,8 +46,8 @@ public class TimeSpecImplTest {
 	public void testIsUtimeOmit() {
 		try (var arena = Arena.ofConfined()) {
 			var timeSpec = new TimeSpecImpl(timespec.allocate(arena));
-			timespec.tv_sec$set(timeSpec.segment(), 123L);
-			timespec.tv_nsec$set(timeSpec.segment(), stat_h.UTIME_OMIT());
+			timespec.tv_sec(timeSpec.segment(), 123L);
+			timespec.tv_nsec(timeSpec.segment(), stat_h.UTIME_OMIT());
 
 			Assertions.assertTrue(timeSpec.isUtimeOmit());
 			Assertions.assertFalse(timeSpec.isUtimeNow());
@@ -59,8 +59,8 @@ public class TimeSpecImplTest {
 	public void testIsUtimeNow() {
 		try (var arena = Arena.ofConfined()) {
 			var timeSpec = new TimeSpecImpl(timespec.allocate(arena));
-			timespec.tv_sec$set(timeSpec.segment(), 123L);
-			timespec.tv_nsec$set(timeSpec.segment(), stat_h.UTIME_NOW());
+			timespec.tv_sec(timeSpec.segment(), 123L);
+			timespec.tv_nsec(timeSpec.segment(), stat_h.UTIME_NOW());
 
 			Assertions.assertFalse(timeSpec.isUtimeOmit());
 			Assertions.assertTrue(timeSpec.isUtimeNow());

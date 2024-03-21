@@ -3,7 +3,7 @@
     <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.examples.PosixMirrorFileSystem" />
     <module name="jfuse-examples" />
     <option name="PROGRAM_PARAMETERS" value="$USER_HOME$/Desktop/TMP /Volumes/foo" />
-    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug --enable-native-access=org.cryptomator.jfuse.mac --enable-preview -Dfuse.lib.path=/usr/local/lib/libfuse.dylib" />
+    <option name="VM_PARAMETERS" value="-Djava.library.path=/usr/local/lib -Dorg.slf4j.simpleLogger.defaultLogLevel=debug --enable-native-access=org.cryptomator.jfuse.mac -Dfuse.lib.path=/usr/local/lib/libfuse.dylib" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="de.skymatic.fusepanama.examples.*" />

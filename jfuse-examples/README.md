@@ -2,7 +2,7 @@
 
 Assuming you have built the parent project (`mvn package`), you can run these examples directly from the shell.
 
-These examples require JDK 19 or newer. You may want to adjust paths, such as the `java.library.path`.
+These examples require JDK 22 or newer. You may want to adjust paths, such as the `java.library.path`.
 
 ### Running the hello world example:
 
