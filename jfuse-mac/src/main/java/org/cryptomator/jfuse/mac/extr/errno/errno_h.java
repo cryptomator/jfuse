@@ -2,173 +2,242 @@
 
 package org.cryptomator.jfuse.mac.extr.errno;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
-import java.nio.ByteOrder;
+import java.lang.invoke.*;
 import java.lang.foreign.*;
-import static java.lang.foreign.ValueLayout.*;
-public class errno_h  {
+import java.nio.ByteOrder;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
 
-    public static final OfByte C_CHAR = JAVA_BYTE;
-    public static final OfShort C_SHORT = JAVA_SHORT;
-    public static final OfInt C_INT = JAVA_INT;
-    public static final OfLong C_LONG = JAVA_LONG;
-    public static final OfLong C_LONG_LONG = JAVA_LONG;
-    public static final OfFloat C_FLOAT = JAVA_FLOAT;
-    public static final OfDouble C_DOUBLE = JAVA_DOUBLE;
-    public static final AddressLayout C_POINTER = RuntimeHelper.POINTER;
+import static java.lang.foreign.ValueLayout.*;
+import static java.lang.foreign.MemoryLayout.PathElement.*;
+
+public class errno_h {
+
+    errno_h() {
+        // Should not be called directly
+    }
+
+    static final Arena LIBRARY_ARENA = Arena.ofAuto();
+    static final boolean TRACE_DOWNCALLS = Boolean.getBoolean("jextract.trace.downcalls");
+
+    static void traceDowncall(String name, Object... args) {
+         String traceArgs = Arrays.stream(args)
+                       .map(Object::toString)
+                       .collect(Collectors.joining(", "));
+         System.out.printf("%s(%s)\n", name, traceArgs);
+    }
+
+    static MemorySegment findOrThrow(String symbol) {
+        return SYMBOL_LOOKUP.find(symbol)
+            .orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol: " + symbol));
+    }
+
+    static MethodHandle upcallHandle(Class<?> fi, String name, FunctionDescriptor fdesc) {
+        try {
+            return MethodHandles.lookup().findVirtual(fi, name, fdesc.toMethodType());
+        } catch (ReflectiveOperationException ex) {
+            throw new AssertionError(ex);
+        }
+    }
+
+    static MemoryLayout align(MemoryLayout layout, long align) {
+        return switch (layout) {
+            case PaddingLayout p -> p;
+            case ValueLayout v -> v.withByteAlignment(align);
+            case GroupLayout g -> {
+                MemoryLayout[] alignedMembers = g.memberLayouts().stream()
+                        .map(m -> align(m, align)).toArray(MemoryLayout[]::new);
+                yield g instanceof StructLayout ?
+                        MemoryLayout.structLayout(alignedMembers) : MemoryLayout.unionLayout(alignedMembers);
+            }
+            case SequenceLayout s -> MemoryLayout.sequenceLayout(s.elementCount(), align(s.elementLayout(), align));
+        };
+    }
+
+    static final SymbolLookup SYMBOL_LOOKUP = SymbolLookup.loaderLookup()
+            .or(Linker.nativeLinker().defaultLookup());
+
+    public static final ValueLayout.OfBoolean C_BOOL = ValueLayout.JAVA_BOOLEAN;
+    public static final ValueLayout.OfByte C_CHAR = ValueLayout.JAVA_BYTE;
+    public static final ValueLayout.OfShort C_SHORT = ValueLayout.JAVA_SHORT;
+    public static final ValueLayout.OfInt C_INT = ValueLayout.JAVA_INT;
+    public static final ValueLayout.OfLong C_LONG_LONG = ValueLayout.JAVA_LONG;
+    public static final ValueLayout.OfFloat C_FLOAT = ValueLayout.JAVA_FLOAT;
+    public static final ValueLayout.OfDouble C_DOUBLE = ValueLayout.JAVA_DOUBLE;
+    public static final AddressLayout C_POINTER = ValueLayout.ADDRESS
+            .withTargetLayout(MemoryLayout.sequenceLayout(java.lang.Long.MAX_VALUE, JAVA_BYTE));
+    public static final ValueLayout.OfLong C_LONG = ValueLayout.JAVA_LONG;
+    private static final int ENOENT = (int)2L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define ENOENT 2
      * }
      */
     public static int ENOENT() {
-        return (int)2L;
+        return ENOENT;
     }
+    private static final int EIO = (int)5L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define EIO 5
      * }
      */
     public static int EIO() {
-        return (int)5L;
+        return EIO;
     }
+    private static final int E2BIG = (int)7L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define E2BIG 7
      * }
      */
     public static int E2BIG() {
-        return (int)7L;
+        return E2BIG;
     }
+    private static final int EBADF = (int)9L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define EBADF 9
      * }
      */
     public static int EBADF() {
-        return (int)9L;
+        return EBADF;
     }
+    private static final int ENOMEM = (int)12L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define ENOMEM 12
      * }
      */
     public static int ENOMEM() {
-        return (int)12L;
+        return ENOMEM;
     }
+    private static final int EACCES = (int)13L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define EACCES 13
      * }
      */
     public static int EACCES() {
-        return (int)13L;
+        return EACCES;
     }
+    private static final int EEXIST = (int)17L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define EEXIST 17
      * }
      */
     public static int EEXIST() {
-        return (int)17L;
+        return EEXIST;
     }
+    private static final int ENOTDIR = (int)20L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define ENOTDIR 20
      * }
      */
     public static int ENOTDIR() {
-        return (int)20L;
+        return ENOTDIR;
     }
+    private static final int EISDIR = (int)21L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define EISDIR 21
      * }
      */
     public static int EISDIR() {
-        return (int)21L;
+        return EISDIR;
     }
+    private static final int EINVAL = (int)22L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define EINVAL 22
      * }
      */
     public static int EINVAL() {
-        return (int)22L;
+        return EINVAL;
     }
+    private static final int EROFS = (int)30L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define EROFS 30
      * }
      */
     public static int EROFS() {
-        return (int)30L;
+        return EROFS;
     }
+    private static final int ERANGE = (int)34L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define ERANGE 34
      * }
      */
     public static int ERANGE() {
-        return (int)34L;
+        return ERANGE;
     }
+    private static final int ENOTSUP = (int)45L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define ENOTSUP 45
      * }
      */
     public static int ENOTSUP() {
-        return (int)45L;
+        return ENOTSUP;
     }
+    private static final int ENAMETOOLONG = (int)63L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define ENAMETOOLONG 63
      * }
      */
     public static int ENAMETOOLONG() {
-        return (int)63L;
+        return ENAMETOOLONG;
     }
+    private static final int ENOTEMPTY = (int)66L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define ENOTEMPTY 66
      * }
      */
     public static int ENOTEMPTY() {
-        return (int)66L;
+        return ENOTEMPTY;
     }
+    private static final int ENOLCK = (int)77L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define ENOLCK 77
      * }
      */
     public static int ENOLCK() {
-        return (int)77L;
+        return ENOLCK;
     }
+    private static final int ENOSYS = (int)78L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define ENOSYS 78
      * }
      */
     public static int ENOSYS() {
-        return (int)78L;
+        return ENOSYS;
     }
+    private static final int ENOATTR = (int)93L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define ENOATTR 93
      * }
      */
     public static int ENOATTR() {
-        return (int)93L;
+        return ENOATTR;
     }
+    private static final int ENODATA = (int)96L;
     /**
-     * {@snippet :
+     * {@snippet lang=c :
      * #define ENODATA 96
      * }
      */
     public static int ENODATA() {
-        return (int)96L;
+        return ENODATA;
     }
 }
-
 

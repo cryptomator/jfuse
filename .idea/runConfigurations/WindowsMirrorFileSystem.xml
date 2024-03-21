@@ -3,7 +3,7 @@
     <option name="MAIN_CLASS_NAME" value="org.cryptomator.jfuse.examples.WindowsMirrorFileSystem" />
     <module name="jfuse-examples" />
     <option name="PROGRAM_PARAMETERS" value="T:\test M:" />
-    <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=info --enable-native-access=org.cryptomator.jfuse.win --enable-preview" />
+    <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=info --enable-native-access=org.cryptomator.jfuse.win" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="de.skymatic.fusepanama.examples.*" />

@@ -22,23 +22,19 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 	private static final int O_SYNC = fcntl_h.O_SYNC();
 	private static final int O_DSYNC = fcntl_h.O_DSYNC();
 
-	public FileInfoImpl(MemorySegment address, Arena scope) {
-		this(fuse_file_info.ofAddress(address, scope));
-	}
-
 	@Override
 	public long getFh() {
-		return fuse_file_info.fh$get(segment);
+		return fuse_file_info.fh(segment);
 	}
 
 	@Override
 	public void setFh(long fh) {
-		fuse_file_info.fh$set(segment, fh);
+		fuse_file_info.fh(segment, fh);
 	}
 
 	@Override
 	public int getFlags() {
-		return fuse_file_info.flags$get(segment);
+		return fuse_file_info.flags(segment);
 	}
 
 	@Override
@@ -78,7 +74,7 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 
 	@Override
 	public long getLockOwner() {
-		return fuse_file_info.lock_owner$get(segment);
+		return fuse_file_info.lock_owner(segment);
 	}
 
 }

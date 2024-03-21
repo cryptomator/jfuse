@@ -23,7 +23,7 @@ public class StatImplTest {
 	public void testGetters(SetInMemorySegment<Number> setter, GetInStat<Number> getter, Number value) {
 		try (var arena = Arena.ofConfined()) {
 			var segment = fuse_stat.allocate(arena);
-			var stat = new StatImpl(segment, arena);
+			var stat = new StatImpl(segment);
 
 			setter.accept(segment, value);
 
@@ -33,11 +33,11 @@ public class StatImplTest {
 
 	public static Stream<Arguments> testGetters() {
 		return Stream.of(
-				Arguments.arguments((SetInMemorySegment<Integer>) fuse_stat::st_mode$set, Named.of("getMode()", (GetInStat<Integer>) Stat::getMode), 42),
-				Arguments.arguments((SetInMemorySegment<Integer>) fuse_stat::st_uid$set, Named.of("getUid()", (GetInStat<Integer>) Stat::getUid), 42),
-				Arguments.arguments((SetInMemorySegment<Integer>) fuse_stat::st_gid$set, Named.of("getGid()", (GetInStat<Integer>) Stat::getGid), 42),
-				Arguments.arguments((SetInMemorySegment<Short>) fuse_stat::st_nlink$set, Named.of("getNLink()", (GetInStat<Long>) Stat::getNLink), (short) 42),
-				Arguments.arguments((SetInMemorySegment<Long>) fuse_stat::st_size$set, Named.of("getSize()", (GetInStat<Long>) Stat::getSize), 42L)
+				Arguments.arguments((SetInMemorySegment<Integer>) fuse_stat::st_mode, Named.of("getMode()", (GetInStat<Integer>) Stat::getMode), 42),
+				Arguments.arguments((SetInMemorySegment<Integer>) fuse_stat::st_uid, Named.of("getUid()", (GetInStat<Integer>) Stat::getUid), 42),
+				Arguments.arguments((SetInMemorySegment<Integer>) fuse_stat::st_gid, Named.of("getGid()", (GetInStat<Integer>) Stat::getGid), 42),
+				Arguments.arguments((SetInMemorySegment<Short>) fuse_stat::st_nlink, Named.of("getNLink()", (GetInStat<Long>) Stat::getNLink), (short) 42),
+				Arguments.arguments((SetInMemorySegment<Long>) fuse_stat::st_size, Named.of("getSize()", (GetInStat<Long>) Stat::getSize), 42L)
 		);
 	}
 
@@ -51,7 +51,7 @@ public class StatImplTest {
 	public void testSetters(SetInStat<Number> setter, GetInMemorySegment<Number> getter, Number value) {
 		try (var arena = Arena.ofConfined()) {
 			var segment = fuse_stat.allocate(arena);
-			var stat = new StatImpl(segment, arena);
+			var stat = new StatImpl(segment);
 
 			setter.accept(stat, value);
 
@@ -61,11 +61,11 @@ public class StatImplTest {
 
 	public static Stream<Arguments> testSetters() {
 		return Stream.of(
-				Arguments.arguments(Named.of("setMode()", (SetInStat<Integer>) Stat::setMode), (GetInMemorySegment<Integer>) fuse_stat::st_mode$get, 42),
-				Arguments.arguments(Named.of("setUid()", (SetInStat<Integer>) Stat::setUid), (GetInMemorySegment<Integer>) fuse_stat::st_uid$get, 42),
-				Arguments.arguments(Named.of("setGid()", (SetInStat<Integer>) Stat::setGid), (GetInMemorySegment<Integer>) fuse_stat::st_gid$get, 42),
-				Arguments.arguments(Named.of("setNLink()", (SetInStat<Short>) Stat::setNLink), (GetInMemorySegment<Short>) fuse_stat::st_nlink$get, (short) 42),
-				Arguments.arguments(Named.of("setSize()", (SetInStat<Long>) Stat::setSize), (GetInMemorySegment<Long>) fuse_stat::st_size$get, 42L)
+				Arguments.arguments(Named.of("setMode()", (SetInStat<Integer>) Stat::setMode), (GetInMemorySegment<Integer>) fuse_stat::st_mode, 42),
+				Arguments.arguments(Named.of("setUid()", (SetInStat<Integer>) Stat::setUid), (GetInMemorySegment<Integer>) fuse_stat::st_uid, 42),
+				Arguments.arguments(Named.of("setGid()", (SetInStat<Integer>) Stat::setGid), (GetInMemorySegment<Integer>) fuse_stat::st_gid, 42),
+				Arguments.arguments(Named.of("setNLink()", (SetInStat<Short>) Stat::setNLink), (GetInMemorySegment<Short>) fuse_stat::st_nlink, (short) 42),
+				Arguments.arguments(Named.of("setSize()", (SetInStat<Long>) Stat::setSize), (GetInMemorySegment<Long>) fuse_stat::st_size, 42L)
 		);
 	}
 

@@ -81,7 +81,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<argLine>@{surefire.jacoco.args} --enable-native-access=ALL-UNNAMED --enable-preview -Djava.library.path=".:${java.library.path}"</argLine>
+					<argLine>@{surefire.jacoco.args} --enable-native-access=ALL-UNNAMED -Djava.library.path=".:${java.library.path}"</argLine>
 					<systemPropertyVariables>
 						<fuse.lib.path>${fuse.lib.path}</fuse.lib.path>
 					</systemPropertyVariables>
@@ -100,7 +100,7 @@
 							<includes>
 								<include>**/*IT.java</include>
 							</includes>
-							<argLine>@{failsafe.jacoco.args} --enable-native-access=ALL-UNNAMED --enable-preview -Djava.library.path=".:${java.library.path}"</argLine>
+							<argLine>@{failsafe.jacoco.args} --enable-native-access=ALL-UNNAMED -Djava.library.path=".:${java.library.path}"</argLine>
 							<systemPropertyVariables>
 								<fuse.lib.path>${fuse.lib.path}</fuse.lib.path>
 							</systemPropertyVariables>

@@ -2,84 +2,172 @@
 
 package org.cryptomator.jfuse.win.extr.fuse3;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
-import java.nio.ByteOrder;
+import java.lang.invoke.*;
 import java.lang.foreign.*;
+import java.nio.ByteOrder;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
+
 import static java.lang.foreign.ValueLayout.*;
+import static java.lang.foreign.MemoryLayout.PathElement.*;
+
 /**
- * {@snippet :
+ * {@snippet lang=c :
  * struct fuse3_loop_config {
  *     int clone_fd;
  *     unsigned int max_idle_threads;
- * };
+ * }
  * }
  */
 public class fuse3_loop_config {
 
-    public static MemoryLayout $LAYOUT() {
-        return constants$5.const$1;
+    fuse3_loop_config() {
+        // Should not be called directly
     }
-    public static VarHandle clone_fd$VH() {
-        return constants$5.const$2;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * int clone_fd;
-     * }
-     */
-    public static int clone_fd$get(MemorySegment seg) {
-        return (int)constants$5.const$2.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * int clone_fd;
-     * }
-     */
-    public static void clone_fd$set(MemorySegment seg, int x) {
-        constants$5.const$2.set(seg, x);
-    }
-    public static int clone_fd$get(MemorySegment seg, long index) {
-        return (int)constants$5.const$2.get(seg.asSlice(index*sizeof()));
-    }
-    public static void clone_fd$set(MemorySegment seg, long index, int x) {
-        constants$5.const$2.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static VarHandle max_idle_threads$VH() {
-        return constants$5.const$3;
-    }
-    /**
-     * Getter for field:
-     * {@snippet :
-     * unsigned int max_idle_threads;
-     * }
-     */
-    public static int max_idle_threads$get(MemorySegment seg) {
-        return (int)constants$5.const$3.get(seg);
-    }
-    /**
-     * Setter for field:
-     * {@snippet :
-     * unsigned int max_idle_threads;
-     * }
-     */
-    public static void max_idle_threads$set(MemorySegment seg, int x) {
-        constants$5.const$3.set(seg, x);
-    }
-    public static int max_idle_threads$get(MemorySegment seg, long index) {
-        return (int)constants$5.const$3.get(seg.asSlice(index*sizeof()));
-    }
-    public static void max_idle_threads$set(MemorySegment seg, long index, int x) {
-        constants$5.const$3.set(seg.asSlice(index*sizeof()), x);
-    }
-    public static long sizeof() { return $LAYOUT().byteSize(); }
-    public static MemorySegment allocate(SegmentAllocator allocator) { return allocator.allocate($LAYOUT()); }
-    public static MemorySegment allocateArray(long len, SegmentAllocator allocator) {
-        return allocator.allocate(MemoryLayout.sequenceLayout(len, $LAYOUT()));
-    }
-    public static MemorySegment ofAddress(MemorySegment addr, Arena scope) { return RuntimeHelper.asArray(addr, $LAYOUT(), 1, scope); }
-}
 
+    private static final GroupLayout $LAYOUT = MemoryLayout.structLayout(
+        fuse_h.C_INT.withName("clone_fd"),
+        fuse_h.C_INT.withName("max_idle_threads")
+    ).withName("fuse3_loop_config");
+
+    /**
+     * The layout of this struct
+     */
+    public static final GroupLayout layout() {
+        return $LAYOUT;
+    }
+
+    private static final OfInt clone_fd$LAYOUT = (OfInt)$LAYOUT.select(groupElement("clone_fd"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * int clone_fd
+     * }
+     */
+    public static final OfInt clone_fd$layout() {
+        return clone_fd$LAYOUT;
+    }
+
+    private static final long clone_fd$OFFSET = 0;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * int clone_fd
+     * }
+     */
+    public static final long clone_fd$offset() {
+        return clone_fd$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * int clone_fd
+     * }
+     */
+    public static int clone_fd(MemorySegment struct) {
+        return struct.get(clone_fd$LAYOUT, clone_fd$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * int clone_fd
+     * }
+     */
+    public static void clone_fd(MemorySegment struct, int fieldValue) {
+        struct.set(clone_fd$LAYOUT, clone_fd$OFFSET, fieldValue);
+    }
+
+    private static final OfInt max_idle_threads$LAYOUT = (OfInt)$LAYOUT.select(groupElement("max_idle_threads"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * unsigned int max_idle_threads
+     * }
+     */
+    public static final OfInt max_idle_threads$layout() {
+        return max_idle_threads$LAYOUT;
+    }
+
+    private static final long max_idle_threads$OFFSET = 4;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * unsigned int max_idle_threads
+     * }
+     */
+    public static final long max_idle_threads$offset() {
+        return max_idle_threads$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * unsigned int max_idle_threads
+     * }
+     */
+    public static int max_idle_threads(MemorySegment struct) {
+        return struct.get(max_idle_threads$LAYOUT, max_idle_threads$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * unsigned int max_idle_threads
+     * }
+     */
+    public static void max_idle_threads(MemorySegment struct, int fieldValue) {
+        struct.set(max_idle_threads$LAYOUT, max_idle_threads$OFFSET, fieldValue);
+    }
+
+    /**
+     * Obtains a slice of {@code arrayParam} which selects the array element at {@code index}.
+     * The returned segment has address {@code arrayParam.address() + index * layout().byteSize()}
+     */
+    public static MemorySegment asSlice(MemorySegment array, long index) {
+        return array.asSlice(layout().byteSize() * index);
+    }
+
+    /**
+     * The size (in bytes) of this struct
+     */
+    public static long sizeof() { return layout().byteSize(); }
+
+    /**
+     * Allocate a segment of size {@code layout().byteSize()} using {@code allocator}
+     */
+    public static MemorySegment allocate(SegmentAllocator allocator) {
+        return allocator.allocate(layout());
+    }
+
+    /**
+     * Allocate an array of size {@code elementCount} using {@code allocator}.
+     * The returned segment has size {@code elementCount * layout().byteSize()}.
+     */
+    public static MemorySegment allocateArray(long elementCount, SegmentAllocator allocator) {
+        return allocator.allocate(MemoryLayout.sequenceLayout(elementCount, layout()));
+    }
+
+    /**
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * The returned segment has size {@code layout().byteSize()}
+     */
+    public static MemorySegment reinterpret(MemorySegment addr, Arena arena, Consumer<MemorySegment> cleanup) {
+        return reinterpret(addr, 1, arena, cleanup);
+    }
+
+    /**
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * The returned segment has size {@code elementCount * layout().byteSize()}
+     */
+    public static MemorySegment reinterpret(MemorySegment addr, long elementCount, Arena arena, Consumer<MemorySegment> cleanup) {
+        return addr.reinterpret(layout().byteSize() * elementCount, arena, cleanup);
+    }
+}
 

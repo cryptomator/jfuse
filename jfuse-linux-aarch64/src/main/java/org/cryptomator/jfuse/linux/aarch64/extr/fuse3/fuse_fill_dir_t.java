@@ -2,32 +2,90 @@
 
 package org.cryptomator.jfuse.linux.aarch64.extr.fuse3;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
-import java.nio.ByteOrder;
+import java.lang.invoke.*;
 import java.lang.foreign.*;
+import java.nio.ByteOrder;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
+
 import static java.lang.foreign.ValueLayout.*;
+import static java.lang.foreign.MemoryLayout.PathElement.*;
+
 /**
- * {@snippet :
- * int (*fuse_fill_dir_t)(void* buf,char* name,struct stat* stbuf,long off,enum fuse_fill_dir_flags flags);
+ * {@snippet lang=c :
+ * typedef int (*fuse_fill_dir_t)(void *, const char *, const struct stat {
+ *     __dev_t st_dev;
+ *     __ino64_t st_ino;
+ *     __mode_t st_mode;
+ *     __nlink_t st_nlink;
+ *     __uid_t st_uid;
+ *     __gid_t st_gid;
+ *     __dev_t st_rdev;
+ *     __dev_t __pad1;
+ *     __off64_t st_size;
+ *     __blksize_t st_blksize;
+ *     int __pad2;
+ *     __blkcnt64_t st_blocks;
+ *     struct timespec st_atim;
+ *     struct timespec st_mtim;
+ *     struct timespec st_ctim;
+ *     int __glibc_reserved[2];
+ * } *, off_t, enum fuse_fill_dir_flags {
+ *     FUSE_FILL_DIR_PLUS = (1 << 1)
+ * })
  * }
  */
-public interface fuse_fill_dir_t {
+public class fuse_fill_dir_t {
 
-    int apply(java.lang.foreign.MemorySegment buf, java.lang.foreign.MemorySegment name, java.lang.foreign.MemorySegment stbuf, long off, int flags);
-    static MemorySegment allocate(fuse_fill_dir_t fi, Arena scope) {
-        return RuntimeHelper.upcallStub(constants$10.const$1, fi, constants$10.const$0, scope);
+    fuse_fill_dir_t() {
+        // Should not be called directly
     }
-    static fuse_fill_dir_t ofAddress(MemorySegment addr, Arena arena) {
-        MemorySegment symbol = addr.reinterpret(arena, null);
-        return (java.lang.foreign.MemorySegment _buf, java.lang.foreign.MemorySegment _name, java.lang.foreign.MemorySegment _stbuf, long _off, int _flags) -> {
-            try {
-                return (int)constants$10.const$2.invokeExact(symbol, _buf, _name, _stbuf, _off, _flags);
-            } catch (Throwable ex$) {
-                throw new AssertionError("should not reach here", ex$);
-            }
-        };
+
+    /**
+     * The function pointer signature, expressed as a functional interface
+     */
+    public interface Function {
+        int apply(MemorySegment buf, MemorySegment name, MemorySegment stbuf, long off, int flags);
+    }
+
+    private static final FunctionDescriptor $DESC = FunctionDescriptor.of(
+        fuse_h.C_INT,
+        fuse_h.C_POINTER,
+        fuse_h.C_POINTER,
+        fuse_h.C_POINTER,
+        fuse_h.C_LONG,
+        fuse_h.C_INT
+    );
+
+    /**
+     * The descriptor of this function pointer
+     */
+    public static FunctionDescriptor descriptor() {
+        return $DESC;
+    }
+
+    private static final MethodHandle UP$MH = fuse_h.upcallHandle(fuse_fill_dir_t.Function.class, "apply", $DESC);
+
+    /**
+     * Allocates a new upcall stub, whose implementation is defined by {@code fi}.
+     * The lifetime of the returned segment is managed by {@code arena}
+     */
+    public static MemorySegment allocate(fuse_fill_dir_t.Function fi, Arena arena) {
+        return Linker.nativeLinker().upcallStub(UP$MH.bindTo(fi), $DESC, arena);
+    }
+
+    private static final MethodHandle DOWN$MH = Linker.nativeLinker().downcallHandle($DESC);
+
+    /**
+     * Invoke the upcall stub {@code funcPtr}, with given parameters
+     */
+    public static int invoke(MemorySegment funcPtr,MemorySegment buf, MemorySegment name, MemorySegment stbuf, long off, int flags) {
+        try {
+            return (int) DOWN$MH.invokeExact(funcPtr, buf, name, stbuf, off, flags);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
     }
 }
-
 

@@ -2,37 +2,122 @@
 
 package org.cryptomator.jfuse.win.extr.fuse2;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
-import java.nio.ByteOrder;
+import java.lang.invoke.*;
 import java.lang.foreign.*;
-import static java.lang.foreign.ValueLayout.*;
-public class fuse2_h  {
+import java.nio.ByteOrder;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
 
-    public static final OfByte C_CHAR = JAVA_BYTE;
-    public static final OfShort C_SHORT = JAVA_SHORT;
-    public static final OfInt C_INT = JAVA_INT;
-    public static final OfInt C_LONG = JAVA_INT;
-    public static final OfLong C_LONG_LONG = JAVA_LONG;
-    public static final OfFloat C_FLOAT = JAVA_FLOAT;
-    public static final OfDouble C_DOUBLE = JAVA_DOUBLE;
-    public static final AddressLayout C_POINTER = RuntimeHelper.POINTER;
-    public static MethodHandle fuse_parse_cmdline$MH() {
-        return RuntimeHelper.requireNonNull(constants$0.const$5,"fuse_parse_cmdline");
+import static java.lang.foreign.ValueLayout.*;
+import static java.lang.foreign.MemoryLayout.PathElement.*;
+
+public class fuse2_h {
+
+    fuse2_h() {
+        // Should not be called directly
+    }
+
+    static final Arena LIBRARY_ARENA = Arena.ofAuto();
+    static final boolean TRACE_DOWNCALLS = Boolean.getBoolean("jextract.trace.downcalls");
+
+    static void traceDowncall(String name, Object... args) {
+         String traceArgs = Arrays.stream(args)
+                       .map(Object::toString)
+                       .collect(Collectors.joining(", "));
+         System.out.printf("%s(%s)\n", name, traceArgs);
+    }
+
+    static MemorySegment findOrThrow(String symbol) {
+        return SYMBOL_LOOKUP.find(symbol)
+            .orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol: " + symbol));
+    }
+
+    static MethodHandle upcallHandle(Class<?> fi, String name, FunctionDescriptor fdesc) {
+        try {
+            return MethodHandles.lookup().findVirtual(fi, name, fdesc.toMethodType());
+        } catch (ReflectiveOperationException ex) {
+            throw new AssertionError(ex);
+        }
+    }
+
+    static MemoryLayout align(MemoryLayout layout, long align) {
+        return switch (layout) {
+            case PaddingLayout p -> p;
+            case ValueLayout v -> v.withByteAlignment(align);
+            case GroupLayout g -> {
+                MemoryLayout[] alignedMembers = g.memberLayouts().stream()
+                        .map(m -> align(m, align)).toArray(MemoryLayout[]::new);
+                yield g instanceof StructLayout ?
+                        MemoryLayout.structLayout(alignedMembers) : MemoryLayout.unionLayout(alignedMembers);
+            }
+            case SequenceLayout s -> MemoryLayout.sequenceLayout(s.elementCount(), align(s.elementLayout(), align));
+        };
+    }
+
+    static final SymbolLookup SYMBOL_LOOKUP = SymbolLookup.loaderLookup()
+            .or(Linker.nativeLinker().defaultLookup());
+
+    public static final ValueLayout.OfBoolean C_BOOL = ValueLayout.JAVA_BOOLEAN;
+    public static final ValueLayout.OfByte C_CHAR = ValueLayout.JAVA_BYTE;
+    public static final ValueLayout.OfShort C_SHORT = ValueLayout.JAVA_SHORT;
+    public static final ValueLayout.OfInt C_INT = ValueLayout.JAVA_INT;
+    public static final ValueLayout.OfLong C_LONG_LONG = ValueLayout.JAVA_LONG;
+    public static final ValueLayout.OfFloat C_FLOAT = ValueLayout.JAVA_FLOAT;
+    public static final ValueLayout.OfDouble C_DOUBLE = ValueLayout.JAVA_DOUBLE;
+    public static final AddressLayout C_POINTER = ValueLayout.ADDRESS
+            .withTargetLayout(MemoryLayout.sequenceLayout(java.lang.Long.MAX_VALUE, JAVA_BYTE));
+    public static final ValueLayout.OfInt C_LONG = ValueLayout.JAVA_INT;
+    public static final ValueLayout.OfDouble C_LONG_DOUBLE = ValueLayout.JAVA_DOUBLE;
+
+    private static class fuse_parse_cmdline {
+        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
+            fuse2_h.C_INT,
+            fuse2_h.C_POINTER,
+            fuse2_h.C_POINTER,
+            fuse2_h.C_POINTER,
+            fuse2_h.C_POINTER
+        );
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
+                    fuse2_h.findOrThrow("fuse_parse_cmdline"),
+                    DESC);
+    }
+
+    /**
+     * Function descriptor for:
+     * {@snippet lang=c :
+     * int fuse_parse_cmdline(struct fuse_args *args, char **mountpoint, int *multithreaded, int *foreground)
+     * }
+     */
+    public static FunctionDescriptor fuse_parse_cmdline$descriptor() {
+        return fuse_parse_cmdline.DESC;
+    }
+
+    /**
+     * Downcall method handle for:
+     * {@snippet lang=c :
+     * int fuse_parse_cmdline(struct fuse_args *args, char **mountpoint, int *multithreaded, int *foreground)
+     * }
+     */
+    public static MethodHandle fuse_parse_cmdline$handle() {
+        return fuse_parse_cmdline.HANDLE;
     }
     /**
-     * {@snippet :
-     * int fuse_parse_cmdline(struct fuse_args* args, char** mountpoint, int* multithreaded, int* foreground);
+     * {@snippet lang=c :
+     * int fuse_parse_cmdline(struct fuse_args *args, char **mountpoint, int *multithreaded, int *foreground)
      * }
      */
     public static int fuse_parse_cmdline(MemorySegment args, MemorySegment mountpoint, MemorySegment multithreaded, MemorySegment foreground) {
-        var mh$ = fuse_parse_cmdline$MH();
+        var mh$ = fuse_parse_cmdline.HANDLE;
         try {
+            if (TRACE_DOWNCALLS) {
+                traceDowncall("fuse_parse_cmdline", args, mountpoint, multithreaded, foreground);
+            }
             return (int)mh$.invokeExact(args, mountpoint, multithreaded, foreground);
         } catch (Throwable ex$) {
-            throw new AssertionError("should not reach here", ex$);
+           throw new AssertionError("should not reach here", ex$);
         }
     }
 }
-
 

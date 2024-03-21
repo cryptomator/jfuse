@@ -31,7 +31,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<argLine>@{surefire.jacoco.args} -javaagent:${net.bytebuddy:byte-buddy-agent:jar} --enable-preview --enable-native-access=org.cryptomator.jfuse.mac</argLine>
+					<argLine>@{surefire.jacoco.args} -javaagent:${net.bytebuddy:byte-buddy-agent:jar} --enable-native-access=org.cryptomator.jfuse.mac</argLine>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -81,7 +81,7 @@
 					<plugin>
 						<groupId>io.github.coffeelibs</groupId>
 						<artifactId>jextract-maven-plugin</artifactId>
-						<version>0.3.0</version>
+						<version>0.4.0</version>
 						<configuration>
 							<executable>/Users/sebastian/git/github.com/openjdk/jextract/build/jextract/bin/jextract</executable>
 							<headerSearchPaths>${mac.headerSearchPath}</headerSearchPaths>

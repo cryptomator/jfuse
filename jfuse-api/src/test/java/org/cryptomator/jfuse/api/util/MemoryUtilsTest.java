@@ -15,7 +15,7 @@ public class MemoryUtilsTest {
 	void testValidSegmentReturnsString() {
 		try (var arena = Arena.ofConfined()) {
 			var address = arena.allocate(4);
-			address.setUtf8String(0, "abc");
+			address.setString(0, "abc");
 			String result = MemoryUtils.toUtf8StringOrNull(address);
 			Assertions.assertEquals("abc", result);
 		}
@@ -26,7 +26,7 @@ public class MemoryUtilsTest {
 	void testValidSegmentReturnsStringAtOffset() {
 		try (var arena = Arena.ofConfined()) {
 			var address = arena.allocate(10);
-			address.setUtf8String(5, "abc");
+			address.setString(5, "abc");
 			String result = MemoryUtils.toUtf8StringOrNull(address, 5);
 			Assertions.assertEquals("abc", result);
 		}
