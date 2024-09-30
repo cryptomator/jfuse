@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>com.github.serceman</groupId>
 			<artifactId>jnr-fuse</artifactId>
-			<version>0.5.7</version>
+			<version>0.5.8</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
