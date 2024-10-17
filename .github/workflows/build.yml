@@ -22,10 +22,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
-        run: mvn -B verify -Psign -Dfuse.lib.path="/lib/x86_64-linux-gnu/libfuse3.so.3"
-        env:
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.RELEASES_GPG_PASSPHRASE }}
-          MAVEN_GPG_KEY: ${{ secrets.RELEASES_GPG_PRIVATE_KEY }}
+        run: mvn -B verify -Dfuse.lib.path="/lib/x86_64-linux-gnu/libfuse3.so.3"
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-linux-amd64
