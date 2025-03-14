@@ -243,7 +243,6 @@
 								</goals>
 								<configuration>
 									<signer>bc</signer>
-									<keyFingerprint>58117AFA1F85B3EEC154677D615D449FE6E6A235</keyFingerprint>
 								</configuration>
 							</execution>
 						</executions>
