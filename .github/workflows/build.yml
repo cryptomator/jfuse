@@ -21,7 +21,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
-        run: mvn -B verify -Dfuse.lib.path="/lib/x86_64-linux-gnu/libfuse3.so.3"
+        run: mvn -B verify -Dfuse.lib.path="/lib/x86_64-linux-gnu/libfuse3.so.3" --no-transfer-progress
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-linux-amd64
@@ -44,7 +44,7 @@ jobs:
           brew update
           brew install fuse-t
       - name: Maven build
-        run: mvn -B verify -Dfuse.lib.path="/usr/local/lib/libfuse-t.dylib"
+        run: mvn -B verify -Dfuse.lib.path="/usr/local/lib/libfuse-t.dylib" --no-transfer-progress
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-mac
@@ -65,7 +65,7 @@ jobs:
         run: choco install winfsp --version 1.12.22339 -y
       - name: Maven build
         shell: bash # surprise, running maven in pwsh is crappy, see https://stackoverflow.com/q/6347985/4014509
-        run: mvn -B verify -Dfuse.lib.path="C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll"
+        run: mvn -B verify -Dfuse.lib.path="C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll" --no-transfer-progress
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-win
@@ -111,6 +111,7 @@ jobs:
           -Dsonar.coverage.jacoco.xmlReportPaths=${GITHUB_WORKSPACE}/coverage/**/jacoco.xml
           -Dsonar.organization=cryptomator
           -Dsonar.host.url=https://sonarcloud.io
+          --no-transfer-progress
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
