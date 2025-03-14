@@ -25,7 +25,7 @@ public interface FuseBuilder {
 				.filter(FuseBuilder::isSupported)
 				.findAny()
 				.map(ServiceLoader.Provider::get)
-				.orElseThrow(() -> new UnsupportedOperationException("No implementation of FuseProvider found for the current platform."));
+				.orElseThrow(() -> new UnsupportedOperationException("No implementation of FuseBuilder found for the current platform."));
 	}
 
 	private static boolean isSupported(ServiceLoader.Provider<FuseBuilder> provider) {
