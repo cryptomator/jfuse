@@ -32,7 +32,7 @@
 	<scm>
 		<connection>scm:git:git@github.com:cryptomator/jfuse.git</connection>
 		<developerConnection>scm:git:git@github.com:cryptomator/jfuse.git</developerConnection>
-		<url>git@github.com:cryptomator/jfuse.git</url>
+		<url>https://github.com/cryptomator/jfuse</url>
 	</scm>
 
 	<properties>
