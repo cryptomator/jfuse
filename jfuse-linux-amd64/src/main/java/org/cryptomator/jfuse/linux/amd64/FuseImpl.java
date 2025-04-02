@@ -28,7 +28,7 @@ final class FuseImpl extends Fuse {
 	@Override
 	protected FuseMount mount(List<String> args) throws FuseMountFailedException {
 		var fuseArgs = parseArgs(args);
-		var fuse = fuse_h.fuse_new(fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemorySegment.NULL);
+		var fuse = fuse_hHelper.fuse_new(fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemorySegment.NULL);
 		if (MemorySegment.NULL.equals(fuse)) {
 			throw new FuseMountFailedException("fuse_new failed");
 		}

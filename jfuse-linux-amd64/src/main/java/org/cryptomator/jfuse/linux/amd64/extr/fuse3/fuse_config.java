@@ -15,31 +15,36 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
 /**
  * {@snippet lang=c :
  * struct fuse_config {
- *     int set_gid;
- *     unsigned int gid;
- *     int set_uid;
- *     unsigned int uid;
- *     int set_mode;
- *     unsigned int umask;
+ *     int32_t set_gid;
+ *     uint32_t gid;
+ *     int32_t set_uid;
+ *     uint32_t uid;
+ *     int32_t set_mode;
+ *     uint32_t umask;
  *     double entry_timeout;
  *     double negative_timeout;
  *     double attr_timeout;
- *     int intr;
- *     int intr_signal;
- *     int remember;
- *     int hard_remove;
- *     int use_ino;
- *     int readdir_ino;
- *     int direct_io;
- *     int kernel_cache;
- *     int auto_cache;
- *     int no_rofd_flush;
- *     int ac_attr_timeout_set;
+ *     int32_t intr;
+ *     int32_t intr_signal;
+ *     int32_t remember;
+ *     int32_t hard_remove;
+ *     int32_t use_ino;
+ *     int32_t readdir_ino;
+ *     int32_t direct_io;
+ *     int32_t kernel_cache;
+ *     int32_t auto_cache;
+ *     int32_t ac_attr_timeout_set;
  *     double ac_attr_timeout;
- *     int nullpath_ok;
- *     int show_help;
+ *     int32_t nullpath_ok;
+ *     int32_t show_help;
  *     char *modules;
- *     int debug;
+ *     int32_t debug;
+ *     uint32_t fmask;
+ *     uint32_t dmask;
+ *     int32_t no_rofd_flush;
+ *     int32_t parallel_direct_writes;
+ *     uint32_t flags;
+ *     uint64_t reserved[48];
  * }
  * }
  */
@@ -68,15 +73,18 @@ public class fuse_config {
         fuse_h.C_INT.withName("direct_io"),
         fuse_h.C_INT.withName("kernel_cache"),
         fuse_h.C_INT.withName("auto_cache"),
-        fuse_h.C_INT.withName("no_rofd_flush"),
         fuse_h.C_INT.withName("ac_attr_timeout_set"),
-        MemoryLayout.paddingLayout(4),
         fuse_h.C_DOUBLE.withName("ac_attr_timeout"),
         fuse_h.C_INT.withName("nullpath_ok"),
         fuse_h.C_INT.withName("show_help"),
         fuse_h.C_POINTER.withName("modules"),
         fuse_h.C_INT.withName("debug"),
-        MemoryLayout.paddingLayout(4)
+        fuse_h.C_INT.withName("fmask"),
+        fuse_h.C_INT.withName("dmask"),
+        fuse_h.C_INT.withName("no_rofd_flush"),
+        fuse_h.C_INT.withName("parallel_direct_writes"),
+        fuse_h.C_INT.withName("flags"),
+        MemoryLayout.sequenceLayout(48, fuse_h.C_LONG).withName("reserved")
     ).withName("fuse_config");
 
     /**
@@ -91,7 +99,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int set_gid
+     * int32_t set_gid
      * }
      */
     public static final OfInt set_gid$layout() {
@@ -103,7 +111,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int set_gid
+     * int32_t set_gid
      * }
      */
     public static final long set_gid$offset() {
@@ -113,7 +121,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int set_gid
+     * int32_t set_gid
      * }
      */
     public static int set_gid(MemorySegment struct) {
@@ -123,7 +131,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int set_gid
+     * int32_t set_gid
      * }
      */
     public static void set_gid(MemorySegment struct, int fieldValue) {
@@ -135,7 +143,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int gid
+     * uint32_t gid
      * }
      */
     public static final OfInt gid$layout() {
@@ -147,7 +155,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int gid
+     * uint32_t gid
      * }
      */
     public static final long gid$offset() {
@@ -157,7 +165,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int gid
+     * uint32_t gid
      * }
      */
     public static int gid(MemorySegment struct) {
@@ -167,7 +175,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int gid
+     * uint32_t gid
      * }
      */
     public static void gid(MemorySegment struct, int fieldValue) {
@@ -179,7 +187,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int set_uid
+     * int32_t set_uid
      * }
      */
     public static final OfInt set_uid$layout() {
@@ -191,7 +199,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int set_uid
+     * int32_t set_uid
      * }
      */
     public static final long set_uid$offset() {
@@ -201,7 +209,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int set_uid
+     * int32_t set_uid
      * }
      */
     public static int set_uid(MemorySegment struct) {
@@ -211,7 +219,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int set_uid
+     * int32_t set_uid
      * }
      */
     public static void set_uid(MemorySegment struct, int fieldValue) {
@@ -223,7 +231,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int uid
+     * uint32_t uid
      * }
      */
     public static final OfInt uid$layout() {
@@ -235,7 +243,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int uid
+     * uint32_t uid
      * }
      */
     public static final long uid$offset() {
@@ -245,7 +253,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int uid
+     * uint32_t uid
      * }
      */
     public static int uid(MemorySegment struct) {
@@ -255,7 +263,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int uid
+     * uint32_t uid
      * }
      */
     public static void uid(MemorySegment struct, int fieldValue) {
@@ -267,7 +275,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int set_mode
+     * int32_t set_mode
      * }
      */
     public static final OfInt set_mode$layout() {
@@ -279,7 +287,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int set_mode
+     * int32_t set_mode
      * }
      */
     public static final long set_mode$offset() {
@@ -289,7 +297,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int set_mode
+     * int32_t set_mode
      * }
      */
     public static int set_mode(MemorySegment struct) {
@@ -299,7 +307,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int set_mode
+     * int32_t set_mode
      * }
      */
     public static void set_mode(MemorySegment struct, int fieldValue) {
@@ -311,7 +319,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int umask
+     * uint32_t umask
      * }
      */
     public static final OfInt umask$layout() {
@@ -323,7 +331,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int umask
+     * uint32_t umask
      * }
      */
     public static final long umask$offset() {
@@ -333,7 +341,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int umask
+     * uint32_t umask
      * }
      */
     public static int umask(MemorySegment struct) {
@@ -343,7 +351,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int umask
+     * uint32_t umask
      * }
      */
     public static void umask(MemorySegment struct, int fieldValue) {
@@ -487,7 +495,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int intr
+     * int32_t intr
      * }
      */
     public static final OfInt intr$layout() {
@@ -499,7 +507,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int intr
+     * int32_t intr
      * }
      */
     public static final long intr$offset() {
@@ -509,7 +517,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int intr
+     * int32_t intr
      * }
      */
     public static int intr(MemorySegment struct) {
@@ -519,7 +527,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int intr
+     * int32_t intr
      * }
      */
     public static void intr(MemorySegment struct, int fieldValue) {
@@ -531,7 +539,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int intr_signal
+     * int32_t intr_signal
      * }
      */
     public static final OfInt intr_signal$layout() {
@@ -543,7 +551,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int intr_signal
+     * int32_t intr_signal
      * }
      */
     public static final long intr_signal$offset() {
@@ -553,7 +561,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int intr_signal
+     * int32_t intr_signal
      * }
      */
     public static int intr_signal(MemorySegment struct) {
@@ -563,7 +571,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int intr_signal
+     * int32_t intr_signal
      * }
      */
     public static void intr_signal(MemorySegment struct, int fieldValue) {
@@ -575,7 +583,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int remember
+     * int32_t remember
      * }
      */
     public static final OfInt remember$layout() {
@@ -587,7 +595,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int remember
+     * int32_t remember
      * }
      */
     public static final long remember$offset() {
@@ -597,7 +605,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int remember
+     * int32_t remember
      * }
      */
     public static int remember(MemorySegment struct) {
@@ -607,7 +615,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int remember
+     * int32_t remember
      * }
      */
     public static void remember(MemorySegment struct, int fieldValue) {
@@ -619,7 +627,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int hard_remove
+     * int32_t hard_remove
      * }
      */
     public static final OfInt hard_remove$layout() {
@@ -631,7 +639,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int hard_remove
+     * int32_t hard_remove
      * }
      */
     public static final long hard_remove$offset() {
@@ -641,7 +649,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int hard_remove
+     * int32_t hard_remove
      * }
      */
     public static int hard_remove(MemorySegment struct) {
@@ -651,7 +659,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int hard_remove
+     * int32_t hard_remove
      * }
      */
     public static void hard_remove(MemorySegment struct, int fieldValue) {
@@ -663,7 +671,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int use_ino
+     * int32_t use_ino
      * }
      */
     public static final OfInt use_ino$layout() {
@@ -675,7 +683,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int use_ino
+     * int32_t use_ino
      * }
      */
     public static final long use_ino$offset() {
@@ -685,7 +693,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int use_ino
+     * int32_t use_ino
      * }
      */
     public static int use_ino(MemorySegment struct) {
@@ -695,7 +703,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int use_ino
+     * int32_t use_ino
      * }
      */
     public static void use_ino(MemorySegment struct, int fieldValue) {
@@ -707,7 +715,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int readdir_ino
+     * int32_t readdir_ino
      * }
      */
     public static final OfInt readdir_ino$layout() {
@@ -719,7 +727,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int readdir_ino
+     * int32_t readdir_ino
      * }
      */
     public static final long readdir_ino$offset() {
@@ -729,7 +737,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int readdir_ino
+     * int32_t readdir_ino
      * }
      */
     public static int readdir_ino(MemorySegment struct) {
@@ -739,7 +747,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int readdir_ino
+     * int32_t readdir_ino
      * }
      */
     public static void readdir_ino(MemorySegment struct, int fieldValue) {
@@ -751,7 +759,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int direct_io
+     * int32_t direct_io
      * }
      */
     public static final OfInt direct_io$layout() {
@@ -763,7 +771,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int direct_io
+     * int32_t direct_io
      * }
      */
     public static final long direct_io$offset() {
@@ -773,7 +781,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int direct_io
+     * int32_t direct_io
      * }
      */
     public static int direct_io(MemorySegment struct) {
@@ -783,7 +791,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int direct_io
+     * int32_t direct_io
      * }
      */
     public static void direct_io(MemorySegment struct, int fieldValue) {
@@ -795,7 +803,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int kernel_cache
+     * int32_t kernel_cache
      * }
      */
     public static final OfInt kernel_cache$layout() {
@@ -807,7 +815,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int kernel_cache
+     * int32_t kernel_cache
      * }
      */
     public static final long kernel_cache$offset() {
@@ -817,7 +825,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int kernel_cache
+     * int32_t kernel_cache
      * }
      */
     public static int kernel_cache(MemorySegment struct) {
@@ -827,7 +835,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int kernel_cache
+     * int32_t kernel_cache
      * }
      */
     public static void kernel_cache(MemorySegment struct, int fieldValue) {
@@ -839,7 +847,7 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int auto_cache
+     * int32_t auto_cache
      * }
      */
     public static final OfInt auto_cache$layout() {
@@ -851,7 +859,7 @@ public class fuse_config {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int auto_cache
+     * int32_t auto_cache
      * }
      */
     public static final long auto_cache$offset() {
@@ -861,7 +869,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int auto_cache
+     * int32_t auto_cache
      * }
      */
     public static int auto_cache(MemorySegment struct) {
@@ -871,55 +879,11 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int auto_cache
+     * int32_t auto_cache
      * }
      */
     public static void auto_cache(MemorySegment struct, int fieldValue) {
         struct.set(auto_cache$LAYOUT, auto_cache$OFFSET, fieldValue);
-    }
-
-    private static final OfInt no_rofd_flush$LAYOUT = (OfInt)$LAYOUT.select(groupElement("no_rofd_flush"));
-
-    /**
-     * Layout for field:
-     * {@snippet lang=c :
-     * int no_rofd_flush
-     * }
-     */
-    public static final OfInt no_rofd_flush$layout() {
-        return no_rofd_flush$LAYOUT;
-    }
-
-    private static final long no_rofd_flush$OFFSET = 84;
-
-    /**
-     * Offset for field:
-     * {@snippet lang=c :
-     * int no_rofd_flush
-     * }
-     */
-    public static final long no_rofd_flush$offset() {
-        return no_rofd_flush$OFFSET;
-    }
-
-    /**
-     * Getter for field:
-     * {@snippet lang=c :
-     * int no_rofd_flush
-     * }
-     */
-    public static int no_rofd_flush(MemorySegment struct) {
-        return struct.get(no_rofd_flush$LAYOUT, no_rofd_flush$OFFSET);
-    }
-
-    /**
-     * Setter for field:
-     * {@snippet lang=c :
-     * int no_rofd_flush
-     * }
-     */
-    public static void no_rofd_flush(MemorySegment struct, int fieldValue) {
-        struct.set(no_rofd_flush$LAYOUT, no_rofd_flush$OFFSET, fieldValue);
     }
 
     private static final OfInt ac_attr_timeout_set$LAYOUT = (OfInt)$LAYOUT.select(groupElement("ac_attr_timeout_set"));
@@ -927,19 +891,19 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int ac_attr_timeout_set
+     * int32_t ac_attr_timeout_set
      * }
      */
     public static final OfInt ac_attr_timeout_set$layout() {
         return ac_attr_timeout_set$LAYOUT;
     }
 
-    private static final long ac_attr_timeout_set$OFFSET = 88;
+    private static final long ac_attr_timeout_set$OFFSET = 84;
 
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int ac_attr_timeout_set
+     * int32_t ac_attr_timeout_set
      * }
      */
     public static final long ac_attr_timeout_set$offset() {
@@ -949,7 +913,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int ac_attr_timeout_set
+     * int32_t ac_attr_timeout_set
      * }
      */
     public static int ac_attr_timeout_set(MemorySegment struct) {
@@ -959,7 +923,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int ac_attr_timeout_set
+     * int32_t ac_attr_timeout_set
      * }
      */
     public static void ac_attr_timeout_set(MemorySegment struct, int fieldValue) {
@@ -978,7 +942,7 @@ public class fuse_config {
         return ac_attr_timeout$LAYOUT;
     }
 
-    private static final long ac_attr_timeout$OFFSET = 96;
+    private static final long ac_attr_timeout$OFFSET = 88;
 
     /**
      * Offset for field:
@@ -1015,19 +979,19 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int nullpath_ok
+     * int32_t nullpath_ok
      * }
      */
     public static final OfInt nullpath_ok$layout() {
         return nullpath_ok$LAYOUT;
     }
 
-    private static final long nullpath_ok$OFFSET = 104;
+    private static final long nullpath_ok$OFFSET = 96;
 
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int nullpath_ok
+     * int32_t nullpath_ok
      * }
      */
     public static final long nullpath_ok$offset() {
@@ -1037,7 +1001,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int nullpath_ok
+     * int32_t nullpath_ok
      * }
      */
     public static int nullpath_ok(MemorySegment struct) {
@@ -1047,7 +1011,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int nullpath_ok
+     * int32_t nullpath_ok
      * }
      */
     public static void nullpath_ok(MemorySegment struct, int fieldValue) {
@@ -1059,19 +1023,19 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int show_help
+     * int32_t show_help
      * }
      */
     public static final OfInt show_help$layout() {
         return show_help$LAYOUT;
     }
 
-    private static final long show_help$OFFSET = 108;
+    private static final long show_help$OFFSET = 100;
 
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int show_help
+     * int32_t show_help
      * }
      */
     public static final long show_help$offset() {
@@ -1081,7 +1045,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int show_help
+     * int32_t show_help
      * }
      */
     public static int show_help(MemorySegment struct) {
@@ -1091,7 +1055,7 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int show_help
+     * int32_t show_help
      * }
      */
     public static void show_help(MemorySegment struct, int fieldValue) {
@@ -1110,7 +1074,7 @@ public class fuse_config {
         return modules$LAYOUT;
     }
 
-    private static final long modules$OFFSET = 112;
+    private static final long modules$OFFSET = 104;
 
     /**
      * Offset for field:
@@ -1147,19 +1111,19 @@ public class fuse_config {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int debug
+     * int32_t debug
      * }
      */
     public static final OfInt debug$layout() {
         return debug$LAYOUT;
     }
 
-    private static final long debug$OFFSET = 120;
+    private static final long debug$OFFSET = 112;
 
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int debug
+     * int32_t debug
      * }
      */
     public static final long debug$offset() {
@@ -1169,7 +1133,7 @@ public class fuse_config {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int debug
+     * int32_t debug
      * }
      */
     public static int debug(MemorySegment struct) {
@@ -1179,11 +1143,308 @@ public class fuse_config {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int debug
+     * int32_t debug
      * }
      */
     public static void debug(MemorySegment struct, int fieldValue) {
         struct.set(debug$LAYOUT, debug$OFFSET, fieldValue);
+    }
+
+    private static final OfInt fmask$LAYOUT = (OfInt)$LAYOUT.select(groupElement("fmask"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * uint32_t fmask
+     * }
+     */
+    public static final OfInt fmask$layout() {
+        return fmask$LAYOUT;
+    }
+
+    private static final long fmask$OFFSET = 116;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * uint32_t fmask
+     * }
+     */
+    public static final long fmask$offset() {
+        return fmask$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * uint32_t fmask
+     * }
+     */
+    public static int fmask(MemorySegment struct) {
+        return struct.get(fmask$LAYOUT, fmask$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * uint32_t fmask
+     * }
+     */
+    public static void fmask(MemorySegment struct, int fieldValue) {
+        struct.set(fmask$LAYOUT, fmask$OFFSET, fieldValue);
+    }
+
+    private static final OfInt dmask$LAYOUT = (OfInt)$LAYOUT.select(groupElement("dmask"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * uint32_t dmask
+     * }
+     */
+    public static final OfInt dmask$layout() {
+        return dmask$LAYOUT;
+    }
+
+    private static final long dmask$OFFSET = 120;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * uint32_t dmask
+     * }
+     */
+    public static final long dmask$offset() {
+        return dmask$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * uint32_t dmask
+     * }
+     */
+    public static int dmask(MemorySegment struct) {
+        return struct.get(dmask$LAYOUT, dmask$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * uint32_t dmask
+     * }
+     */
+    public static void dmask(MemorySegment struct, int fieldValue) {
+        struct.set(dmask$LAYOUT, dmask$OFFSET, fieldValue);
+    }
+
+    private static final OfInt no_rofd_flush$LAYOUT = (OfInt)$LAYOUT.select(groupElement("no_rofd_flush"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * int32_t no_rofd_flush
+     * }
+     */
+    public static final OfInt no_rofd_flush$layout() {
+        return no_rofd_flush$LAYOUT;
+    }
+
+    private static final long no_rofd_flush$OFFSET = 124;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * int32_t no_rofd_flush
+     * }
+     */
+    public static final long no_rofd_flush$offset() {
+        return no_rofd_flush$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * int32_t no_rofd_flush
+     * }
+     */
+    public static int no_rofd_flush(MemorySegment struct) {
+        return struct.get(no_rofd_flush$LAYOUT, no_rofd_flush$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * int32_t no_rofd_flush
+     * }
+     */
+    public static void no_rofd_flush(MemorySegment struct, int fieldValue) {
+        struct.set(no_rofd_flush$LAYOUT, no_rofd_flush$OFFSET, fieldValue);
+    }
+
+    private static final OfInt parallel_direct_writes$LAYOUT = (OfInt)$LAYOUT.select(groupElement("parallel_direct_writes"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * int32_t parallel_direct_writes
+     * }
+     */
+    public static final OfInt parallel_direct_writes$layout() {
+        return parallel_direct_writes$LAYOUT;
+    }
+
+    private static final long parallel_direct_writes$OFFSET = 128;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * int32_t parallel_direct_writes
+     * }
+     */
+    public static final long parallel_direct_writes$offset() {
+        return parallel_direct_writes$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * int32_t parallel_direct_writes
+     * }
+     */
+    public static int parallel_direct_writes(MemorySegment struct) {
+        return struct.get(parallel_direct_writes$LAYOUT, parallel_direct_writes$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * int32_t parallel_direct_writes
+     * }
+     */
+    public static void parallel_direct_writes(MemorySegment struct, int fieldValue) {
+        struct.set(parallel_direct_writes$LAYOUT, parallel_direct_writes$OFFSET, fieldValue);
+    }
+
+    private static final OfInt flags$LAYOUT = (OfInt)$LAYOUT.select(groupElement("flags"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * uint32_t flags
+     * }
+     */
+    public static final OfInt flags$layout() {
+        return flags$LAYOUT;
+    }
+
+    private static final long flags$OFFSET = 132;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * uint32_t flags
+     * }
+     */
+    public static final long flags$offset() {
+        return flags$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * uint32_t flags
+     * }
+     */
+    public static int flags(MemorySegment struct) {
+        return struct.get(flags$LAYOUT, flags$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * uint32_t flags
+     * }
+     */
+    public static void flags(MemorySegment struct, int fieldValue) {
+        struct.set(flags$LAYOUT, flags$OFFSET, fieldValue);
+    }
+
+    private static final SequenceLayout reserved$LAYOUT = (SequenceLayout)$LAYOUT.select(groupElement("reserved"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * uint64_t reserved[48]
+     * }
+     */
+    public static final SequenceLayout reserved$layout() {
+        return reserved$LAYOUT;
+    }
+
+    private static final long reserved$OFFSET = 136;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * uint64_t reserved[48]
+     * }
+     */
+    public static final long reserved$offset() {
+        return reserved$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * uint64_t reserved[48]
+     * }
+     */
+    public static MemorySegment reserved(MemorySegment struct) {
+        return struct.asSlice(reserved$OFFSET, reserved$LAYOUT.byteSize());
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * uint64_t reserved[48]
+     * }
+     */
+    public static void reserved(MemorySegment struct, MemorySegment fieldValue) {
+        MemorySegment.copy(fieldValue, 0L, struct, reserved$OFFSET, reserved$LAYOUT.byteSize());
+    }
+
+    private static long[] reserved$DIMS = { 48 };
+
+    /**
+     * Dimensions for array field:
+     * {@snippet lang=c :
+     * uint64_t reserved[48]
+     * }
+     */
+    public static long[] reserved$dimensions() {
+        return reserved$DIMS;
+    }
+    private static final VarHandle reserved$ELEM_HANDLE = reserved$LAYOUT.varHandle(sequenceElement());
+
+    /**
+     * Indexed getter for field:
+     * {@snippet lang=c :
+     * uint64_t reserved[48]
+     * }
+     */
+    public static long reserved(MemorySegment struct, long index0) {
+        return (long)reserved$ELEM_HANDLE.get(struct, 0L, index0);
+    }
+
+    /**
+     * Indexed setter for field:
+     * {@snippet lang=c :
+     * uint64_t reserved[48]
+     * }
+     */
+    public static void reserved(MemorySegment struct, long index0, long fieldValue) {
+        reserved$ELEM_HANDLE.set(struct, 0L, index0, fieldValue);
     }
 
     /**
@@ -1215,7 +1476,7 @@ public class fuse_config {
     }
 
     /**
-     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction} (if any).
      * The returned segment has size {@code layout().byteSize()}
      */
     public static MemorySegment reinterpret(MemorySegment addr, Arena arena, Consumer<MemorySegment> cleanup) {
@@ -1223,7 +1484,7 @@ public class fuse_config {
     }
 
     /**
-     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction} (if any).
      * The returned segment has size {@code elementCount * layout().byteSize()}
      */
     public static MemorySegment reinterpret(MemorySegment addr, long elementCount, Arena arena, Consumer<MemorySegment> cleanup) {
