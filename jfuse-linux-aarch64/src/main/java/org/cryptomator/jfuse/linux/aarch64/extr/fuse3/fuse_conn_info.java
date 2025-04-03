@@ -15,17 +15,22 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
 /**
  * {@snippet lang=c :
  * struct fuse_conn_info {
- *     unsigned int proto_major;
- *     unsigned int proto_minor;
- *     unsigned int max_write;
- *     unsigned int max_read;
- *     unsigned int max_readahead;
- *     unsigned int capable;
- *     unsigned int want;
- *     unsigned int max_background;
- *     unsigned int congestion_threshold;
- *     unsigned int time_gran;
- *     unsigned int reserved[22];
+ *     uint32_t proto_major;
+ *     uint32_t proto_minor;
+ *     uint32_t max_write;
+ *     uint32_t max_read;
+ *     uint32_t max_readahead;
+ *     uint32_t capable;
+ *     uint32_t want;
+ *     uint32_t max_background;
+ *     uint32_t congestion_threshold;
+ *     uint32_t time_gran;
+ *     uint32_t max_backing_stack_depth;
+ *     uint32_t no_interrupt : 1;
+ *     uint32_t padding : 31;
+ *     uint64_t capable_ext;
+ *     uint64_t want_ext;
+ *     uint32_t reserved[16];
  * }
  * }
  */
@@ -46,7 +51,11 @@ public class fuse_conn_info {
         fuse_h.C_INT.withName("max_background"),
         fuse_h.C_INT.withName("congestion_threshold"),
         fuse_h.C_INT.withName("time_gran"),
-        MemoryLayout.sequenceLayout(22, fuse_h.C_INT).withName("reserved")
+        fuse_h.C_INT.withName("max_backing_stack_depth"),
+        MemoryLayout.paddingLayout(4),
+        fuse_h.C_LONG.withName("capable_ext"),
+        fuse_h.C_LONG.withName("want_ext"),
+        MemoryLayout.sequenceLayout(16, fuse_h.C_INT).withName("reserved")
     ).withName("fuse_conn_info");
 
     /**
@@ -61,7 +70,7 @@ public class fuse_conn_info {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int proto_major
+     * uint32_t proto_major
      * }
      */
     public static final OfInt proto_major$layout() {
@@ -73,7 +82,7 @@ public class fuse_conn_info {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int proto_major
+     * uint32_t proto_major
      * }
      */
     public static final long proto_major$offset() {
@@ -83,7 +92,7 @@ public class fuse_conn_info {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int proto_major
+     * uint32_t proto_major
      * }
      */
     public static int proto_major(MemorySegment struct) {
@@ -93,7 +102,7 @@ public class fuse_conn_info {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int proto_major
+     * uint32_t proto_major
      * }
      */
     public static void proto_major(MemorySegment struct, int fieldValue) {
@@ -105,7 +114,7 @@ public class fuse_conn_info {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int proto_minor
+     * uint32_t proto_minor
      * }
      */
     public static final OfInt proto_minor$layout() {
@@ -117,7 +126,7 @@ public class fuse_conn_info {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int proto_minor
+     * uint32_t proto_minor
      * }
      */
     public static final long proto_minor$offset() {
@@ -127,7 +136,7 @@ public class fuse_conn_info {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int proto_minor
+     * uint32_t proto_minor
      * }
      */
     public static int proto_minor(MemorySegment struct) {
@@ -137,7 +146,7 @@ public class fuse_conn_info {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int proto_minor
+     * uint32_t proto_minor
      * }
      */
     public static void proto_minor(MemorySegment struct, int fieldValue) {
@@ -149,7 +158,7 @@ public class fuse_conn_info {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int max_write
+     * uint32_t max_write
      * }
      */
     public static final OfInt max_write$layout() {
@@ -161,7 +170,7 @@ public class fuse_conn_info {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int max_write
+     * uint32_t max_write
      * }
      */
     public static final long max_write$offset() {
@@ -171,7 +180,7 @@ public class fuse_conn_info {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int max_write
+     * uint32_t max_write
      * }
      */
     public static int max_write(MemorySegment struct) {
@@ -181,7 +190,7 @@ public class fuse_conn_info {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int max_write
+     * uint32_t max_write
      * }
      */
     public static void max_write(MemorySegment struct, int fieldValue) {
@@ -193,7 +202,7 @@ public class fuse_conn_info {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int max_read
+     * uint32_t max_read
      * }
      */
     public static final OfInt max_read$layout() {
@@ -205,7 +214,7 @@ public class fuse_conn_info {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int max_read
+     * uint32_t max_read
      * }
      */
     public static final long max_read$offset() {
@@ -215,7 +224,7 @@ public class fuse_conn_info {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int max_read
+     * uint32_t max_read
      * }
      */
     public static int max_read(MemorySegment struct) {
@@ -225,7 +234,7 @@ public class fuse_conn_info {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int max_read
+     * uint32_t max_read
      * }
      */
     public static void max_read(MemorySegment struct, int fieldValue) {
@@ -237,7 +246,7 @@ public class fuse_conn_info {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int max_readahead
+     * uint32_t max_readahead
      * }
      */
     public static final OfInt max_readahead$layout() {
@@ -249,7 +258,7 @@ public class fuse_conn_info {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int max_readahead
+     * uint32_t max_readahead
      * }
      */
     public static final long max_readahead$offset() {
@@ -259,7 +268,7 @@ public class fuse_conn_info {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int max_readahead
+     * uint32_t max_readahead
      * }
      */
     public static int max_readahead(MemorySegment struct) {
@@ -269,7 +278,7 @@ public class fuse_conn_info {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int max_readahead
+     * uint32_t max_readahead
      * }
      */
     public static void max_readahead(MemorySegment struct, int fieldValue) {
@@ -281,7 +290,7 @@ public class fuse_conn_info {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int capable
+     * uint32_t capable
      * }
      */
     public static final OfInt capable$layout() {
@@ -293,7 +302,7 @@ public class fuse_conn_info {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int capable
+     * uint32_t capable
      * }
      */
     public static final long capable$offset() {
@@ -303,7 +312,7 @@ public class fuse_conn_info {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int capable
+     * uint32_t capable
      * }
      */
     public static int capable(MemorySegment struct) {
@@ -313,7 +322,7 @@ public class fuse_conn_info {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int capable
+     * uint32_t capable
      * }
      */
     public static void capable(MemorySegment struct, int fieldValue) {
@@ -325,7 +334,7 @@ public class fuse_conn_info {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int want
+     * uint32_t want
      * }
      */
     public static final OfInt want$layout() {
@@ -337,7 +346,7 @@ public class fuse_conn_info {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int want
+     * uint32_t want
      * }
      */
     public static final long want$offset() {
@@ -347,7 +356,7 @@ public class fuse_conn_info {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int want
+     * uint32_t want
      * }
      */
     public static int want(MemorySegment struct) {
@@ -357,7 +366,7 @@ public class fuse_conn_info {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int want
+     * uint32_t want
      * }
      */
     public static void want(MemorySegment struct, int fieldValue) {
@@ -369,7 +378,7 @@ public class fuse_conn_info {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int max_background
+     * uint32_t max_background
      * }
      */
     public static final OfInt max_background$layout() {
@@ -381,7 +390,7 @@ public class fuse_conn_info {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int max_background
+     * uint32_t max_background
      * }
      */
     public static final long max_background$offset() {
@@ -391,7 +400,7 @@ public class fuse_conn_info {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int max_background
+     * uint32_t max_background
      * }
      */
     public static int max_background(MemorySegment struct) {
@@ -401,7 +410,7 @@ public class fuse_conn_info {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int max_background
+     * uint32_t max_background
      * }
      */
     public static void max_background(MemorySegment struct, int fieldValue) {
@@ -413,7 +422,7 @@ public class fuse_conn_info {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int congestion_threshold
+     * uint32_t congestion_threshold
      * }
      */
     public static final OfInt congestion_threshold$layout() {
@@ -425,7 +434,7 @@ public class fuse_conn_info {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int congestion_threshold
+     * uint32_t congestion_threshold
      * }
      */
     public static final long congestion_threshold$offset() {
@@ -435,7 +444,7 @@ public class fuse_conn_info {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int congestion_threshold
+     * uint32_t congestion_threshold
      * }
      */
     public static int congestion_threshold(MemorySegment struct) {
@@ -445,7 +454,7 @@ public class fuse_conn_info {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int congestion_threshold
+     * uint32_t congestion_threshold
      * }
      */
     public static void congestion_threshold(MemorySegment struct, int fieldValue) {
@@ -457,7 +466,7 @@ public class fuse_conn_info {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int time_gran
+     * uint32_t time_gran
      * }
      */
     public static final OfInt time_gran$layout() {
@@ -469,7 +478,7 @@ public class fuse_conn_info {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int time_gran
+     * uint32_t time_gran
      * }
      */
     public static final long time_gran$offset() {
@@ -479,7 +488,7 @@ public class fuse_conn_info {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int time_gran
+     * uint32_t time_gran
      * }
      */
     public static int time_gran(MemorySegment struct) {
@@ -489,11 +498,143 @@ public class fuse_conn_info {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int time_gran
+     * uint32_t time_gran
      * }
      */
     public static void time_gran(MemorySegment struct, int fieldValue) {
         struct.set(time_gran$LAYOUT, time_gran$OFFSET, fieldValue);
+    }
+
+    private static final OfInt max_backing_stack_depth$LAYOUT = (OfInt)$LAYOUT.select(groupElement("max_backing_stack_depth"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * uint32_t max_backing_stack_depth
+     * }
+     */
+    public static final OfInt max_backing_stack_depth$layout() {
+        return max_backing_stack_depth$LAYOUT;
+    }
+
+    private static final long max_backing_stack_depth$OFFSET = 40;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * uint32_t max_backing_stack_depth
+     * }
+     */
+    public static final long max_backing_stack_depth$offset() {
+        return max_backing_stack_depth$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * uint32_t max_backing_stack_depth
+     * }
+     */
+    public static int max_backing_stack_depth(MemorySegment struct) {
+        return struct.get(max_backing_stack_depth$LAYOUT, max_backing_stack_depth$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * uint32_t max_backing_stack_depth
+     * }
+     */
+    public static void max_backing_stack_depth(MemorySegment struct, int fieldValue) {
+        struct.set(max_backing_stack_depth$LAYOUT, max_backing_stack_depth$OFFSET, fieldValue);
+    }
+
+    private static final OfLong capable_ext$LAYOUT = (OfLong)$LAYOUT.select(groupElement("capable_ext"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * uint64_t capable_ext
+     * }
+     */
+    public static final OfLong capable_ext$layout() {
+        return capable_ext$LAYOUT;
+    }
+
+    private static final long capable_ext$OFFSET = 48;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * uint64_t capable_ext
+     * }
+     */
+    public static final long capable_ext$offset() {
+        return capable_ext$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * uint64_t capable_ext
+     * }
+     */
+    public static long capable_ext(MemorySegment struct) {
+        return struct.get(capable_ext$LAYOUT, capable_ext$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * uint64_t capable_ext
+     * }
+     */
+    public static void capable_ext(MemorySegment struct, long fieldValue) {
+        struct.set(capable_ext$LAYOUT, capable_ext$OFFSET, fieldValue);
+    }
+
+    private static final OfLong want_ext$LAYOUT = (OfLong)$LAYOUT.select(groupElement("want_ext"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * uint64_t want_ext
+     * }
+     */
+    public static final OfLong want_ext$layout() {
+        return want_ext$LAYOUT;
+    }
+
+    private static final long want_ext$OFFSET = 56;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * uint64_t want_ext
+     * }
+     */
+    public static final long want_ext$offset() {
+        return want_ext$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * uint64_t want_ext
+     * }
+     */
+    public static long want_ext(MemorySegment struct) {
+        return struct.get(want_ext$LAYOUT, want_ext$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * uint64_t want_ext
+     * }
+     */
+    public static void want_ext(MemorySegment struct, long fieldValue) {
+        struct.set(want_ext$LAYOUT, want_ext$OFFSET, fieldValue);
     }
 
     private static final SequenceLayout reserved$LAYOUT = (SequenceLayout)$LAYOUT.select(groupElement("reserved"));
@@ -501,19 +642,19 @@ public class fuse_conn_info {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * unsigned int reserved[22]
+     * uint32_t reserved[16]
      * }
      */
     public static final SequenceLayout reserved$layout() {
         return reserved$LAYOUT;
     }
 
-    private static final long reserved$OFFSET = 40;
+    private static final long reserved$OFFSET = 64;
 
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * unsigned int reserved[22]
+     * uint32_t reserved[16]
      * }
      */
     public static final long reserved$offset() {
@@ -523,7 +664,7 @@ public class fuse_conn_info {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * unsigned int reserved[22]
+     * uint32_t reserved[16]
      * }
      */
     public static MemorySegment reserved(MemorySegment struct) {
@@ -533,19 +674,19 @@ public class fuse_conn_info {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * unsigned int reserved[22]
+     * uint32_t reserved[16]
      * }
      */
     public static void reserved(MemorySegment struct, MemorySegment fieldValue) {
         MemorySegment.copy(fieldValue, 0L, struct, reserved$OFFSET, reserved$LAYOUT.byteSize());
     }
 
-    private static long[] reserved$DIMS = { 22 };
+    private static long[] reserved$DIMS = { 16 };
 
     /**
      * Dimensions for array field:
      * {@snippet lang=c :
-     * unsigned int reserved[22]
+     * uint32_t reserved[16]
      * }
      */
     public static long[] reserved$dimensions() {
@@ -556,7 +697,7 @@ public class fuse_conn_info {
     /**
      * Indexed getter for field:
      * {@snippet lang=c :
-     * unsigned int reserved[22]
+     * uint32_t reserved[16]
      * }
      */
     public static int reserved(MemorySegment struct, long index0) {
@@ -566,7 +707,7 @@ public class fuse_conn_info {
     /**
      * Indexed setter for field:
      * {@snippet lang=c :
-     * unsigned int reserved[22]
+     * uint32_t reserved[16]
      * }
      */
     public static void reserved(MemorySegment struct, long index0, int fieldValue) {
@@ -602,7 +743,7 @@ public class fuse_conn_info {
     }
 
     /**
-     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction} (if any).
      * The returned segment has size {@code layout().byteSize()}
      */
     public static MemorySegment reinterpret(MemorySegment addr, Arena arena, Consumer<MemorySegment> cleanup) {
@@ -610,7 +751,7 @@ public class fuse_conn_info {
     }
 
     /**
-     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction} (if any).
      * The returned segment has size {@code elementCount * layout().byteSize()}
      */
     public static MemorySegment reinterpret(MemorySegment addr, long elementCount, Arena arena, Consumer<MemorySegment> cleanup) {

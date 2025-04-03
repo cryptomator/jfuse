@@ -40,39 +40,30 @@ public class FuseImplTest {
 
 		private List<String> args = List.of("foo", "bar");
 		private FuseImpl fuseImplSpy = Mockito.spy(fuseImpl);
-		private MockedStatic<fuse_h> fuseH;
-
-		@BeforeEach
-		public void setup() {
-			Mockito.doReturn(Mockito.mock(FuseArgs.class)).when(fuseImplSpy).parseArgs(args);
-			fuseH = Mockito.mockStatic(fuse_h.class);
-		}
-
-		@AfterEach
-		public void teardown() {
-			fuseH.close();
-		}
 
 		@Test
 		@DisplayName("MountFailedException when fuse_new fails")
 		public void testFuseNewFails() {
-			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemorySegment.NULL);
-
-			var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
-
-			fuseH.verify(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any()), Mockito.never());
-			Assertions.assertEquals("fuse_new failed", thrown.getMessage());
+			try (var fuseH = Mockito.mockStatic(FuseFFIHelper.class)) {
+				fuseH.when(() -> FuseFFIHelper.fuse_new_31(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemorySegment.NULL);
+				var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.createFuseFS(Mockito.mock(FuseArgs.class)));
+				Assertions.assertEquals("fuse_new failed", thrown.getMessage());
+			}
 		}
 
 		@Test
 		@DisplayName("MountFailedException when fuse_mount fails")
-		public void testFuseMountFails() {
-			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemorySegment.ofAddress(42L));
-			fuseH.when(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any())).thenReturn(1);
-
-			var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
-
-			Assertions.assertEquals("fuse_mount failed", thrown.getMessage());
+		public void testFuseMountFails() throws FuseMountFailedException {
+			try (var fuseH = Mockito.mockStatic(fuse_h.class)) {
+				var fuseArgs = Mockito.mock(FuseArgs.class);
+				Mockito.doReturn(fuseArgs).when(fuseImplSpy).parseArgs(args);
+				Mockito.when(fuseArgs.mountPoint()).thenReturn(MemorySegment.NULL);
+				Mockito.when(fuseArgs.args()).thenReturn(MemorySegment.NULL);
+				fuseH.when(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any())).thenReturn(1);
+				Mockito.doReturn(MemorySegment.NULL).when(fuseImplSpy).createFuseFS(Mockito.any());
+				var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
+				Assertions.assertEquals("fuse_mount failed", thrown.getMessage());
+			}
 		}
 
 	}

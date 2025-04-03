@@ -26,7 +26,8 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
  *     unsigned long f_fsid;
  *     unsigned long f_flag;
  *     unsigned long f_namemax;
- *     int __f_spare[6];
+ *     unsigned int f_type;
+ *     int __f_spare[5];
  * }
  * }
  */
@@ -48,7 +49,8 @@ public class statvfs {
         fuse_h.C_LONG.withName("f_fsid"),
         fuse_h.C_LONG.withName("f_flag"),
         fuse_h.C_LONG.withName("f_namemax"),
-        MemoryLayout.sequenceLayout(6, fuse_h.C_INT).withName("__f_spare")
+        fuse_h.C_INT.withName("f_type"),
+        MemoryLayout.sequenceLayout(5, fuse_h.C_INT).withName("__f_spare")
     ).withName("statvfs");
 
     /**
@@ -542,24 +544,68 @@ public class statvfs {
         struct.set(f_namemax$LAYOUT, f_namemax$OFFSET, fieldValue);
     }
 
+    private static final OfInt f_type$LAYOUT = (OfInt)$LAYOUT.select(groupElement("f_type"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * unsigned int f_type
+     * }
+     */
+    public static final OfInt f_type$layout() {
+        return f_type$LAYOUT;
+    }
+
+    private static final long f_type$OFFSET = 88;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * unsigned int f_type
+     * }
+     */
+    public static final long f_type$offset() {
+        return f_type$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * unsigned int f_type
+     * }
+     */
+    public static int f_type(MemorySegment struct) {
+        return struct.get(f_type$LAYOUT, f_type$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * unsigned int f_type
+     * }
+     */
+    public static void f_type(MemorySegment struct, int fieldValue) {
+        struct.set(f_type$LAYOUT, f_type$OFFSET, fieldValue);
+    }
+
     private static final SequenceLayout __f_spare$LAYOUT = (SequenceLayout)$LAYOUT.select(groupElement("__f_spare"));
 
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int __f_spare[6]
+     * int __f_spare[5]
      * }
      */
     public static final SequenceLayout __f_spare$layout() {
         return __f_spare$LAYOUT;
     }
 
-    private static final long __f_spare$OFFSET = 88;
+    private static final long __f_spare$OFFSET = 92;
 
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int __f_spare[6]
+     * int __f_spare[5]
      * }
      */
     public static final long __f_spare$offset() {
@@ -569,7 +615,7 @@ public class statvfs {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int __f_spare[6]
+     * int __f_spare[5]
      * }
      */
     public static MemorySegment __f_spare(MemorySegment struct) {
@@ -579,19 +625,19 @@ public class statvfs {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int __f_spare[6]
+     * int __f_spare[5]
      * }
      */
     public static void __f_spare(MemorySegment struct, MemorySegment fieldValue) {
         MemorySegment.copy(fieldValue, 0L, struct, __f_spare$OFFSET, __f_spare$LAYOUT.byteSize());
     }
 
-    private static long[] __f_spare$DIMS = { 6 };
+    private static long[] __f_spare$DIMS = { 5 };
 
     /**
      * Dimensions for array field:
      * {@snippet lang=c :
-     * int __f_spare[6]
+     * int __f_spare[5]
      * }
      */
     public static long[] __f_spare$dimensions() {
@@ -602,7 +648,7 @@ public class statvfs {
     /**
      * Indexed getter for field:
      * {@snippet lang=c :
-     * int __f_spare[6]
+     * int __f_spare[5]
      * }
      */
     public static int __f_spare(MemorySegment struct, long index0) {
@@ -612,7 +658,7 @@ public class statvfs {
     /**
      * Indexed setter for field:
      * {@snippet lang=c :
-     * int __f_spare[6]
+     * int __f_spare[5]
      * }
      */
     public static void __f_spare(MemorySegment struct, long index0, int fieldValue) {
@@ -648,7 +694,7 @@ public class statvfs {
     }
 
     /**
-     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction} (if any).
      * The returned segment has size {@code layout().byteSize()}
      */
     public static MemorySegment reinterpret(MemorySegment addr, Arena arena, Consumer<MemorySegment> cleanup) {
@@ -656,7 +702,7 @@ public class statvfs {
     }
 
     /**
-     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction} (if any).
      * The returned segment has size {@code elementCount * layout().byteSize()}
      */
     public static MemorySegment reinterpret(MemorySegment addr, long elementCount, Arena arena, Consumer<MemorySegment> cleanup) {

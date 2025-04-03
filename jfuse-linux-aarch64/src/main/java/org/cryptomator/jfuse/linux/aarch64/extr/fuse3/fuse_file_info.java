@@ -15,20 +15,25 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
 /**
  * {@snippet lang=c :
  * struct fuse_file_info {
- *     int flags;
- *     unsigned int writepage : 1;
- *     unsigned int direct_io : 1;
- *     unsigned int keep_cache : 1;
- *     unsigned int flush : 1;
- *     unsigned int nonseekable : 1;
- *     unsigned int flock_release : 1;
- *     unsigned int cache_readdir : 1;
- *     unsigned int noflush : 1;
- *     unsigned int padding : 24;
- *     unsigned int padding2 : 32;
+ *     int32_t flags;
+ *     uint32_t writepage : 1;
+ *     uint32_t direct_io : 1;
+ *     uint32_t keep_cache : 1;
+ *     uint32_t flush : 1;
+ *     uint32_t nonseekable : 1;
+ *     uint32_t flock_release : 1;
+ *     uint32_t cache_readdir : 1;
+ *     uint32_t noflush : 1;
+ *     uint32_t parallel_direct_writes : 1;
+ *     uint32_t padding : 23;
+ *     uint32_t padding2 : 32;
+ *     uint32_t padding3 : 32;
  *     uint64_t fh;
  *     uint64_t lock_owner;
  *     uint32_t poll_events;
+ *     int32_t backing_id;
+ *     uint64_t compat_flags;
+ *     uint64_t reserved[2];
  * }
  * }
  */
@@ -44,7 +49,9 @@ public class fuse_file_info {
         fuse_h.C_LONG.withName("fh"),
         fuse_h.C_LONG.withName("lock_owner"),
         fuse_h.C_INT.withName("poll_events"),
-        MemoryLayout.paddingLayout(4)
+        fuse_h.C_INT.withName("backing_id"),
+        fuse_h.C_LONG.withName("compat_flags"),
+        MemoryLayout.sequenceLayout(2, fuse_h.C_LONG).withName("reserved")
     ).withName("fuse_file_info");
 
     /**
@@ -59,7 +66,7 @@ public class fuse_file_info {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int flags
+     * int32_t flags
      * }
      */
     public static final OfInt flags$layout() {
@@ -71,7 +78,7 @@ public class fuse_file_info {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int flags
+     * int32_t flags
      * }
      */
     public static final long flags$offset() {
@@ -81,7 +88,7 @@ public class fuse_file_info {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int flags
+     * int32_t flags
      * }
      */
     public static int flags(MemorySegment struct) {
@@ -91,7 +98,7 @@ public class fuse_file_info {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int flags
+     * int32_t flags
      * }
      */
     public static void flags(MemorySegment struct, int fieldValue) {
@@ -230,6 +237,171 @@ public class fuse_file_info {
         struct.set(poll_events$LAYOUT, poll_events$OFFSET, fieldValue);
     }
 
+    private static final OfInt backing_id$LAYOUT = (OfInt)$LAYOUT.select(groupElement("backing_id"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * int32_t backing_id
+     * }
+     */
+    public static final OfInt backing_id$layout() {
+        return backing_id$LAYOUT;
+    }
+
+    private static final long backing_id$OFFSET = 36;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * int32_t backing_id
+     * }
+     */
+    public static final long backing_id$offset() {
+        return backing_id$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * int32_t backing_id
+     * }
+     */
+    public static int backing_id(MemorySegment struct) {
+        return struct.get(backing_id$LAYOUT, backing_id$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * int32_t backing_id
+     * }
+     */
+    public static void backing_id(MemorySegment struct, int fieldValue) {
+        struct.set(backing_id$LAYOUT, backing_id$OFFSET, fieldValue);
+    }
+
+    private static final OfLong compat_flags$LAYOUT = (OfLong)$LAYOUT.select(groupElement("compat_flags"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * uint64_t compat_flags
+     * }
+     */
+    public static final OfLong compat_flags$layout() {
+        return compat_flags$LAYOUT;
+    }
+
+    private static final long compat_flags$OFFSET = 40;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * uint64_t compat_flags
+     * }
+     */
+    public static final long compat_flags$offset() {
+        return compat_flags$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * uint64_t compat_flags
+     * }
+     */
+    public static long compat_flags(MemorySegment struct) {
+        return struct.get(compat_flags$LAYOUT, compat_flags$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * uint64_t compat_flags
+     * }
+     */
+    public static void compat_flags(MemorySegment struct, long fieldValue) {
+        struct.set(compat_flags$LAYOUT, compat_flags$OFFSET, fieldValue);
+    }
+
+    private static final SequenceLayout reserved$LAYOUT = (SequenceLayout)$LAYOUT.select(groupElement("reserved"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * uint64_t reserved[2]
+     * }
+     */
+    public static final SequenceLayout reserved$layout() {
+        return reserved$LAYOUT;
+    }
+
+    private static final long reserved$OFFSET = 48;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * uint64_t reserved[2]
+     * }
+     */
+    public static final long reserved$offset() {
+        return reserved$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * uint64_t reserved[2]
+     * }
+     */
+    public static MemorySegment reserved(MemorySegment struct) {
+        return struct.asSlice(reserved$OFFSET, reserved$LAYOUT.byteSize());
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * uint64_t reserved[2]
+     * }
+     */
+    public static void reserved(MemorySegment struct, MemorySegment fieldValue) {
+        MemorySegment.copy(fieldValue, 0L, struct, reserved$OFFSET, reserved$LAYOUT.byteSize());
+    }
+
+    private static long[] reserved$DIMS = { 2 };
+
+    /**
+     * Dimensions for array field:
+     * {@snippet lang=c :
+     * uint64_t reserved[2]
+     * }
+     */
+    public static long[] reserved$dimensions() {
+        return reserved$DIMS;
+    }
+    private static final VarHandle reserved$ELEM_HANDLE = reserved$LAYOUT.varHandle(sequenceElement());
+
+    /**
+     * Indexed getter for field:
+     * {@snippet lang=c :
+     * uint64_t reserved[2]
+     * }
+     */
+    public static long reserved(MemorySegment struct, long index0) {
+        return (long)reserved$ELEM_HANDLE.get(struct, 0L, index0);
+    }
+
+    /**
+     * Indexed setter for field:
+     * {@snippet lang=c :
+     * uint64_t reserved[2]
+     * }
+     */
+    public static void reserved(MemorySegment struct, long index0, long fieldValue) {
+        reserved$ELEM_HANDLE.set(struct, 0L, index0, fieldValue);
+    }
+
     /**
      * Obtains a slice of {@code arrayParam} which selects the array element at {@code index}.
      * The returned segment has address {@code arrayParam.address() + index * layout().byteSize()}
@@ -259,7 +431,7 @@ public class fuse_file_info {
     }
 
     /**
-     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction} (if any).
      * The returned segment has size {@code layout().byteSize()}
      */
     public static MemorySegment reinterpret(MemorySegment addr, Arena arena, Consumer<MemorySegment> cleanup) {
@@ -267,7 +439,7 @@ public class fuse_file_info {
     }
 
     /**
-     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction) (if any).
+     * Reinterprets {@code addr} using target {@code arena} and {@code cleanupAction} (if any).
      * The returned segment has size {@code elementCount * layout().byteSize()}
      */
     public static MemorySegment reinterpret(MemorySegment addr, long elementCount, Arena arena, Consumer<MemorySegment> cleanup) {

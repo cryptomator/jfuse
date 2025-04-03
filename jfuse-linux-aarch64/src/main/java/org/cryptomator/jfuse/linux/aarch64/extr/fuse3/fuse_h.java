@@ -73,9 +73,9 @@ public class fuse_h {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
             fuse_h.C_INT    );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_version"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_version");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -97,6 +97,17 @@ public class fuse_h {
     public static MethodHandle fuse_version$handle() {
         return fuse_version.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * int fuse_version()
+     * }
+     */
+    public static MemorySegment fuse_version$address() {
+        return fuse_version.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * int fuse_version()
@@ -118,9 +129,9 @@ public class fuse_h {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
             fuse_h.C_POINTER    );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_loop_cfg_create"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_loop_cfg_create");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -142,6 +153,17 @@ public class fuse_h {
     public static MethodHandle fuse_loop_cfg_create$handle() {
         return fuse_loop_cfg_create.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * struct fuse_loop_config *fuse_loop_cfg_create()
+     * }
+     */
+    public static MemorySegment fuse_loop_cfg_create$address() {
+        return fuse_loop_cfg_create.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * struct fuse_loop_config *fuse_loop_cfg_create()
@@ -164,9 +186,9 @@ public class fuse_h {
             fuse_h.C_POINTER
         );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_loop_cfg_destroy"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_loop_cfg_destroy");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -188,6 +210,17 @@ public class fuse_h {
     public static MethodHandle fuse_loop_cfg_destroy$handle() {
         return fuse_loop_cfg_destroy.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * void fuse_loop_cfg_destroy(struct fuse_loop_config *config)
+     * }
+     */
+    public static MemorySegment fuse_loop_cfg_destroy$address() {
+        return fuse_loop_cfg_destroy.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * void fuse_loop_cfg_destroy(struct fuse_loop_config *config)
@@ -211,9 +244,9 @@ public class fuse_h {
             fuse_h.C_INT
         );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_loop_cfg_set_max_threads"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_loop_cfg_set_max_threads");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -235,6 +268,17 @@ public class fuse_h {
     public static MethodHandle fuse_loop_cfg_set_max_threads$handle() {
         return fuse_loop_cfg_set_max_threads.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * void fuse_loop_cfg_set_max_threads(struct fuse_loop_config *config, unsigned int value)
+     * }
+     */
+    public static MemorySegment fuse_loop_cfg_set_max_threads$address() {
+        return fuse_loop_cfg_set_max_threads.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * void fuse_loop_cfg_set_max_threads(struct fuse_loop_config *config, unsigned int value)
@@ -258,9 +302,9 @@ public class fuse_h {
             fuse_h.C_INT
         );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_loop_cfg_set_clone_fd"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_loop_cfg_set_clone_fd");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -282,6 +326,17 @@ public class fuse_h {
     public static MethodHandle fuse_loop_cfg_set_clone_fd$handle() {
         return fuse_loop_cfg_set_clone_fd.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * void fuse_loop_cfg_set_clone_fd(struct fuse_loop_config *config, unsigned int value)
+     * }
+     */
+    public static MemorySegment fuse_loop_cfg_set_clone_fd$address() {
+        return fuse_loop_cfg_set_clone_fd.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * void fuse_loop_cfg_set_clone_fd(struct fuse_loop_config *config, unsigned int value)
@@ -304,9 +359,9 @@ public class fuse_h {
             fuse_h.C_POINTER
         );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_lib_help"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_lib_help");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -328,6 +383,17 @@ public class fuse_h {
     public static MethodHandle fuse_lib_help$handle() {
         return fuse_lib_help.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * void fuse_lib_help(struct fuse_args *args)
+     * }
+     */
+    public static MemorySegment fuse_lib_help$address() {
+        return fuse_lib_help.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * void fuse_lib_help(struct fuse_args *args)
@@ -345,56 +411,6 @@ public class fuse_h {
         }
     }
 
-    private static class fuse_new {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            fuse_h.C_POINTER,
-            fuse_h.C_POINTER,
-            fuse_h.C_POINTER,
-            fuse_h.C_LONG,
-            fuse_h.C_POINTER
-        );
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_new"),
-                    DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * struct fuse *fuse_new(struct fuse_args *args, const struct fuse_operations *op, size_t op_size, void *private_data)
-     * }
-     */
-    public static FunctionDescriptor fuse_new$descriptor() {
-        return fuse_new.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * struct fuse *fuse_new(struct fuse_args *args, const struct fuse_operations *op, size_t op_size, void *private_data)
-     * }
-     */
-    public static MethodHandle fuse_new$handle() {
-        return fuse_new.HANDLE;
-    }
-    /**
-     * {@snippet lang=c :
-     * struct fuse *fuse_new(struct fuse_args *args, const struct fuse_operations *op, size_t op_size, void *private_data)
-     * }
-     */
-    public static MemorySegment fuse_new(MemorySegment args, MemorySegment op, long op_size, MemorySegment private_data) {
-        var mh$ = fuse_new.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("fuse_new", args, op, op_size, private_data);
-            }
-            return (MemorySegment)mh$.invokeExact(args, op, op_size, private_data);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
     private static class fuse_mount {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
             fuse_h.C_INT,
@@ -402,9 +418,9 @@ public class fuse_h {
             fuse_h.C_POINTER
         );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_mount"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_mount");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -426,6 +442,17 @@ public class fuse_h {
     public static MethodHandle fuse_mount$handle() {
         return fuse_mount.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * int fuse_mount(struct fuse *f, const char *mountpoint)
+     * }
+     */
+    public static MemorySegment fuse_mount$address() {
+        return fuse_mount.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * int fuse_mount(struct fuse *f, const char *mountpoint)
@@ -448,9 +475,9 @@ public class fuse_h {
             fuse_h.C_POINTER
         );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_unmount"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_unmount");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -472,6 +499,17 @@ public class fuse_h {
     public static MethodHandle fuse_unmount$handle() {
         return fuse_unmount.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * void fuse_unmount(struct fuse *f)
+     * }
+     */
+    public static MemorySegment fuse_unmount$address() {
+        return fuse_unmount.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * void fuse_unmount(struct fuse *f)
@@ -494,9 +532,9 @@ public class fuse_h {
             fuse_h.C_POINTER
         );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_destroy"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_destroy");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -518,6 +556,17 @@ public class fuse_h {
     public static MethodHandle fuse_destroy$handle() {
         return fuse_destroy.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * void fuse_destroy(struct fuse *f)
+     * }
+     */
+    public static MemorySegment fuse_destroy$address() {
+        return fuse_destroy.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * void fuse_destroy(struct fuse *f)
@@ -541,9 +590,9 @@ public class fuse_h {
             fuse_h.C_POINTER
         );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_loop"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_loop");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -565,6 +614,17 @@ public class fuse_h {
     public static MethodHandle fuse_loop$handle() {
         return fuse_loop.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * int fuse_loop(struct fuse *f)
+     * }
+     */
+    public static MemorySegment fuse_loop$address() {
+        return fuse_loop.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * int fuse_loop(struct fuse *f)
@@ -587,9 +647,9 @@ public class fuse_h {
             fuse_h.C_POINTER
         );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_exit"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_exit");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -611,6 +671,17 @@ public class fuse_h {
     public static MethodHandle fuse_exit$handle() {
         return fuse_exit.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * void fuse_exit(struct fuse *f)
+     * }
+     */
+    public static MemorySegment fuse_exit$address() {
+        return fuse_exit.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * void fuse_exit(struct fuse *f)
@@ -635,9 +706,9 @@ public class fuse_h {
             fuse_h.C_POINTER
         );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_loop_mt"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_loop_mt");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -659,6 +730,17 @@ public class fuse_h {
     public static MethodHandle fuse_loop_mt$handle() {
         return fuse_loop_mt.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * int fuse_loop_mt(struct fuse *f, struct fuse_loop_config *config)
+     * }
+     */
+    public static MemorySegment fuse_loop_mt$address() {
+        return fuse_loop_mt.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * int fuse_loop_mt(struct fuse *f, struct fuse_loop_config *config)
@@ -682,9 +764,9 @@ public class fuse_h {
             fuse_h.C_POINTER
         );
 
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-                    fuse_h.findOrThrow("fuse_get_session"),
-                    DESC);
+        public static final MemorySegment ADDR = fuse_h.findOrThrow("fuse_get_session");
+
+        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
@@ -706,6 +788,17 @@ public class fuse_h {
     public static MethodHandle fuse_get_session$handle() {
         return fuse_get_session.HANDLE;
     }
+
+    /**
+     * Address for:
+     * {@snippet lang=c :
+     * struct fuse_session *fuse_get_session(struct fuse *f)
+     * }
+     */
+    public static MemorySegment fuse_get_session$address() {
+        return fuse_get_session.ADDR;
+    }
+
     /**
      * {@snippet lang=c :
      * struct fuse_session *fuse_get_session(struct fuse *f)
