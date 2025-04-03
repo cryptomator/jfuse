@@ -52,9 +52,12 @@ public class FuseImplTest {
 		@DisplayName("MountFailedException when fuse_mount fails")
 		public void testFuseMountFails() throws FuseMountFailedException {
 			try (var fuseH = Mockito.mockStatic(fuse_h.class)) {
-				Mockito.doReturn(Mockito.mock(FuseArgs.class)).when(fuseImplSpy).parseArgs(args);
+				var fuseArgs = Mockito.mock(FuseArgs.class);
+				Mockito.doReturn(fuseArgs).when(fuseImplSpy).parseArgs(args);
+				Mockito.when(fuseArgs.mountPoint()).thenReturn(MemorySegment.NULL);
+				Mockito.when(fuseArgs.args()).thenReturn(MemorySegment.NULL);
 				fuseH.when(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any())).thenReturn(1);
-				Mockito.when(fuseImplSpy.createFuseFS(Mockito.any())).thenReturn(MemorySegment.NULL);
+				Mockito.doReturn(MemorySegment.NULL).when(fuseImplSpy).createFuseFS(Mockito.any());
 				var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
 				Assertions.assertEquals("fuse_mount failed", thrown.getMessage());
 			}
