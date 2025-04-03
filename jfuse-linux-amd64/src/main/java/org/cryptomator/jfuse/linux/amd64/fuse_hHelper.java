@@ -9,9 +9,7 @@ import java.lang.foreign.SymbolLookup;
 import java.lang.invoke.MethodHandle;
 
 /**
- * Class for not jextract'able symbols, e.g. fuse_new
- * <p>
- * Structure to access symbols is the same as in the jextract-generated code.
+ * Class for not jextract'able symbols, e.g. fuse_new_31
  */
 public class fuse_hHelper {
 

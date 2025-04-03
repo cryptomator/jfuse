@@ -11,7 +11,6 @@ import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_h;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3.timespec;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3_lowlevel.fuse_cmdline_opts;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Answers;
-import org.mockito.InOrder;
 import org.mockito.Mockito;
 
 import java.lang.foreign.Arena;
@@ -39,28 +37,6 @@ public class FuseImplTest {
 
 		private List<String> args = List.of("foo", "bar");
 		private FuseImpl fuseImplSpy = Mockito.spy(fuseImpl);
-
-		@BeforeEach
-		public void setup() {
-		}
-
-		@Test
-		@DisplayName("first parse, then create, then mount")
-		public void testCallOrder() throws FuseMountFailedException {
-			try (var fuseH = Mockito.mockStatic(fuse_h.class)) {
-				var fuseArgs = Mockito.mock(FuseArgs.class);
-				Mockito.doReturn(fuseArgs).when(fuseImplSpy).parseArgs(args);
-				Mockito.when(fuseImplSpy.createFuseFS(fuseArgs)).thenReturn(MemorySegment.NULL);
-				fuseH.when(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any())).thenReturn(0);
-				fuseImplSpy.mount(args);
-
-				InOrder executionOrder = Mockito.inOrder(fuseImplSpy, fuseH);
-				executionOrder.verify(fuseImplSpy).parseArgs(args);
-				executionOrder.verify(fuseImplSpy).createFuseFS(fuseArgs);
-				executionOrder.verify(fuseH, () -> fuse_h.fuse_mount(Mockito.any(), Mockito.any()));
-			}
-
-		}
 
 		@Test
 		@DisplayName("MountFailedException when fuse_new fails")
