@@ -41,8 +41,8 @@ public class FuseImplTest {
 		@Test
 		@DisplayName("MountFailedException when fuse_new fails")
 		public void testFuseNewFails() {
-			try (var fuseH = Mockito.mockStatic(fuse_hHelper.class)) {
-				fuseH.when(() -> fuse_hHelper.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemorySegment.NULL);
+			try (var fuseH = Mockito.mockStatic(FuseFFIHelper.class)) {
+				fuseH.when(() -> FuseFFIHelper.fuse_new_31(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemorySegment.NULL);
 				var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.createFuseFS(Mockito.mock(FuseArgs.class)));
 				Assertions.assertEquals("fuse_new failed", thrown.getMessage());
 			}

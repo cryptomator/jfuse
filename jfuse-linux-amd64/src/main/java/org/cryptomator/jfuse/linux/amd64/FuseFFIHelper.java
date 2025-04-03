@@ -11,9 +11,8 @@ import java.lang.invoke.MethodHandle;
 /**
  * Class for not jextract'able symbols, e.g. fuse_new_31
  */
-public class fuse_hHelper {
+public class FuseFFIHelper {
 
-	private static final String FUSE_NEW_SYMBOLNAME = "fuse_new_31";
 
 	static final SymbolLookup SYMBOL_LOOKUP = SymbolLookup.loaderLookup()
 			.or(Linker.nativeLinker().defaultLookup());
@@ -23,7 +22,7 @@ public class fuse_hHelper {
 				.orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol: " + symbol));
 	}
 
-	private static class fuse_new {
+	private static class fuse_new_31 {
 		public static final FunctionDescriptor DESC = FunctionDescriptor.of(
 				fuse_h.C_POINTER,
 				fuse_h.C_POINTER,
@@ -33,7 +32,7 @@ public class fuse_hHelper {
 		);
 
 		public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(
-				findOrThrow(FUSE_NEW_SYMBOLNAME),
+				findOrThrow("fuse_new_31"),
 				DESC);
 	}
 
@@ -43,8 +42,8 @@ public class fuse_hHelper {
 	 * struct fuse *fuse_new(struct fuse_args *args, const struct fuse_operations *op, size_t op_size, void *private_data)
 	 *}
 	 */
-	public static FunctionDescriptor fuse_new$descriptor() {
-		return fuse_new.DESC;
+	public static FunctionDescriptor fuse_new_31$descriptor() {
+		return fuse_new_31.DESC;
 	}
 
 
@@ -54,8 +53,8 @@ public class fuse_hHelper {
 	 * struct fuse *fuse_new(struct fuse_args *args, const struct fuse_operations *op, size_t op_size, void *private_data)
 	 *}
 	 */
-	public static MethodHandle fuse_new$handle() {
-		return fuse_new.HANDLE;
+	public static MethodHandle fuse_new_31$handle() {
+		return fuse_new_31.HANDLE;
 	}
 
 	/**
@@ -63,8 +62,8 @@ public class fuse_hHelper {
 	 * struct fuse *fuse_new(struct fuse_args *args, const struct fuse_operations *op, size_t op_size, void *private_data)
 	 *}
 	 */
-	public static MemorySegment fuse_new(MemorySegment args, MemorySegment op, long op_size, MemorySegment private_data) {
-		var mh$ = fuse_new.HANDLE;
+	public static MemorySegment fuse_new_31(MemorySegment args, MemorySegment op, long op_size, MemorySegment private_data) {
+		var mh$ = fuse_new_31.HANDLE;
 		try {
 			return (MemorySegment) mh$.invokeExact(args, op, op_size, private_data);
 		} catch (Throwable ex$) {
