@@ -99,12 +99,11 @@
 									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.fuse3</targetPackage>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=312</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=317</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
 										<includeFunction>fuse_version</includeFunction>
 										<includeFunction>fuse_lib_help</includeFunction>
-										<includeFunction>fuse_new</includeFunction>
 										<includeFunction>fuse_mount</includeFunction>
 										<includeFunction>fuse_get_session</includeFunction>
 										<includeFunction>fuse_loop</includeFunction>
@@ -144,7 +143,7 @@
 									<headerClassName>fuse_lowlevel_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=312</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=317</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeStructs>
 										<includeStruct>fuse_cmdline_opts</includeStruct>

@@ -4,15 +4,13 @@ import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.TimeSpec;
-import org.cryptomator.jfuse.linux.amd64.extr.fuse3_lowlevel.fuse_cmdline_opts;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_config;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_conn_info;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_file_info;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_h;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3.timespec;
-import org.junit.jupiter.api.AfterEach;
+import org.cryptomator.jfuse.linux.amd64.extr.fuse3_lowlevel.fuse_cmdline_opts;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,7 +18,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Answers;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.lang.foreign.Arena;
@@ -40,39 +37,30 @@ public class FuseImplTest {
 
 		private List<String> args = List.of("foo", "bar");
 		private FuseImpl fuseImplSpy = Mockito.spy(fuseImpl);
-		private MockedStatic<fuse_h> fuseH;
-
-		@BeforeEach
-		public void setup() {
-			Mockito.doReturn(Mockito.mock(FuseArgs.class)).when(fuseImplSpy).parseArgs(args);
-			fuseH = Mockito.mockStatic(fuse_h.class);
-		}
-
-		@AfterEach
-		public void teardown() {
-			fuseH.close();
-		}
 
 		@Test
 		@DisplayName("MountFailedException when fuse_new fails")
 		public void testFuseNewFails() {
-			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemorySegment.NULL);
-
-			var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
-
-			fuseH.verify(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any()), Mockito.never());
-			Assertions.assertEquals("fuse_new failed", thrown.getMessage());
+			try (var fuseH = Mockito.mockStatic(FuseFFIHelper.class)) {
+				fuseH.when(() -> FuseFFIHelper.fuse_new_31(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemorySegment.NULL);
+				var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.createFuseFS(Mockito.mock(FuseArgs.class)));
+				Assertions.assertEquals("fuse_new failed", thrown.getMessage());
+			}
 		}
 
 		@Test
 		@DisplayName("MountFailedException when fuse_mount fails")
-		public void testFuseMountFails() {
-			fuseH.when(() -> fuse_h.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemorySegment.ofAddress(42L));
-			fuseH.when(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any())).thenReturn(1);
-
-			var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
-
-			Assertions.assertEquals("fuse_mount failed", thrown.getMessage());
+		public void testFuseMountFails() throws FuseMountFailedException {
+			try (var fuseH = Mockito.mockStatic(fuse_h.class)) {
+				var fuseArgs = Mockito.mock(FuseArgs.class);
+				Mockito.doReturn(fuseArgs).when(fuseImplSpy).parseArgs(args);
+				Mockito.when(fuseArgs.mountPoint()).thenReturn(MemorySegment.NULL);
+				Mockito.when(fuseArgs.args()).thenReturn(MemorySegment.NULL);
+				fuseH.when(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any())).thenReturn(1);
+				Mockito.doReturn(MemorySegment.NULL).when(fuseImplSpy).createFuseFS(Mockito.any());
+				var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
+				Assertions.assertEquals("fuse_mount failed", thrown.getMessage());
+			}
 		}
 
 	}
