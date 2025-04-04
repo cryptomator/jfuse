@@ -28,14 +28,20 @@ final class FuseImpl extends Fuse {
 	@Override
 	protected FuseMount mount(List<String> args) throws FuseMountFailedException {
 		var fuseArgs = parseArgs(args);
-		var fuse = fuse_h.fuse_new(fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemorySegment.NULL);
-		if (MemorySegment.NULL.equals(fuse)) {
-			throw new FuseMountFailedException("fuse_new failed");
-		}
+		var fuse = createFuseFS(fuseArgs);
 		if (fuse_h.fuse_mount(fuse, fuseArgs.mountPoint()) != 0) {
 			throw new FuseMountFailedException("fuse_mount failed");
 		}
 		return new FuseMountImpl(fuse, fuseArgs);
+	}
+
+	@VisibleForTesting
+	MemorySegment createFuseFS(FuseArgs fuseArgs) throws FuseMountFailedException {
+		var fuse = FuseFFIHelper.fuse_new_31(fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemorySegment.NULL);
+		if (MemorySegment.NULL.equals(fuse)) {
+			throw new FuseMountFailedException("fuse_new failed");
+		}
+		return fuse;
 	}
 
 	@VisibleForTesting

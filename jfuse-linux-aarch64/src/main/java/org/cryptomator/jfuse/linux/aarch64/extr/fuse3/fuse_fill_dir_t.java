@@ -32,6 +32,7 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
  *     struct timespec st_ctim;
  *     int __glibc_reserved[2];
  * } *, off_t, enum fuse_fill_dir_flags {
+ *     FUSE_FILL_DIR_DEFAULTS = 0,
  *     FUSE_FILL_DIR_PLUS = (1 << 1)
  * })
  * }

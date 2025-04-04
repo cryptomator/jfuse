@@ -6,9 +6,16 @@ on:
 
 jobs:
 
-  linux-amd64:
-    name: Test jfuse-linux-amd64
-    runs-on: ubuntu-latest
+  linux:
+    name: Test jfuse-linux packages
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            arch: x86_64
+          - os: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -21,10 +28,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
-        run: mvn -B verify -Dfuse.lib.path="/lib/x86_64-linux-gnu/libfuse3.so.3" --no-transfer-progress
+        run: mvn -B verify -Dfuse.lib.path="/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so.3" --no-transfer-progress
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage-linux-amd64
+          name: coverage-linux-${{ matrix.arch }}
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
           retention-days: 3
 
@@ -74,7 +81,7 @@ jobs:
 
   sonarcloud:
     name: Run SonarCloud Analysis
-    needs: [linux-amd64, mac, win]
+    needs: [linux, mac, win]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -93,8 +100,12 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
       - uses: actions/download-artifact@v4
         with:
-          name: coverage-linux-amd64
-          path: coverage/linux-amd64
+          name: coverage-linux-x86_64
+          path: coverage/linux-x86_64
+      - uses: actions/download-artifact@v4
+        with:
+          name: coverage-linux-aarch64
+          path: coverage/linux-aarch64
       - uses: actions/download-artifact@v4
         with:
           name: coverage-mac
