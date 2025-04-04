@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  linux-amd64:
+  linux:
     name: Test jfuse-linux packages
     strategy:
       matrix:
@@ -31,7 +31,7 @@ jobs:
         run: mvn -B verify -Dfuse.lib.path="/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so.3" --no-transfer-progress
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage-linux-${{ matrix.os }}
+          name: coverage-linux-${{ matrix.arch }}
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
           retention-days: 3
 
@@ -81,7 +81,7 @@ jobs:
 
   sonarcloud:
     name: Run SonarCloud Analysis
-    needs: [linux-amd64, mac, win]
+    needs: [linux, mac, win]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -102,6 +102,10 @@ jobs:
         with:
           name: coverage-linux-amd64
           path: coverage/linux-amd64
+      - uses: actions/download-artifact@v4
+        with:
+          name: coverage-linux-aarch64
+          path: coverage/linux-aarch64
       - uses: actions/download-artifact@v4
         with:
           name: coverage-mac
