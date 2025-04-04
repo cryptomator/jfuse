@@ -100,8 +100,8 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
       - uses: actions/download-artifact@v4
         with:
-          name: coverage-linux-amd64
-          path: coverage/linux-amd64
+          name: coverage-linux-x86_64
+          path: coverage/linux-x86_64
       - uses: actions/download-artifact@v4
         with:
           name: coverage-linux-aarch64
