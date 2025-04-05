@@ -20,7 +20,7 @@ jobs:
             arch: aarch64
             fuseLibPath: /usr/lib/aarch64-linux-gnu/libfuse3.so.3
     runs-on: ${{ matrix.os }}
-    name: Test jfuse-linux-${{ arch }}
+    name: Test jfuse-linux-${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
