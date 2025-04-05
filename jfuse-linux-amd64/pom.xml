@@ -83,7 +83,7 @@
 						<artifactId>jextract-maven-plugin</artifactId>
 						<version>0.4.0</version>
 						<configuration>
-							<executable>/Users/sebastian/.sdkman/candidates/jextract/current/bin/jextract</executable>
+							<executable>${jextract.path}</executable>
 							<headerSearchPaths>${linux.headerSearchPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
 						</configuration>
