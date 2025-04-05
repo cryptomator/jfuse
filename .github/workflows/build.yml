@@ -10,17 +10,17 @@ env:
 
 jobs:
   linux:
-    name: Test jfuse-linux packages
     strategy:
       matrix:
         include:
           - os: ubuntu-latest
             arch: x86_64
-            fuseLibPath: /lib/x86_64-linux-gnu/libfuse3.so.3
+            fuseLibPath: /usr/lib/x86_64-linux-gnu/libfuse3.so.3
           - os: ubuntu-24.04-arm
             arch: aarch64
             fuseLibPath: /usr/lib/aarch64-linux-gnu/libfuse3.so.3
     runs-on: ${{ matrix.os }}
+    name: Test jfuse-linux-${{ arch }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
