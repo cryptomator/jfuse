@@ -12,7 +12,7 @@ import static java.lang.foreign.ValueLayout.ADDRESS;
 
 public class FuseSymbolLookup implements SymbolLookup {
 
-	private static final int RTLD_GLOBAL = 0x00; // defined in /usr/include/dlfcn.h
+	private static final MemorySegment RTLD_GLOBAL = MemorySegment.ofAddress(0L); // defined in /usr/include/dlfcn.h
 
 	// https://man7.org/linux/man-pages/man3/dlerror.3.html
 	private static final FunctionDescriptor DLERROR = FunctionDescriptor.of(ADDRESS);
