@@ -1,77 +1,92 @@
 package org.cryptomator.jfuse.api;
 
+/**
+ * VFS File System information
+ */
 public interface Statvfs {
 
 	/**
-	 * @return Block size
+	 * File system block size.
+	 *
+	 * @return {@code f_bsize} value
 	 */
 	long getBsize();
 
 	/**
-	 * Sets the block size. Should normally be equal to {@link #setFrsize(long) frsize}.
+	 * Set {@link #getBsize()}. Should normally be equal to {@link #setFrsize(long) frsize}.
 	 *
-	 * @param bsize Block size
+	 * @param bsize {@code f_bsize} value
 	 */
 	void setBsize(long bsize);
 
 	/**
-	 * @return Fragment size
+	 * Fundamental file system block size.
+	 *
+	 * @return {@code f_frsize} value
 	 */
 	long getFrsize();
 
 	/**
-	 * Sets the fragment size (required on Windows). Should normally be equal to {@link #setBsize(long) bsize}.
+	 * Set {@link #getFrsize()}. Should normally be equal to {@link #setBsize(long) bsize}.
 	 *
-	 * @param frsize Fragment size
+	 * @param frsize {@code f_frsize} value
 	 * @see <a href="https://github.com/billziss-gh/winfsp/blob/73f587e674eda57333b42c7f284574d826a15a8b/src/dll/fuse/fuse_intf.c#L801-L802">WinFSP FS Quota Calculation</a>
 	 */
 	void setFrsize(long frsize);
 
 	/**
-	 * @return Number of total blocks
+	 * Total number of blocks on file system in units of {@link #getFrsize() f_frsize}.
+	 *
+	 * @return {@code f_blocks} value
 	 */
 	long getBlocks();
 
 	/**
-	 * Sets the number of total blocks.
+	 * Set {@link #getBlocks()}.
 	 *
-	 * @param blocks Number of total blocks
+	 * @param blocks {@code f_blocks} value
 	 */
 	void setBlocks(long blocks);
 
 	/**
-	 * @return Number of unallocated blocks
+	 * Total number of free blocks.
+	 *
+	 * @return {@code f_bfree} value
 	 */
 	long getBfree();
 
 	/**
-	 * Sets the number of unallocated blocks.
+	 * Set {@link #getBfree()}.
 	 *
-	 * @param bfree Number of unallocated blocks.
+	 * @param bfree {@code f_bfree} value
 	 */
 	void setBfree(long bfree);
 
 	/**
-	 * @return Number of usable blocks
+	 * Number of free blocks available to non-privileged process.
+	 *
+	 * @return {@code f_bavail} value
 	 */
 	long getBavail();
 
 	/**
-	 * Sets the number of usable blocks.
+	 * Set {@link #getBavail()}.
 	 *
-	 * @param bavail Number of usable blocks
+	 * @param bavail {@code f_bavail} value
 	 */
 	void setBavail(long bavail);
 
 	/**
-	 * @return Maximum filename length
+	 * Maximum filename length.
+	 *
+	 * @return {@code f_namemax} value
 	 */
 	long getNameMax();
 
 	/**
-	 * Sets the maximum filename length.
+	 * Set {@link #getNameMax()}.
 	 *
-	 * @param namemax Maxium filename length
+	 * @param namemax {@code f_namemax} value
 	 */
 	void setNameMax(long namemax);
 

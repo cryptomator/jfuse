@@ -4,8 +4,8 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>org.cryptomator</groupId>
-		<artifactId>jfuse</artifactId>
-		<version>0.3.0-SNAPSHOT</version>
+		<artifactId>jfuse-parent</artifactId>
+		<version>0.8.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-mac</artifactId>
@@ -25,9 +25,21 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>@{surefire.jacoco.args} -javaagent:"${org.mockito:mockito-core:jar}" --enable-native-access=org.cryptomator.jfuse.mac</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<profiles>
 		<profile>
-			<id>jextract</id>
+			<id>jextract-mac</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -41,15 +53,11 @@
 								</goals>
 								<configuration>
 									<rules>
-										<requireOS>
-											<family>mac</family>
-											<message>This build configuration requires macOS.</message>
-										</requireOS>
 										<requireFilesExist>
 											<files>
-												<file>/Applications/Xcode.app</file>
+												<file>${mac.headerSearchPath}</file>
 											</files>
-											<message>XCode not found.</message>
+											<message>macOS headers not found.</message>
 										</requireFilesExist>
 									</rules>
 								</configuration>
@@ -73,12 +81,11 @@
 					<plugin>
 						<groupId>io.github.coffeelibs</groupId>
 						<artifactId>jextract-maven-plugin</artifactId>
-						<version>0.2.0</version>
+						<version>0.4.0</version>
 						<configuration>
-							<executable>${user.home}/.sdkman/candidates/java/19.ea.jextract/bin/jextract</executable>
+							<executable>/Users/sebastian/git/github.com/openjdk/jextract/build/jextract/bin/jextract</executable>
 							<headerSearchPaths>${mac.headerSearchPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
-							<targetPackage>org.cryptomator.jfuse.mac.extr</targetPackage>
 						</configuration>
 						<executions>
 							<execution>
@@ -88,6 +95,7 @@
 								</goals>
 								<configuration>
 									<headerFile>${project.parent.basedir}/libfuse2/include/fuse.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.mac.extr.fuse</targetPackage>
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
@@ -124,21 +132,29 @@
 								</goals>
 								<configuration>
 									<headerFile>${mac.headerSearchPath}/errno.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.mac.extr.errno</targetPackage>
 									<headerClassName>errno_h</headerClassName>
-									<includeMacros>
-										<includeMacro>ENOENT</includeMacro>
-										<includeMacro>ENOSYS</includeMacro>
-										<includeMacro>ENOMEM</includeMacro>
-										<includeMacro>EACCES</includeMacro>
-										<includeMacro>EIO</includeMacro>
-										<includeMacro>EROFS</includeMacro>
-										<includeMacro>EBADF</includeMacro>
-										<includeMacro>EEXIST</includeMacro>
-										<includeMacro>ENOTDIR</includeMacro>
-										<includeMacro>EISDIR</includeMacro>
-										<includeMacro>ENOTEMPTY</includeMacro>
-										<includeMacro>EINVAL</includeMacro>
-									</includeMacros>
+									<includeConstants>
+										<includeConstant>ENOENT</includeConstant>
+										<includeConstant>ENOSYS</includeConstant>
+										<includeConstant>ENOMEM</includeConstant>
+										<includeConstant>EACCES</includeConstant>
+										<includeConstant>EIO</includeConstant>
+										<includeConstant>EROFS</includeConstant>
+										<includeConstant>EBADF</includeConstant>
+										<includeConstant>EEXIST</includeConstant>
+										<includeConstant>ENOTDIR</includeConstant>
+										<includeConstant>EISDIR</includeConstant>
+										<includeConstant>ENOTEMPTY</includeConstant>
+										<includeConstant>ENOTSUP</includeConstant>
+										<includeConstant>EINVAL</includeConstant>
+										<includeConstant>ERANGE</includeConstant>
+										<includeConstant>ENOLCK</includeConstant>
+										<includeConstant>ENAMETOOLONG</includeConstant>
+										<includeConstant>ENODATA</includeConstant>
+										<includeConstant>ENOATTR</includeConstant>
+										<includeConstant>E2BIG</includeConstant>
+									</includeConstants>
 								</configuration>
 							</execution>
 							<execution>
@@ -148,11 +164,12 @@
 								</goals>
 								<configuration>
 									<headerFile>${mac.headerSearchPath}/sys/stat.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.mac.extr.stat</targetPackage>
 									<headerClassName>stat_h</headerClassName>
-									<includeMacros>
-										<includeMacro>UTIME_NOW</includeMacro>
-										<includeMacro>UTIME_OMIT</includeMacro>
-									</includeMacros>
+									<includeConstants>
+										<includeConstant>UTIME_NOW</includeConstant>
+										<includeConstant>UTIME_OMIT</includeConstant>
+									</includeConstants>
 								</configuration>
 							</execution>
 							<execution>
@@ -162,18 +179,19 @@
 								</goals>
 								<configuration>
 									<headerFile>${mac.headerSearchPath}/fcntl.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.mac.extr.fcntl</targetPackage>
 									<headerClassName>fcntl_h</headerClassName>
-									<includeMacros>
-										<includeMacro>O_RDONLY</includeMacro>
-										<includeMacro>O_WRONLY</includeMacro>
-										<includeMacro>O_RDWR</includeMacro>
-										<includeMacro>O_APPEND</includeMacro>
-										<includeMacro>O_CREAT</includeMacro>
-										<includeMacro>O_TRUNC</includeMacro>
-										<includeMacro>O_EXCL</includeMacro>
-										<includeMacro>O_DSYNC</includeMacro>
-										<includeMacro>O_SYNC</includeMacro>
-									</includeMacros>
+									<includeConstants>
+										<includeConstant>O_RDONLY</includeConstant>
+										<includeConstant>O_WRONLY</includeConstant>
+										<includeConstant>O_RDWR</includeConstant>
+										<includeConstant>O_APPEND</includeConstant>
+										<includeConstant>O_CREAT</includeConstant>
+										<includeConstant>O_TRUNC</includeConstant>
+										<includeConstant>O_EXCL</includeConstant>
+										<includeConstant>O_DSYNC</includeConstant>
+										<includeConstant>O_SYNC</includeConstant>
+									</includeConstants>
 								</configuration>
 							</execution>
 						</executions>

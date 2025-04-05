@@ -2,7 +2,7 @@
 
 Assuming you have built the parent project (`mvn package`), you can run these examples directly from the shell.
 
-These examples require JDK 19 or newer. You may want to adjust paths, such as the `java.library.path`.
+These examples require JDK 22 or newer. You may want to adjust paths, such as the `java.library.path`.
 
 ### Running the hello world example:
 
@@ -32,7 +32,7 @@ $JAVA_HOME/bin/java \
 $JAVA_HOME/bin/java \
   -Djava.library.path=/usr/local/lib \
   -p target/classes:target/mods \
-  --enable-native-access=org.cryptomator.jfuse.win.amd64 \
+  --enable-native-access=org.cryptomator.jfuse.win \
   -m org.cryptomator.jfuse.examples/org.cryptomator.jfuse.examples.WindowsMirrorFileSystem \
   C:/path/to/to-be-mirrored/dir M:
 ```

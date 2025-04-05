@@ -1,9 +1,9 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.Errno;
-import org.cryptomator.jfuse.mac.extr.errno_h;
+import org.cryptomator.jfuse.mac.extr.errno.errno_h;
 
-public record MacErrno() implements Errno {
+record MacErrno() implements Errno {
 
 	@Override
 	public int enoent() {
@@ -61,7 +61,42 @@ public record MacErrno() implements Errno {
 	}
 
 	@Override
+	public int enotsup() {
+		return errno_h.ENOTSUP();
+	}
+
+	@Override
 	public int einval() {
 		return errno_h.EINVAL();
+	}
+
+	@Override
+	public int erange() {
+		return errno_h.ERANGE();
+	}
+
+	@Override
+	public int enolck() {
+		return errno_h.ENOLCK();
+	}
+
+	@Override
+	public int enametoolong() {
+		return errno_h.ENAMETOOLONG();
+	}
+
+	@Override
+	public int enodata() {
+		return errno_h.ENODATA();
+	}
+
+	@Override
+	public int enoattr() {
+		return errno_h.ENOATTR();
+	}
+
+	@Override
+	public int e2big() {
+		return errno_h.E2BIG();
 	}
 }

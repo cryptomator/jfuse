@@ -2,4 +2,4 @@
 
 ## Requirements for `jextract`
 
-In order to run `jextract`, you need to install Xcode.
+In order to run `jextract`, you need to install Xcode to get access to the macOS headers.

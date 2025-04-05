@@ -4,6 +4,8 @@ import org.cryptomator.jfuse.api.DirFiller;
 import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.FileModes;
+import org.cryptomator.jfuse.api.FuseConfig;
+import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.Statvfs;
@@ -36,6 +38,7 @@ import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,7 +76,13 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 				FuseOperations.Operation.ACCESS,
 				FuseOperations.Operation.CREATE,
 				FuseOperations.Operation.DESTROY,
+				FuseOperations.Operation.FLUSH,
+				FuseOperations.Operation.FSYNC,
+				FuseOperations.Operation.FSYNCDIR,
 				FuseOperations.Operation.GET_ATTR,
+				FuseOperations.Operation.GET_XATTR,
+				FuseOperations.Operation.INIT,
+				FuseOperations.Operation.LIST_XATTR,
 				FuseOperations.Operation.MKDIR,
 				FuseOperations.Operation.OPEN_DIR,
 				FuseOperations.Operation.READ_DIR,
@@ -84,6 +93,8 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 				FuseOperations.Operation.READ,
 				FuseOperations.Operation.READLINK,
 				FuseOperations.Operation.RELEASE,
+				FuseOperations.Operation.REMOVE_XATTR,
+				FuseOperations.Operation.SET_XATTR,
 				FuseOperations.Operation.STATFS,
 				FuseOperations.Operation.SYMLINK,
 				FuseOperations.Operation.TRUNCATE,
@@ -96,6 +107,13 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 	@Override
 	public Errno errno() {
 		return errno;
+	}
+
+	@Override
+	public void init(FuseConnInfo conn, FuseConfig cfg) {
+		conn.setWant(conn.want() | (conn.capable() & FuseConnInfo.FUSE_CAP_BIG_WRITES));
+		conn.setMaxBackground(16);
+		conn.setCongestionThreshold(4);
 	}
 
 	@Override
@@ -181,6 +199,96 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		}
 	}
 
+	@Override
+	public int getxattr(String path, String name, ByteBuffer value) {
+		LOG.trace("getxattr {} {}", path, name);
+		Path node = resolvePath(path);
+		try {
+			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
+			int size = xattr.size(name);
+			if (value.capacity() == 0) {
+				return size;
+			} else if (value.remaining() < size) {
+				return -errno.erange();
+			} else {
+				return xattr.read(name, value);
+			}
+		} catch (NoSuchFileException e) {
+			return -errno.enoent();
+		} catch (IOException e) {
+			return -errno.eio();
+		}
+	}
+
+	@Override
+	public int setxattr(String path, String name, ByteBuffer value, int flags) {
+		LOG.trace("setxattr {} {}", path, name);
+		Path node = resolvePath(path);
+		try {
+			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
+			xattr.write(name, value);
+			return 0;
+		} catch (NoSuchFileException e) {
+			return -errno.enoent();
+		} catch (IOException e) {
+			return -errno.eio();
+		}
+	}
+
+	@Override
+	public int listxattr(String path, ByteBuffer list) {
+		LOG.trace("listxattr {}", path);
+		Path node = resolvePath(path);
+		try {
+			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
+			var names = xattr.list();
+			if (list.capacity() == 0) {
+				var contentBytes = xattr.list().stream().map(StandardCharsets.UTF_8::encode).mapToInt(ByteBuffer::remaining).sum();
+				var nulBytes = names.size();
+				return contentBytes + nulBytes; // attr1\0aattr2\0attr3\0
+			} else {
+				int startpos = list.position();
+				for (var name : names) {
+					list.put(StandardCharsets.UTF_8.encode(name)).put((byte) 0x00);
+				}
+				return list.position() - startpos;
+			}
+		} catch (BufferOverflowException e) {
+			return -errno.erange();
+		} catch (NoSuchFileException e) {
+			return -errno.enoent();
+		} catch (IOException e) {
+			return -errno.eio();
+		}
+	}
+
+	@Override
+	public int removexattr(String path, String name) {
+		LOG.trace("removexattr {} {}", path, name);
+		Path node = resolvePath(path);
+		try {
+			var xattr = Files.getFileAttributeView(node, UserDefinedFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+			if (xattr == null) {
+				return -errno.enotsup();
+			}
+			xattr.delete(name);
+			return 0;
+		} catch (NoSuchFileException e) {
+			return -errno.enoent();
+		} catch (IOException e) {
+			return -errno.eio();
+		}
+	}
+
 	@SuppressWarnings("OctalInteger")
 	protected void copyAttrsToStat(BasicFileAttributes attrs, Stat stat) {
 		if (attrs instanceof PosixFileAttributes posixAttrs) {
@@ -194,12 +302,12 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		stat.setSize(attrs.size());
 		stat.setNLink((short) 1);
 		if (attrs.isDirectory()) {
-			stat.toggleDir(true);
+			stat.setModeBits(Stat.S_IFDIR);
 			stat.setNLink((short) 2); // quick and dirty implementation. should really be 2 + subdir count
 		} else if (attrs.isSymbolicLink()) {
-			stat.toggleLnk(true);
-		} else if (attrs.isRegularFile()){
-			stat.toggleReg(true);
+			stat.setModeBits(Stat.S_IFLNK);
+		} else if (attrs.isRegularFile()) {
+			stat.setModeBits(Stat.S_IFREG);
 		}
 		stat.aTime().set(attrs.lastAccessTime().toInstant());
 		stat.mTime().set(attrs.lastModifiedTime().toInstant());
@@ -338,10 +446,17 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 			return -errno.ebadf();
 		}
 		try {
-			var dst = buf.duplicate();
-			dst.limit((int) Math.min(dst.position() + size, dst.limit())); // restrict to `size` bytes!
-			int read = fc.read(dst, offset);
-			return read == -1 ? 0 : read; // there is no "-1" in fuse
+			int read = 0;
+			int toRead = (int) Math.min(size, buf.limit());
+			while (read < toRead) {
+				int r = fc.read(buf, offset + read);
+				if (r == -1) {
+					LOG.trace("Reached EOF");
+					break;
+				}
+				read += r;
+			}
+			return read;
 		} catch (IOException e) {
 			return -errno.eio();
 		}
@@ -355,7 +470,12 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 			return -errno.ebadf();
 		}
 		try {
-			return fc.write(buf, offset);
+			int written = 0;
+			int toWrite = (int) Math.min(size, buf.limit());
+			while (written < toWrite) {
+				written += fc.write(buf, offset + written);
+			}
+			return written;
 		} catch (IOException e) {
 			return -errno.eio();
 		}
@@ -434,4 +554,40 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		});
 	}
 
+	@Override
+	public int flush(String path, FileInfo fi) {
+		LOG.trace("flush {}", path);
+		var fc = openFiles.get(fi.getFh());
+		if (fc == null) {
+			return -errno.ebadf();
+		}
+		try {
+			fc.force(false);
+			return 0;
+		} catch (IOException e) {
+			return -errno.eio();
+		}
+	}
+
+	@Override
+	public int fsync(String path, int datasync, FileInfo fi) {
+		LOG.trace("fsync {}", path);
+		var fc = openFiles.get(fi.getFh());
+		if (fc == null) {
+			return -errno.ebadf();
+		}
+		try {
+			fc.force(datasync == 0);
+			return 0;
+		} catch (IOException e) {
+			return -errno.eio();
+		}
+	}
+
+	@Override
+	public int fsyncdir(String path, int datasync, FileInfo fi) {
+		LOG.trace("fsyncdir {}", path);
+		// no-op: this quick and dirty impl doesn't open/close dirs
+		return 0;
+	}
 }

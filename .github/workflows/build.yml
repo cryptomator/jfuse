@@ -1,18 +1,26 @@
 name: Build
 on:
-  [push]
+  push:
+  pull_request_target:
+    types: [labeled]
 
 jobs:
 
-  linux-amd64:
-    name: Test jfuse-linux-amd64
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
+  linux:
+    name: Test jfuse-linux packages
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            arch: x86_64
+          - os: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
-          java-version: 19
+          java-version: 22
           distribution: 'zulu'
           cache: 'maven'
       - name: Setup fuse
@@ -20,95 +28,101 @@ jobs:
           sudo apt-get update
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
-        run: mvn -B verify -Plinux-amd64
-      - uses: actions/upload-artifact@v2
+        run: mvn -B verify -Dfuse.lib.path="/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so.3" --no-transfer-progress
+      - uses: actions/upload-artifact@v4
         with:
-          name: coverage-linux-amd64
+          name: coverage-linux-${{ matrix.arch }}
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
           retention-days: 3
 
   mac:
     name: Test jfuse-mac
-    runs-on: macos-10.15
-    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
-          java-version: 19-ea
+          java-version: 22
           distribution: 'zulu'
           cache: 'maven'
       - name: Setup fuse
-        run: brew install macfuse
+        run: |
+          brew tap macos-fuse-t/homebrew-cask
+          brew update
+          brew install fuse-t
       - name: Maven build
-        run: mvn -B verify -Pmac
-      - uses: actions/upload-artifact@v2
+        run: mvn -B verify -Dfuse.lib.path="/usr/local/lib/libfuse-t.dylib" --no-transfer-progress
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage-mac
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
           retention-days: 3
 
-  win-amd64:
-    name: Test jfuse-win-amd64
+  win:
+    name: Test jfuse-win
     runs-on: windows-latest
-    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
-          java-version: 19-ea
+          java-version: 22
           distribution: 'zulu'
           cache: 'maven'
       - name: Setup fuse
-        run: choco install winfsp --version 1.10.22006 -y
+        run: choco install winfsp --version 2.0.23075 -y
       - name: Maven build
-        run: mvn -B verify -Pwin-amd64
-      - uses: actions/upload-artifact@v2
+        shell: bash # surprise, running maven in pwsh is crappy, see https://stackoverflow.com/q/6347985/4014509
+        run: mvn -B verify -Dfuse.lib.path="C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll" --no-transfer-progress
+      - uses: actions/upload-artifact@v4
         with:
-          name: coverage-win-amd64
+          name: coverage-win
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
           retention-days: 3
 
   sonarcloud:
     name: Run SonarCloud Analysis
-    needs: [linux-amd64, mac, win-amd64]
+    needs: [linux, mac, win]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
            fetch-depth: 0
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v4
         with:
-          java-version: 19-ea
+          java-version: 22
           distribution: 'zulu'
           cache: 'maven'
       - name: Cache SonarCloud packages
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
-          name: coverage-linux-amd64
-          path: coverage/linux-amd64
-      - uses: actions/download-artifact@v2
+          name: coverage-linux-x86_64
+          path: coverage/linux-x86_64
+      - uses: actions/download-artifact@v4
+        with:
+          name: coverage-linux-aarch64
+          path: coverage/linux-aarch64
+      - uses: actions/download-artifact@v4
         with:
           name: coverage-mac
           path: coverage/mac
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
-          name: coverage-win-amd64
-          path: coverage/win-amd64
+          name: coverage-win
+          path: coverage/win
       - name: Analyze
         run: >
           mvn -B compile -DskipTests
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-          -Plinux-amd64,linux-aarch64,mac,win-amd64
           -Dsonar.projectKey=cryptomator_jfuse
           -Dsonar.coverage.jacoco.xmlReportPaths=${GITHUB_WORKSPACE}/coverage/**/jacoco.xml
           -Dsonar.organization=cryptomator
           -Dsonar.host.url=https://sonarcloud.io
+          --no-transfer-progress
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -119,7 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v1 #REMARK: action/create-release is unmaintend
         env:
           GITHUB_TOKEN: ${{ secrets.CRYPTOBOT_RELEASE_TOKEN }} # release as "cryptobot"
         with:

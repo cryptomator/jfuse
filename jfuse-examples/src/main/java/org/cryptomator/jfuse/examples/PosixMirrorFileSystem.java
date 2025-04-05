@@ -4,7 +4,7 @@ import org.cryptomator.jfuse.api.Errno;
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.api.FileModes;
 import org.cryptomator.jfuse.api.Fuse;
-import org.cryptomator.jfuse.api.MountFailedException;
+import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,13 +31,17 @@ public final class PosixMirrorFileSystem extends AbstractMirrorFileSystem {
 		Path mirrored = Path.of(args[0]);
 		Path mountPoint = Path.of(args[1]);
 		var builder = Fuse.builder();
+		var libPath = System.getProperty("fuse.lib.path");
+		if (libPath != null && !libPath.isEmpty()) {
+			builder.setLibraryPath(libPath);
+		}
 		try (var fuse = builder.build(new PosixMirrorFileSystem(mirrored, builder.errno()))) {
 			LOG.info("Mounting at {}...", mountPoint);
 			fuse.mount("jfuse", mountPoint, "-s");
 			LOG.info("Mounted to {}.", mountPoint);
 			LOG.info("Enter a anything to unmount...");
 			System.in.read();
-		} catch (MountFailedException | TimeoutException e) {
+		} catch (FuseMountFailedException | TimeoutException e) {
 			LOG.error("Un/Mounting failed. ", e);
 			System.exit(1);
 		} catch (IOException e) {

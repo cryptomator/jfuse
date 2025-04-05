@@ -16,10 +16,16 @@ public interface FuseOperations {
 	enum Operation {
 		ACCESS,
 		CHMOD,
+		CHOWN,
 		CREATE,
 		DESTROY,
+		FLUSH,
+		FSYNC,
+		FSYNCDIR,
 		GET_ATTR,
+		GET_XATTR,
 		INIT,
+		LIST_XATTR,
 		MKDIR,
 		OPEN,
 		OPEN_DIR,
@@ -28,8 +34,10 @@ public interface FuseOperations {
 		READ_DIR,
 		RELEASE,
 		RELEASE_DIR,
+		REMOVE_XATTR,
 		RENAME,
 		RMDIR,
+		SET_XATTR,
 		STATFS,
 		SYMLINK,
 		TRUNCATE,
@@ -49,12 +57,16 @@ public interface FuseOperations {
 	int FUSE_READDIR_PLUS = 1 << 0;
 
 	/**
+	 * The error constants used by this file system.
+	 *
 	 * @return The error codes from <code>errno.h</code> for the current platform.
 	 * @see FuseBuilder#errno()
 	 */
 	Errno errno();
 
 	/**
+	 * The supported file system operations.
+	 *
 	 * @return The set of supported operations.
 	 */
 	Set<Operation> supportedOperations();
@@ -396,12 +408,11 @@ public interface FuseOperations {
 	 * @param path  file path
 	 * @param name  attribute name
 	 * @param value attribute value
-	 * @param size  number of bytes of the value TODO: can this be combined with the value buffer?
 	 * @param flags defaults to zero, which creates <em>or</em> replaces the attribute. For fine-grained atomic control,
 	 *              <code>XATTR_CREATE</code> or <code>XATTR_REPLACE</code> may be used.
 	 * @return 0 on success or negated error code (-errno)
 	 */
-	default int setxattr(String path, String name, ByteBuffer value, long size, int flags) {
+	default int setxattr(String path, String name, ByteBuffer value, int flags) {
 		return -errno().enosys();
 	}
 
@@ -410,11 +421,10 @@ public interface FuseOperations {
 	 *
 	 * @param path  file path
 	 * @param name  attribute name
-	 * @param value attribute value
-	 * @param size  size of the value buffer TODO: can this be combined with the value buffer?
+	 * @param value attribute value. If buffer capacity is zero, return the size of the value
 	 * @return the non-negative value size or negated error code (-errno)
 	 */
-	default int getxattr(String path, String name, ByteBuffer value, long size) {
+	default int getxattr(String path, String name, ByteBuffer value) {
 		return -errno().enosys();
 	}
 
@@ -422,11 +432,10 @@ public interface FuseOperations {
 	 * List extended attributes
 	 *
 	 * @param path file path
-	 * @param list consecutive list of null-terminated attribute names (as many as fit into the buffer)
-	 * @param size size of the list buffer TODO: can this be combined with the value buffer?
-	 * @return the non-negative list size or negated error code (-errno)
+	 * @param list consecutive list of null-terminated attribute names (as many as fit into the buffer). If buffer capacity is zero, return the size of the list
+	 * @return the non-negative number of bytes written to the list buffer or negated error code (-errno)
 	 */
-	default int listxattr(String path, ByteBuffer list, long size) {
+	default int listxattr(String path, ByteBuffer list) {
 		return -errno().enosys();
 	}
 
@@ -518,9 +527,10 @@ public interface FuseOperations {
 	/**
 	 * Initialize filesystem
 	 *
-	 * @param conn FUSE information
+	 * @param conn FUSE connection information
+	 * @param cfg FUSE configuration object
 	 */
-	default void init(FuseConnInfo conn) { // TODO: add @Nullable FuseConfig for libfuse3
+	default void init(FuseConnInfo conn, @Nullable FuseConfig cfg) {
 		// no-op
 	}
 

@@ -1,9 +1,9 @@
 package org.cryptomator.jfuse.linux.amd64;
 
 import org.cryptomator.jfuse.api.Errno;
-import org.cryptomator.jfuse.linux.amd64.extr.errno_h;
+import org.cryptomator.jfuse.linux.amd64.extr.errno.errno_h;
 
-public record LinuxErrno() implements Errno {
+record LinuxErrno() implements Errno {
 
 	@Override
 	public int enoent() {
@@ -61,7 +61,48 @@ public record LinuxErrno() implements Errno {
 	}
 
 	@Override
+	public int enotsup() {
+		return errno_h.ENOTSUP();
+	}
+
+	@Override
 	public int einval() {
 		return errno_h.EINVAL();
+	}
+
+	@Override
+	public int erange() {
+		return errno_h.ERANGE();
+	}
+
+	@Override
+	public int enolck() {
+		return errno_h.ENOLCK();
+	}
+
+	@Override
+	public int enametoolong() {
+		return errno_h.ENAMETOOLONG();
+	}
+
+	@Override
+	public int enodata() {
+		return errno_h.ENODATA();
+	}
+
+	/**
+	 * Alias for {@link #enodata()}
+	 * @return error constant ENODATA
+	 * @deprecated Use {@link #enodata()} instead
+	 */
+	@Override
+	@Deprecated
+	public int enoattr() {
+		return enodata();
+	}
+
+	@Override
+	public int e2big() {
+		return errno_h.E2BIG();
 	}
 }

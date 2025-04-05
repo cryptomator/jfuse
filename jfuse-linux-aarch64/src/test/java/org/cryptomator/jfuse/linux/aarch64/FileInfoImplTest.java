@@ -1,14 +1,14 @@
 package org.cryptomator.jfuse.linux.aarch64;
 
-import org.cryptomator.jfuse.linux.aarch64.extr.fcntl_h;
-import org.cryptomator.jfuse.linux.aarch64.extr.fuse_file_info;
+import org.cryptomator.jfuse.linux.aarch64.extr.fcntl.fcntl_h;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_file_info;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 import java.util.Set;
@@ -20,9 +20,9 @@ public class FileInfoImplTest {
 	@MethodSource("testGetOpenFlagParams")
 	@DisplayName("test getOpenFlags()")
 	public void testGetOpenFlags(int flags, Set<OpenOption> expectedResult) {
-		try (var scope = MemorySession.openConfined()) {
-			var fi = new FileInfoImpl(fuse_file_info.allocate(scope));
-			fuse_file_info.flags$set(fi.segment(), flags);
+		try (var arena = Arena.ofConfined()) {
+			var fi = new FileInfoImpl(fuse_file_info.allocate(arena));
+			fuse_file_info.flags(fi.segment(), flags);
 
 			var result = fi.getOpenFlags();
 

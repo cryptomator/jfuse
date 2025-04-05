@@ -4,8 +4,8 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>org.cryptomator</groupId>
-		<artifactId>jfuse</artifactId>
-		<version>0.3.0-SNAPSHOT</version>
+		<artifactId>jfuse-parent</artifactId>
+		<version>0.8.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-linux-amd64</artifactId>
@@ -25,9 +25,21 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>@{surefire.jacoco.args} -javaagent:"${org.mockito:mockito-core:jar}" --enable-native-access=org.cryptomator.jfuse.linux.amd64</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<profiles>
 		<profile>
-			<id>jextract</id>
+			<id>jextract-linux-amd64</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -41,10 +53,6 @@
 								</goals>
 								<configuration>
 									<rules>
-										<requireOS>
-											<family>unix</family>
-											<message>This build configuration requires Linux.</message>
-										</requireOS>
 										<requireFilesExist>
 											<files>
 												<file>${linux.headerSearchPath}</file>
@@ -73,12 +81,11 @@
 					<plugin>
 						<groupId>io.github.coffeelibs</groupId>
 						<artifactId>jextract-maven-plugin</artifactId>
-						<version>0.2.0</version>
+						<version>0.4.0</version>
 						<configuration>
-							<executable>${user.home}/.sdkman/candidates/java/19.ea.jextract/bin/jextract</executable>
+							<executable>/Users/sebastian/.sdkman/candidates/jextract/current/bin/jextract</executable>
 							<headerSearchPaths>${linux.headerSearchPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
-							<targetPackage>org.cryptomator.jfuse.linux.amd64.extr</targetPackage>
 						</configuration>
 						<executions>
 							<execution>
@@ -89,16 +96,23 @@
 								<configuration>
 									<headerFile>${project.parent.basedir}/libfuse3/include/fuse.h</headerFile>
 									<headerClassName>fuse_h</headerClassName>
+									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.fuse3</targetPackage>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=317</cPreprocessorMacro>
+										<cPreprocessorMacro>__x86_64__=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__LP64__=1</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
+										<includeFunction>fuse_version</includeFunction>
 										<includeFunction>fuse_lib_help</includeFunction>
-										<includeFunction>fuse_new</includeFunction>
 										<includeFunction>fuse_mount</includeFunction>
 										<includeFunction>fuse_get_session</includeFunction>
 										<includeFunction>fuse_loop</includeFunction>
+										<includeFunction>fuse_loop_cfg_create</includeFunction>
+										<includeFunction>fuse_loop_cfg_set_clone_fd</includeFunction>
+										<includeFunction>fuse_loop_cfg_set_max_threads</includeFunction>
+										<includeFunction>fuse_loop_cfg_destroy</includeFunction>
 										<includeFunction>fuse_loop_mt</includeFunction>
 										<includeFunction>fuse_exit</includeFunction>
 										<includeFunction>fuse_unmount</includeFunction>
@@ -114,8 +128,9 @@
 										<includeStruct>statvfs</includeStruct>
 										<includeStruct>timespec</includeStruct>
 										<includeStruct>fuse_conn_info</includeStruct>
+										<includeStruct>fuse_config</includeStruct>
 										<includeStruct>fuse_args</includeStruct>
-										<includeStruct>fuse_loop_config</includeStruct>
+										<includeStruct>fuse_loop_config_v1</includeStruct>
 									</includeStructs>
 								</configuration>
 							</execution>
@@ -126,15 +141,14 @@
 								</goals>
 								<configuration>
 									<headerFile>${project.parent.basedir}/libfuse3/include/fuse_lowlevel.h</headerFile>
-									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.ll</targetPackage>
+									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.fuse3_lowlevel</targetPackage>
 									<headerClassName>fuse_lowlevel_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=35</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=317</cPreprocessorMacro>
+										<cPreprocessorMacro>__x86_64__=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__LP64__=1</cPreprocessorMacro>
 									</cPreprocessorMacros>
-									<includeFunctions>
-										<includeFunction>fuse_parse_cmdline</includeFunction>
-									</includeFunctions>
 									<includeStructs>
 										<includeStruct>fuse_cmdline_opts</includeStruct>
 									</includeStructs>
@@ -147,21 +161,32 @@
 								</goals>
 								<configuration>
 									<headerFile>${linux.headerSearchPath}/errno.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.errno</targetPackage>
 									<headerClassName>errno_h</headerClassName>
-									<includeMacros>
-										<includeMacro>ENOENT</includeMacro>
-										<includeMacro>ENOSYS</includeMacro>
-										<includeMacro>ENOMEM</includeMacro>
-										<includeMacro>EACCES</includeMacro>
-										<includeMacro>EIO</includeMacro>
-										<includeMacro>EROFS</includeMacro>
-										<includeMacro>EBADF</includeMacro>
-										<includeMacro>EEXIST</includeMacro>
-										<includeMacro>ENOTDIR</includeMacro>
-										<includeMacro>EISDIR</includeMacro>
-										<includeMacro>ENOTEMPTY</includeMacro>
-										<includeMacro>EINVAL</includeMacro>
-									</includeMacros>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>__x86_64__=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__LP64__=1</cPreprocessorMacro>
+									</cPreprocessorMacros>
+									<includeConstants>
+										<includeConstant>ENOENT</includeConstant>
+										<includeConstant>ENOSYS</includeConstant>
+										<includeConstant>ENOMEM</includeConstant>
+										<includeConstant>EACCES</includeConstant>
+										<includeConstant>EIO</includeConstant>
+										<includeConstant>EROFS</includeConstant>
+										<includeConstant>EBADF</includeConstant>
+										<includeConstant>EEXIST</includeConstant>
+										<includeConstant>ENOTDIR</includeConstant>
+										<includeConstant>EISDIR</includeConstant>
+										<includeConstant>ENOTEMPTY</includeConstant>
+										<includeConstant>ENOTSUP</includeConstant>
+										<includeConstant>EINVAL</includeConstant>
+										<includeConstant>ERANGE</includeConstant>
+										<includeConstant>ENOLCK</includeConstant>
+										<includeConstant>ENAMETOOLONG</includeConstant>
+										<includeConstant>ENODATA</includeConstant>
+										<includeConstant>E2BIG</includeConstant>
+									</includeConstants>
 								</configuration>
 							</execution>
 							<execution>
@@ -171,11 +196,16 @@
 								</goals>
 								<configuration>
 									<headerFile>${linux.headerSearchPath}/sys/stat.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.stat</targetPackage>
 									<headerClassName>stat_h</headerClassName>
-									<includeMacros>
-										<includeMacro>UTIME_NOW</includeMacro>
-										<includeMacro>UTIME_OMIT</includeMacro>
-									</includeMacros>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>__x86_64__=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__LP64__=1</cPreprocessorMacro>
+									</cPreprocessorMacros>
+									<includeConstants>
+										<includeConstant>UTIME_NOW</includeConstant>
+										<includeConstant>UTIME_OMIT</includeConstant>
+									</includeConstants>
 								</configuration>
 							</execution>
 							<execution>
@@ -185,18 +215,23 @@
 								</goals>
 								<configuration>
 									<headerFile>${linux.headerSearchPath}/fcntl.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.fcntl</targetPackage>
 									<headerClassName>fcntl_h</headerClassName>
-									<includeMacros>
-										<includeMacro>O_RDONLY</includeMacro>
-										<includeMacro>O_WRONLY</includeMacro>
-										<includeMacro>O_RDWR</includeMacro>
-										<includeMacro>O_APPEND</includeMacro>
-										<includeMacro>O_CREAT</includeMacro>
-										<includeMacro>O_TRUNC</includeMacro>
-										<includeMacro>O_EXCL</includeMacro>
-										<includeMacro>O_DSYNC</includeMacro>
-										<includeMacro>O_SYNC</includeMacro>
-									</includeMacros>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>__x86_64__=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__LP64__=1</cPreprocessorMacro>
+									</cPreprocessorMacros>
+									<includeConstants>
+										<includeConstant>O_RDONLY</includeConstant>
+										<includeConstant>O_WRONLY</includeConstant>
+										<includeConstant>O_RDWR</includeConstant>
+										<includeConstant>O_APPEND</includeConstant>
+										<includeConstant>O_CREAT</includeConstant>
+										<includeConstant>O_TRUNC</includeConstant>
+										<includeConstant>O_EXCL</includeConstant>
+										<includeConstant>O_DSYNC</includeConstant>
+										<includeConstant>O_SYNC</includeConstant>
+									</includeConstants>
 								</configuration>
 							</execution>
 							<execution>
@@ -206,16 +241,19 @@
 								</goals>
 								<configuration>
 									<headerFile>${linux.headerSearchPath}/stdio.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.stdio</targetPackage>
 									<headerClassName>stdio_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_GNU_SOURCE=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__x86_64__=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__LP64__=1</cPreprocessorMacro>
 									</cPreprocessorMacros>
-									<includeMacros>
+									<includeConstants>
 										<!-- GNU-specific flags for rename: -->
-										<includeMacro>RENAME_NOREPLACE</includeMacro>
-										<includeMacro>RENAME_EXCHANGE</includeMacro>
-										<includeMacro>RENAME_WHITEOUT</includeMacro>
-									</includeMacros>
+										<includeConstant>RENAME_NOREPLACE</includeConstant>
+										<includeConstant>RENAME_EXCHANGE</includeConstant>
+										<includeConstant>RENAME_WHITEOUT</includeConstant>
+									</includeConstants>
 								</configuration>
 							</execution>
 						</executions>
@@ -224,5 +262,4 @@
 			</build>
 		</profile>
 	</profiles>
-
 </project>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.cryptomator</groupId>
+		<artifactId>jfuse-parent</artifactId>
+		<version>0.8.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>jfuse</artifactId>
+	<name>jFUSE Implementations</name>
+	<description>Aggregator project that contains the public API and all common implementations of jFUSE.</description>
+	<url>https://github.com/cryptomator/jfuse/tree/develop/jfuse</url>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.cryptomator</groupId>
+			<artifactId>jfuse-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cryptomator</groupId>
+			<artifactId>jfuse-linux-aarch64</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cryptomator</groupId>
+			<artifactId>jfuse-linux-amd64</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cryptomator</groupId>
+			<artifactId>jfuse-mac</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cryptomator</groupId>
+			<artifactId>jfuse-win</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<!-- we need to explicitly specify the module, otherwise javadoc fails because there are no classes to document -->
+					<!-- see https://bugs.openjdk.org/browse/JDK-8193107, see https://issues.apache.org/jira/browse/MJAVADOC-274 -->
+					<additionalOptions>
+						<option>--module org.cryptomator.jfuse</option>
+						<option>--expand-requires transitive</option>
+					</additionalOptions>
+					<includeDependencySources>true</includeDependencySources>
+					<dependencySourceIncludes>
+						<dependencySourceInclude>org.cryptomator:*</dependencySourceInclude>
+					</dependencySourceIncludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

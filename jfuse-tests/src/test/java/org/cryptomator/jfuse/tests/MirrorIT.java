@@ -1,7 +1,8 @@
 package org.cryptomator.jfuse.tests;
 
 import org.cryptomator.jfuse.api.Fuse;
-import org.cryptomator.jfuse.api.MountFailedException;
+import org.cryptomator.jfuse.api.FuseBuilder;
+import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.examples.AbstractMirrorFileSystem;
 import org.cryptomator.jfuse.examples.PosixMirrorFileSystem;
 import org.cryptomator.jfuse.examples.WindowsMirrorFileSystem;
@@ -16,22 +17,29 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+@EnabledIf("hasSupportedImplementation")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MirrorIT {
 
@@ -39,27 +47,44 @@ public class MirrorIT {
 		System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "TRACE");
 	}
 
+	// skip integration tests, if no implementation is available
+	static boolean hasSupportedImplementation() {
+		try {
+			FuseBuilder.getSupported();
+			return true;
+		} catch (UnsupportedOperationException e) {
+			return false;
+		}
+	}
+
 	private Path orig;
 	private Path mirror;
 	private Fuse fuse;
 
 	@BeforeAll
-	public void setup(@TempDir Path tmpDir) throws IOException, InterruptedException, MountFailedException {
+	public void setup(@TempDir Path tmpDir) throws IOException, FuseMountFailedException {
 		var builder = Fuse.builder();
-		orig = tmpDir.resolve("orig");
-		Files.createDirectories(orig);
-		AbstractMirrorFileSystem fs;
+		var libPath = System.getProperty("fuse.lib.path");
+		if (libPath != null && !libPath.isEmpty()) {
+			builder.setLibraryPath(libPath);
+		}
 		List<String> flags = new ArrayList<>();
 		//flags.add("-s");
 		mirror = tmpDir.resolve("mirror");
-		if (OS.WINDOWS.isCurrentOs()) {
-			flags.add("-ouid=-1");
-			flags.add("-ogid=-1");
-			fs = new WindowsMirrorFileSystem(orig, builder.errno());
-		} else {
-			Files.createDirectories(mirror);
-			fs = new PosixMirrorFileSystem(orig, builder.errno());
-		}
+		orig = tmpDir.resolve("orig");
+		Files.createDirectories(orig);
+		AbstractMirrorFileSystem fs = switch (OS.current()) {
+			case WINDOWS -> {
+				flags.add("-ouid=-1");
+				flags.add("-ogid=-1");
+				yield new WindowsMirrorFileSystem(orig, builder.errno());
+			}
+			case MAC, LINUX -> {
+				Files.createDirectories(mirror);
+				yield new PosixMirrorFileSystem(orig, builder.errno());
+			}
+			default -> throw new FuseMountFailedException("Unsupported OS");
+		};
 		fuse = builder.build(fs);
 		fuse.mount("mirror-it", mirror, flags.toArray(String[]::new));
 	}
@@ -67,18 +92,22 @@ public class MirrorIT {
 	@AfterAll
 	public void teardown() throws IOException, InterruptedException {
 		// attempt graceful unmount before closing
-		if (OS.MAC.isCurrentOs()) {
-			ProcessBuilder command = new ProcessBuilder("umount", "--", mirror.getFileName().toString());
-			command.directory(mirror.getParent().toFile());
-			Process p = command.start();
-			p.waitFor(10, TimeUnit.SECONDS);
-		} else if (OS.LINUX.isCurrentOs()) {
-			ProcessBuilder command = new ProcessBuilder("fusermount", "-u", "--", mirror.getFileName().toString());
-			command.directory(mirror.getParent().toFile());
-			Process p = command.start();
-			p.waitFor(10, TimeUnit.SECONDS);
-		} else if (OS.WINDOWS.isCurrentOs()) {
-			// there is no graceful unmount, see https://github.com/winfsp/winfsp/issues/121
+		switch (OS.current()) {
+			case MAC -> {
+				ProcessBuilder command = new ProcessBuilder("umount", "--", mirror.getFileName().toString());
+				command.directory(mirror.getParent().toFile());
+				Process p = command.start();
+				p.waitFor(10, TimeUnit.SECONDS);
+			}
+			case LINUX -> {
+				ProcessBuilder command = new ProcessBuilder("fusermount", "-u", "--", mirror.getFileName().toString());
+				command.directory(mirror.getParent().toFile());
+				Process p = command.start();
+				p.waitFor(10, TimeUnit.SECONDS);
+			}
+			case WINDOWS -> {
+				// there is no graceful unmount, see https://github.com/winfsp/winfsp/issues/121
+			}
 		}
 		if (fuse != null) {
 			Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), fuse::close, "file system still active");
@@ -176,4 +205,72 @@ public class MirrorIT {
 	}
 
 
+	@Nested
+	@DisabledOnOs(OS.WINDOWS) // see remark on https://github.com/cryptomator/jfuse/pull/26
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+	@DisplayName("Extended Attributes")
+	public class TestXattr {
+
+		private Path file;
+
+		@BeforeAll
+		public void setup() throws IOException {
+			file = mirror.resolve("xattr.txt");
+			Files.createFile(file);
+		}
+
+		@Order(1)
+		@DisplayName("setxattr /xattr.txt")
+		@ParameterizedTest(name = "{0}")
+		@ValueSource(strings = {"attr1", "attr2", "attr3", "attr4", "attr5"})
+		public void testSetxattr(String attrName) {
+			var attrView = Files.getFileAttributeView(file, UserDefinedFileAttributeView.class);
+			var attrValue = StandardCharsets.UTF_8.encode(attrName);
+
+			Assertions.assertDoesNotThrow(() -> attrView.write(attrName, attrValue));
+		}
+
+		@Order(2)
+		@Test
+		@DisplayName("removexattr /xattr.txt")
+
+		public void testRemovexattr() {
+			var attrView = Files.getFileAttributeView(file, UserDefinedFileAttributeView.class);
+
+			Assertions.assertDoesNotThrow(() -> attrView.delete("attr3"));
+		}
+
+		@Order(3)
+		@Test
+		@DisplayName("listxattr /xattr.txt")
+		public void testListxattr() throws IOException {
+			var attrView = Files.getFileAttributeView(file, UserDefinedFileAttributeView.class);
+			var result = attrView.list();
+
+			Assertions.assertAll(
+					() -> Assertions.assertTrue(result.contains("attr1")),
+					() -> Assertions.assertTrue(result.contains("attr2")),
+					() -> Assertions.assertFalse(result.contains("attr3")),
+					() -> Assertions.assertTrue(result.contains("attr4")),
+					() -> Assertions.assertTrue(result.contains("attr5"))
+			);
+		}
+
+		@Order(4)
+		@DisplayName("getxattr")
+		@ParameterizedTest(name = "{0}")
+		@ValueSource(strings = {/* "attr1", BUG in fuse-t */ "attr2", "attr4", "attr5"})
+		public void testGetxattr(String attrName) throws IOException {
+			var attrView = Files.getFileAttributeView(file, UserDefinedFileAttributeView.class);
+			var buffer = ByteBuffer.allocate(attrView.size(attrName));
+			var read = attrView.read(attrName, buffer);
+			buffer.flip();
+			var value = StandardCharsets.UTF_8.decode(buffer).toString();
+
+			Assertions.assertEquals(attrName.length(), read);
+			Assertions.assertEquals(attrName, value);
+		}
+
+	}
 }
