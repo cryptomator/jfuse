@@ -88,7 +88,6 @@ public class FuseSymbolLookup implements SymbolLookup {
 				return Optional.of(addr);
 			}
 		} catch (Throwable e) {
-			e.printStackTrace();
 			return Optional.empty();
 		}
 	}
