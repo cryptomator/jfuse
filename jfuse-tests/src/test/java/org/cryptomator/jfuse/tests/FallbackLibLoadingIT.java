@@ -42,6 +42,8 @@ public class FallbackLibLoadingIT {
 		var fs = new RandomFileSystem(builder.errno());
 		var fuse = Assertions.assertDoesNotThrow(() -> builder.build(fs));
 		fuse.close();
+
+		Files.delete(symlinkPath);
 	}
 
 }
