@@ -16,8 +16,10 @@ jobs:
         include:
           - os: ubuntu-latest
             arch: x86_64
+            fuseLibPath: /lib/x86_64-linux-gnu/libfuse3.so.3
           - os: ubuntu-24.04-arm
             arch: aarch64
+            fuseLibPath: /usr/lib/aarch64-linux-gnu/libfuse3.so.3
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +33,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
-        run: mvn -B verify -Dfuse.lib.path="/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so.3" --no-transfer-progress
+        run: mvn -B verify -Dfuse.lib.path="${{ matrix.fuseLibPath }}" --no-transfer-progress
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-linux-${{ matrix.arch }}
