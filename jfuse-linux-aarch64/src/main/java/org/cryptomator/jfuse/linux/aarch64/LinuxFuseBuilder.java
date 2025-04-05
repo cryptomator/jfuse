@@ -37,7 +37,6 @@ public class LinuxFuseBuilder implements FuseBuilder {
 	@Override
 	public Fuse build(FuseOperations fuseOperations) throws UnsatisfiedLinkError {
 		if (libraryPath != null) {
-			FuseSymbolLookup.getInstance().open(libraryPath);
 			System.load(libraryPath);
 		} else {
 			System.loadLibrary(DEFAULT_LIBNAME);

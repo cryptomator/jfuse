@@ -12,7 +12,6 @@ import java.lang.invoke.MethodHandle;
  */
 public class FuseFFIHelper {
 
-
 	static MemorySegment findOrThrow(String symbol) {
 		return FuseSymbolLookup.getInstance().find(symbol)
 				.orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol: " + symbol));
