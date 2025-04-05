@@ -116,7 +116,7 @@ Due to the magic of the Foreign Function & Memory API, you can build all modules
 
 ### Running jextract (on demand)
 
-Each platform has its own module. In rare cases, we need to update jextracted classes.
+Each platform has its own module. When the upstream library changes, we need to run `jextract` to regenerate the bindings. You can install jextract with SDKMAN! via `sdk install jextract`.
 
 In most cases this requires you to run the build on the target platform, as you need access to its system-specific header files and (most likely) build tools. See module readme for specific requirements.
 

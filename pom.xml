@@ -37,7 +37,8 @@
 
 	<properties>
 		<maven.deploy.skip>false</maven.deploy.skip>
-		<jextract.path>${java.home}/bin/jextract</jextract.path>
+		<java.version>22</java.version>
+		<jextract.path>${user.home}/.sdkman/candidates/jextract/current/bin/jextract</jextract.path>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -84,7 +85,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.14.0</version>
 					<configuration>
-						<release>22</release>
+						<release>${java.version}</release>
 						<encoding>UTF-8</encoding>
 						<showWarnings>true</showWarnings>
 					</configuration>
@@ -185,7 +186,7 @@
 				</executions>
 				<configuration>
 					<excludePackageNames>*.extr:*.extr.*</excludePackageNames>
-					<release>22</release>
+					<release>${java.version}</release>
 				</configuration>
 			</plugin>
 			<plugin>
