@@ -7,27 +7,33 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 import java.lang.invoke.MethodHandle;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.lang.foreign.ValueLayout.ADDRESS;
+import static java.lang.foreign.ValueLayout.JAVA_INT;
 
 public class FuseSymbolLookup implements SymbolLookup {
 
-	private static final MemorySegment RTLD_GLOBAL = MemorySegment.ofAddress(0L); // defined in /usr/include/dlfcn.h
+	private static final int RTLD_NOW = 0x02;
 
-	// https://man7.org/linux/man-pages/man3/dlerror.3.html
+	// https://man7.org/linux/man-pages/man3/dlopen.3.html
+	private static final FunctionDescriptor DLOPEN = FunctionDescriptor.of(ADDRESS, ADDRESS, JAVA_INT);
 	private static final FunctionDescriptor DLERROR = FunctionDescriptor.of(ADDRESS);
 
 	// https://man7.org/linux/man-pages/man3/dlvsym.3.html
 	private static final FunctionDescriptor DLVSYM = FunctionDescriptor.of(ADDRESS, ADDRESS, ADDRESS, ADDRESS);
 	private static final FunctionDescriptor DLSYM = FunctionDescriptor.of(ADDRESS, ADDRESS, ADDRESS);
 
+	private final MethodHandle dlopen;
 	private final MethodHandle dlerror;
 	private final MethodHandle dlvsym;
 	private final MethodHandle dlsym;
+	private final AtomicReference<MemorySegment> libHandle = new AtomicReference<>();
 
 	private FuseSymbolLookup() {
 		var linker = Linker.nativeLinker();
 		var defaultLookup = linker.defaultLookup();
+		this.dlopen = linker.downcallHandle(defaultLookup.find("dlopen").orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol dlopen")), DLOPEN);
 		this.dlerror = linker.downcallHandle(defaultLookup.find("dlerror").orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol dlerror")), DLERROR);
 		this.dlvsym = linker.downcallHandle(defaultLookup.find("dlvsym").orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol dlvsym")), DLVSYM);
 		this.dlsym = linker.downcallHandle(defaultLookup.find("dlsym").orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol dlsym")), DLSYM);
@@ -41,6 +47,15 @@ public class FuseSymbolLookup implements SymbolLookup {
 		private static final FuseSymbolLookup INSTANCE = new FuseSymbolLookup();
 	}
 
+	public void open(String libPath) {
+		try (var session = Arena.ofConfined()) {
+			MemorySegment handle = (MemorySegment) dlopen.invokeExact(session.allocateFrom(libPath), RTLD_NOW);
+			libHandle.set(handle);
+		} catch (Throwable e) {
+			throw new AssertionError(e);
+		}
+	}
+
 	/**
 	 * {@inheritDoc}
 	 *
@@ -48,17 +63,21 @@ public class FuseSymbolLookup implements SymbolLookup {
 	 */
 	@Override
 	public Optional<MemorySegment> find(String nameAndVersion) {
+		var handle = libHandle.get();
+		if (handle == null) {
+			return Optional.empty();
+		}
 		var sep = nameAndVersion.indexOf('@');
 		try (var session = Arena.ofConfined()) {
 			MemorySegment addr = MemorySegment.NULL;
 			if (sep != -1) {
 				String name = nameAndVersion.substring(0, sep);
 				String version = nameAndVersion.substring(sep + 1);
-				addr = (MemorySegment) dlvsym.invokeExact(RTLD_GLOBAL, session.allocateFrom(name), session.allocateFrom(version));
+				addr = (MemorySegment) dlvsym.invokeExact(handle, session.allocateFrom(name), session.allocateFrom(version));
 			}
 
 			if (MemorySegment.NULL.equals(addr)) {
-				addr = (MemorySegment) dlsym.invokeExact(RTLD_GLOBAL, session.allocateFrom(nameAndVersion));
+				addr = (MemorySegment) dlsym.invokeExact(handle, session.allocateFrom(nameAndVersion));
 			}
 
 			if (MemorySegment.NULL.equals(addr)) {
