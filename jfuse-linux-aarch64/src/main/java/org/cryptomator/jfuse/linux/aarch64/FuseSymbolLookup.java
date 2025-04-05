@@ -1,4 +1,4 @@
-package org.cryptomator.jfuse.linux.amd64;
+package org.cryptomator.jfuse.linux.aarch64;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;

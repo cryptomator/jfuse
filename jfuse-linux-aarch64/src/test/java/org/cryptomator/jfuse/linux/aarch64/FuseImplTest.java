@@ -4,15 +4,13 @@ import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.TimeSpec;
-import org.cryptomator.jfuse.linux.aarch64.extr.fuse3_lowlevel.fuse_cmdline_opts;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_config;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_conn_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_file_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_h;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.timespec;
-import org.junit.jupiter.api.AfterEach;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse3_lowlevel.fuse_cmdline_opts;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,7 +18,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Answers;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.lang.foreign.Arena;
@@ -45,7 +42,7 @@ public class FuseImplTest {
 		@DisplayName("MountFailedException when fuse_new fails")
 		public void testFuseNewFails() {
 			try (var fuseH = Mockito.mockStatic(FuseFFIHelper.class)) {
-				fuseH.when(() -> FuseFFIHelper.fuse_new_31(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemorySegment.NULL);
+				fuseH.when(() -> FuseFFIHelper.fuse_new(Mockito.any(), Mockito.any(), Mockito.anyLong(), Mockito.any())).thenReturn(MemorySegment.NULL);
 				var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.createFuseFS(Mockito.mock(FuseArgs.class)));
 				Assertions.assertEquals("fuse_new failed", thrown.getMessage());
 			}
