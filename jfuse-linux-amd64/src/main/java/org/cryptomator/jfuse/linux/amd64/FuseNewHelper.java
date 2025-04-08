@@ -69,7 +69,7 @@ public class FuseNewHelper {
 		try {
 			return (int) fuse_versionMethodHandle.invokeExact();
 		} catch (Throwable e) {
-			throw new RuntimeException("Failed to call native method fuse_new", e);
+			throw new RuntimeException("Failed to call native method fuse_version", e);
 		}
 	}
 
