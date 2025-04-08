@@ -13,11 +13,12 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Helper class to call fuse_new
  * <p>
- * This class is necessary due to changes in libfuse 3.17.1 and onwards: In this version, only fuse_new is only available as a versioned symbol or as a renamed symbol (fuse_new_31).
+ * This class is necessary due to changes in libfuse 3.17.1 and onwards: The function {@code fuse_new} is _not_ available anymore as unversioned symbol.
+ * One can call the function either by also specifying the version or call the unversioned symbol {@code fuse_new_31}.
  * <p>
- * Versioned symbols can be loaded by a custom SymbolLookup (as done in PR #117), but libraries loaded via {@link System#loadLibrary(String)} cannot be accessed.
- * As a result, we would need to speciy for each set of Linux distributions a path where the library might be located.
- * To circumvent this issue, we use {@code fuse_version} to decide which (unversioned) symbol name we have to use.
+ * Versioned symbols require a custom SymbolLookup (see PR #117), but libraries loaded via {@link System#loadLibrary(String)} cannot be accessed.
+ * Hence, this would require to _always_ set the libPath, loosing compatiblity to more exotic linux OSs with custom lib locations.
+ * To circumvent this issue, we call {@code fuse_version} to decide which (unversioned) symbol name we have to use.
  */
 public class FuseNewHelper {
 
