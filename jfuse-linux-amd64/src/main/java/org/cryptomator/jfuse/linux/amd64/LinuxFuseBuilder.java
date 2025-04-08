@@ -41,7 +41,6 @@ public class LinuxFuseBuilder implements FuseBuilder {
 		} else {
 			System.loadLibrary(DEFAULT_LIBNAME);
 		}
-		FuseNewHelper.instantiate();
 		return new FuseImpl(fuseOperations);
 	}
 

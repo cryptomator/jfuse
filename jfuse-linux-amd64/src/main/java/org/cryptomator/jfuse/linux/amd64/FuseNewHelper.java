@@ -1,7 +1,6 @@
 package org.cryptomator.jfuse.linux.amd64;
 
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_h;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -23,8 +22,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class FuseNewHelper {
 
 	private static final AtomicReference<FuseNewHelper> INSTANCE = new AtomicReference<>(null);
-
-	public static final FunctionDescriptor DESC = FunctionDescriptor.of(
+	private static final SymbolLookup SYMBOL_LOOKUP = SymbolLookup.loaderLookup().or(Linker.nativeLinker().defaultLookup());
+	private static final FunctionDescriptor DESC = FunctionDescriptor.of(
 			fuse_h.C_POINTER,
 			fuse_h.C_POINTER,
 			fuse_h.C_POINTER,
@@ -43,31 +42,24 @@ public class FuseNewHelper {
 	public MemorySegment fuse_new(MemorySegment args, MemorySegment op, long op_size, MemorySegment private_data) {
 		try {
 			return (MemorySegment) fuse_new.invokeExact(args, op, op_size, private_data);
-		} catch (Throwable ex$) {
-			throw new AssertionError("should not reach here", ex$);
+		} catch (Throwable ex) {
+			throw new AssertionError("should not reach here", ex);
 		}
 	}
 
-	private static final SymbolLookup SYMBOL_LOOKUP = SymbolLookup.loaderLookup()
-			.or(Linker.nativeLinker().defaultLookup());
-
-	private static MemorySegment findOrThrow(String symbol) {
-		return SYMBOL_LOOKUP.find(symbol)
-				.orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol: " + symbol));
-	}
-
-
-	public synchronized static FuseNewHelper instantiate() throws IllegalStateException {
-		if (INSTANCE.get() != null) {
-			throw new IllegalStateException("Already instantiated");
-		}
-
-		if (getLibVersion() < 317) {
-			INSTANCE.set(new FuseNewHelper("fuse_new"));
-		} else {
-			INSTANCE.set(new FuseNewHelper("fuse_new_31"));
+	public synchronized static FuseNewHelper getInstance() {
+		if (INSTANCE.get() == null) {
+			INSTANCE.set(createInstance());
 		}
 		return INSTANCE.get();
+	}
+
+	private static FuseNewHelper createInstance() throws IllegalStateException {
+		if (getLibVersion() < 317) {
+			return new FuseNewHelper("fuse_new");
+		} else {
+			return new FuseNewHelper("fuse_new_31");
+		}
 	}
 
 	private static int getLibVersion() {
@@ -80,8 +72,8 @@ public class FuseNewHelper {
 		}
 	}
 
-	@Nullable
-	public static FuseNewHelper getInstance() {
-		return INSTANCE.get();
+	private static MemorySegment findOrThrow(String symbol) {
+		return SYMBOL_LOOKUP.find(symbol)
+				.orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol: " + symbol));
 	}
 }
