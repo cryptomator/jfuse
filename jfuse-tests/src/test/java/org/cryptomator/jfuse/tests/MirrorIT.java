@@ -69,7 +69,7 @@ public class MirrorIT {
 			builder.setLibraryPath(libPath);
 		}
 		List<String> flags = new ArrayList<>();
-		flags.add("-s");
+		//flags.add("-s");
 		mirror = tmpDir.resolve("mirror");
 		orig = tmpDir.resolve("orig");
 		Files.createDirectories(orig);

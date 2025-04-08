@@ -100,6 +100,8 @@
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
 										<cPreprocessorMacro>FUSE_USE_VERSION=317</cPreprocessorMacro>
+										<cPreprocessorMacro>__x86_64__=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__LP64__=1</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
 										<includeFunction>fuse_version</includeFunction>
@@ -144,6 +146,8 @@
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
 										<cPreprocessorMacro>FUSE_USE_VERSION=317</cPreprocessorMacro>
+										<cPreprocessorMacro>__x86_64__=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__LP64__=1</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeStructs>
 										<includeStruct>fuse_cmdline_opts</includeStruct>
@@ -159,6 +163,10 @@
 									<headerFile>${linux.headerSearchPath}/errno.h</headerFile>
 									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.errno</targetPackage>
 									<headerClassName>errno_h</headerClassName>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>__x86_64__=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__LP64__=1</cPreprocessorMacro>
+									</cPreprocessorMacros>
 									<includeConstants>
 										<includeConstant>ENOENT</includeConstant>
 										<includeConstant>ENOSYS</includeConstant>
@@ -190,6 +198,10 @@
 									<headerFile>${linux.headerSearchPath}/sys/stat.h</headerFile>
 									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.stat</targetPackage>
 									<headerClassName>stat_h</headerClassName>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>__x86_64__=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__LP64__=1</cPreprocessorMacro>
+									</cPreprocessorMacros>
 									<includeConstants>
 										<includeConstant>UTIME_NOW</includeConstant>
 										<includeConstant>UTIME_OMIT</includeConstant>
@@ -203,8 +215,12 @@
 								</goals>
 								<configuration>
 									<headerFile>${linux.headerSearchPath}/fcntl.h</headerFile>
-									<headerClassName>fcntl_h</headerClassName>
 									<targetPackage>org.cryptomator.jfuse.linux.amd64.extr.fcntl</targetPackage>
+									<headerClassName>fcntl_h</headerClassName>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>__x86_64__=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__LP64__=1</cPreprocessorMacro>
+									</cPreprocessorMacros>
 									<includeConstants>
 										<includeConstant>O_RDONLY</includeConstant>
 										<includeConstant>O_WRONLY</includeConstant>
@@ -229,6 +245,8 @@
 									<headerClassName>stdio_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_GNU_SOURCE=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__x86_64__=1</cPreprocessorMacro>
+										<cPreprocessorMacro>__LP64__=1</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeConstants>
 										<!-- GNU-specific flags for rename: -->
