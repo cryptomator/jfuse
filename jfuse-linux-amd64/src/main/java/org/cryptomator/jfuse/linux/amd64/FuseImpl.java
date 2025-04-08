@@ -37,7 +37,7 @@ final class FuseImpl extends Fuse {
 
 	@VisibleForTesting
 	MemorySegment createFuseFS(FuseArgs fuseArgs) throws FuseMountFailedException {
-		var fuse = FuseFFIHelper.fuse_new_31(fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemorySegment.NULL);
+		var fuse = FuseNewHelper.getInstance().fuse_new(fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemorySegment.NULL);
 		if (MemorySegment.NULL.equals(fuse)) {
 			throw new FuseMountFailedException("fuse_new failed");
 		}
