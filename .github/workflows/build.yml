@@ -10,7 +10,6 @@ env:
 
 jobs:
   linux:
-    name: Test jfuse-linux packages
     strategy:
       matrix:
         include:
@@ -19,6 +18,7 @@ jobs:
           - os: ubuntu-24.04-arm
             arch: aarch64
     runs-on: ${{ matrix.os }}
+    name: Test jfuse-linux-${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -31,7 +31,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
-        run: mvn -B verify -Dfuse.lib.path="/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so.3" --no-transfer-progress
+        run: mvn -B verify -Dfuse.lib.path="/usr/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so.3" --no-transfer-progress
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-linux-${{ matrix.arch }}
