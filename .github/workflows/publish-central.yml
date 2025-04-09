@@ -2,6 +2,11 @@ name: Publish to Maven Central
 on:
   release:
     types: [published]
+
+env:
+  JAVA_DIST: 'temurin'
+  JAVA_VERSION: '24'
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -10,8 +15,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          java-version: 22
-          distribution: 'zulu'
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DIST }}
           cache: 'maven'
           server-id: central
           server-username: MAVEN_CENTRAL_USERNAME

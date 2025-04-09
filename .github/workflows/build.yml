@@ -4,10 +4,12 @@ on:
   pull_request_target:
     types: [labeled]
 
-jobs:
+env:
+  JAVA_DIST: 'temurin'
+  JAVA_VERSION: '24'
 
+jobs:
   linux:
-    name: Test jfuse-linux packages
     strategy:
       matrix:
         include:
@@ -16,19 +18,20 @@ jobs:
           - os: ubuntu-24.04-arm
             arch: aarch64
     runs-on: ${{ matrix.os }}
+    name: Test jfuse-linux-${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          java-version: 22
-          distribution: 'zulu'
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DIST }}
           cache: 'maven'
       - name: Setup fuse
         run: |
           sudo apt-get update
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
-        run: mvn -B verify -Dfuse.lib.path="/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so.3" --no-transfer-progress
+        run: mvn -B verify -Dfuse.lib.path="/usr/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so.3" --no-transfer-progress
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-linux-${{ matrix.arch }}
@@ -42,8 +45,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          java-version: 22
-          distribution: 'zulu'
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DIST }}
           cache: 'maven'
       - name: Setup fuse
         run: |
@@ -65,8 +68,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          java-version: 22
-          distribution: 'zulu'
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DIST }}
           cache: 'maven'
       - name: Setup fuse
         run: choco install winfsp --version 2.0.23075 -y
@@ -89,8 +92,8 @@ jobs:
            fetch-depth: 0
       - uses: actions/setup-java@v4
         with:
-          java-version: 22
-          distribution: 'zulu'
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DIST }}
           cache: 'maven'
       - name: Cache SonarCloud packages
         uses: actions/cache@v4

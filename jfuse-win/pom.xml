@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse-parent</artifactId>
-		<version>0.7.2</version>
+		<version>0.7.3</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-win</artifactId>
@@ -15,7 +15,7 @@
 
 	<properties>
 		<win.ucrtHeaderPath>C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt</win.ucrtHeaderPath>
-		<jextract.executable>C:\Users\Arbeit\Programs\jextract-22\bin\jextract.bat</jextract.executable>
+		<!-- <jextract.path>C:\Users\Arbeit\Programs\jextract-22\bin\jextract.bat</jextract.path> defined in parent pom. to be installed via sdkman -->
 	</properties>
 
 	<dependencies>
@@ -85,7 +85,7 @@
 						<artifactId>jextract-maven-plugin</artifactId>
 						<version>0.4.0</version>
 						<configuration>
-							<executable>${jextract.executable}</executable>
+							<executable>${jextract.path}</executable>
 							<headerSearchPaths>${win.ucrtHeaderPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
 							<targetPackage>org.cryptomator.jfuse.win.extr.fuse3</targetPackage>

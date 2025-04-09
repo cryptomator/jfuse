@@ -6,7 +6,7 @@
 	<groupId>org.cryptomator</groupId>
 	<artifactId>jfuse-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.7.2</version>
+	<version>0.7.3</version>
 	<name>jFUSE</name>
 	<description>Java bindings for FUSE using foreign functions &amp; memory API</description>
 	<url>https://github.com/cryptomator/jfuse</url>
@@ -37,7 +37,8 @@
 
 	<properties>
 		<maven.deploy.skip>false</maven.deploy.skip>
-		<jextract.path>${java.home}/bin/jextract</jextract.path>
+		<java.version>22</java.version>
+		<jextract.path>${user.home}/.sdkman/candidates/jextract/current/bin/jextract</jextract.path>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -66,7 +67,7 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>5.16.1</version>
+			<version>5.17.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -84,7 +85,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.14.0</version>
 					<configuration>
-						<release>22</release>
+						<release>${java.version}</release>
 						<encoding>UTF-8</encoding>
 						<showWarnings>true</showWarnings>
 					</configuration>
@@ -142,7 +143,7 @@
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.12</version>
+					<version>0.8.13</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -185,7 +186,7 @@
 				</executions>
 				<configuration>
 					<excludePackageNames>*.extr:*.extr.*</excludePackageNames>
-					<release>22</release>
+					<release>${java.version}</release>
 				</configuration>
 			</plugin>
 			<plugin>

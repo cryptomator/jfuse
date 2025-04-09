@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse-parent</artifactId>
-		<version>0.7.2</version>
+		<version>0.7.3</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-mac</artifactId>
@@ -83,7 +83,7 @@
 						<artifactId>jextract-maven-plugin</artifactId>
 						<version>0.4.0</version>
 						<configuration>
-							<executable>/Users/sebastian/git/github.com/openjdk/jextract/build/jextract/bin/jextract</executable>
+							<executable>${jextract.path}</executable>
 							<headerSearchPaths>${mac.headerSearchPath}</headerSearchPaths>
 							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
 						</configuration>
