@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The changelog starts with version 0.7.3.
 Changes to prior versions can be found on the [Github release page](https://github.com/cryptomator/jfuse/releases).
 
-## [Unreleased]
+## [0.7.3] - 2025-04-09
 
 ### Added
 
