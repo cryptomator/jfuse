@@ -3,7 +3,6 @@ package org.cryptomator.jfuse.linux.amd64;
 import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.linux.amd64.extr.fuse3.fuse_conn_info;
 
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 
 record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
@@ -93,4 +92,36 @@ record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
 		fuse_conn_info.time_gran(segment, timeGran);
 	}
 
+	@Override
+	public long capableExt() {
+		return fuse_conn_info.capable_ext(segment);
+	}
+
+	@Override
+	public long wantExt() {
+		return fuse_conn_info.want_ext(segment);
+	}
+
+	@Override
+	public void setWantExt(long wantExt) {
+		fuse_conn_info.want_ext(segment, wantExt);
+	}
+
+	@Override
+	public boolean setFeatureFlag(long flag) {
+		try {
+			return FuseFunctions.fuse_set_feature_flag(segment, flag);
+		} catch (UnsupportedOperationException e) {
+			return false;
+		}
+	}
+
+	@Override
+	public void unsetFeatureFlag(long flag) {
+		try {
+			FuseFunctions.fuse_unset_feature_flag(segment, flag);
+		} catch (UnsupportedOperationException e) {
+			//no-op
+		}
+	}
 }

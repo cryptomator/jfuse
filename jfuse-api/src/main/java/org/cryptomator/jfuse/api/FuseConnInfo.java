@@ -323,6 +323,7 @@ public interface FuseConnInfo {
 	 * Capability flags that the kernel supports (read-only)
 	 *
 	 * @return {@code capable} value
+	 * @apiNote Since libFUSE 3.17, this field is deprecated left over for ABI compatibility, use capable_ext
 	 */
 	int capable();
 
@@ -333,6 +334,8 @@ public interface FuseConnInfo {
 	 * reasonable default values before calling the init() handler.
 	 *
 	 * @return {@code want} value
+	 * @apiNote Since libFUSE 3.17, this field is deprecated left over for ABI compatibility.
+	 * Use want_ext with the helper functions fuse_set_feature_flag() / fuse_unset_feature_flag()
 	 */
 	int want();
 
@@ -340,6 +343,8 @@ public interface FuseConnInfo {
 	 * Sets the {@link #want()} value.
 	 *
 	 * @param wanted {@code want} value
+	 * @apiNote Since libFUSE 3.17, this field is deprecated left over for ABI compatibility.
+	 * Use want_ext with the helper functions fuse_set_feature_flag() / fuse_unset_feature_flag()
 	 */
 	void setWant(int wanted);
 
@@ -497,6 +502,62 @@ public interface FuseConnInfo {
 	 * @param asyncRead {@code async_read} value
 	 */
 	default void setAsyncRead(int asyncRead) {
+		//no-op
+	}
+
+	/**
+	 * Extended capability flags that the kernel supports (read-only)
+	 * This field provides full 64-bit capability support.
+	 *
+	 * @since libFUSE 3.17
+	 */
+	default long capableExt() {
+		return 0;
+	}
+
+	/**
+	 * Extended capability flags that the filesystem wants to enable.
+	 * This field provides full 64-bit capability support.
+	 * <p>
+	 * Don't set this field directly, but use the helper functions
+	 * fuse_set_feature_flag() / fuse_unset_feature_flag()
+	 *
+	 * @see #setFeatureFlag(long)
+	 * @see #unsetFeatureFlag(long)
+	 * @since libFUSE 3.17
+	 */
+	default long wantExt() {
+		return 0;
+	}
+
+	/**
+	 * Sets the {@link #wantExt()} value.
+	 *
+	 * @param wantExt {@code want_ext} value
+	 * @since libFUSE 3.17
+	 */
+	default void setWantExt(long wantExt) {
+		//no-op
+	}
+
+	/**
+	 * Set a feature flag in the want_ext field of fuse_conn_info.
+	 *
+	 * @param flag feature flag to be set
+	 * @return true if the flag was set, false if the flag is not supported or the method is not implemented
+	 * @since libFUSE 3.17
+	 */
+	default boolean setFeatureFlag(long flag) {
+		return false;
+	}
+
+	/**
+	 * Unset a feature flag in the want_ext field of fuse_conn_info. Does nothing if the method is not implemented
+	 *
+	 * @param flag feature flag to be unset
+	 * @since libFUSE 3.17
+	 */
+	default void unsetFeatureFlag(long flag) {
 		//no-op
 	}
 }
