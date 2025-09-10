@@ -108,20 +108,12 @@ record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
 	}
 
 	@Override
-	public boolean setFeatureFlag(long flag) {
-		try {
-			return FuseFunctions.fuse_set_feature_flag(segment, flag);
-		} catch (UnsupportedOperationException e) {
-			return false;
-		}
+	public boolean setFeatureFlag(long flag) throws UnsupportedOperationException {
+		return FuseFunctions.fuse_set_feature_flag(segment, flag);
 	}
 
 	@Override
-	public void unsetFeatureFlag(long flag) {
-		try {
-			FuseFunctions.fuse_unset_feature_flag(segment, flag);
-		} catch (UnsupportedOperationException e) {
-			//no-op
-		}
+	public void unsetFeatureFlag(long flag) throws UnsupportedOperationException {
+		FuseFunctions.fuse_unset_feature_flag(segment, flag);
 	}
 }

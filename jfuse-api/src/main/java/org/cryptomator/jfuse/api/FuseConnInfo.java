@@ -508,7 +508,10 @@ public interface FuseConnInfo {
 	/**
 	 * Extended capability flags that the kernel supports (read-only)
 	 * This field provides full 64-bit capability support.
+	 * <p>
+	 * If the version of the loaded FUSE library is below 3.17, this method does nothing.
 	 *
+	 * @implSpec The default implementation always returns 0.
 	 * @since libFUSE 3.17
 	 */
 	default long capableExt() {
@@ -521,7 +524,10 @@ public interface FuseConnInfo {
 	 * <p>
 	 * Don't set this field directly, but use the helper functions
 	 * fuse_set_feature_flag() / fuse_unset_feature_flag()
+	 * <p>
+	 * If the version of the loaded FUSE library is below 3.17, this method does nothing.
 	 *
+	 * @implSpec The default implementation always returns 0.
 	 * @see #setFeatureFlag(long)
 	 * @see #unsetFeatureFlag(long)
 	 * @since libFUSE 3.17
@@ -532,8 +538,11 @@ public interface FuseConnInfo {
 
 	/**
 	 * Sets the {@link #wantExt()} value.
+	 * <p>
+	 * If the version of the loaded FUSE library is below 3.17, this method does nothing.
 	 *
 	 * @param wantExt {@code want_ext} value
+	 * @implSpec The default implementation is a no-op.
 	 * @since libFUSE 3.17
 	 */
 	default void setWantExt(long wantExt) {
@@ -544,10 +553,12 @@ public interface FuseConnInfo {
 	 * Set a feature flag in the want_ext field of fuse_conn_info.
 	 *
 	 * @param flag feature flag to be set
-	 * @return true if the flag was set, false if the flag is not supported or the method is not implemented
+	 * @return {@code true} if the flag was set, {@code false} if the flag is not supported
+	 * @throws UnsupportedOperationException if the loaded fuse library does not implement the method
+	 * @implSpec The default implementation discards the input and simply returns false.
 	 * @since libFUSE 3.17
 	 */
-	default boolean setFeatureFlag(long flag) {
+	default boolean setFeatureFlag(long flag) throws UnsupportedOperationException {
 		return false;
 	}
 
@@ -555,9 +566,11 @@ public interface FuseConnInfo {
 	 * Unset a feature flag in the want_ext field of fuse_conn_info. Does nothing if the method is not implemented
 	 *
 	 * @param flag feature flag to be unset
+	 * @throws UnsupportedOperationException if the loaded fuse library does not implement the method
+	 * @implSpec The default implementation is no-op.
 	 * @since libFUSE 3.17
 	 */
-	default void unsetFeatureFlag(long flag) {
+	default void unsetFeatureFlag(long flag) throws UnsupportedOperationException {
 		//no-op
 	}
 }
