@@ -53,8 +53,8 @@ class FuseFunctions {
 	}
 
 	public static boolean fuse_set_feature_flag(MemorySegment fuse_conn_info, long flag) throws UnsupportedOperationException {
+		var method = Holder.INSTANCE.fuse_set_feature_flag.orElseThrow(() -> new UnsupportedOperationException("The loaded fuse library does not support fuse_set_feature_flag"));
 		try {
-			var method = Holder.INSTANCE.fuse_set_feature_flag.orElseThrow(() -> new UnsupportedOperationException("The loaded fuse library does not support fuse_set_feature_flag"));
 			return ((int) method.invokeExact(fuse_conn_info, flag)) != 0;
 		} catch (Throwable e) {
 			throw new AssertionError("should not reach here", e);
@@ -62,8 +62,8 @@ class FuseFunctions {
 	}
 
 	public static void fuse_unset_feature_flag(MemorySegment fuse_conn_info, long flag) throws UnsupportedOperationException {
+		var method = Holder.INSTANCE.fuse_unset_feature_flag.orElseThrow(() -> new UnsupportedOperationException("The loaded fuse library does not support fuse_unset_feature_flag"));
 		try {
-			var method = Holder.INSTANCE.fuse_unset_feature_flag.orElseThrow(() -> new UnsupportedOperationException("The loaded fuse library does not support fuse_unset_feature_flag"));
 			method.invokeExact(fuse_conn_info, flag);
 		} catch (Throwable e) {
 			throw new AssertionError("should not reach here", e);
