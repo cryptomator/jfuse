@@ -109,9 +109,9 @@ final class FuseImpl extends Fuse {
 	@VisibleForTesting
 	MemorySegment init(MemorySegment conn, MemorySegment cfg) {
 		var connInfo = new FuseConnInfoImpl(conn);
-		try {
+		if(connInfo.protoMinor() >= 17 ) {
 			connInfo.setFeatureFlag(FuseConnInfo.FUSE_CAP_READDIRPLUS);
-		} catch (UnsupportedOperationException _) {
+		} else {
 			connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
 		}
 		var config = new FuseConfigImpl(cfg);
