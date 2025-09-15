@@ -555,22 +555,35 @@ public interface FuseConnInfo {
 	 * @param flag feature flag to be set
 	 * @return {@code true} if the flag was set, {@code false} if the flag is not supported
 	 * @throws UnsupportedOperationException if the loaded fuse library does not implement the method
-	 * @implSpec The default implementation discards the input and simply returns false.
+	 * @implSpec The default implementation throws {@link UnsupportedOperationException}
 	 * @since libFUSE 3.17
 	 */
 	default boolean setFeatureFlag(long flag) throws UnsupportedOperationException {
-		return false;
+		throw new UnsupportedOperationException("Loaded library does not implement fuse_set_feature_flag");
 	}
 
 	/**
-	 * Unset a feature flag in the want_ext field of fuse_conn_info. Does nothing if the method is not implemented
+	 * Unset a feature flag in the want_ext field of fuse_conn_info.
 	 *
 	 * @param flag feature flag to be unset
 	 * @throws UnsupportedOperationException if the loaded fuse library does not implement the method
-	 * @implSpec The default implementation is no-op.
+	 * @implSpec The default implementation throws {@link UnsupportedOperationException}
 	 * @since libFUSE 3.17
 	 */
 	default void unsetFeatureFlag(long flag) throws UnsupportedOperationException {
-		//no-op
+		throw new UnsupportedOperationException("Loaded library does not implement fuse_unset_feature_flag");
+	}
+
+	/**
+	 * Get the value of a feature flag in the want_ext field of fuse_conn_info.
+	 *
+	 * @param flag feature flag to be checked
+	 * @return {@code true} if the flag is set, {@code false} otherwise
+	 * @throws UnsupportedOperationException if the loaded fuse library does not implement the method
+	 * @implSpec The default implementation throws {@link UnsupportedOperationException}
+	 * @since libFUSE 3.17
+	 */
+	default boolean getFeatureFlag(long flag) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException("Loaded library does not implement fuse_unset_feature_flag");
 	}
 }
