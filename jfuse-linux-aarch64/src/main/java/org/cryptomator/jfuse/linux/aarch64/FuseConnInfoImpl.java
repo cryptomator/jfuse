@@ -5,7 +5,18 @@ import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_conn_info;
 
 import java.lang.foreign.MemorySegment;
 
-record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
+class FuseConnInfoImpl implements FuseConnInfo {
+
+	protected MemorySegment segment;
+
+	FuseConnInfoImpl(MemorySegment segment) {
+		this.segment = segment;
+	}
+
+	//mimic record behaviour
+	public MemorySegment segment() {
+		return segment;
+	}
 
 	@Override
 	public int protoMajor() {
@@ -92,28 +103,4 @@ record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
 		fuse_conn_info.time_gran(segment, timeGran);
 	}
 
-	@Override
-	public long capableExt() {
-		return fuse_conn_info.capable_ext(segment);
-	}
-
-	@Override
-	public long wantExt() {
-		return fuse_conn_info.want_ext(segment);
-	}
-
-	@Override
-	public void setWantExt(long wantExt) {
-		fuse_conn_info.want_ext(segment, wantExt);
-	}
-
-	@Override
-	public boolean setFeatureFlag(long flag) throws UnsupportedOperationException {
-		return FuseFunctions.fuse_set_feature_flag(segment, flag);
-	}
-
-	@Override
-	public void unsetFeatureFlag(long flag) throws UnsupportedOperationException {
-		FuseFunctions.fuse_unset_feature_flag(segment, flag);
-	}
 }
