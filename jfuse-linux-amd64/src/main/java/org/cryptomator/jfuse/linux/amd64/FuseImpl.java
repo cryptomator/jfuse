@@ -109,7 +109,7 @@ final class FuseImpl extends Fuse {
 	@VisibleForTesting
 	MemorySegment init(MemorySegment conn, MemorySegment cfg) {
 		var connInfo = new FuseConnInfoImpl(conn);
-		if(connInfo.protoMinor() >= 17 ) {
+		if(fuse_h.fuse_version() >= 317) {
 			connInfo = new FuseConnInfoImpl317(conn);
 			connInfo.setFeatureFlag(FuseConnInfo.FUSE_CAP_READDIRPLUS);
 		} else {

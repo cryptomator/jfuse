@@ -167,16 +167,19 @@ public class FuseImplTest {
 		@Test
 		public void testInit316() {
 			try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
+				 var fuseH = Mockito.mockStatic(fuse_h.class);
 				 var arena = Arena.ofConfined()) {
-				fuseFunctionsClass.when(() -> FuseFunctions.fuse_set_feature_flag(Mockito.any(), Mockito.anyLong())).thenThrow(UnsupportedOperationException.class);
+
 				var consumerRecievedConnInfo = new AtomicReference<FuseConnInfo>();
 				Mockito.doAnswer(invocation -> {
 					consumerRecievedConnInfo.set(invocation.getArgument(0));
 					return null;
 				}).when(fuseOps).init(Mockito.any(), Mockito.any());
 				var connInfo = fuse_conn_info.allocate(arena);
-				fuse_conn_info.proto_minor(connInfo, 16);
 				var fuseConfig = fuse_config.allocate(arena);
+
+				fuseH.when(fuse_h::fuse_version).thenReturn(316);
+				fuseFunctionsClass.when(() -> FuseFunctions.fuse_set_feature_flag(Mockito.any(), Mockito.anyLong())).thenThrow(UnsupportedOperationException.class);
 
 				fuseImpl.init(connInfo, fuseConfig);
 
@@ -189,17 +192,20 @@ public class FuseImplTest {
 		@Test
 		public void testInit317() {
 			try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
+				 var fuseH = Mockito.mockStatic(fuse_h.class);
 				 var arena = Arena.ofConfined()) {
+
 				var consumerRecievedConnInfo = new AtomicReference<FuseConnInfo>();
 				Mockito.doAnswer(invocation -> {
 					consumerRecievedConnInfo.set(invocation.getArgument(0));
 					return null;
 				}).when(fuseOps).init(Mockito.any(), Mockito.any());
 				var connInfo = fuse_conn_info.allocate(arena);
-				fuse_conn_info.proto_minor(connInfo, 17);
 				var fuseConfig = fuse_config.allocate(arena);
 
+				fuseH.when(fuse_h::fuse_version).thenReturn(317);
 				fuseFunctionsClass.when(() -> FuseFunctions.fuse_set_feature_flag(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS)).thenReturn(true);
+
 
 				fuseImpl.init(connInfo, fuseConfig);
 
