@@ -22,7 +22,7 @@ class FuseFunctions {
 	private static final FunctionDescriptor FUSE_PARSE_CMDLINE = FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS);
 	//https://github.com/libfuse/libfuse/blob/fuse-3.17.4/lib/fuse_lowlevel.c#L2035
 	private static final FunctionDescriptor FUSE_SET_FEATURE_FLAG = FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG);
-	private static final FunctionDescriptor FUSE_UNSET_FEATURE_FLAG = FunctionDescriptor.of(ADDRESS, JAVA_LONG);
+	private static final FunctionDescriptor FUSE_UNSET_FEATURE_FLAG = FunctionDescriptor.ofVoid(ADDRESS, JAVA_LONG);
 	private static final FunctionDescriptor FUSE_GET_FEATURE_FLAG = FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG);
 
 	private final MethodHandle fuse_parse_cmdline;
