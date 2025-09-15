@@ -17,6 +17,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.api.condition.OS;
@@ -36,7 +37,6 @@ import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @EnabledIf("hasSupportedImplementation")
@@ -79,7 +79,14 @@ public class MirrorIT {
 				flags.add("-ogid=-1");
 				yield new WindowsMirrorFileSystem(orig, builder.errno());
 			}
-			case MAC, LINUX -> {
+			case LINUX -> {
+				Files.createDirectories(mirror);
+				yield new PosixMirrorFileSystem(orig, builder.errno());
+			}
+			case MAC -> {
+				if (isFuseTLib()) {
+					flags.add("-ononamedattr");
+				}
 				Files.createDirectories(mirror);
 				yield new PosixMirrorFileSystem(orig, builder.errno());
 			}
@@ -207,6 +214,7 @@ public class MirrorIT {
 
 	@Nested
 	@DisabledOnOs(OS.WINDOWS) // see remark on https://github.com/cryptomator/jfuse/pull/26
+	@DisabledIf("org.cryptomator.jfuse.tests.MirrorIT#isFuseTLib")
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 	@DisplayName("Extended Attributes")
@@ -272,5 +280,9 @@ public class MirrorIT {
 			Assertions.assertEquals(attrName, value);
 		}
 
+	}
+
+	public static boolean isFuseTLib() {
+		return System.getProperty("fuse.lib.path", "").endsWith("libfuse-t.dylib");
 	}
 }
