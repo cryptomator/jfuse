@@ -21,9 +21,9 @@ class FuseFunctions {
 	// see https://github.com/libfuse/libfuse/blob/fuse-3.12.0/include/fuse_lowlevel.h#L1892-L1923
 	private static final FunctionDescriptor FUSE_PARSE_CMDLINE = FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS);
 	//https://github.com/libfuse/libfuse/blob/fuse-3.17.4/lib/fuse_lowlevel.c#L2035
-	private static final FunctionDescriptor FUSE_SET_FEATURE_FLAG = FunctionDescriptor.of(ADDRESS, JAVA_LONG);
+	private static final FunctionDescriptor FUSE_SET_FEATURE_FLAG = FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG);
 	private static final FunctionDescriptor FUSE_UNSET_FEATURE_FLAG = FunctionDescriptor.of(ADDRESS, JAVA_LONG);
-	private static final FunctionDescriptor FUSE_GET_FEATURE_FLAG = FunctionDescriptor.of(ADDRESS, JAVA_LONG);
+	private static final FunctionDescriptor FUSE_GET_FEATURE_FLAG = FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG);
 
 	private final MethodHandle fuse_parse_cmdline;
 	private final Optional<MethodHandle> fuse_set_feature_flag;
