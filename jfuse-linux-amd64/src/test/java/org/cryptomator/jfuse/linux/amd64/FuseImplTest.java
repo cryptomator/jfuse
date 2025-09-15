@@ -170,9 +170,9 @@ public class FuseImplTest {
 				 var fuseH = Mockito.mockStatic(fuse_h.class);
 				 var arena = Arena.ofConfined()) {
 
-				var consumerRecievedConnInfo = new AtomicReference<FuseConnInfo>();
+				var consumerReceivedConnInfo = new AtomicReference<FuseConnInfo>();
 				Mockito.doAnswer(invocation -> {
-					consumerRecievedConnInfo.set(invocation.getArgument(0));
+					consumerReceivedConnInfo.set(invocation.getArgument(0));
 					return null;
 				}).when(fuseOps).init(Mockito.any(), Mockito.any());
 				var connInfo = fuse_conn_info.allocate(arena);
@@ -183,8 +183,8 @@ public class FuseImplTest {
 
 				fuseImpl.init(connInfo, fuseConfig);
 
-				Assertions.assertInstanceOf(FuseConnInfoImpl.class, consumerRecievedConnInfo.get());
-				Assertions.assertEquals(FuseConnInfo.FUSE_CAP_READDIRPLUS, consumerRecievedConnInfo.get().want() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
+				Assertions.assertInstanceOf(FuseConnInfoImpl.class, consumerReceivedConnInfo.get());
+				Assertions.assertEquals(FuseConnInfo.FUSE_CAP_READDIRPLUS, consumerReceivedConnInfo.get().want() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
 			}
 		}
 
@@ -195,9 +195,9 @@ public class FuseImplTest {
 				 var fuseH = Mockito.mockStatic(fuse_h.class);
 				 var arena = Arena.ofConfined()) {
 
-				var consumerRecievedConnInfo = new AtomicReference<FuseConnInfo>();
+				var consumerReceivedConnInfo = new AtomicReference<FuseConnInfo>();
 				Mockito.doAnswer(invocation -> {
-					consumerRecievedConnInfo.set(invocation.getArgument(0));
+					consumerReceivedConnInfo.set(invocation.getArgument(0));
 					return null;
 				}).when(fuseOps).init(Mockito.any(), Mockito.any());
 				var connInfo = fuse_conn_info.allocate(arena);
@@ -210,7 +210,7 @@ public class FuseImplTest {
 				fuseImpl.init(connInfo, fuseConfig);
 
 				fuseFunctionsClass.verify(() -> FuseFunctions.fuse_set_feature_flag(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS));
-				Assertions.assertInstanceOf(FuseConnInfoImpl317.class, consumerRecievedConnInfo.get());
+				Assertions.assertInstanceOf(FuseConnInfoImpl317.class, consumerReceivedConnInfo.get());
 			}
 		}
 	}

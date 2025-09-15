@@ -34,7 +34,7 @@ public class FuseConnInfoImpl317Test {
 	public static Stream<Arguments> testGetters() {
 		return Stream.of(
 				Arguments.arguments((SetInMemorySegment) fuse_conn_info::want_ext, Named.of("wantExt()", (GetInConnInfo) FuseConnInfo::wantExt)),
-				Arguments.arguments((SetInMemorySegment) fuse_conn_info::capable_ext, Named.of("capable()", (GetInConnInfo) FuseConnInfo::capableExt))
+				Arguments.arguments((SetInMemorySegment) fuse_conn_info::capable_ext, Named.of("capableExt()", (GetInConnInfo) FuseConnInfo::capableExt))
 		);
 	}
 

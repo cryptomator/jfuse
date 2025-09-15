@@ -7,7 +7,7 @@ import java.lang.foreign.MemorySegment;
 
 class FuseConnInfoImpl implements FuseConnInfo {
 
-	protected MemorySegment segment;
+	protected final MemorySegment segment;
 
 	FuseConnInfoImpl(MemorySegment segment) {
 		this.segment = segment;

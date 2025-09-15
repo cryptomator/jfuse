@@ -539,6 +539,7 @@ public interface FuseConnInfo {
 	/**
 	 * Sets the {@link #wantExt()} value.
 	 * <p>
+	 * Deprecated way of setting the wantExt field. Use {@link #setFeatureFlag(long)} instead.
 	 * If the version of the loaded FUSE library is below 3.17, this method does nothing.
 	 *
 	 * @param wantExt {@code want_ext} value
@@ -584,6 +585,6 @@ public interface FuseConnInfo {
 	 * @since libFUSE 3.17
 	 */
 	default boolean getFeatureFlag(long flag) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException("Loaded library does not implement fuse_unset_feature_flag");
+		throw new UnsupportedOperationException("Loaded library does not implement fuse_get_feature_flag");
 	}
 }
