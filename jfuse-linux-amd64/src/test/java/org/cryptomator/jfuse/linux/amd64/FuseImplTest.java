@@ -24,7 +24,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.time.Instant;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FuseImplTest {
 
@@ -169,18 +169,19 @@ public class FuseImplTest {
 			try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
 				 var arena = Arena.ofConfined()) {
 				fuseFunctionsClass.when(() -> FuseFunctions.fuse_set_feature_flag(Mockito.any(), Mockito.anyLong())).thenThrow(UnsupportedOperationException.class);
-				var result = new AtomicInteger();
+				var consumerRecievedConnInfo = new AtomicReference<FuseConnInfo>();
 				Mockito.doAnswer(invocation -> {
-					FuseConnInfo connInfo = invocation.getArgument(0);
-					result.set(connInfo.want());
+					consumerRecievedConnInfo.set(invocation.getArgument(0));
 					return null;
 				}).when(fuseOps).init(Mockito.any(), Mockito.any());
 				var connInfo = fuse_conn_info.allocate(arena);
+				fuse_conn_info.proto_minor(connInfo, 16);
 				var fuseConfig = fuse_config.allocate(arena);
 
 				fuseImpl.init(connInfo, fuseConfig);
 
-				Assertions.assertEquals(FuseConnInfo.FUSE_CAP_READDIRPLUS, result.get() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
+				Assertions.assertInstanceOf(FuseConnInfoImpl.class, consumerRecievedConnInfo.get());
+				Assertions.assertEquals(FuseConnInfo.FUSE_CAP_READDIRPLUS, consumerRecievedConnInfo.get().want() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
 			}
 		}
 
@@ -189,7 +190,13 @@ public class FuseImplTest {
 		public void testInit317() {
 			try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
 				 var arena = Arena.ofConfined()) {
+				var consumerRecievedConnInfo = new AtomicReference<FuseConnInfo>();
+				Mockito.doAnswer(invocation -> {
+					consumerRecievedConnInfo.set(invocation.getArgument(0));
+					return null;
+				}).when(fuseOps).init(Mockito.any(), Mockito.any());
 				var connInfo = fuse_conn_info.allocate(arena);
+				fuse_conn_info.proto_minor(connInfo, 17);
 				var fuseConfig = fuse_config.allocate(arena);
 
 				fuseFunctionsClass.when(() -> FuseFunctions.fuse_set_feature_flag(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS)).thenReturn(true);
@@ -197,6 +204,7 @@ public class FuseImplTest {
 				fuseImpl.init(connInfo, fuseConfig);
 
 				fuseFunctionsClass.verify(() -> FuseFunctions.fuse_set_feature_flag(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS));
+				Assertions.assertInstanceOf(FuseConnInfoImpl317.class, consumerRecievedConnInfo.get());
 			}
 		}
 	}

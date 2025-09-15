@@ -110,6 +110,7 @@ final class FuseImpl extends Fuse {
 	MemorySegment init(MemorySegment conn, MemorySegment cfg) {
 		var connInfo = new FuseConnInfoImpl(conn);
 		if(connInfo.protoMinor() >= 17 ) {
+			connInfo = new FuseConnInfoImpl317(conn);
 			connInfo.setFeatureFlag(FuseConnInfo.FUSE_CAP_READDIRPLUS);
 		} else {
 			connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
