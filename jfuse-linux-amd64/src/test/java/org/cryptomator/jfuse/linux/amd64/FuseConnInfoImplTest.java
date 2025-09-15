@@ -20,7 +20,7 @@ public class FuseConnInfoImplTest {
 	@DisplayName("test getters")
 	@ParameterizedTest(name = "{1}")
 	@MethodSource
-	void testGetters(SetInMemorySegment setter, GetInConnInfo getter) {
+	public void testGetters(SetInMemorySegment setter, GetInConnInfo getter) {
 		try (var arena = Arena.ofConfined()) {
 			var segment = fuse_conn_info.allocate(arena);
 			var connInfo = new FuseConnInfoImpl(segment);
@@ -46,16 +46,14 @@ public class FuseConnInfoImplTest {
 		);
 	}
 
-	interface SetInMemorySegment extends BiConsumer<MemorySegment, Integer> {
-	}
+	private interface SetInMemorySegment extends BiConsumer<MemorySegment, Integer> {}
 
-	interface GetInConnInfo extends Function<FuseConnInfo, Integer> {
-	}
+	private interface GetInConnInfo extends Function<FuseConnInfo, Integer> {}
 
 	@DisplayName("test setters")
 	@ParameterizedTest(name = "{0}")
 	@MethodSource
-	void testSetters(SetInConnInfo setter, GetInMemorySegment getter) {
+	public void testSetters(SetInConnInfo setter, GetInMemorySegment getter) {
 		try (var arena = Arena.ofConfined()) {
 			var segment = fuse_conn_info.allocate(arena);
 			var connInfo = new FuseConnInfoImpl(segment);
@@ -78,9 +76,8 @@ public class FuseConnInfoImplTest {
 		);
 	}
 
-	interface SetInConnInfo extends BiConsumer<FuseConnInfo, Integer> {
-	}
+	private interface SetInConnInfo extends BiConsumer<FuseConnInfo, Integer> {}
 
-	interface GetInMemorySegment extends Function<MemorySegment, Integer> {
-	}
+	private interface GetInMemorySegment extends Function<MemorySegment, Integer> {}
+
 }
