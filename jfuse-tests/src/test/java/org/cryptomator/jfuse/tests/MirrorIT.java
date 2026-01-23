@@ -237,6 +237,9 @@ public class MirrorIT {
 			var attrValue = StandardCharsets.UTF_8.encode(attrName);
 
 			Assertions.assertDoesNotThrow(() -> attrView.write(attrName, attrValue));
+			var expectedWrittenBytes = attrValue.limit();
+			int bytesWritten = Assertions.assertDoesNotThrow(() -> attrView.write(attrName, attrValue));
+			Assertions.assertEquals(expectedWrittenBytes, bytesWritten, "The extended attribute %s was not completely written.".formatted(attrName));
 		}
 
 		@Order(2)
