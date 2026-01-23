@@ -45,6 +45,8 @@ public class FallbackLibLoadingIT {
 		var attrName = "firstAttribute";
 		var attrValue = StandardCharsets.UTF_8.encode(attrName);
 
+		//not working?
+
 		Assertions.assertDoesNotThrow(() -> attrView.write(attrName, attrValue));
 	}
 
