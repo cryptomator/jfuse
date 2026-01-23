@@ -79,14 +79,7 @@ public class MirrorIT {
 				flags.add("-ogid=-1");
 				yield new WindowsMirrorFileSystem(orig, builder.errno());
 			}
-			case LINUX -> {
-				Files.createDirectories(mirror);
-				yield new PosixMirrorFileSystem(orig, builder.errno());
-			}
-			case MAC -> {
-				if (isFuseTLib()) {
-					flags.add("-ononamedattr");
-				}
+			case LINUX, MAC -> {
 				Files.createDirectories(mirror);
 				yield new PosixMirrorFileSystem(orig, builder.errno());
 			}
@@ -214,7 +207,6 @@ public class MirrorIT {
 
 	@Nested
 	@DisabledOnOs(OS.WINDOWS) // see remark on https://github.com/cryptomator/jfuse/pull/26
-	@DisabledIf("org.cryptomator.jfuse.tests.MirrorIT#isFuseTLib")
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 	@DisplayName("Extended Attributes")
