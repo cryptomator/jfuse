@@ -12,13 +12,14 @@ updates:
         patterns:
           - "org.junit.jupiter:*"
           - "org.mockito:*"
+          - "org.openjdk.jmh:*"
+          - "org.slf4j:slf4j-simple"
       maven-build-plugins:
         patterns:
           - "org.apache.maven.plugins:*"
           - "org.jacoco:jacoco-maven-plugin"
           - "io.github.coffeelibs:jextract-maven-plugin"
-          - "org.sonatype.plugins:nexus-staging-maven-plugin"
-          - "org.codehaus.mojo:exec-maven-plugin"
+          - "org.sonatype.central:central-publishing-maven-plugin"
       java-production-dependencies:
         patterns:
           - "*"
@@ -28,8 +29,9 @@ updates:
           - "org.apache.maven.plugins:*"
           - "org.jacoco:jacoco-maven-plugin"
           - "io.github.coffeelibs:jextract-maven-plugin"
-          - "org.sonatype.plugins:nexus-staging-maven-plugin"
-          - "org.codehaus.mojo:exec-maven-plugin"
+          - "org.sonatype.central:central-publishing-maven-plugin"
+          - "org.openjdk.jmh:*"
+          - "org.slf4j:slf4j-simple"
 
   - package-ecosystem: "github-actions"
     directory: "/" # even for `.github/workflows`
