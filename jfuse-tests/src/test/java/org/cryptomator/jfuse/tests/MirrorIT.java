@@ -60,6 +60,7 @@ public class MirrorIT {
 	static Path computeFuseTSourceDir(Path tmpDir, String dirName) throws IOException {
 		var permissions = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxrwxrwx"));
 		if(System.getenv("CI") != null) { //see https://github.com/cryptomator/jfuse/issues/147
+			System.out.println("--------------------- CI ENVIRONMENT DETECTED ----------------------------");
 			var userhome = Path.of(System.getProperty("user.home"));
 			return Files.createTempDirectory(userhome, dirName, permissions);
 		} else {
@@ -83,10 +84,11 @@ public class MirrorIT {
 		List<String> flags = new ArrayList<>();
 		flags.add("-s");
 
-		mirror = tmpDir.resolve("mirror");
 		if( isFuseTLib()) {
+			mirror = computeFuseTSourceDir(tmpDir, "mirror");
 			orig = computeFuseTSourceDir(tmpDir, "orig");
 		} else {
+			mirror = tmpDir.resolve("mirror");
 			orig = tmpDir.resolve("orig");
 			Files.createDirectories(orig);
 		}
