@@ -17,7 +17,6 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.api.condition.OS;
@@ -33,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -57,6 +57,18 @@ public class MirrorIT {
 		}
 	}
 
+	static Path computeFuseTSourceDir(Path tmpDir, String dirName) throws IOException {
+		var permissions = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxrwxrwx"));
+		if(System.getenv("CI") != null) { //see https://github.com/cryptomator/jfuse/issues/147
+			var userhome = Path.of(System.getProperty("user.home"));
+			return Files.createTempDirectory(userhome, dirName, permissions);
+		} else {
+			var path = tmpDir.resolve(dirName);
+			Files.createDirectories(path, permissions);
+			return path;
+		}
+	}
+
 	private Path orig;
 	private Path mirror;
 	private Fuse fuse;
@@ -70,9 +82,15 @@ public class MirrorIT {
 		}
 		List<String> flags = new ArrayList<>();
 		flags.add("-s");
+
 		mirror = tmpDir.resolve("mirror");
-		orig = tmpDir.resolve("orig");
-		Files.createDirectories(orig);
+		if( isFuseTLib()) {
+			orig = computeFuseTSourceDir(tmpDir, "orig");
+		} else {
+			orig = tmpDir.resolve("orig");
+			Files.createDirectories(orig);
+		}
+
 		AbstractMirrorFileSystem fs = switch (OS.current()) {
 			case WINDOWS -> {
 				flags.add("-ouid=-1");
