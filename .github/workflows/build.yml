@@ -18,10 +18,12 @@ jobs:
           - os: ubuntu-24.04-arm
             arch: aarch64
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
     name: Test jfuse-linux-${{ matrix.arch }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-java@v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DIST }}
@@ -32,7 +34,7 @@ jobs:
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
         run: ./mvnw -B verify -Dfuse.lib.path="/usr/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so.3" --no-transfer-progress
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: coverage-linux-${{ matrix.arch }}
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
@@ -41,9 +43,11 @@ jobs:
   mac:
     name: Test jfuse-mac
     runs-on: macos-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-java@v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DIST }}
@@ -55,7 +59,7 @@ jobs:
           brew install fuse-t
       - name: Maven build
         run: ./mvnw -B verify -Dfuse.lib.path="/usr/local/lib/libfuse-t.dylib" --no-transfer-progress
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: coverage-mac
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
@@ -64,9 +68,11 @@ jobs:
   win:
     name: Test jfuse-win
     runs-on: windows-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-java@v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DIST }}
@@ -76,7 +82,7 @@ jobs:
       - name: Maven build
         shell: bash # surprise, running maven in pwsh is crappy, see https://stackoverflow.com/q/6347985/4014509
         run: ./mvnw -B verify -Dfuse.lib.path="C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll" --no-transfer-progress
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: coverage-win
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
@@ -86,40 +92,42 @@ jobs:
     name: Run SonarCloud Analysis
     needs: [linux, mac, win]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-           fetch-depth: 0
-      - uses: actions/setup-java@v5
+          fetch-depth: 0 # deep fetch for better sonarcloud analysis
+      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DIST }}
           cache: 'maven'
       - name: Cache SonarCloud packages
-        uses: actions/cache@v4
+        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: coverage-linux-x86_64
           path: coverage/linux-x86_64
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: coverage-linux-aarch64
           path: coverage/linux-aarch64
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: coverage-mac
           path: coverage/mac
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: coverage-win
           path: coverage/win
       - name: Analyze
         run: >
-          ./mvnw -B compile -DskipTests
+          ./mvnw -B verify -DskipTests
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
           -Dsonar.projectKey=cryptomator_jfuse
           -Dsonar.coverage.jacoco.xmlReportPaths=${GITHUB_WORKSPACE}/coverage/**/jacoco.xml
@@ -130,16 +138,168 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  release:
+  deploy-central:
+    name: Deploy to Maven Central
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # OIDC token for sigstore signing
+      contents: read # Required for sigstore signing
+    needs: [sonarcloud]
+    # In pull_request_target context, github.event.head_commit does not exist, hence we only deploy on pushes
+    if: github.repository_owner == 'cryptomator' && (startsWith(github.ref, 'refs/tags/') || contains(github.event.head_commit.message, '[deploy]'))
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+        with:
+          distribution: ${{ env.JAVA_DIST }}
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+          server-id: central
+          server-username: MAVEN_CENTRAL_USERNAME
+          server-password: MAVEN_CENTRAL_PASSWORD
+      - name: Enforce to use tagged version 
+        if: startsWith(github.ref, 'refs/tags/')
+        run: ./mvnw versions:set -B -DnewVersion="${GITHUB_REF##*/}"
+      - name: Verify project version is -SNAPSHOT
+        if: startsWith(github.ref, 'refs/tags/') == false
+        run: |
+          PROJECT_VERSION=$(./mvnw help:evaluate "-Dexpression=project.version" -q -DforceStdout)
+          test "${PROJECT_VERSION: -9}" = "-SNAPSHOT"
+      - name: Deploy to Maven Central
+        run: ./mvnw deploy -B -DskipTests -Psign,deploy-central --no-transfer-progress
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.RELEASES_GPG_PASSPHRASE }}
+          MAVEN_GPG_KEY: ${{ secrets.RELEASES_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
+          MAVEN_GPG_KEY_FINGERPRINT: ${{ vars.RELEASES_GPG_KEY_FINGERPRINT }}
+
+  deploy-github:
+    name: Deploy to GitHub Packages
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write # Required for the deploy to GitHub Packages step
+      id-token: write # OIDC token for sigstore signing
+      contents: read # Required for sigstore signing
+    needs: [sonarcloud]
+    if: github.repository_owner == 'cryptomator' && (startsWith(github.ref, 'refs/tags/') || contains(github.event.head_commit.message, '[deploy]'))
+    # In pull_request_target context, github.event.head_commit does not exist, hence we only deploy on pushes
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DIST }}
+          cache: 'maven'
+      - name: Enforce to use tagged version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: ./mvnw versions:set -B -DnewVersion="${GITHUB_REF##*/}"
+      - name: Verify project version is -SNAPSHOT
+        if: startsWith(github.ref, 'refs/tags/') == false
+        run: |
+          PROJECT_VERSION=$(./mvnw help:evaluate "-Dexpression=project.version" -q -DforceStdout)
+          test "${PROJECT_VERSION: -9}" = "-SNAPSHOT"
+      - name: Deploy to GitHub Packages
+        run: ./mvnw deploy -B -DskipTests -Psign,deploy-github --no-transfer-progress
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.RELEASES_GPG_PASSPHRASE }}
+          MAVEN_GPG_KEY: ${{ secrets.RELEASES_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
+          MAVEN_GPG_KEY_FINGERPRINT: ${{ vars.RELEASES_GPG_KEY_FINGERPRINT }}
+
+  attestAndRelease:
     needs: [ sonarcloud ]
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required for release
+      id-token: write # OIDC token for the attestations step
+      attestations: write # Required for the attestations step
     steps:
-      - name: Create Release
-        uses: actions/create-release@v1 #REMARK: action/create-release is unmaintend
-        env:
-          GITHUB_TOKEN: ${{ secrets.CRYPTOBOT_RELEASE_TOKEN }} # release as "cryptobot"
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+      - name: Ensure to use tagged version
+        run: ./mvnw versions:set --file ./pom.xml -DnewVersion=${GITHUB_REF##*/}
+      - name: Build
+        run: >
+          ./mvnw -B install -DskipTests
+      - name: Calculate Checksums
+        id: checksums
+        # iterate over all jfuse modules
+        run: |
+          for module in jfuse jfuse-api jfuse-linux-aarch64 jfuse-linux-amd64 jfuse-mac jfuse-win; do
+            {
+              echo "sha256-${module}<<EOF"
+              shasum -a256 ${module}/target/*.jar
+              echo EOF
+            } >> $GITHUB_OUTPUT
+          done
+      - name: Attest
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
+        with:
+          subject-path: |
+            jfuse/target/*.jar
+            jfuse-api/target/*.jar
+            jfuse-linux-aarch64/target/*.jar
+            jfuse-linux-amd64/target/*.jar
+            jfuse-mac/target/*.jar
+            jfuse-win/target/*.jar
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: release-jars
+          path: |
+            jfuse/target/*.jar
+            jfuse-api/target/*.jar
+            jfuse-linux-aarch64/target/*.jar
+            jfuse-linux-amd64/target/*.jar
+            jfuse-mac/target/*.jar
+            jfuse-win/target/*.jar
+      - name: Create Release
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+        with:
           prerelease: true
+          token: ${{ secrets.CRYPTOBOT_RELEASE_TOKEN }}
+          generate_release_notes: true
+          body: |-
+            ### Changelog
+            For a list of all notable changes, read the [changelog](/CHANGELOG.md).
+            
+            ### Maven Coordinates
+            ```xml
+              <dependency>
+                <groupId>org.cryptomator</groupId>
+                <artifactId>jfuse</artifactId>
+                <version>${{ github.ref_name }}</version>
+              </dependency>
+            ```
+
+            ### Artifact Checksums
+            jfuse
+            ```txt
+            ${{ steps.checksums.outputs['sha256-jfuse'] }}
+            ```
+            jfuse-api
+            ```txt
+            ${{ steps.checksums.outputs['sha256-jfuse-api'] }}
+            ```
+            jfuse-linux-aarch64
+            ```txt
+            ${{ steps.checksums.outputs['sha256-jfuse-linux-aarch64'] }}
+            ```
+            jfuse-linux-amd64
+            ```txt
+            ${{ steps.checksums.outputs['sha256-jfuse-linux-amd64'] }}
+            ```
+            jfuse-mac
+            ```txt
+            ${{ steps.checksums.outputs['sha256-jfuse-mac'] }}
+            ```
+            jfuse-win
+            ```txt
+            ${{ steps.checksums.outputs['sha256-jfuse-win'] }}
+            ```
