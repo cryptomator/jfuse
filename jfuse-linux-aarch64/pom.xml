@@ -81,7 +81,7 @@
 					<plugin>
 						<groupId>io.github.coffeelibs</groupId>
 						<artifactId>jextract-maven-plugin</artifactId>
-						<version>0.4.0</version>
+						<version>${jextract.version}</version>
 						<configuration>
 							<executable>${jextract.path}</executable>
 							<headerSearchPaths>${linux.headerSearchPath}</headerSearchPaths>
