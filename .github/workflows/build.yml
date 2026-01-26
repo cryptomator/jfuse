@@ -222,8 +222,10 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
-      - name: Ensure to use tagged version
-        run: ./mvnw versions:set --file ./pom.xml -DnewVersion=${GITHUB_REF##*/}
+      - name: Ensure to use tagged version and update build timestamp
+        run: |
+          ./mvnw versions:set --file ./pom.xml -DnewVersion=${GITHUB_REF##*/}
+          ./mvnw versions:set-property --file ./pom.xml -Dproperty=project.build.outputTimestamp -DnewVersion="$(date --iso-8601=seconds)"
       - name: Build
         run: >
           ./mvnw -B install -DskipTests
