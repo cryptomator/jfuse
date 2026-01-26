@@ -84,7 +84,7 @@ public class MirrorIT {
 				yield new PosixMirrorFileSystem(orig, builder.errno());
 			}
 			case MAC -> {
-				if (isFuseTLib()) {
+				if (isFuseTLibAndCIEnvironment()) {
 					flags.add("-ononamedattr");
 				}
 				Files.createDirectories(mirror);
@@ -214,7 +214,7 @@ public class MirrorIT {
 
 	@Nested
 	@DisabledOnOs(OS.WINDOWS) // see remark on https://github.com/cryptomator/jfuse/pull/26
-	@DisabledIf("org.cryptomator.jfuse.tests.MirrorIT#isFuseTLib")
+	@DisabledIf("org.cryptomator.jfuse.tests.MirrorIT#isFuseTLibAndCIEnvironment")
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 	@DisplayName("Extended Attributes")
@@ -282,7 +282,7 @@ public class MirrorIT {
 
 	}
 
-	public static boolean isFuseTLib() {
-		return System.getProperty("fuse.lib.path", "").endsWith("libfuse-t.dylib");
+	public static boolean isFuseTLibAndCIEnvironment() { //see https://github.com/cryptomator/jfuse/issues/147
+		return System.getProperty("fuse.lib.path", "").endsWith("libfuse-t.dylib") && System.getenv("CI") != null;
 	}
 }
