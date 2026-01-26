@@ -37,9 +37,41 @@
 
 	<properties>
 		<maven.deploy.skip>false</maven.deploy.skip>
-		<java.version>22</java.version>
+		<java.version>25</java.version>
 		<jextract.path>${user.home}/.sdkman/candidates/jextract/current/bin/jextract</jextract.path>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- TODO: for reproducible builds, can be removed with Maven 4 -->
+		<project.build.outputTimestamp>2026-01-26T00:00:00Z</project.build.outputTimestamp>
+
+		<jb-annotations.version>26.0.2-1</jb-annotations.version>
+
+		<!-- test dependencies -->
+		<junit.version>6.0.2</junit.version>
+		<mockito.version>5.21.0</mockito.version>
+
+		<!-- build-time dependencies -->
+		<license-generator.version>2.7.0</license-generator.version>
+		<exec-maven.version>3.5.1</exec-maven.version>
+
+		<central-publishing.version>0.8.0</central-publishing.version>
+		<jacoco.version>0.8.14</jacoco.version>
+		<jextract.version>0.4.3</jextract.version>
+		<junit-tree-reporter.version>1.4.0</junit-tree-reporter.version>
+		<mvn-clean.version>3.5.0</mvn-clean.version>
+		<mvn-compiler.version>3.14.1</mvn-compiler.version>
+		<mvn-dependency.version>3.8.1</mvn-dependency.version>
+		<mvn-deploy.version>3.1.4</mvn-deploy.version>
+		<mvn-enforcer.version>3.6.1</mvn-enforcer.version>
+		<mvn-failsafe.version>3.5.4</mvn-failsafe.version>
+		<mvn-javadoc.version>3.11.3</mvn-javadoc.version>
+		<mvn-jar.version>3.5.0</mvn-jar.version>
+		<mvn-gpg.version>3.2.8</mvn-gpg.version>
+		<mvn-resources.version>3.3.1</mvn-resources.version>
+		<mvn-source.version>3.3.1</mvn-source.version>
+		<mvn-surefire.version>3.5.4</mvn-surefire.version>
+
+		<!-- Property used by surefire to determine jacoco engine -->
+		<surefire.jacoco.args></surefire.jacoco.args>
 	</properties>
 
 	<modules>
@@ -55,19 +87,19 @@
 		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
-			<version>26.0.2</version>
+			<version>${jb-annotations.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.12.1</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>5.17.0</version>
+			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -78,12 +110,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>3.8.1</version>
+					<version>${mvn-dependency.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.14.0</version>
+					<version>3.14.1</version>
 					<configuration>
 						<release>${java.version}</release>
 						<encoding>UTF-8</encoding>
@@ -93,57 +125,57 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.5.0</version>
+					<version>${mvn-enforcer.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.4.1</version>
+					<version>${mvn-clean.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-gpg-plugin</artifactId>
-					<version>3.2.7</version>
+					<version>${mvn-gpg.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.4.2</version>
+					<version>${mvn-jar.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>3.3.1</version>
+					<version>${mvn-source.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.11.2</version>
+					<version>${mvn-javadoc.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.5.3</version>
+					<version>${mvn-surefire.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>3.5.3</version>
+					<version>${mvn-failsafe.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.sonatype.central</groupId>
 					<artifactId>central-publishing-maven-plugin</artifactId>
-					<version>0.7.0</version>
+					<version>${central-publishing.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>3.1.4</version>
+					<version>${mvn-deploy.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.13</version>
+					<version>${jacoco.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -151,7 +183,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.8.1</version>
 				<executions>
 					<execution>
 						<id>jar-paths-to-properties</id>
