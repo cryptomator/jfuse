@@ -31,7 +31,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
-        run: mvn -B verify -Dfuse.lib.path="/usr/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so.3" --no-transfer-progress
+        run: ./mvnw -B verify -Dfuse.lib.path="/usr/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so.3" --no-transfer-progress
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-linux-${{ matrix.arch }}
@@ -54,7 +54,7 @@ jobs:
           brew update
           brew install fuse-t
       - name: Maven build
-        run: mvn -B verify -Dfuse.lib.path="/usr/local/lib/libfuse-t.dylib" --no-transfer-progress
+        run: ./mvnw -B verify -Dfuse.lib.path="/usr/local/lib/libfuse-t.dylib" --no-transfer-progress
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-mac
@@ -75,7 +75,7 @@ jobs:
         run: choco install winfsp --version 2.0.23075 -y
       - name: Maven build
         shell: bash # surprise, running maven in pwsh is crappy, see https://stackoverflow.com/q/6347985/4014509
-        run: mvn -B verify -Dfuse.lib.path="C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll" --no-transfer-progress
+        run: ./mvnw -B verify -Dfuse.lib.path="C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll" --no-transfer-progress
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-win
@@ -119,7 +119,7 @@ jobs:
           path: coverage/win
       - name: Analyze
         run: >
-          mvn -B compile -DskipTests
+          ./mvnw -B compile -DskipTests
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
           -Dsonar.projectKey=cryptomator_jfuse
           -Dsonar.coverage.jacoco.xmlReportPaths=${GITHUB_WORKSPACE}/coverage/**/jacoco.xml
