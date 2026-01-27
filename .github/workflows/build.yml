@@ -1,6 +1,8 @@
 name: Build
 on:
   push:
+    tags:
+      - '*'
     branches-ignore:
       - 'dependabot/**'
   pull_request_target:
