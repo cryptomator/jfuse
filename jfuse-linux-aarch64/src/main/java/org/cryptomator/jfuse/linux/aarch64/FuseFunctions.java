@@ -19,11 +19,11 @@ import static java.lang.foreign.ValueLayout.JAVA_LONG;
 class FuseFunctions {
 
 	// see https://github.com/libfuse/libfuse/blob/fuse-3.12.0/include/fuse_lowlevel.h#L1892-L1923
-	private static final FunctionDescriptor FUSE_PARSE_CMDLINE = FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS);
+	private static final FunctionDescriptor PARSE_CMDLINE_DESCRIPTOR = FunctionDescriptor.of(JAVA_INT, ADDRESS, ADDRESS);
 	//https://github.com/libfuse/libfuse/blob/fuse-3.17.4/lib/fuse_lowlevel.c#L2035
-	private static final FunctionDescriptor FUSE_SET_FEATURE_FLAG = FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG);
-	private static final FunctionDescriptor FUSE_UNSET_FEATURE_FLAG = FunctionDescriptor.ofVoid(ADDRESS, JAVA_LONG);
-	private static final FunctionDescriptor FUSE_GET_FEATURE_FLAG = FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG);
+	private static final FunctionDescriptor SET_FEATURE_FLAG_DESCRIPTOR = FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG);
+	private static final FunctionDescriptor UNSET_FEATURE_FLAG_DESCRIPTOR = FunctionDescriptor.ofVoid(ADDRESS, JAVA_LONG);
+	private static final FunctionDescriptor GET_FEATURE_FLAG_DESCRIPTOR = FunctionDescriptor.of(JAVA_INT, ADDRESS, JAVA_LONG);
 
 	private final MethodHandle fuse_parse_cmdline;
 	private final Optional<MethodHandle> fuse_set_feature_flag;
@@ -34,14 +34,14 @@ class FuseFunctions {
 		var lookup = SymbolLookup.loaderLookup();
 		var linker = Linker.nativeLinker();
 		this.fuse_parse_cmdline = lookup.find("fuse_parse_cmdline")
-				.map(symbol -> linker.downcallHandle(symbol, FUSE_PARSE_CMDLINE))
+				.map(symbol -> linker.downcallHandle(symbol, PARSE_CMDLINE_DESCRIPTOR))
 				.orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol fuse_parse_cmdline"));
 		this.fuse_set_feature_flag = lookup.find("fuse_set_feature_flag")
-				.map(symbol -> linker.downcallHandle(symbol, FUSE_SET_FEATURE_FLAG));
+				.map(symbol -> linker.downcallHandle(symbol, SET_FEATURE_FLAG_DESCRIPTOR));
 		this.fuse_unset_feature_flag = lookup.find("fuse_unset_feature_flag")
-				.map(symbol -> linker.downcallHandle(symbol, FUSE_UNSET_FEATURE_FLAG));
+				.map(symbol -> linker.downcallHandle(symbol, UNSET_FEATURE_FLAG_DESCRIPTOR));
 		this.fuse_get_feature_flag = lookup.find("fuse_get_feature_flag")
-				.map(symbol -> linker.downcallHandle(symbol, FUSE_GET_FEATURE_FLAG));
+				.map(symbol -> linker.downcallHandle(symbol, GET_FEATURE_FLAG_DESCRIPTOR));
 	}
 
 	private static class Holder {

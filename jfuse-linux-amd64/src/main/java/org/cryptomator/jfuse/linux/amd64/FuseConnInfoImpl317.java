@@ -12,8 +12,6 @@ class FuseConnInfoImpl317 extends FuseConnInfoImpl {
 
 	@Override
 	public long capableExt() {
-		//old school style
-		//return segment.get(fuse_conn_info.capable_ext$layout().withByteAlignment(1), fuse_conn_info.capable_ext$offset());
 		return fuse_conn_info.capable_ext(segment);
 	}
 
