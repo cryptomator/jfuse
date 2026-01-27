@@ -7,8 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The changelog starts with version 0.7.3.
 Changes to prior versions can be found on the [GitHub release page](https://github.com/cryptomator/jfuse/releases).
 
-## [Unreleased](https://github.com/cryptomator/jfuse/compare/0.7.3...HEAD)
-
+## [0.8.0](https://github.com/cryptomator/jfuse/releases/0.8.0) - tbd
 ### Added
 * Maven wrapper script ([#146](https://github.com/cryptomator/jfuse/pull/103))
 * Support for libfuse 3.17.0 capable_ext and want_ext fields ([#122](https://github.com/cryptomator/jfuse/issues/122))
@@ -20,9 +19,7 @@ Changes to prior versions can be found on the [GitHub release page](https://gith
 
 ## [0.7.3](https://github.com/cryptomator/jfuse/releases/0.7.3) - 2025-04-09
 ### Added
-
 * changelog file
 
 ### Fixed
-
 * reestablish support fo libfuse3 < 3.13.0 (#119, #120)
