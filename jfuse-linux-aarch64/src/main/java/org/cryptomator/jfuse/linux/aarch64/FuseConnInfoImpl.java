@@ -3,10 +3,20 @@ package org.cryptomator.jfuse.linux.aarch64;
 import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_conn_info;
 
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 
-record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
+class FuseConnInfoImpl implements FuseConnInfo {
+
+	protected final MemorySegment segment;
+
+	FuseConnInfoImpl(MemorySegment segment) {
+		this.segment = segment;
+	}
+
+	//mimic record behaviour
+	public MemorySegment segment() {
+		return segment;
+	}
 
 	@Override
 	public int protoMajor() {

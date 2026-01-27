@@ -323,6 +323,7 @@ public interface FuseConnInfo {
 	 * Capability flags that the kernel supports (read-only)
 	 *
 	 * @return {@code capable} value
+	 * @apiNote Since libFUSE 3.17, this field is deprecated left over for ABI compatibility, use capable_ext
 	 */
 	int capable();
 
@@ -333,6 +334,8 @@ public interface FuseConnInfo {
 	 * reasonable default values before calling the init() handler.
 	 *
 	 * @return {@code want} value
+	 * @apiNote Since libFUSE 3.17, this field is deprecated left over for ABI compatibility.
+	 * Use want_ext with the helper functions fuse_set_feature_flag() / fuse_unset_feature_flag()
 	 */
 	int want();
 
@@ -340,6 +343,8 @@ public interface FuseConnInfo {
 	 * Sets the {@link #want()} value.
 	 *
 	 * @param wanted {@code want} value
+	 * @apiNote Since libFUSE 3.17, this field is deprecated left over for ABI compatibility.
+	 * Use want_ext with the helper functions fuse_set_feature_flag() / fuse_unset_feature_flag()
 	 */
 	void setWant(int wanted);
 
@@ -498,5 +503,88 @@ public interface FuseConnInfo {
 	 */
 	default void setAsyncRead(int asyncRead) {
 		//no-op
+	}
+
+	/**
+	 * Extended capability flags that the kernel supports (read-only)
+	 * This field provides full 64-bit capability support.
+	 * <p>
+	 * If the version of the loaded FUSE library is below 3.17, this method does nothing.
+	 *
+	 * @implSpec The default implementation always returns 0.
+	 * @since libFUSE 3.17
+	 */
+	default long capableExt() {
+		return 0;
+	}
+
+	/**
+	 * Extended capability flags that the filesystem wants to enable.
+	 * This field provides full 64-bit capability support.
+	 * <p>
+	 * Don't set this field directly, but use the helper functions
+	 * fuse_set_feature_flag() / fuse_unset_feature_flag()
+	 * <p>
+	 * If the version of the loaded FUSE library is below 3.17, this method does nothing.
+	 *
+	 * @implSpec The default implementation always returns 0.
+	 * @see #setFeatureFlag(long)
+	 * @see #unsetFeatureFlag(long)
+	 * @since libFUSE 3.17
+	 */
+	default long wantExt() {
+		return 0;
+	}
+
+	/**
+	 * Sets the {@link #wantExt()} value.
+	 * <p>
+	 * Deprecated way of setting the wantExt field. Use {@link #setFeatureFlag(long)} instead.
+	 * If the version of the loaded FUSE library is below 3.17, this method does nothing.
+	 *
+	 * @param wantExt {@code want_ext} value
+	 * @implSpec The default implementation is a no-op.
+	 * @since libFUSE 3.17
+	 */
+	default void setWantExt(long wantExt) {
+		//no-op
+	}
+
+	/**
+	 * Set a feature flag in the want_ext field of fuse_conn_info.
+	 *
+	 * @param flag feature flag to be set
+	 * @return {@code true} if the flag was set, {@code false} if the flag is not supported
+	 * @throws UnsupportedOperationException if the loaded fuse library does not implement the method
+	 * @implSpec The default implementation throws {@link UnsupportedOperationException}
+	 * @since libFUSE 3.17
+	 */
+	default boolean setFeatureFlag(long flag) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException("Loaded library does not implement fuse_set_feature_flag");
+	}
+
+	/**
+	 * Unset a feature flag in the want_ext field of fuse_conn_info.
+	 *
+	 * @param flag feature flag to be unset
+	 * @throws UnsupportedOperationException if the loaded fuse library does not implement the method
+	 * @implSpec The default implementation throws {@link UnsupportedOperationException}
+	 * @since libFUSE 3.17
+	 */
+	default void unsetFeatureFlag(long flag) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException("Loaded library does not implement fuse_unset_feature_flag");
+	}
+
+	/**
+	 * Get the value of a feature flag in the want_ext field of fuse_conn_info.
+	 *
+	 * @param flag feature flag to be checked
+	 * @return {@code true} if the flag is set, {@code false} otherwise
+	 * @throws UnsupportedOperationException if the loaded fuse library does not implement the method
+	 * @implSpec The default implementation throws {@link UnsupportedOperationException}
+	 * @since libFUSE 3.17
+	 */
+	default boolean getFeatureFlag(long flag) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException("Loaded library does not implement fuse_get_feature_flag");
 	}
 }

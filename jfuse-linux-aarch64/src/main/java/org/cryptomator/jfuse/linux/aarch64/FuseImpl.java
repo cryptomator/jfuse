@@ -109,7 +109,12 @@ final class FuseImpl extends Fuse {
 	@VisibleForTesting
 	MemorySegment init(MemorySegment conn, MemorySegment cfg) {
 		var connInfo = new FuseConnInfoImpl(conn);
-		connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
+		if (fuse_h.fuse_version() >= 317) {
+			connInfo = new FuseConnInfoImpl317(conn);
+			connInfo.setFeatureFlag(FuseConnInfo.FUSE_CAP_READDIRPLUS);
+		} else {
+			connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
+		}
 		var config = new FuseConfigImpl(cfg);
 		fuseOperations.init(connInfo, config);
 		return MemorySegment.NULL;

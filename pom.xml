@@ -151,6 +151,25 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>${mvn-javadoc.version}</version>
+					<configuration>
+						<tags>
+							<tag>
+								<name>apiNote</name>
+								<placement>a</placement>
+								<head>API Note:</head>
+							</tag>
+							<tag>
+								<name>implSpec</name>
+								<placement>a</placement>
+								<head>Implementation Requirements:</head>
+							</tag>
+							<tag>
+								<name>implNote</name>
+								<placement>a</placement>
+								<head>Implementation Note:</head>
+							</tag>
+						</tags>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
