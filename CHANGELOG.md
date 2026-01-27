@@ -11,10 +11,11 @@ Changes to prior versions can be found on the [GitHub release page](https://gith
 
 ### Added
 * Maven wrapper script ([#146](https://github.com/cryptomator/jfuse/pull/103))
+* Support for libfuse 3.17.0 capable_ext and want_ext fields ([#122](https://github.com/cryptomator/jfuse/issues/122))
 
 ### Changed
 * Pin CI actions and attest build ([#149](https://github.com/cryptomator/jfuse/pull/149))
-* **[BREAKING]** Target JDK 25 for release ([#152](https://github.com/cryptomator/jfuse/pull/152)) 
+* **[BREAKING]** Target JDK 25 for release ([#152](https://github.com/cryptomator/jfuse/pull/152))
 
 
 ## [0.7.3](https://github.com/cryptomator/jfuse/releases/0.7.3) - 2025-04-09
