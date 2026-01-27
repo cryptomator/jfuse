@@ -10,10 +10,14 @@ Changes to prior versions can be found on the [GitHub release page](https://gith
 ## [Unreleased](https://github.com/cryptomator/jfuse/compare/0.7.3...HEAD)
 
 ### Added
-- Maven wrapper script ([#146](https://github.com/cryptomator/jfuse/pull/103))
+* Maven wrapper script ([#146](https://github.com/cryptomator/jfuse/pull/103))
 
-## [0.7.3] - 2025-04-09
+### Changed
+* Pin CI actions and attest build ([#149](https://github.com/cryptomator/jfuse/pull/149))
+* **[BREAKING]** Target JDK 25 for release ([#152](https://github.com/cryptomator/jfuse/pull/152)) 
 
+
+## [0.7.3](https://github.com/cryptomator/jfuse/releases/0.7.3) - 2025-04-09
 ### Added
 
 * changelog file
