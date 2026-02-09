@@ -71,7 +71,7 @@
 								<fileset>
 									<directory>${project.build.sourceDirectory}/org/cryptomator/jfuse/mac/extr</directory>
 									<includes>
-										<include>*.java</include>
+										<include>**/*.java</include>
 									</includes>
 									<followSymlinks>false</followSymlinks>
 								</fileset>
@@ -94,18 +94,23 @@
 									<goal>sources</goal>
 								</goals>
 								<configuration>
-									<headerFile>${project.parent.basedir}/libfuse2/include/fuse.h</headerFile>
-									<targetPackage>org.cryptomator.jfuse.mac.extr.fuse</targetPackage>
+									<headerFile>${project.parent.basedir}/libfuse3/include/fuse.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.mac.extr.fuse3</targetPackage>
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
-										<cPreprocessorMacro>FUSE_USE_VERSION=29</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=317</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
-										<includeFunction>fuse_parse_cmdline</includeFunction>
+										<includeFunction>fuse_version</includeFunction>
+										<includeFunction>fuse_lib_help</includeFunction>
 										<includeFunction>fuse_mount</includeFunction>
-										<includeFunction>fuse_new</includeFunction>
+										<includeFunction>fuse_get_session</includeFunction>
 										<includeFunction>fuse_loop</includeFunction>
+										<includeFunction>fuse_loop_cfg_create</includeFunction>
+										<includeFunction>fuse_loop_cfg_set_clone_fd</includeFunction>
+										<includeFunction>fuse_loop_cfg_set_max_threads</includeFunction>
+										<includeFunction>fuse_loop_cfg_destroy</includeFunction>
 										<includeFunction>fuse_loop_mt</includeFunction>
 										<includeFunction>fuse_exit</includeFunction>
 										<includeFunction>fuse_unmount</includeFunction>
@@ -121,7 +126,27 @@
 										<includeStruct>statvfs</includeStruct>
 										<includeStruct>timespec</includeStruct>
 										<includeStruct>fuse_conn_info</includeStruct>
+										<includeStruct>fuse_config</includeStruct>
 										<includeStruct>fuse_args</includeStruct>
+										<includeStruct>fuse_loop_config_v1</includeStruct>
+									</includeStructs>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jextract-fuse-lowlevel</id>
+								<goals>
+									<goal>sources</goal>
+								</goals>
+								<configuration>
+									<headerFile>${project.parent.basedir}/libfuse3/include/fuse_lowlevel.h</headerFile>
+									<targetPackage>org.cryptomator.jfuse.mac.extr.fuse3_lowlevel</targetPackage>
+									<headerClassName>fuse_lowlevel_h</headerClassName>
+									<cPreprocessorMacros>
+										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
+										<cPreprocessorMacro>FUSE_USE_VERSION=317</cPreprocessorMacro>
+									</cPreprocessorMacros>
+									<includeStructs>
+										<includeStruct>fuse_cmdline_opts</includeStruct>
 									</includeStructs>
 								</configuration>
 							</execution>

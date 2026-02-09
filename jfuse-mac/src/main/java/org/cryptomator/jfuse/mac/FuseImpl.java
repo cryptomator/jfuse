@@ -1,14 +1,16 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.Fuse;
+import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.util.MemoryUtils;
-import org.cryptomator.jfuse.mac.extr.fuse.fuse_args;
-import org.cryptomator.jfuse.mac.extr.fuse.fuse_h;
-import org.cryptomator.jfuse.mac.extr.fuse.fuse_operations;
-import org.cryptomator.jfuse.mac.extr.fuse.timespec;
+import org.cryptomator.jfuse.mac.extr.fuse3.fuse_args;
+import org.cryptomator.jfuse.mac.extr.fuse3.fuse_h;
+import org.cryptomator.jfuse.mac.extr.fuse3.fuse_operations;
+import org.cryptomator.jfuse.mac.extr.fuse3.timespec;
+import org.cryptomator.jfuse.mac.extr.fuse3_lowlevel.fuse_cmdline_opts;
 import org.cryptomator.jfuse.mac.extr.stat.stat_h;
 import org.jetbrains.annotations.VisibleForTesting;
 
@@ -16,8 +18,6 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.util.List;
-
-import static java.lang.foreign.ValueLayout.JAVA_INT;
 
 final class FuseImpl extends Fuse {
 
@@ -28,16 +28,20 @@ final class FuseImpl extends Fuse {
 	@Override
 	protected FuseMount mount(List<String> args) throws FuseMountFailedException {
 		var fuseArgs = parseArgs(args);
-		var ch  = fuse_h.fuse_mount(fuseArgs.mountPoint(), fuseArgs.args());
-		if (MemorySegment.NULL.equals(ch)) {
+		var fuse = createFuseFS(fuseArgs);
+		if (fuse_h.fuse_mount(fuse, fuseArgs.mountPoint()) != 0) {
 			throw new FuseMountFailedException("fuse_mount failed");
 		}
-		var fuse = fuse_h.fuse_new(ch, fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemorySegment.NULL);
+		return new FuseMountImpl(fuse, fuseArgs);
+	}
+
+	@VisibleForTesting
+	MemorySegment createFuseFS(FuseArgs fuseArgs) throws FuseMountFailedException {
+		var fuse = FuseNewHelper.getInstance().fuse_new(fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemorySegment.NULL);
 		if (MemorySegment.NULL.equals(fuse)) {
-			fuse_h.fuse_unmount(fuseArgs.mountPoint(), ch);
 			throw new FuseMountFailedException("fuse_new failed");
 		}
-		return new FuseMountImpl(fuse, ch, fuseArgs);
+		return fuse;
 	}
 
 	@VisibleForTesting
@@ -54,16 +58,16 @@ final class FuseImpl extends Fuse {
 		fuse_args.argv(args, argv);
 		fuse_args.allocated(args, 0);
 
-		var multithreaded = fuseArena.allocate(JAVA_INT, 1);
-		var foreground = fuseArena.allocate(JAVA_INT, 1);
-		var mountPointPtr = fuseArena.allocate(ValueLayout.ADDRESS);
-		int parseResult = fuse_h.fuse_parse_cmdline(args, mountPointPtr, multithreaded, foreground);
+		var opts = fuse_cmdline_opts.allocate(fuseArena);
+		int parseResult = FuseFunctions.fuse_parse_cmdline(args, opts);
 		if (parseResult != 0) {
 			throw new IllegalArgumentException("fuse_parse_cmdline failed to parse " + String.join(" ", cmdLineArgs));
 		}
-		var isMultiThreaded = multithreaded.get(JAVA_INT, 0) == 1;
-		var mountPoint = mountPointPtr.get(ValueLayout.ADDRESS, 0).reinterpret(Long.MAX_VALUE); // unbounded
-		return new FuseArgs(args, mountPoint, isMultiThreaded);
+		if (fuse_cmdline_opts.show_help(opts) == 1) {
+			fuse_h.fuse_lib_help(args);
+			throw new IllegalArgumentException("Flags contained -h or --help. Processing cancelled after printing help");
+		}
+		return new FuseArgs(args, opts);
 	}
 
 	@Override
@@ -78,10 +82,7 @@ final class FuseImpl extends Fuse {
 			case FLUSH -> fuse_operations.flush(fuseOperationsStruct, fuse_operations.flush.allocate(this::flush, fuseArena));
 			case FSYNC -> fuse_operations.fsync(fuseOperationsStruct, fuse_operations.fsync.allocate(this::fsync, fuseArena));
 			case FSYNCDIR -> fuse_operations.fsyncdir(fuseOperationsStruct, fuse_operations.fsyncdir.allocate(this::fsyncdir, fuseArena));
-			case GET_ATTR -> {
-				fuse_operations.getattr(fuseOperationsStruct, fuse_operations.getattr.allocate(this::getattr, fuseArena));
-				fuse_operations.fgetattr(fuseOperationsStruct, fuse_operations.fgetattr.allocate(this::fgetattr, fuseArena));
-			}
+			case GET_ATTR -> fuse_operations.getattr(fuseOperationsStruct, fuse_operations.getattr.allocate(this::getattr, fuseArena));
 			case GET_XATTR -> fuse_operations.getxattr(fuseOperationsStruct, fuse_operations.getxattr.allocate(this::getxattr, fuseArena));
 			case LIST_XATTR -> fuse_operations.listxattr(fuseOperationsStruct, fuse_operations.listxattr.allocate(this::listxattr, fuseArena));
 			case MKDIR -> fuse_operations.mkdir(fuseOperationsStruct, fuse_operations.mkdir.allocate(this::mkdir, fuseArena));
@@ -98,18 +99,24 @@ final class FuseImpl extends Fuse {
 			case SET_XATTR -> fuse_operations.setxattr(fuseOperationsStruct, fuse_operations.setxattr.allocate(this::setxattr, fuseArena));
 			case STATFS -> fuse_operations.statfs(fuseOperationsStruct, fuse_operations.statfs.allocate(this::statfs, fuseArena));
 			case SYMLINK -> fuse_operations.symlink(fuseOperationsStruct, fuse_operations.symlink.allocate(this::symlink, fuseArena));
-			case TRUNCATE -> {
-				fuse_operations.truncate(fuseOperationsStruct, fuse_operations.truncate.allocate(this::truncate, fuseArena));
-				fuse_operations.ftruncate(fuseOperationsStruct, fuse_operations.ftruncate.allocate(this::ftruncate, fuseArena));
-			}
+			case TRUNCATE -> fuse_operations.truncate(fuseOperationsStruct, fuse_operations.truncate.allocate(this::truncate, fuseArena));
 			case UNLINK -> fuse_operations.unlink(fuseOperationsStruct, fuse_operations.unlink.allocate(this::unlink, fuseArena));
 			case UTIMENS -> fuse_operations.utimens(fuseOperationsStruct, fuse_operations.utimens.allocate(this::utimens, fuseArena));
 			case WRITE -> fuse_operations.write(fuseOperationsStruct, fuse_operations.write.allocate(this::write, fuseArena));
 		}
 	}
 
-	private MemorySegment init(MemorySegment conn) {
-		fuseOperations.init(new FuseConnInfoImpl(conn), null);
+	@VisibleForTesting
+	MemorySegment init(MemorySegment conn, MemorySegment cfg) {
+		var connInfo = new FuseConnInfoImpl(conn);
+		if (fuse_h.fuse_version() >= 317) {
+			connInfo = new FuseConnInfoImpl317(conn);
+			connInfo.setFeatureFlag(FuseConnInfo.FUSE_CAP_READDIRPLUS);
+		} else {
+			connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
+		}
+		var config = new FuseConfigImpl(cfg);
+		fuseOperations.init(connInfo, config);
 		return MemorySegment.NULL;
 	}
 
@@ -117,13 +124,13 @@ final class FuseImpl extends Fuse {
 		return fuseOperations.access(path.getString(0), mask);
 	}
 
-	private int chmod(MemorySegment path, short mode) {
-		return fuseOperations.chmod(path.getString(0), mode, null);
+	private int chmod(MemorySegment path, short mode, MemorySegment fi) {
+		return fuseOperations.chmod(path.getString(0), mode, FileInfoImpl.ofNullable(fi));
 	}
 
 	@VisibleForTesting
-	int chown(MemorySegment path, int uid, int gid) {
-		return fuseOperations.chown(path.getString(0), uid, gid, null);
+	int chown(MemorySegment path, int uid, int gid, MemorySegment fi) {
+		return fuseOperations.chown(path.getString(0), uid, gid, FileInfoImpl.ofNullable(fi));
 	}
 
 	private int create(MemorySegment path, short mode, MemorySegment fi) {
@@ -150,8 +157,8 @@ final class FuseImpl extends Fuse {
 	}
 
 	@VisibleForTesting
-	int getattr(MemorySegment path, MemorySegment stat) {
-		return fuseOperations.getattr(path.getString(0), new StatImpl(stat), null);
+	int getattr(MemorySegment path, MemorySegment stat, MemorySegment fi) {
+		return fuseOperations.getattr(path.getString(0), new StatImpl(stat), FileInfoImpl.ofNullable(fi));
 	}
 
 	@VisibleForTesting
@@ -199,9 +206,9 @@ final class FuseImpl extends Fuse {
 		return fuseOperations.read(path.getString(0), buffer, size, offset, new FileInfoImpl(fi));
 	}
 
-	private int readdir(MemorySegment path, MemorySegment buf, MemorySegment filler, long offset, MemorySegment fi) {
+	private int readdir(MemorySegment path, MemorySegment buf, MemorySegment filler, long offset, MemorySegment fi, int flags) {
 		try (var arena = Arena.ofConfined()) {
-			return fuseOperations.readdir(path.getString(0), new DirFillerImpl(buf, filler, arena), offset, new FileInfoImpl(fi), 0);
+			return fuseOperations.readdir(path.getString(0), new DirFillerImpl(buf, filler, arena), offset, new FileInfoImpl(fi), flags);
 		}
 	}
 
@@ -218,8 +225,8 @@ final class FuseImpl extends Fuse {
 		return fuseOperations.releasedir(MemoryUtils.toUtf8StringOrNull(path), new FileInfoImpl(fi));
 	}
 
-	private int rename(MemorySegment oldpath, MemorySegment newpath) {
-		return fuseOperations.rename(oldpath.getString(0), newpath.getString(0), 0);
+	private int rename(MemorySegment oldpath, MemorySegment newpath, int flags) {
+		return fuseOperations.rename(oldpath.getString(0), newpath.getString(0), flags);
 	}
 
 	private int rmdir(MemorySegment path) {
@@ -235,8 +242,8 @@ final class FuseImpl extends Fuse {
 	}
 
 	@VisibleForTesting
-	int truncate(MemorySegment path, long size) {
-		return fuseOperations.truncate(path.getString(0), size, null);
+	int truncate(MemorySegment path, long size, MemorySegment fi) {
+		return fuseOperations.truncate(path.getString(0), size, FileInfoImpl.ofNullable(fi));
 	}
 
 	@VisibleForTesting
@@ -249,7 +256,7 @@ final class FuseImpl extends Fuse {
 	}
 
 	@VisibleForTesting
-	int utimens(MemorySegment path, MemorySegment times) {
+	int utimens(MemorySegment path, MemorySegment times, MemorySegment fi) {
 		try (var arena = Arena.ofConfined()) {
 			if (MemorySegment.NULL.equals(times)) {
 				// set both times to current time
@@ -257,11 +264,11 @@ final class FuseImpl extends Fuse {
 				timespec.tv_sec(segment, 0);
 				timespec.tv_nsec(segment, stat_h.UTIME_NOW());
 				var time = new TimeSpecImpl(segment);
-				return fuseOperations.utimens(path.getString(0), time, time, null);
+				return fuseOperations.utimens(path.getString(0), time, time, FileInfoImpl.ofNullable(fi));
 			} else {
 				var time0 = timespec.asSlice(times, 0);
 				var time1 = timespec.asSlice(times, 1);
-				return fuseOperations.utimens(path.getString(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), null);
+				return fuseOperations.utimens(path.getString(0), new TimeSpecImpl(time0), new TimeSpecImpl(time1), FileInfoImpl.ofNullable(fi));
 			}
 		}
 	}

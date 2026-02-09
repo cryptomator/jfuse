@@ -1,9 +1,8 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.Statvfs;
-import org.cryptomator.jfuse.mac.extr.fuse.statvfs;
+import org.cryptomator.jfuse.mac.extr.fuse3.statvfs;
 
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 
 record StatvfsImpl(MemorySegment segment) implements Statvfs {
