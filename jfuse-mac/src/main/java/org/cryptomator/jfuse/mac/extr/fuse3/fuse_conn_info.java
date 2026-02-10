@@ -30,6 +30,8 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
  *     uint32_t padding : 31;
  *     uint64_t capable_ext;
  *     uint64_t want_ext;
+ *     uint64_t capable_darwin;
+ *     uint64_t want_darwin;
  *     uint32_t reserved[16];
  * }
  * }
@@ -55,6 +57,8 @@ public class fuse_conn_info {
         MemoryLayout.paddingLayout(4),
         fuse_h.C_LONG_LONG.withName("capable_ext"),
         fuse_h.C_LONG_LONG.withName("want_ext"),
+        fuse_h.C_LONG_LONG.withName("capable_darwin"),
+        fuse_h.C_LONG_LONG.withName("want_darwin"),
         MemoryLayout.sequenceLayout(16, fuse_h.C_INT).withName("reserved")
     ).withName("fuse_conn_info");
 
@@ -637,6 +641,94 @@ public class fuse_conn_info {
         struct.set(want_ext$LAYOUT, want_ext$OFFSET, fieldValue);
     }
 
+    private static final OfLong capable_darwin$LAYOUT = (OfLong)$LAYOUT.select(groupElement("capable_darwin"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * uint64_t capable_darwin
+     * }
+     */
+    public static final OfLong capable_darwin$layout() {
+        return capable_darwin$LAYOUT;
+    }
+
+    private static final long capable_darwin$OFFSET = 64;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * uint64_t capable_darwin
+     * }
+     */
+    public static final long capable_darwin$offset() {
+        return capable_darwin$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * uint64_t capable_darwin
+     * }
+     */
+    public static long capable_darwin(MemorySegment struct) {
+        return struct.get(capable_darwin$LAYOUT, capable_darwin$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * uint64_t capable_darwin
+     * }
+     */
+    public static void capable_darwin(MemorySegment struct, long fieldValue) {
+        struct.set(capable_darwin$LAYOUT, capable_darwin$OFFSET, fieldValue);
+    }
+
+    private static final OfLong want_darwin$LAYOUT = (OfLong)$LAYOUT.select(groupElement("want_darwin"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * uint64_t want_darwin
+     * }
+     */
+    public static final OfLong want_darwin$layout() {
+        return want_darwin$LAYOUT;
+    }
+
+    private static final long want_darwin$OFFSET = 72;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * uint64_t want_darwin
+     * }
+     */
+    public static final long want_darwin$offset() {
+        return want_darwin$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * uint64_t want_darwin
+     * }
+     */
+    public static long want_darwin(MemorySegment struct) {
+        return struct.get(want_darwin$LAYOUT, want_darwin$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * uint64_t want_darwin
+     * }
+     */
+    public static void want_darwin(MemorySegment struct, long fieldValue) {
+        struct.set(want_darwin$LAYOUT, want_darwin$OFFSET, fieldValue);
+    }
+
     private static final SequenceLayout reserved$LAYOUT = (SequenceLayout)$LAYOUT.select(groupElement("reserved"));
 
     /**
@@ -649,7 +741,7 @@ public class fuse_conn_info {
         return reserved$LAYOUT;
     }
 
-    private static final long reserved$OFFSET = 64;
+    private static final long reserved$OFFSET = 80;
 
     /**
      * Offset for field:

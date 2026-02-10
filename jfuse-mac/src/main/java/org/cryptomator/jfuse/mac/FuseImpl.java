@@ -46,6 +46,7 @@ final class FuseImpl extends Fuse {
 
 	@VisibleForTesting
 	FuseArgs parseArgs(List<String> cmdLineArgs) throws IllegalArgumentException {
+		System.out.println("DEBUG: cmdLineArgs = " + cmdLineArgs); // Add this
 		var args = fuse_args.allocate(fuseArena);
 		var argc = cmdLineArgs.size();
 		var argv = fuseArena.allocate(ValueLayout.ADDRESS, argc + 1L);
@@ -167,13 +168,13 @@ final class FuseImpl extends Fuse {
 	}
 
 	@VisibleForTesting
-	int getxattr(MemorySegment path, MemorySegment name, MemorySegment value, long size) {
+	int getxattr(MemorySegment path, MemorySegment name, MemorySegment value, long size, long position) {
 		var buffer = value.reinterpret(size).asByteBuffer();
 		return fuseOperations.getxattr(path.getString(0), name.getString(0), buffer);
 	}
 
 	@VisibleForTesting
-	int setxattr(MemorySegment path, MemorySegment name, MemorySegment value, long size, int flags) {
+	int setxattr(MemorySegment path, MemorySegment name, MemorySegment value, long size, int flags, long position) {
 		var buffer = value.reinterpret(size).asByteBuffer();
 		return fuseOperations.setxattr(path.getString(0), name.getString(0), buffer, flags);
 	}
@@ -234,7 +235,7 @@ final class FuseImpl extends Fuse {
 	}
 
 	private int statfs(MemorySegment path, MemorySegment statvfs) {
-		return fuseOperations.statfs(path.getString(0), new StatvfsImpl(statvfs));
+		return fuseOperations.statfs(path.getString(0), new StatfsImpl(statvfs));
 	}
 
 	private int symlink(MemorySegment linkname, MemorySegment target) {

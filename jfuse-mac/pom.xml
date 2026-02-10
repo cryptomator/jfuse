@@ -94,12 +94,13 @@
 									<goal>sources</goal>
 								</goals>
 								<configuration>
-									<headerFile>${project.parent.basedir}/libfuse3/include/fuse.h</headerFile>
+									<headerFile>/usr/local/include/fuse3/fuse.h</headerFile>
 									<targetPackage>org.cryptomator.jfuse.mac.extr.fuse3</targetPackage>
 									<headerClassName>fuse_h</headerClassName>
 									<cPreprocessorMacros>
 										<cPreprocessorMacro>_FILE_OFFSET_BITS=64</cPreprocessorMacro>
 										<cPreprocessorMacro>FUSE_USE_VERSION=317</cPreprocessorMacro>
+										<cPreprocessorMacro>LIBFUSE_BUILT_WITH_VERSIONED_SYMBOLS=1</cPreprocessorMacro>
 									</cPreprocessorMacros>
 									<includeFunctions>
 										<includeFunction>fuse_version</includeFunction>
@@ -123,7 +124,8 @@
 										<includeStruct>fuse_operations</includeStruct>
 										<includeStruct>fuse_file_info</includeStruct>
 										<includeStruct>stat</includeStruct>
-										<includeStruct>statvfs</includeStruct>
+										<includeStruct>fsid</includeStruct>
+										<includeStruct>statfs</includeStruct>
 										<includeStruct>timespec</includeStruct>
 										<includeStruct>fuse_conn_info</includeStruct>
 										<includeStruct>fuse_config</includeStruct>
@@ -138,7 +140,7 @@
 									<goal>sources</goal>
 								</goals>
 								<configuration>
-									<headerFile>${project.parent.basedir}/libfuse3/include/fuse_lowlevel.h</headerFile>
+									<headerFile>/usr/local/include/fuse3/fuse_lowlevel.h</headerFile>
 									<targetPackage>org.cryptomator.jfuse.mac.extr.fuse3_lowlevel</targetPackage>
 									<headerClassName>fuse_lowlevel_h</headerClassName>
 									<cPreprocessorMacros>

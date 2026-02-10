@@ -310,7 +310,7 @@ public class FuseImplTest {
 
 				Mockito.doReturn(42).when(fuseOps).getxattr(Mockito.eq("/foo"), Mockito.eq("bar"), Mockito.any());
 
-				var result = fuseImpl.getxattr(path, name, value, 100);
+				var result = fuseImpl.getxattr(path, name, value, 100, 0);
 
 				Assertions.assertEquals(42, result);
 			}
@@ -326,7 +326,7 @@ public class FuseImplTest {
 
 				Mockito.doReturn(42).when(fuseOps).setxattr(Mockito.eq("/foo"), Mockito.eq("bar"), Mockito.any(), Mockito.anyInt());
 
-				var result = fuseImpl.setxattr(path, name, value, 100, 0xDEADBEEF);
+				var result = fuseImpl.setxattr(path, name, value, 100, 0xDEADBEEF, 0);
 
 				Assertions.assertEquals(42, result);
 			}

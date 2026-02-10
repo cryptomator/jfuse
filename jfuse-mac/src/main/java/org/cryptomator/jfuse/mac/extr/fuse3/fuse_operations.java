@@ -15,7 +15,8 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
 /**
  * {@snippet lang=c :
  * struct fuse_operations {
- *     int (*getattr)(const char *, struct stat *, struct fuse_file_info *);
+ *     typeof(int (*)(const char *, struct fuse_darwin_attr *, struct fuse_file_info *)) getattr;
+ *     int (*setattr)(const char *, struct fuse_darwin_attr *, int, struct fuse_file_info *);
  *     int (*readlink)(const char *, char *, size_t);
  *     int (*mknod)(const char *, mode_t, dev_t);
  *     int (*mkdir)(const char *, mode_t);
@@ -30,16 +31,16 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
  *     int (*open)(const char *, struct fuse_file_info *);
  *     int (*read)(const char *, char *, size_t, off_t, struct fuse_file_info *);
  *     int (*write)(const char *, const char *, size_t, off_t, struct fuse_file_info *);
- *     int (*statfs)(const char *, struct statvfs *);
+ *     typeof(int (*)(const char *, struct statfs *)) statfs;
  *     int (*flush)(const char *, struct fuse_file_info *);
  *     int (*release)(const char *, struct fuse_file_info *);
  *     int (*fsync)(const char *, int, struct fuse_file_info *);
- *     int (*setxattr)(const char *, const char *, const char *, size_t, int);
- *     int (*getxattr)(const char *, const char *, char *, size_t);
+ *     typeof(int (*)(const char *, const char *, const char *, size_t, int, uint32_t)) setxattr;
+ *     typeof(int (*)(const char *, const char *, char *, size_t, uint32_t)) getxattr;
  *     int (*listxattr)(const char *, char *, size_t);
  *     int (*removexattr)(const char *, const char *);
  *     int (*opendir)(const char *, struct fuse_file_info *);
- *     int (*readdir)(const char *, void *, fuse_fill_dir_t, off_t, struct fuse_file_info *, enum fuse_readdir_flags);
+ *     typeof(int (*)(const char *, void *, fuse_darwin_fill_dir_t, off_t, struct fuse_file_info *, enum fuse_readdir_flags)) readdir;
  *     int (*releasedir)(const char *, struct fuse_file_info *);
  *     int (*fsyncdir)(const char *, int, struct fuse_file_info *);
  *     void *(*init)(struct fuse_conn_info *, struct fuse_config *);
@@ -47,7 +48,7 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
  *     int (*access)(const char *, int);
  *     int (*create)(const char *, mode_t, struct fuse_file_info *);
  *     int (*lock)(const char *, struct fuse_file_info *, int, struct flock *);
- *     int (*utimens)(const char *, const struct timespec *, struct fuse_file_info *);
+ *     typeof(int (*)(const char *, const struct timespec *, struct fuse_file_info *)) utimens;
  *     int (*bmap)(const char *, size_t, uint64_t *);
  *     int (*ioctl)(const char *, unsigned int, void *, struct fuse_file_info *, unsigned int, void *);
  *     int (*poll)(const char *, struct fuse_file_info *, struct fuse_pollhandle *, unsigned int *);
@@ -57,6 +58,9 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
  *     int (*fallocate)(const char *, int, off_t, off_t, struct fuse_file_info *);
  *     ssize_t (*copy_file_range)(const char *, struct fuse_file_info *, off_t, const char *, struct fuse_file_info *, off_t, size_t, int);
  *     off_t (*lseek)(const char *, off_t, int, struct fuse_file_info *);
+ *     int (*chflags)(const char *, struct fuse_file_info *, unsigned int);
+ *     int (*setvolname)(const char *);
+ *     void (*monitor)(const char *, uint32_t);
  * }
  * }
  */
@@ -68,6 +72,7 @@ public class fuse_operations {
 
     private static final GroupLayout $LAYOUT = MemoryLayout.structLayout(
         fuse_h.C_POINTER.withName("getattr"),
+        fuse_h.C_POINTER.withName("setattr"),
         fuse_h.C_POINTER.withName("readlink"),
         fuse_h.C_POINTER.withName("mknod"),
         fuse_h.C_POINTER.withName("mkdir"),
@@ -108,7 +113,10 @@ public class fuse_operations {
         fuse_h.C_POINTER.withName("flock"),
         fuse_h.C_POINTER.withName("fallocate"),
         fuse_h.C_POINTER.withName("copy_file_range"),
-        fuse_h.C_POINTER.withName("lseek")
+        fuse_h.C_POINTER.withName("lseek"),
+        fuse_h.C_POINTER.withName("chflags"),
+        fuse_h.C_POINTER.withName("setvolname"),
+        fuse_h.C_POINTER.withName("monitor")
     ).withName("fuse_operations");
 
     /**
@@ -120,7 +128,7 @@ public class fuse_operations {
 
     /**
      * {@snippet lang=c :
-     * int (*getattr)(const char *, struct stat *, struct fuse_file_info *)
+     * typeof(int (*)(const char *, struct fuse_darwin_attr *, struct fuse_file_info *)) getattr
      * }
      */
     public static class getattr {
@@ -179,7 +187,7 @@ public class fuse_operations {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int (*getattr)(const char *, struct stat *, struct fuse_file_info *)
+     * typeof(int (*)(const char *, struct fuse_darwin_attr *, struct fuse_file_info *)) getattr
      * }
      */
     public static final AddressLayout getattr$layout() {
@@ -191,7 +199,7 @@ public class fuse_operations {
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int (*getattr)(const char *, struct stat *, struct fuse_file_info *)
+     * typeof(int (*)(const char *, struct fuse_darwin_attr *, struct fuse_file_info *)) getattr
      * }
      */
     public static final long getattr$offset() {
@@ -201,7 +209,7 @@ public class fuse_operations {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int (*getattr)(const char *, struct stat *, struct fuse_file_info *)
+     * typeof(int (*)(const char *, struct fuse_darwin_attr *, struct fuse_file_info *)) getattr
      * }
      */
     public static MemorySegment getattr(MemorySegment struct) {
@@ -211,11 +219,112 @@ public class fuse_operations {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int (*getattr)(const char *, struct stat *, struct fuse_file_info *)
+     * typeof(int (*)(const char *, struct fuse_darwin_attr *, struct fuse_file_info *)) getattr
      * }
      */
     public static void getattr(MemorySegment struct, MemorySegment fieldValue) {
         struct.set(getattr$LAYOUT, getattr$OFFSET, fieldValue);
+    }
+
+    /**
+     * {@snippet lang=c :
+     * int (*setattr)(const char *, struct fuse_darwin_attr *, int, struct fuse_file_info *)
+     * }
+     */
+    public static class setattr {
+
+        setattr() {
+            // Should not be called directly
+        }
+
+        /**
+         * The function pointer signature, expressed as a functional interface
+         */
+        public interface Function {
+            int apply(MemorySegment _x0, MemorySegment _x1, int _x2, MemorySegment _x3);
+        }
+
+        private static final FunctionDescriptor $DESC = FunctionDescriptor.of(
+            fuse_h.C_INT,
+            fuse_h.C_POINTER,
+            fuse_h.C_POINTER,
+            fuse_h.C_INT,
+            fuse_h.C_POINTER
+        );
+
+        /**
+         * The descriptor of this function pointer
+         */
+        public static FunctionDescriptor descriptor() {
+            return $DESC;
+        }
+
+        private static final MethodHandle UP$MH = fuse_h.upcallHandle(setattr.Function.class, "apply", $DESC);
+
+        /**
+         * Allocates a new upcall stub, whose implementation is defined by {@code fi}.
+         * The lifetime of the returned segment is managed by {@code arena}
+         */
+        public static MemorySegment allocate(setattr.Function fi, Arena arena) {
+            return Linker.nativeLinker().upcallStub(UP$MH.bindTo(fi), $DESC, arena);
+        }
+
+        private static final MethodHandle DOWN$MH = Linker.nativeLinker().downcallHandle($DESC);
+
+        /**
+         * Invoke the upcall stub {@code funcPtr}, with given parameters
+         */
+        public static int invoke(MemorySegment funcPtr,MemorySegment _x0, MemorySegment _x1, int _x2, MemorySegment _x3) {
+            try {
+                return (int) DOWN$MH.invokeExact(funcPtr, _x0, _x1, _x2, _x3);
+            } catch (Throwable ex$) {
+                throw new AssertionError("should not reach here", ex$);
+            }
+        }
+    }
+
+    private static final AddressLayout setattr$LAYOUT = (AddressLayout)$LAYOUT.select(groupElement("setattr"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * int (*setattr)(const char *, struct fuse_darwin_attr *, int, struct fuse_file_info *)
+     * }
+     */
+    public static final AddressLayout setattr$layout() {
+        return setattr$LAYOUT;
+    }
+
+    private static final long setattr$OFFSET = 8;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * int (*setattr)(const char *, struct fuse_darwin_attr *, int, struct fuse_file_info *)
+     * }
+     */
+    public static final long setattr$offset() {
+        return setattr$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * int (*setattr)(const char *, struct fuse_darwin_attr *, int, struct fuse_file_info *)
+     * }
+     */
+    public static MemorySegment setattr(MemorySegment struct) {
+        return struct.get(setattr$LAYOUT, setattr$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * int (*setattr)(const char *, struct fuse_darwin_attr *, int, struct fuse_file_info *)
+     * }
+     */
+    public static void setattr(MemorySegment struct, MemorySegment fieldValue) {
+        struct.set(setattr$LAYOUT, setattr$OFFSET, fieldValue);
     }
 
     /**
@@ -286,7 +395,7 @@ public class fuse_operations {
         return readlink$LAYOUT;
     }
 
-    private static final long readlink$OFFSET = 8;
+    private static final long readlink$OFFSET = 16;
 
     /**
      * Offset for field:
@@ -386,7 +495,7 @@ public class fuse_operations {
         return mknod$LAYOUT;
     }
 
-    private static final long mknod$OFFSET = 16;
+    private static final long mknod$OFFSET = 24;
 
     /**
      * Offset for field:
@@ -485,7 +594,7 @@ public class fuse_operations {
         return mkdir$LAYOUT;
     }
 
-    private static final long mkdir$OFFSET = 24;
+    private static final long mkdir$OFFSET = 32;
 
     /**
      * Offset for field:
@@ -583,7 +692,7 @@ public class fuse_operations {
         return unlink$LAYOUT;
     }
 
-    private static final long unlink$OFFSET = 32;
+    private static final long unlink$OFFSET = 40;
 
     /**
      * Offset for field:
@@ -681,7 +790,7 @@ public class fuse_operations {
         return rmdir$LAYOUT;
     }
 
-    private static final long rmdir$OFFSET = 40;
+    private static final long rmdir$OFFSET = 48;
 
     /**
      * Offset for field:
@@ -780,7 +889,7 @@ public class fuse_operations {
         return symlink$LAYOUT;
     }
 
-    private static final long symlink$OFFSET = 48;
+    private static final long symlink$OFFSET = 56;
 
     /**
      * Offset for field:
@@ -880,7 +989,7 @@ public class fuse_operations {
         return rename$LAYOUT;
     }
 
-    private static final long rename$OFFSET = 56;
+    private static final long rename$OFFSET = 64;
 
     /**
      * Offset for field:
@@ -979,7 +1088,7 @@ public class fuse_operations {
         return link$LAYOUT;
     }
 
-    private static final long link$OFFSET = 64;
+    private static final long link$OFFSET = 72;
 
     /**
      * Offset for field:
@@ -1079,7 +1188,7 @@ public class fuse_operations {
         return chmod$LAYOUT;
     }
 
-    private static final long chmod$OFFSET = 72;
+    private static final long chmod$OFFSET = 80;
 
     /**
      * Offset for field:
@@ -1180,7 +1289,7 @@ public class fuse_operations {
         return chown$LAYOUT;
     }
 
-    private static final long chown$OFFSET = 80;
+    private static final long chown$OFFSET = 88;
 
     /**
      * Offset for field:
@@ -1280,7 +1389,7 @@ public class fuse_operations {
         return truncate$LAYOUT;
     }
 
-    private static final long truncate$OFFSET = 88;
+    private static final long truncate$OFFSET = 96;
 
     /**
      * Offset for field:
@@ -1379,7 +1488,7 @@ public class fuse_operations {
         return open$LAYOUT;
     }
 
-    private static final long open$OFFSET = 96;
+    private static final long open$OFFSET = 104;
 
     /**
      * Offset for field:
@@ -1481,7 +1590,7 @@ public class fuse_operations {
         return read$LAYOUT;
     }
 
-    private static final long read$OFFSET = 104;
+    private static final long read$OFFSET = 112;
 
     /**
      * Offset for field:
@@ -1583,7 +1692,7 @@ public class fuse_operations {
         return write$LAYOUT;
     }
 
-    private static final long write$OFFSET = 112;
+    private static final long write$OFFSET = 120;
 
     /**
      * Offset for field:
@@ -1617,7 +1726,7 @@ public class fuse_operations {
 
     /**
      * {@snippet lang=c :
-     * int (*statfs)(const char *, struct statvfs *)
+     * typeof(int (*)(const char *, struct statfs *)) statfs
      * }
      */
     public static class statfs {
@@ -1675,19 +1784,19 @@ public class fuse_operations {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int (*statfs)(const char *, struct statvfs *)
+     * typeof(int (*)(const char *, struct statfs *)) statfs
      * }
      */
     public static final AddressLayout statfs$layout() {
         return statfs$LAYOUT;
     }
 
-    private static final long statfs$OFFSET = 120;
+    private static final long statfs$OFFSET = 128;
 
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int (*statfs)(const char *, struct statvfs *)
+     * typeof(int (*)(const char *, struct statfs *)) statfs
      * }
      */
     public static final long statfs$offset() {
@@ -1697,7 +1806,7 @@ public class fuse_operations {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int (*statfs)(const char *, struct statvfs *)
+     * typeof(int (*)(const char *, struct statfs *)) statfs
      * }
      */
     public static MemorySegment statfs(MemorySegment struct) {
@@ -1707,7 +1816,7 @@ public class fuse_operations {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int (*statfs)(const char *, struct statvfs *)
+     * typeof(int (*)(const char *, struct statfs *)) statfs
      * }
      */
     public static void statfs(MemorySegment struct, MemorySegment fieldValue) {
@@ -1781,7 +1890,7 @@ public class fuse_operations {
         return flush$LAYOUT;
     }
 
-    private static final long flush$OFFSET = 128;
+    private static final long flush$OFFSET = 136;
 
     /**
      * Offset for field:
@@ -1880,7 +1989,7 @@ public class fuse_operations {
         return release$LAYOUT;
     }
 
-    private static final long release$OFFSET = 136;
+    private static final long release$OFFSET = 144;
 
     /**
      * Offset for field:
@@ -1980,7 +2089,7 @@ public class fuse_operations {
         return fsync$LAYOUT;
     }
 
-    private static final long fsync$OFFSET = 144;
+    private static final long fsync$OFFSET = 152;
 
     /**
      * Offset for field:
@@ -2014,12 +2123,115 @@ public class fuse_operations {
 
     /**
      * {@snippet lang=c :
-     * int (*setxattr)(const char *, const char *, const char *, size_t, int)
+     * typeof(int (*)(const char *, const char *, const char *, size_t, int, uint32_t)) setxattr
      * }
      */
     public static class setxattr {
 
         setxattr() {
+            // Should not be called directly
+        }
+
+        /**
+         * The function pointer signature, expressed as a functional interface
+         */
+        public interface Function {
+            int apply(MemorySegment _x0, MemorySegment _x1, MemorySegment _x2, long _x3, int _x4, int _x5);
+        }
+
+        private static final FunctionDescriptor $DESC = FunctionDescriptor.of(
+            fuse_h.C_INT,
+            fuse_h.C_POINTER,
+            fuse_h.C_POINTER,
+            fuse_h.C_POINTER,
+            fuse_h.C_LONG,
+            fuse_h.C_INT,
+            fuse_h.C_INT
+        );
+
+        /**
+         * The descriptor of this function pointer
+         */
+        public static FunctionDescriptor descriptor() {
+            return $DESC;
+        }
+
+        private static final MethodHandle UP$MH = fuse_h.upcallHandle(setxattr.Function.class, "apply", $DESC);
+
+        /**
+         * Allocates a new upcall stub, whose implementation is defined by {@code fi}.
+         * The lifetime of the returned segment is managed by {@code arena}
+         */
+        public static MemorySegment allocate(setxattr.Function fi, Arena arena) {
+            return Linker.nativeLinker().upcallStub(UP$MH.bindTo(fi), $DESC, arena);
+        }
+
+        private static final MethodHandle DOWN$MH = Linker.nativeLinker().downcallHandle($DESC);
+
+        /**
+         * Invoke the upcall stub {@code funcPtr}, with given parameters
+         */
+        public static int invoke(MemorySegment funcPtr,MemorySegment _x0, MemorySegment _x1, MemorySegment _x2, long _x3, int _x4, int _x5) {
+            try {
+                return (int) DOWN$MH.invokeExact(funcPtr, _x0, _x1, _x2, _x3, _x4, _x5);
+            } catch (Throwable ex$) {
+                throw new AssertionError("should not reach here", ex$);
+            }
+        }
+    }
+
+    private static final AddressLayout setxattr$LAYOUT = (AddressLayout)$LAYOUT.select(groupElement("setxattr"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * typeof(int (*)(const char *, const char *, const char *, size_t, int, uint32_t)) setxattr
+     * }
+     */
+    public static final AddressLayout setxattr$layout() {
+        return setxattr$LAYOUT;
+    }
+
+    private static final long setxattr$OFFSET = 160;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * typeof(int (*)(const char *, const char *, const char *, size_t, int, uint32_t)) setxattr
+     * }
+     */
+    public static final long setxattr$offset() {
+        return setxattr$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * typeof(int (*)(const char *, const char *, const char *, size_t, int, uint32_t)) setxattr
+     * }
+     */
+    public static MemorySegment setxattr(MemorySegment struct) {
+        return struct.get(setxattr$LAYOUT, setxattr$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * typeof(int (*)(const char *, const char *, const char *, size_t, int, uint32_t)) setxattr
+     * }
+     */
+    public static void setxattr(MemorySegment struct, MemorySegment fieldValue) {
+        struct.set(setxattr$LAYOUT, setxattr$OFFSET, fieldValue);
+    }
+
+    /**
+     * {@snippet lang=c :
+     * typeof(int (*)(const char *, const char *, char *, size_t, uint32_t)) getxattr
+     * }
+     */
+    public static class getxattr {
+
+        getxattr() {
             // Should not be called directly
         }
 
@@ -2046,13 +2258,13 @@ public class fuse_operations {
             return $DESC;
         }
 
-        private static final MethodHandle UP$MH = fuse_h.upcallHandle(setxattr.Function.class, "apply", $DESC);
+        private static final MethodHandle UP$MH = fuse_h.upcallHandle(getxattr.Function.class, "apply", $DESC);
 
         /**
          * Allocates a new upcall stub, whose implementation is defined by {@code fi}.
          * The lifetime of the returned segment is managed by {@code arena}
          */
-        public static MemorySegment allocate(setxattr.Function fi, Arena arena) {
+        public static MemorySegment allocate(getxattr.Function fi, Arena arena) {
             return Linker.nativeLinker().upcallStub(UP$MH.bindTo(fi), $DESC, arena);
         }
 
@@ -2070,125 +2282,24 @@ public class fuse_operations {
         }
     }
 
-    private static final AddressLayout setxattr$LAYOUT = (AddressLayout)$LAYOUT.select(groupElement("setxattr"));
-
-    /**
-     * Layout for field:
-     * {@snippet lang=c :
-     * int (*setxattr)(const char *, const char *, const char *, size_t, int)
-     * }
-     */
-    public static final AddressLayout setxattr$layout() {
-        return setxattr$LAYOUT;
-    }
-
-    private static final long setxattr$OFFSET = 152;
-
-    /**
-     * Offset for field:
-     * {@snippet lang=c :
-     * int (*setxattr)(const char *, const char *, const char *, size_t, int)
-     * }
-     */
-    public static final long setxattr$offset() {
-        return setxattr$OFFSET;
-    }
-
-    /**
-     * Getter for field:
-     * {@snippet lang=c :
-     * int (*setxattr)(const char *, const char *, const char *, size_t, int)
-     * }
-     */
-    public static MemorySegment setxattr(MemorySegment struct) {
-        return struct.get(setxattr$LAYOUT, setxattr$OFFSET);
-    }
-
-    /**
-     * Setter for field:
-     * {@snippet lang=c :
-     * int (*setxattr)(const char *, const char *, const char *, size_t, int)
-     * }
-     */
-    public static void setxattr(MemorySegment struct, MemorySegment fieldValue) {
-        struct.set(setxattr$LAYOUT, setxattr$OFFSET, fieldValue);
-    }
-
-    /**
-     * {@snippet lang=c :
-     * int (*getxattr)(const char *, const char *, char *, size_t)
-     * }
-     */
-    public static class getxattr {
-
-        getxattr() {
-            // Should not be called directly
-        }
-
-        /**
-         * The function pointer signature, expressed as a functional interface
-         */
-        public interface Function {
-            int apply(MemorySegment _x0, MemorySegment _x1, MemorySegment _x2, long _x3);
-        }
-
-        private static final FunctionDescriptor $DESC = FunctionDescriptor.of(
-            fuse_h.C_INT,
-            fuse_h.C_POINTER,
-            fuse_h.C_POINTER,
-            fuse_h.C_POINTER,
-            fuse_h.C_LONG
-        );
-
-        /**
-         * The descriptor of this function pointer
-         */
-        public static FunctionDescriptor descriptor() {
-            return $DESC;
-        }
-
-        private static final MethodHandle UP$MH = fuse_h.upcallHandle(getxattr.Function.class, "apply", $DESC);
-
-        /**
-         * Allocates a new upcall stub, whose implementation is defined by {@code fi}.
-         * The lifetime of the returned segment is managed by {@code arena}
-         */
-        public static MemorySegment allocate(getxattr.Function fi, Arena arena) {
-            return Linker.nativeLinker().upcallStub(UP$MH.bindTo(fi), $DESC, arena);
-        }
-
-        private static final MethodHandle DOWN$MH = Linker.nativeLinker().downcallHandle($DESC);
-
-        /**
-         * Invoke the upcall stub {@code funcPtr}, with given parameters
-         */
-        public static int invoke(MemorySegment funcPtr,MemorySegment _x0, MemorySegment _x1, MemorySegment _x2, long _x3) {
-            try {
-                return (int) DOWN$MH.invokeExact(funcPtr, _x0, _x1, _x2, _x3);
-            } catch (Throwable ex$) {
-                throw new AssertionError("should not reach here", ex$);
-            }
-        }
-    }
-
     private static final AddressLayout getxattr$LAYOUT = (AddressLayout)$LAYOUT.select(groupElement("getxattr"));
 
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int (*getxattr)(const char *, const char *, char *, size_t)
+     * typeof(int (*)(const char *, const char *, char *, size_t, uint32_t)) getxattr
      * }
      */
     public static final AddressLayout getxattr$layout() {
         return getxattr$LAYOUT;
     }
 
-    private static final long getxattr$OFFSET = 160;
+    private static final long getxattr$OFFSET = 168;
 
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int (*getxattr)(const char *, const char *, char *, size_t)
+     * typeof(int (*)(const char *, const char *, char *, size_t, uint32_t)) getxattr
      * }
      */
     public static final long getxattr$offset() {
@@ -2198,7 +2309,7 @@ public class fuse_operations {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int (*getxattr)(const char *, const char *, char *, size_t)
+     * typeof(int (*)(const char *, const char *, char *, size_t, uint32_t)) getxattr
      * }
      */
     public static MemorySegment getxattr(MemorySegment struct) {
@@ -2208,7 +2319,7 @@ public class fuse_operations {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int (*getxattr)(const char *, const char *, char *, size_t)
+     * typeof(int (*)(const char *, const char *, char *, size_t, uint32_t)) getxattr
      * }
      */
     public static void getxattr(MemorySegment struct, MemorySegment fieldValue) {
@@ -2283,7 +2394,7 @@ public class fuse_operations {
         return listxattr$LAYOUT;
     }
 
-    private static final long listxattr$OFFSET = 168;
+    private static final long listxattr$OFFSET = 176;
 
     /**
      * Offset for field:
@@ -2382,7 +2493,7 @@ public class fuse_operations {
         return removexattr$LAYOUT;
     }
 
-    private static final long removexattr$OFFSET = 176;
+    private static final long removexattr$OFFSET = 184;
 
     /**
      * Offset for field:
@@ -2481,7 +2592,7 @@ public class fuse_operations {
         return opendir$LAYOUT;
     }
 
-    private static final long opendir$OFFSET = 184;
+    private static final long opendir$OFFSET = 192;
 
     /**
      * Offset for field:
@@ -2515,7 +2626,7 @@ public class fuse_operations {
 
     /**
      * {@snippet lang=c :
-     * int (*readdir)(const char *, void *, fuse_fill_dir_t, off_t, struct fuse_file_info *, enum fuse_readdir_flags)
+     * typeof(int (*)(const char *, void *, fuse_darwin_fill_dir_t, off_t, struct fuse_file_info *, enum fuse_readdir_flags)) readdir
      * }
      */
     public static class readdir {
@@ -2577,19 +2688,19 @@ public class fuse_operations {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int (*readdir)(const char *, void *, fuse_fill_dir_t, off_t, struct fuse_file_info *, enum fuse_readdir_flags)
+     * typeof(int (*)(const char *, void *, fuse_darwin_fill_dir_t, off_t, struct fuse_file_info *, enum fuse_readdir_flags)) readdir
      * }
      */
     public static final AddressLayout readdir$layout() {
         return readdir$LAYOUT;
     }
 
-    private static final long readdir$OFFSET = 192;
+    private static final long readdir$OFFSET = 200;
 
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int (*readdir)(const char *, void *, fuse_fill_dir_t, off_t, struct fuse_file_info *, enum fuse_readdir_flags)
+     * typeof(int (*)(const char *, void *, fuse_darwin_fill_dir_t, off_t, struct fuse_file_info *, enum fuse_readdir_flags)) readdir
      * }
      */
     public static final long readdir$offset() {
@@ -2599,7 +2710,7 @@ public class fuse_operations {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int (*readdir)(const char *, void *, fuse_fill_dir_t, off_t, struct fuse_file_info *, enum fuse_readdir_flags)
+     * typeof(int (*)(const char *, void *, fuse_darwin_fill_dir_t, off_t, struct fuse_file_info *, enum fuse_readdir_flags)) readdir
      * }
      */
     public static MemorySegment readdir(MemorySegment struct) {
@@ -2609,7 +2720,7 @@ public class fuse_operations {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int (*readdir)(const char *, void *, fuse_fill_dir_t, off_t, struct fuse_file_info *, enum fuse_readdir_flags)
+     * typeof(int (*)(const char *, void *, fuse_darwin_fill_dir_t, off_t, struct fuse_file_info *, enum fuse_readdir_flags)) readdir
      * }
      */
     public static void readdir(MemorySegment struct, MemorySegment fieldValue) {
@@ -2683,7 +2794,7 @@ public class fuse_operations {
         return releasedir$LAYOUT;
     }
 
-    private static final long releasedir$OFFSET = 200;
+    private static final long releasedir$OFFSET = 208;
 
     /**
      * Offset for field:
@@ -2783,7 +2894,7 @@ public class fuse_operations {
         return fsyncdir$LAYOUT;
     }
 
-    private static final long fsyncdir$OFFSET = 208;
+    private static final long fsyncdir$OFFSET = 216;
 
     /**
      * Offset for field:
@@ -2882,7 +2993,7 @@ public class fuse_operations {
         return init$LAYOUT;
     }
 
-    private static final long init$OFFSET = 216;
+    private static final long init$OFFSET = 224;
 
     /**
      * Offset for field:
@@ -2979,7 +3090,7 @@ public class fuse_operations {
         return destroy$LAYOUT;
     }
 
-    private static final long destroy$OFFSET = 224;
+    private static final long destroy$OFFSET = 232;
 
     /**
      * Offset for field:
@@ -3078,7 +3189,7 @@ public class fuse_operations {
         return access$LAYOUT;
     }
 
-    private static final long access$OFFSET = 232;
+    private static final long access$OFFSET = 240;
 
     /**
      * Offset for field:
@@ -3178,7 +3289,7 @@ public class fuse_operations {
         return create$LAYOUT;
     }
 
-    private static final long create$OFFSET = 240;
+    private static final long create$OFFSET = 248;
 
     /**
      * Offset for field:
@@ -3279,7 +3390,7 @@ public class fuse_operations {
         return lock$LAYOUT;
     }
 
-    private static final long lock$OFFSET = 248;
+    private static final long lock$OFFSET = 256;
 
     /**
      * Offset for field:
@@ -3313,7 +3424,7 @@ public class fuse_operations {
 
     /**
      * {@snippet lang=c :
-     * int (*utimens)(const char *, const struct timespec *, struct fuse_file_info *)
+     * typeof(int (*)(const char *, const struct timespec *, struct fuse_file_info *)) utimens
      * }
      */
     public static class utimens {
@@ -3372,19 +3483,19 @@ public class fuse_operations {
     /**
      * Layout for field:
      * {@snippet lang=c :
-     * int (*utimens)(const char *, const struct timespec *, struct fuse_file_info *)
+     * typeof(int (*)(const char *, const struct timespec *, struct fuse_file_info *)) utimens
      * }
      */
     public static final AddressLayout utimens$layout() {
         return utimens$LAYOUT;
     }
 
-    private static final long utimens$OFFSET = 256;
+    private static final long utimens$OFFSET = 264;
 
     /**
      * Offset for field:
      * {@snippet lang=c :
-     * int (*utimens)(const char *, const struct timespec *, struct fuse_file_info *)
+     * typeof(int (*)(const char *, const struct timespec *, struct fuse_file_info *)) utimens
      * }
      */
     public static final long utimens$offset() {
@@ -3394,7 +3505,7 @@ public class fuse_operations {
     /**
      * Getter for field:
      * {@snippet lang=c :
-     * int (*utimens)(const char *, const struct timespec *, struct fuse_file_info *)
+     * typeof(int (*)(const char *, const struct timespec *, struct fuse_file_info *)) utimens
      * }
      */
     public static MemorySegment utimens(MemorySegment struct) {
@@ -3404,7 +3515,7 @@ public class fuse_operations {
     /**
      * Setter for field:
      * {@snippet lang=c :
-     * int (*utimens)(const char *, const struct timespec *, struct fuse_file_info *)
+     * typeof(int (*)(const char *, const struct timespec *, struct fuse_file_info *)) utimens
      * }
      */
     public static void utimens(MemorySegment struct, MemorySegment fieldValue) {
@@ -3479,7 +3590,7 @@ public class fuse_operations {
         return bmap$LAYOUT;
     }
 
-    private static final long bmap$OFFSET = 264;
+    private static final long bmap$OFFSET = 272;
 
     /**
      * Offset for field:
@@ -3582,7 +3693,7 @@ public class fuse_operations {
         return ioctl$LAYOUT;
     }
 
-    private static final long ioctl$OFFSET = 272;
+    private static final long ioctl$OFFSET = 280;
 
     /**
      * Offset for field:
@@ -3683,7 +3794,7 @@ public class fuse_operations {
         return poll$LAYOUT;
     }
 
-    private static final long poll$OFFSET = 280;
+    private static final long poll$OFFSET = 288;
 
     /**
      * Offset for field:
@@ -3784,7 +3895,7 @@ public class fuse_operations {
         return write_buf$LAYOUT;
     }
 
-    private static final long write_buf$OFFSET = 288;
+    private static final long write_buf$OFFSET = 296;
 
     /**
      * Offset for field:
@@ -3886,7 +3997,7 @@ public class fuse_operations {
         return read_buf$LAYOUT;
     }
 
-    private static final long read_buf$OFFSET = 296;
+    private static final long read_buf$OFFSET = 304;
 
     /**
      * Offset for field:
@@ -3986,7 +4097,7 @@ public class fuse_operations {
         return flock$LAYOUT;
     }
 
-    private static final long flock$OFFSET = 304;
+    private static final long flock$OFFSET = 312;
 
     /**
      * Offset for field:
@@ -4088,7 +4199,7 @@ public class fuse_operations {
         return fallocate$LAYOUT;
     }
 
-    private static final long fallocate$OFFSET = 312;
+    private static final long fallocate$OFFSET = 320;
 
     /**
      * Offset for field:
@@ -4193,7 +4304,7 @@ public class fuse_operations {
         return copy_file_range$LAYOUT;
     }
 
-    private static final long copy_file_range$OFFSET = 320;
+    private static final long copy_file_range$OFFSET = 328;
 
     /**
      * Offset for field:
@@ -4294,7 +4405,7 @@ public class fuse_operations {
         return lseek$LAYOUT;
     }
 
-    private static final long lseek$OFFSET = 328;
+    private static final long lseek$OFFSET = 336;
 
     /**
      * Offset for field:
@@ -4324,6 +4435,302 @@ public class fuse_operations {
      */
     public static void lseek(MemorySegment struct, MemorySegment fieldValue) {
         struct.set(lseek$LAYOUT, lseek$OFFSET, fieldValue);
+    }
+
+    /**
+     * {@snippet lang=c :
+     * int (*chflags)(const char *, struct fuse_file_info *, unsigned int)
+     * }
+     */
+    public static class chflags {
+
+        chflags() {
+            // Should not be called directly
+        }
+
+        /**
+         * The function pointer signature, expressed as a functional interface
+         */
+        public interface Function {
+            int apply(MemorySegment _x0, MemorySegment _x1, int _x2);
+        }
+
+        private static final FunctionDescriptor $DESC = FunctionDescriptor.of(
+            fuse_h.C_INT,
+            fuse_h.C_POINTER,
+            fuse_h.C_POINTER,
+            fuse_h.C_INT
+        );
+
+        /**
+         * The descriptor of this function pointer
+         */
+        public static FunctionDescriptor descriptor() {
+            return $DESC;
+        }
+
+        private static final MethodHandle UP$MH = fuse_h.upcallHandle(chflags.Function.class, "apply", $DESC);
+
+        /**
+         * Allocates a new upcall stub, whose implementation is defined by {@code fi}.
+         * The lifetime of the returned segment is managed by {@code arena}
+         */
+        public static MemorySegment allocate(chflags.Function fi, Arena arena) {
+            return Linker.nativeLinker().upcallStub(UP$MH.bindTo(fi), $DESC, arena);
+        }
+
+        private static final MethodHandle DOWN$MH = Linker.nativeLinker().downcallHandle($DESC);
+
+        /**
+         * Invoke the upcall stub {@code funcPtr}, with given parameters
+         */
+        public static int invoke(MemorySegment funcPtr,MemorySegment _x0, MemorySegment _x1, int _x2) {
+            try {
+                return (int) DOWN$MH.invokeExact(funcPtr, _x0, _x1, _x2);
+            } catch (Throwable ex$) {
+                throw new AssertionError("should not reach here", ex$);
+            }
+        }
+    }
+
+    private static final AddressLayout chflags$LAYOUT = (AddressLayout)$LAYOUT.select(groupElement("chflags"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * int (*chflags)(const char *, struct fuse_file_info *, unsigned int)
+     * }
+     */
+    public static final AddressLayout chflags$layout() {
+        return chflags$LAYOUT;
+    }
+
+    private static final long chflags$OFFSET = 344;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * int (*chflags)(const char *, struct fuse_file_info *, unsigned int)
+     * }
+     */
+    public static final long chflags$offset() {
+        return chflags$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * int (*chflags)(const char *, struct fuse_file_info *, unsigned int)
+     * }
+     */
+    public static MemorySegment chflags(MemorySegment struct) {
+        return struct.get(chflags$LAYOUT, chflags$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * int (*chflags)(const char *, struct fuse_file_info *, unsigned int)
+     * }
+     */
+    public static void chflags(MemorySegment struct, MemorySegment fieldValue) {
+        struct.set(chflags$LAYOUT, chflags$OFFSET, fieldValue);
+    }
+
+    /**
+     * {@snippet lang=c :
+     * int (*setvolname)(const char *)
+     * }
+     */
+    public static class setvolname {
+
+        setvolname() {
+            // Should not be called directly
+        }
+
+        /**
+         * The function pointer signature, expressed as a functional interface
+         */
+        public interface Function {
+            int apply(MemorySegment _x0);
+        }
+
+        private static final FunctionDescriptor $DESC = FunctionDescriptor.of(
+            fuse_h.C_INT,
+            fuse_h.C_POINTER
+        );
+
+        /**
+         * The descriptor of this function pointer
+         */
+        public static FunctionDescriptor descriptor() {
+            return $DESC;
+        }
+
+        private static final MethodHandle UP$MH = fuse_h.upcallHandle(setvolname.Function.class, "apply", $DESC);
+
+        /**
+         * Allocates a new upcall stub, whose implementation is defined by {@code fi}.
+         * The lifetime of the returned segment is managed by {@code arena}
+         */
+        public static MemorySegment allocate(setvolname.Function fi, Arena arena) {
+            return Linker.nativeLinker().upcallStub(UP$MH.bindTo(fi), $DESC, arena);
+        }
+
+        private static final MethodHandle DOWN$MH = Linker.nativeLinker().downcallHandle($DESC);
+
+        /**
+         * Invoke the upcall stub {@code funcPtr}, with given parameters
+         */
+        public static int invoke(MemorySegment funcPtr,MemorySegment _x0) {
+            try {
+                return (int) DOWN$MH.invokeExact(funcPtr, _x0);
+            } catch (Throwable ex$) {
+                throw new AssertionError("should not reach here", ex$);
+            }
+        }
+    }
+
+    private static final AddressLayout setvolname$LAYOUT = (AddressLayout)$LAYOUT.select(groupElement("setvolname"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * int (*setvolname)(const char *)
+     * }
+     */
+    public static final AddressLayout setvolname$layout() {
+        return setvolname$LAYOUT;
+    }
+
+    private static final long setvolname$OFFSET = 352;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * int (*setvolname)(const char *)
+     * }
+     */
+    public static final long setvolname$offset() {
+        return setvolname$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * int (*setvolname)(const char *)
+     * }
+     */
+    public static MemorySegment setvolname(MemorySegment struct) {
+        return struct.get(setvolname$LAYOUT, setvolname$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * int (*setvolname)(const char *)
+     * }
+     */
+    public static void setvolname(MemorySegment struct, MemorySegment fieldValue) {
+        struct.set(setvolname$LAYOUT, setvolname$OFFSET, fieldValue);
+    }
+
+    /**
+     * {@snippet lang=c :
+     * void (*monitor)(const char *, uint32_t)
+     * }
+     */
+    public static class monitor {
+
+        monitor() {
+            // Should not be called directly
+        }
+
+        /**
+         * The function pointer signature, expressed as a functional interface
+         */
+        public interface Function {
+            void apply(MemorySegment _x0, int _x1);
+        }
+
+        private static final FunctionDescriptor $DESC = FunctionDescriptor.ofVoid(
+            fuse_h.C_POINTER,
+            fuse_h.C_INT
+        );
+
+        /**
+         * The descriptor of this function pointer
+         */
+        public static FunctionDescriptor descriptor() {
+            return $DESC;
+        }
+
+        private static final MethodHandle UP$MH = fuse_h.upcallHandle(monitor.Function.class, "apply", $DESC);
+
+        /**
+         * Allocates a new upcall stub, whose implementation is defined by {@code fi}.
+         * The lifetime of the returned segment is managed by {@code arena}
+         */
+        public static MemorySegment allocate(monitor.Function fi, Arena arena) {
+            return Linker.nativeLinker().upcallStub(UP$MH.bindTo(fi), $DESC, arena);
+        }
+
+        private static final MethodHandle DOWN$MH = Linker.nativeLinker().downcallHandle($DESC);
+
+        /**
+         * Invoke the upcall stub {@code funcPtr}, with given parameters
+         */
+        public static void invoke(MemorySegment funcPtr,MemorySegment _x0, int _x1) {
+            try {
+                 DOWN$MH.invokeExact(funcPtr, _x0, _x1);
+            } catch (Throwable ex$) {
+                throw new AssertionError("should not reach here", ex$);
+            }
+        }
+    }
+
+    private static final AddressLayout monitor$LAYOUT = (AddressLayout)$LAYOUT.select(groupElement("monitor"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * void (*monitor)(const char *, uint32_t)
+     * }
+     */
+    public static final AddressLayout monitor$layout() {
+        return monitor$LAYOUT;
+    }
+
+    private static final long monitor$OFFSET = 360;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * void (*monitor)(const char *, uint32_t)
+     * }
+     */
+    public static final long monitor$offset() {
+        return monitor$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * void (*monitor)(const char *, uint32_t)
+     * }
+     */
+    public static MemorySegment monitor(MemorySegment struct) {
+        return struct.get(monitor$LAYOUT, monitor$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * void (*monitor)(const char *, uint32_t)
+     * }
+     */
+    public static void monitor(MemorySegment struct, MemorySegment fieldValue) {
+        struct.set(monitor$LAYOUT, monitor$OFFSET, fieldValue);
     }
 
     /**
