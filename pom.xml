@@ -46,7 +46,7 @@
 		<jb-annotations.version>26.0.2-1</jb-annotations.version>
 
 		<!-- test dependencies -->
-		<junit.version>6.0.2</junit.version>
+		<junit.version>6.0.3</junit.version>
 		<mockito.version>5.21.0</mockito.version>
 
 		<!-- build-time dependencies -->
