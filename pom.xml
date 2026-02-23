@@ -43,7 +43,7 @@
 		<!-- TODO: for reproducible builds, can be removed with Maven 4 -->
 		<project.build.outputTimestamp>2026-01-26T00:00:00Z</project.build.outputTimestamp>
 
-		<jb-annotations.version>26.0.2-1</jb-annotations.version>
+		<jb-annotations.version>26.1.0</jb-annotations.version>
 
 		<!-- test dependencies -->
 		<junit.version>6.0.2</junit.version>
