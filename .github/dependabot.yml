@@ -3,35 +3,13 @@ updates:
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
       time: "06:00"
       timezone: "Etc/UTC"
     groups:
-      java-test-dependencies:
-        patterns:
-          - "org.junit.jupiter:*"
-          - "org.mockito:*"
-          - "org.openjdk.jmh:*"
-          - "org.slf4j:slf4j-simple"
-      maven-build-plugins:
-        patterns:
-          - "org.apache.maven.plugins:*"
-          - "org.jacoco:jacoco-maven-plugin"
-          - "io.github.coffeelibs:jextract-maven-plugin"
-          - "org.sonatype.central:central-publishing-maven-plugin"
-      java-production-dependencies:
+      maven-dependencies:
         patterns:
           - "*"
-        exclude-patterns:
-          - "org.junit.jupiter:*"
-          - "org.mockito:*"
-          - "org.apache.maven.plugins:*"
-          - "org.jacoco:jacoco-maven-plugin"
-          - "io.github.coffeelibs:jextract-maven-plugin"
-          - "org.sonatype.central:central-publishing-maven-plugin"
-          - "org.openjdk.jmh:*"
-          - "org.slf4j:slf4j-simple"
 
   - package-ecosystem: "github-actions"
     directory: "/" # even for `.github/workflows`
