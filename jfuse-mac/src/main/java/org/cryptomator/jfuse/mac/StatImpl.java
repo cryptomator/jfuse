@@ -2,9 +2,8 @@ package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.TimeSpec;
-import org.cryptomator.jfuse.mac.extr.fuse.stat;
+import org.cryptomator.jfuse.mac.extr.fuse3.stat;
 
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 
 record StatImpl(MemorySegment segment) implements Stat {
