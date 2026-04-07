@@ -38,7 +38,7 @@ jobs:
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
         run: ./mvnw -B verify -Dfuse.lib.path="/usr/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so.3" --no-transfer-progress
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: coverage-linux-${{ matrix.arch }}
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
@@ -63,7 +63,7 @@ jobs:
           brew install fuse-t
       - name: Maven build
         run: ./mvnw -B verify -Dfuse.lib.path="/usr/local/lib/libfuse-t.dylib" --no-transfer-progress
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: coverage-mac
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
@@ -86,7 +86,7 @@ jobs:
       - name: Maven build
         shell: bash # surprise, running maven in pwsh is crappy, see https://stackoverflow.com/q/6347985/4014509
         run: ./mvnw -B verify -Dfuse.lib.path="C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll" --no-transfer-progress
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: coverage-win
           path: jfuse-tests/target/site/jacoco-aggregate/jacoco.xml
@@ -108,24 +108,24 @@ jobs:
           distribution: ${{ env.JAVA_DIST }}
           cache: 'maven'
       - name: Cache SonarCloud packages
-        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: coverage-linux-x86_64
           path: coverage/linux-x86_64
-      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: coverage-linux-aarch64
           path: coverage/linux-aarch64
-      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: coverage-mac
           path: coverage/mac
-      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: coverage-win
           path: coverage/win
@@ -246,7 +246,7 @@ jobs:
           done
       - name: Attest
         if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
+        uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4.1.0
         with:
           subject-path: |
             jfuse/target/*.jar
@@ -255,7 +255,7 @@ jobs:
             jfuse-linux-amd64/target/*.jar
             jfuse-mac/target/*.jar
             jfuse-win/target/*.jar
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: release-jars
           path: |
@@ -266,7 +266,7 @@ jobs:
             jfuse-mac/target/*.jar
             jfuse-win/target/*.jar
       - name: Create Release
-        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
         with:
           prerelease: true
           token: ${{ secrets.CRYPTOBOT_RELEASE_TOKEN }}
