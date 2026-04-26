@@ -17,6 +17,7 @@ import org.jetbrains.annotations.VisibleForTesting;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
+import java.util.ArrayList;
 import java.util.List;
 
 final class FuseImpl extends Fuse {
@@ -27,12 +28,24 @@ final class FuseImpl extends Fuse {
 
 	@Override
 	protected FuseMount mount(List<String> args) throws FuseMountFailedException {
-		var fuseArgs = parseArgs(args);
+		// macFUSE 5.2.0 crashes in fuse_darwin_mount if volname is not set (strdup of NULL)
+		var effectiveArgs = ensureVolname(args);
+		var fuseArgs = parseArgs(effectiveArgs);
 		var fuse = createFuseFS(fuseArgs);
-		if (fuse_h.fuse_mount(fuse, fuseArgs.mountPoint()) != 0) {
-			throw new FuseMountFailedException("fuse_mount failed");
-		}
+		// Defer fuse_mount to loop() — macFUSE FSKit requires mount+loop on the same thread
 		return new FuseMountImpl(fuse, fuseArgs);
+	}
+
+	private static List<String> ensureVolname(List<String> args) {
+		for (var arg : args) {
+			if (arg.contains("volname=")) {
+				return args;
+			}
+		}
+		var result = new ArrayList<>(args);
+		var progName = args.isEmpty() ? "jfuse" : args.getFirst();
+		result.add("-ovolname=" + progName);
+		return result;
 	}
 
 	@VisibleForTesting
@@ -46,7 +59,6 @@ final class FuseImpl extends Fuse {
 
 	@VisibleForTesting
 	FuseArgs parseArgs(List<String> cmdLineArgs) throws IllegalArgumentException {
-		System.out.println("DEBUG: cmdLineArgs = " + cmdLineArgs); // Add this
 		var args = fuse_args.allocate(fuseArena);
 		var argc = cmdLineArgs.size();
 		var argv = fuseArena.allocate(ValueLayout.ADDRESS, argc + 1L);
@@ -112,9 +124,14 @@ final class FuseImpl extends Fuse {
 		var connInfo = new FuseConnInfoImpl(conn);
 		if (fuse_h.fuse_version() >= 317) {
 			connInfo = new FuseConnInfoImpl317(conn);
-			connInfo.setFeatureFlag(FuseConnInfo.FUSE_CAP_READDIRPLUS);
-		} else {
-			connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
+		}
+		// only request READDIRPLUS if the kernel advertises support
+		if ((connInfo.capable() & FuseConnInfo.FUSE_CAP_READDIRPLUS) != 0) {
+			if (fuse_h.fuse_version() >= 317) {
+				connInfo.setFeatureFlag(FuseConnInfo.FUSE_CAP_READDIRPLUS);
+			} else {
+				connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
+			}
 		}
 		var config = new FuseConfigImpl(cfg);
 		fuseOperations.init(connInfo, config);

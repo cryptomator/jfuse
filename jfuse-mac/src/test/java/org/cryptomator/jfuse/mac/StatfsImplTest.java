@@ -2,7 +2,6 @@ package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.Statvfs;
 import org.cryptomator.jfuse.mac.extr.fuse3.statfs;
-import org.cryptomator.jfuse.mac.extr.fuse3.statvfs;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
@@ -57,10 +56,10 @@ public class StatfsImplTest {
 	@MethodSource
 	public void testSetters(SetInStatvfs<Number> setter, GetInMemorySegment<Number> getter, Number value, long expected) {
 		try (var arena = Arena.ofConfined()) {
-			var segment = statvfs.allocate(arena);
-			var statvfs = new StatfsImpl(segment);
+			var segment = statfs.allocate(arena);
+			var statfsImpl = new StatfsImpl(segment);
 
-			setter.accept(statvfs, value.longValue());
+			setter.accept(statfsImpl, value.longValue());
 
 			Assertions.assertEquals(expected, getter.apply(segment).longValue());
 		}

@@ -1,6 +1,7 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.FuseMount;
+import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.mac.extr.fuse3.fuse_h;
 import org.cryptomator.jfuse.mac.extr.fuse3.fuse_loop_config_v1;
 
@@ -14,12 +15,13 @@ record FuseMountImpl(MemorySegment fuse, FuseArgs fuseArgs) implements FuseMount
 
 	@Override
 	public int loop() {
-		// depends on fuse version: https://github.com/libfuse/libfuse/blob/fuse-3.12.0/include/fuse.h#L1011-L1050
+		// macFUSE FSKit backend requires fuse_mount and fuse_loop on the same thread
+		if (fuse_h.fuse_mount(fuse, fuseArgs.mountPoint()) != 0) {
+			throw new RuntimeException(new FuseMountFailedException("fuse_mount failed"));
+		}
 		if (!fuseArgs.multithreaded() || fuse_h.fuse_version() < FUSE_3_2) {
-			// FUSE 3.1: to keep things simple, we just don't support fuse_loop_mt
 			return fuse_h.fuse_loop(fuse);
 		} else if (fuse_h.fuse_version() < FUSE_3_12) {
-			// FUSE 3.2
 			try (var arena = Arena.ofConfined()) {
 				var loopCfg = fuse_loop_config_v1.allocate(arena);
 				fuse_loop_config_v1.clone_fd(loopCfg, fuseArgs.cloneFd());
@@ -27,7 +29,6 @@ record FuseMountImpl(MemorySegment fuse, FuseArgs fuseArgs) implements FuseMount
 				return fuse_h.fuse_loop_mt(fuse, loopCfg);
 			}
 		} else {
-			// FUSE 3.12
 			var loopCfg = fuse_h.fuse_loop_cfg_create();
 			try {
 				fuse_h.fuse_loop_cfg_set_clone_fd(loopCfg, fuseArgs.cloneFd());

@@ -116,7 +116,8 @@ public class fuse_operations {
         fuse_h.C_POINTER.withName("lseek"),
         fuse_h.C_POINTER.withName("chflags"),
         fuse_h.C_POINTER.withName("setvolname"),
-        fuse_h.C_POINTER.withName("monitor")
+        fuse_h.C_POINTER.withName("monitor"),
+        fuse_h.C_POINTER.withName("statx")
     ).withName("fuse_operations");
 
     /**

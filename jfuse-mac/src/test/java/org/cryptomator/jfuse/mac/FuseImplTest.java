@@ -58,17 +58,16 @@ public class FuseImplTest {
 		}
 
 		@Test
-		@DisplayName("MountFailedException when fuse_mount fails")
-		public void testFuseMountFails() throws FuseMountFailedException {
+		@DisplayName("RuntimeException when fuse_mount fails in loop()")
+		public void testFuseMountFails() {
 			try (var fuseH = Mockito.mockStatic(fuse_h.class)) {
 				var fuseArgs = Mockito.mock(FuseArgs.class);
-				Mockito.doReturn(fuseArgs).when(fuseImplSpy).parseArgs(args);
 				Mockito.when(fuseArgs.mountPoint()).thenReturn(MemorySegment.NULL);
-				Mockito.when(fuseArgs.args()).thenReturn(MemorySegment.NULL);
 				fuseH.when(() -> fuse_h.fuse_mount(Mockito.any(), Mockito.any())).thenReturn(1);
-				Mockito.doReturn(MemorySegment.NULL).when(fuseImplSpy).createFuseFS(Mockito.any());
-				var thrown = Assertions.assertThrows(FuseMountFailedException.class, () -> fuseImplSpy.mount(args));
-				Assertions.assertEquals("fuse_mount failed", thrown.getMessage());
+				var mount = new FuseMountImpl(MemorySegment.NULL, fuseArgs);
+				var thrown = Assertions.assertThrows(RuntimeException.class, mount::loop);
+				Assertions.assertInstanceOf(FuseMountFailedException.class, thrown.getCause());
+				Assertions.assertEquals("fuse_mount failed", thrown.getCause().getMessage());
 			}
 		}
 
@@ -182,6 +181,7 @@ public class FuseImplTest {
 					return null;
 				}).when(fuseOps).init(Mockito.any(), Mockito.any());
 				var connInfo = fuse_conn_info.allocate(arena);
+				fuse_conn_info.capable(connInfo, (int) FuseConnInfo.FUSE_CAP_READDIRPLUS);
 				var fuseConfig = fuse_config.allocate(arena);
 
 				fuseH.when(fuse_h::fuse_version).thenReturn(316);
@@ -207,11 +207,11 @@ public class FuseImplTest {
 					return null;
 				}).when(fuseOps).init(Mockito.any(), Mockito.any());
 				var connInfo = fuse_conn_info.allocate(arena);
+				fuse_conn_info.capable(connInfo, (int) FuseConnInfo.FUSE_CAP_READDIRPLUS);
 				var fuseConfig = fuse_config.allocate(arena);
 
 				fuseH.when(fuse_h::fuse_version).thenReturn(317);
 				fuseFunctionsClass.when(() -> FuseFunctions.fuse_set_feature_flag(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS)).thenReturn(true);
-
 
 				fuseImpl.init(connInfo, fuseConfig);
 

@@ -33,7 +33,9 @@ class FuseFunctions {
 	private FuseFunctions() {
 		var lookup = SymbolLookup.loaderLookup();
 		var linker = Linker.nativeLinker();
-		this.fuse_parse_cmdline = lookup.find("fuse_parse_cmdline")
+		// Prefer fuse_parse_cmdline_312 (macFUSE 5.2.0+), fall back to fuse_parse_cmdline
+		this.fuse_parse_cmdline = lookup.find("fuse_parse_cmdline_312")
+				.or(() -> lookup.find("fuse_parse_cmdline"))
 				.map(symbol -> linker.downcallHandle(symbol, PARSE_CMDLINE_DESCRIPTOR))
 				.orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol fuse_parse_cmdline"));
 		this.fuse_set_feature_flag = lookup.find("fuse_set_feature_flag")
