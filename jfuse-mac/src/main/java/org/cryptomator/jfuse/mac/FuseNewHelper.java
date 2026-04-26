@@ -74,7 +74,7 @@ public class FuseNewHelper {
 					version.set(ValueLayout.JAVA_INT, 0, 3);  // major
 					version.set(ValueLayout.JAVA_INT, 4, 18); // minor
 					version.set(ValueLayout.JAVA_INT, 8, 2);  // hotfix
-					version.set(ValueLayout.JAVA_INT, 12, 1); // darwin_extensions_enabled=1
+					version.set(ValueLayout.JAVA_INT, 12, 0); // darwin_extensions_enabled=0
 					return (MemorySegment) fuse_new.invokeExact(args, op, op_size, version, private_data);
 				}
 			} else {
