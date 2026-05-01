@@ -2,6 +2,7 @@ package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.Fuse;
 import org.cryptomator.jfuse.api.FuseConnInfo;
+import org.cryptomator.jfuse.api.Stat;
 import org.cryptomator.jfuse.api.FuseMount;
 import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.api.FuseOperations;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class FuseImpl extends Fuse {
+
+	private volatile boolean darwinExtensions;
 
 	public FuseImpl(FuseOperations fuseOperations) {
 		super(fuseOperations, fuse_operations::allocate);
@@ -50,7 +53,9 @@ final class FuseImpl extends Fuse {
 
 	@VisibleForTesting
 	MemorySegment createFuseFS(FuseArgs fuseArgs) throws FuseMountFailedException {
-		var fuse = FuseNewHelper.getInstance().fuse_new(fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemorySegment.NULL);
+		var helper = FuseNewHelper.getInstance();
+		this.darwinExtensions = helper.darwinExtensions();
+		var fuse = helper.fuse_new(fuseArgs.args(), fuseOperationsStruct, fuseOperationsStruct.byteSize(), MemorySegment.NULL);
 		if (MemorySegment.NULL.equals(fuse)) {
 			throw new FuseMountFailedException("fuse_new failed");
 		}
@@ -174,14 +179,18 @@ final class FuseImpl extends Fuse {
 		return fuseOperations.fsyncdir(MemoryUtils.toUtf8StringOrNull(path), datasync, new FileInfoImpl(fi));
 	}
 
+	private Stat wrapStat(MemorySegment segment) {
+		return darwinExtensions ? new StatImpl(segment) : new StatCompatImpl(segment);
+	}
+
 	@VisibleForTesting
 	int getattr(MemorySegment path, MemorySegment stat, MemorySegment fi) {
-		return fuseOperations.getattr(path.getString(0), new StatImpl(stat), FileInfoImpl.ofNullable(fi));
+		return fuseOperations.getattr(path.getString(0), wrapStat(stat), FileInfoImpl.ofNullable(fi));
 	}
 
 	@VisibleForTesting
 	int fgetattr(MemorySegment path, MemorySegment stat, MemorySegment fi) {
-		return fuseOperations.getattr(path.getString(0), new StatImpl(stat), new FileInfoImpl(fi));
+		return fuseOperations.getattr(path.getString(0), wrapStat(stat), new FileInfoImpl(fi));
 	}
 
 	@VisibleForTesting
@@ -226,7 +235,7 @@ final class FuseImpl extends Fuse {
 
 	private int readdir(MemorySegment path, MemorySegment buf, MemorySegment filler, long offset, MemorySegment fi, int flags) {
 		try (var arena = Arena.ofConfined()) {
-			return fuseOperations.readdir(path.getString(0), new DirFillerImpl(buf, filler, arena), offset, new FileInfoImpl(fi), flags);
+			return fuseOperations.readdir(path.getString(0), new DirFillerImpl(buf, filler, arena, darwinExtensions), offset, new FileInfoImpl(fi), flags);
 		}
 	}
 
@@ -277,7 +286,6 @@ final class FuseImpl extends Fuse {
 	int utimens(MemorySegment path, MemorySegment times, MemorySegment fi) {
 		try (var arena = Arena.ofConfined()) {
 			if (MemorySegment.NULL.equals(times)) {
-				// set both times to current time
 				var segment = timespec.allocate(arena);
 				timespec.tv_sec(segment, 0);
 				timespec.tv_nsec(segment, stat_h.UTIME_NOW());

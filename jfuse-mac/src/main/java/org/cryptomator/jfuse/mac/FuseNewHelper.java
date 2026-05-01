@@ -58,9 +58,11 @@ public class FuseNewHelper {
 
 	private final MethodHandle fuse_new;
 	private final boolean fiveArg;
+	private final boolean darwinExtensions;
 
 	private FuseNewHelper(String symbolName, boolean fiveArg) {
 		this.fiveArg = fiveArg;
+		this.darwinExtensions = fiveArg;
 		this.fuse_new = Linker.nativeLinker().downcallHandle(
 				findOrThrow(symbolName),
 				fiveArg ? DESC_5ARG : DESC_4ARG);
@@ -74,7 +76,7 @@ public class FuseNewHelper {
 					version.set(ValueLayout.JAVA_INT, 0, 3);  // major
 					version.set(ValueLayout.JAVA_INT, 4, 18); // minor
 					version.set(ValueLayout.JAVA_INT, 8, 2);  // hotfix
-					version.set(ValueLayout.JAVA_INT, 12, 0); // darwin_extensions_enabled=0
+					version.set(ValueLayout.JAVA_INT, 12, 1); // darwin_extensions_enabled=1
 					return (MemorySegment) fuse_new.invokeExact(args, op, op_size, version, private_data);
 				}
 			} else {
@@ -83,6 +85,10 @@ public class FuseNewHelper {
 		} catch (Throwable ex) {
 			throw new AssertionError("should not reach here", ex);
 		}
+	}
+
+	public boolean darwinExtensions() {
+		return darwinExtensions;
 	}
 
 	public synchronized static FuseNewHelper getInstance() {

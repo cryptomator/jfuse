@@ -124,6 +124,16 @@ public interface Stat {
 	TimeSpec birthTime();
 
 	/**
+	 * Backup time (macOS-specific, via macFUSE darwin extensions).
+	 * Returns {@code null} on platforms that don't support it.
+	 *
+	 * @return backup time value, or {@code null} if unsupported
+	 */
+	default TimeSpec backupTime() {
+		return null;
+	}
+
+	/**
 	 * Set {@link #getMode() mode}.
 	 *
 	 * @param mode {@code st_mode} value
