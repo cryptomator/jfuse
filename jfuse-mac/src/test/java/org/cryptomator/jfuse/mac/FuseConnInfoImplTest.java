@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.FuseConnInfo;
-import org.cryptomator.jfuse.mac.extr.fuse.fuse_conn_info;
+import org.cryptomator.jfuse.mac.extr.fuse3.fuse_conn_info;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
@@ -37,10 +37,11 @@ public class FuseConnInfoImplTest {
 				Arguments.arguments((SetInMemorySegment) fuse_conn_info::proto_minor, Named.of("protoMinor()", (GetInConnInfo) FuseConnInfo::protoMinor)),
 				Arguments.arguments((SetInMemorySegment) fuse_conn_info::capable, Named.of("capable()", (GetInConnInfo) FuseConnInfo::capable)),
 				Arguments.arguments((SetInMemorySegment) fuse_conn_info::max_write, Named.of("maxWrite()", (GetInConnInfo) FuseConnInfo::maxWrite)),
+				Arguments.arguments((SetInMemorySegment) fuse_conn_info::max_read, Named.of("maxRead()", (GetInConnInfo) FuseConnInfo::maxRead)),
 				Arguments.arguments((SetInMemorySegment) fuse_conn_info::max_readahead, Named.of("maxReadahead()", (GetInConnInfo) FuseConnInfo::maxReadahead)),
 				Arguments.arguments((SetInMemorySegment) fuse_conn_info::max_background, Named.of("maxBackground()", (GetInConnInfo) FuseConnInfo::maxBackground)),
 				Arguments.arguments((SetInMemorySegment) fuse_conn_info::congestion_threshold, Named.of("congestionThreshold()", (GetInConnInfo) FuseConnInfo::congestionThreshold)),
-				Arguments.arguments((SetInMemorySegment) fuse_conn_info::async_read, Named.of("asyncRead()", (GetInConnInfo) FuseConnInfo::asyncRead)),
+				Arguments.arguments((SetInMemorySegment) fuse_conn_info::time_gran, Named.of("timeGran()", (GetInConnInfo) FuseConnInfo::timeGran)),
 				Arguments.arguments((SetInMemorySegment) fuse_conn_info::want, Named.of("want()", (GetInConnInfo) FuseConnInfo::want))
 		);
 	}
@@ -67,10 +68,11 @@ public class FuseConnInfoImplTest {
 		return Stream.of(
 				Arguments.arguments(Named.of("setWant()", (SetInConnInfo) FuseConnInfo::setWant), (GetInMemorySegment) fuse_conn_info::want),
 				Arguments.arguments(Named.of("setMaxWrite()", (SetInConnInfo) FuseConnInfo::setMaxWrite), (GetInMemorySegment) fuse_conn_info::max_write),
+				Arguments.arguments(Named.of("setMaxRead()", (SetInConnInfo) FuseConnInfo::setMaxRead), (GetInMemorySegment) fuse_conn_info::max_read),
 				Arguments.arguments(Named.of("setMaxReadahead()", (SetInConnInfo) FuseConnInfo::setMaxReadahead), (GetInMemorySegment) fuse_conn_info::max_readahead),
 				Arguments.arguments(Named.of("setMaxBackground()", (SetInConnInfo) FuseConnInfo::setMaxBackground), (GetInMemorySegment) fuse_conn_info::max_background),
 				Arguments.arguments(Named.of("setCongestionThreshold()", (SetInConnInfo) FuseConnInfo::setCongestionThreshold), (GetInMemorySegment) fuse_conn_info::congestion_threshold),
-				Arguments.arguments(Named.of("setAsyncRead()", (SetInConnInfo) FuseConnInfo::setAsyncRead), (GetInMemorySegment) fuse_conn_info::async_read)
+				Arguments.arguments(Named.of("setTimeGran()", (SetInConnInfo) FuseConnInfo::setTimeGran), (GetInMemorySegment) fuse_conn_info::time_gran)
 		);
 	}
 

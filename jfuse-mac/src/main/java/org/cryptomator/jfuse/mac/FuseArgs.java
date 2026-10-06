@@ -1,11 +1,12 @@
 package org.cryptomator.jfuse.mac;
 
-import org.cryptomator.jfuse.mac.extr.fuse.fuse_args;
+import org.cryptomator.jfuse.mac.extr.fuse3.fuse_args;
+import org.cryptomator.jfuse.mac.extr.fuse3_lowlevel.fuse_cmdline_opts;
 
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
-record FuseArgs(MemorySegment args, MemorySegment mountPoint, boolean multiThreaded) {
+record FuseArgs(MemorySegment args, MemorySegment cmdLineOpts) {
 
 	@Override
 	public String toString() {
@@ -16,8 +17,30 @@ record FuseArgs(MemorySegment args, MemorySegment mountPoint, boolean multiThrea
 			var cString = argv.getAtIndex(ValueLayout.ADDRESS, i).reinterpret(Long.MAX_VALUE);
 			sb.append("arg[").append(i).append("] = ").append(cString.getString(0)).append(", ");
 		}
-		sb.append("mountPoint = ").append(mountPoint.getString(0)).append(", ");
-		sb.append("multiThreaded = ").append(multiThreaded);
+		sb.append("mountPoint = ").append(mountPoint().getString(0));
+		sb.append("debug = ").append(fuse_cmdline_opts.debug(cmdLineOpts));
+		sb.append("singlethreaded = ").append(!multithreaded());
 		return sb.toString();
 	}
+
+	public MemorySegment mountPoint() {
+		return fuse_cmdline_opts.mountpoint(cmdLineOpts);
+	}
+
+	public boolean multithreaded() {
+		return fuse_cmdline_opts.singlethread(cmdLineOpts) == 0;
+	}
+
+	public int cloneFd() {
+		return fuse_cmdline_opts.clone_fd(cmdLineOpts);
+	}
+
+	public int maxIdleThreads() {
+		return fuse_cmdline_opts.max_idle_threads(cmdLineOpts);
+	}
+
+	public int maxThreads() {
+		return fuse_cmdline_opts.max_threads(cmdLineOpts);
+	}
+
 }

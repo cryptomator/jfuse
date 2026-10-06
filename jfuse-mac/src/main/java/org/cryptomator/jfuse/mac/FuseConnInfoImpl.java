@@ -1,12 +1,22 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.FuseConnInfo;
-import org.cryptomator.jfuse.mac.extr.fuse.fuse_conn_info;
+import org.cryptomator.jfuse.mac.extr.fuse3.fuse_conn_info;
 
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 
-record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
+class FuseConnInfoImpl implements FuseConnInfo {
+
+	protected final MemorySegment segment;
+
+	FuseConnInfoImpl(MemorySegment segment) {
+		this.segment = segment;
+	}
+
+	//mimic record behaviour
+	public MemorySegment segment() {
+		return segment;
+	}
 
 	@Override
 	public int protoMajor() {
@@ -17,6 +27,7 @@ record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
 	public int protoMinor() {
 		return fuse_conn_info.proto_minor(segment);
 	}
+
 	@Override
 	public int capable() {
 		return fuse_conn_info.capable(segment);
@@ -26,6 +37,7 @@ record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
 	public int want() {
 		return fuse_conn_info.want(segment);
 	}
+
 	@Override
 	public void setWant(int wanted) {
 		fuse_conn_info.want(segment, wanted);
@@ -39,6 +51,16 @@ record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
 	@Override
 	public void setMaxWrite(int maxWrite) {
 		fuse_conn_info.max_write(segment, maxWrite);
+	}
+
+	@Override
+	public int maxRead() {
+		return fuse_conn_info.max_read(segment);
+	}
+
+	@Override
+	public void setMaxRead(int maxRead) {
+		fuse_conn_info.max_read(segment, maxRead);
 	}
 
 	@Override
@@ -72,13 +94,13 @@ record FuseConnInfoImpl(MemorySegment segment) implements FuseConnInfo {
 	}
 
 	@Override
-	public int asyncRead() {
-		return fuse_conn_info.async_read(segment);
+	public int timeGran() {
+		return fuse_conn_info.time_gran(segment);
 	}
 
 	@Override
-	public void setAsyncRead(int asyncRead) {
-		fuse_conn_info.async_read(segment, asyncRead);
+	public void setTimeGran(int timeGran) {
+		fuse_conn_info.time_gran(segment, timeGran);
 	}
 
 }

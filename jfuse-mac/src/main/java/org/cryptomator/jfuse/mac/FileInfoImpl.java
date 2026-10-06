@@ -2,9 +2,9 @@ package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.FileInfo;
 import org.cryptomator.jfuse.mac.extr.fcntl.fcntl_h;
-import org.cryptomator.jfuse.mac.extr.fuse.fuse_file_info;
+import org.cryptomator.jfuse.mac.extr.fuse3.fuse_file_info;
+import org.jetbrains.annotations.Nullable;
 
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.nio.file.StandardOpenOption;
 import java.util.EnumSet;
@@ -21,6 +21,17 @@ record FileInfoImpl(MemorySegment segment) implements FileInfo {
 	private static final int O_EXCL = fcntl_h.O_EXCL();
 	private static final int O_SYNC = fcntl_h.O_SYNC();
 	private static final int O_DSYNC = fcntl_h.O_DSYNC();
+
+	/**
+	 * Null-safe factory method to map native memory to an {@link FileInfo} object
+	 *
+	 * @param address the {@link MemorySegment} representing the starting address
+	 * @return an {@link FileInfo} object or {@code null} if {@code address} is a NULL pointer
+	 */
+	@Nullable
+	public static FileInfoImpl ofNullable(MemorySegment address) {
+		return MemorySegment.NULL.equals(address) ? null : new FileInfoImpl(address);
+	}
 
 	@Override
 	public long getFh() {
