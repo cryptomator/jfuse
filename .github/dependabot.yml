@@ -6,6 +6,9 @@ updates:
       interval: "monthly"
       time: "06:00"
       timezone: "Etc/UTC"
+    ignore:
+      - dependency-name: "org.apache.maven:apache-maven"
+        versions: ["[3.10.0,)"]
     groups:
       maven-dependencies:
         patterns:
