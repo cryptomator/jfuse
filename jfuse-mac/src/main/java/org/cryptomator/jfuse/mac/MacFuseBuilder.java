@@ -15,8 +15,7 @@ import org.cryptomator.jfuse.api.platforms.SupportedPlatform;
 @SupportedPlatform(os = OperatingSystem.MAC, arch = Architecture.ARM64)
 public class MacFuseBuilder implements FuseBuilder {
 
-	private static final String DEFAULT_MACFUSE_LIBNAME = "fuse";
-	private static final String DEFAULT_FUSET_LIBNAMNE = "fuse-t";
+	private static final String DEFAULT_MACFUSE_LIBNAME = "fuse3";
 	private static final Errno ERRNO = new MacErrno();
 	private String libraryPath;
 
@@ -41,16 +40,7 @@ public class MacFuseBuilder implements FuseBuilder {
 		if (libraryPath != null) {
 			System.load(libraryPath);
 		} else {
-			try {
-				System.loadLibrary(DEFAULT_MACFUSE_LIBNAME);
-			} catch (UnsatisfiedLinkError errorLoadingMacFuse) {
-				try {
-					System.loadLibrary(DEFAULT_FUSET_LIBNAMNE);
-				} catch (UnsatisfiedLinkError errorLoadingFuseT) {
-					errorLoadingFuseT.addSuppressed(errorLoadingMacFuse);
-					throw errorLoadingFuseT;
-				}
-			}
+			System.loadLibrary(DEFAULT_MACFUSE_LIBNAME);
 		}
 		return new FuseImpl(fuseOperations);
 	}

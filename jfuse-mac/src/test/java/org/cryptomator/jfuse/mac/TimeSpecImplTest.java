@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.mac.extr.stat.stat_h;
-import org.cryptomator.jfuse.mac.extr.fuse.timespec;
+import org.cryptomator.jfuse.mac.extr.fuse3.timespec;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

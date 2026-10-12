@@ -134,7 +134,7 @@ public abstract class Fuse implements AutoCloseable {
 			Thread.currentThread().interrupt();
 			throw new FuseMountFailedException("Interrupted while waiting for mounting to finish");
 		} catch (ExecutionException e) {
-			throw new FuseMountFailedException("Exception when starting fuse_loop. Message: " + e.getCause().getMessage());
+			throw new FuseMountFailedException("Exception when starting fuse_loop.", e);
 		} finally {
 			mount.compareAndSet(lock, UNMOUNTED); // if value is still `lock`, mount has failed.
 		}

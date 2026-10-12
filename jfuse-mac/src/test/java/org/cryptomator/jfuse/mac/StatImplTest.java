@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.api.Stat;
-import org.cryptomator.jfuse.mac.extr.fuse.stat;
+import org.cryptomator.jfuse.mac.extr.fuse3.stat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;

@@ -37,7 +37,7 @@ public final class PosixMirrorFileSystem extends AbstractMirrorFileSystem {
 		}
 		try (var fuse = builder.build(new PosixMirrorFileSystem(mirrored, builder.errno()))) {
 			LOG.info("Mounting at {}...", mountPoint);
-			fuse.mount("jfuse", mountPoint, "-s");
+			fuse.mount("jfuse", mountPoint, "-s", "-obackend=fskit");
 			LOG.info("Mounted to {}.", mountPoint);
 			LOG.info("Enter a anything to unmount...");
 			System.in.read();
