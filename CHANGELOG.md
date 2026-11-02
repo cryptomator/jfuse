@@ -17,6 +17,9 @@ Changes to prior versions can be found on the [GitHub release page](https://gith
 * Pin CI actions and attest build ([#149](https://github.com/cryptomator/jfuse/pull/149))
 * **[BREAKING]** Target JDK 25 for release ([#152](https://github.com/cryptomator/jfuse/pull/152))
 
+### Fixed
+* Windows: JVM crash (`EXCEPTION_ACCESS_VIOLATION`) during unmount, because WinFsp's `fuse3_unmount()` frees `struct fuse` while the run loop is still winding down ([#176](https://github.com/cryptomator/jfuse/issues/176))
+
 
 ## [0.7.3](https://github.com/cryptomator/jfuse/releases/0.7.3) - 2025-04-09
 ### Added
