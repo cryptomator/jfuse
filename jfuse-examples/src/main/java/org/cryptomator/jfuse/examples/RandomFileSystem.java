@@ -115,7 +115,7 @@ public class RandomFileSystem implements FuseOperations {
 
 	@Override
 	public int readdir(String path, DirFiller filler, long offset, FileInfo fi, int flags) {
-		LOG.debug("readdir() {} offset={} plus={}", path, offset, (flags & FUSE_READDIR_PLUS) == flags);
+		LOG.debug("readdir() {} offset={} plus={}", path, offset, (flags & FUSE_READDIR_PLUS) != 0);
 		var node = rfs.getNode(path);
 		if (node == null) {
 			return -errno.enoent();
