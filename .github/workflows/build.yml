@@ -37,7 +37,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install fuse3 libfuse3-dev
       - name: Maven build
-        # unversioned symlink from libfuse3-dev, so this works regardless of the soname (libfuse bumped 3 -> 4 in 3.17)
         run: ./mvnw -B verify -Dfuse.lib.path="/usr/lib/${{ matrix.arch }}-linux-gnu/libfuse3.so" --no-transfer-progress
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
