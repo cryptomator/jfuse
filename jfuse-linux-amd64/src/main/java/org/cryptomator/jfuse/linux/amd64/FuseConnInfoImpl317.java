@@ -27,6 +27,7 @@ class FuseConnInfoImpl317 extends FuseConnInfoImpl {
 
 	// libfuse 3.17.0 - 3.17.2 only provide the fuse_*_feature_flag functions as static inline functions in fuse_common.h,
 	// hence they are not available via symbol lookup. Their bodies are replicated below, so that this class works on every 3.17.x.
+	// Like libfuse 3.17.3 and newer, the fallbacks keep the deprecated want field in sync with the lower 32 bits of want_ext.
 	// If the native function is accessible, it is called instead of our manual code to also account for any changes
 
 	@Override
@@ -37,6 +38,7 @@ class FuseConnInfoImpl317 extends FuseConnInfoImpl {
 			return false;
 		} else {
 			setWantExt(wantExt() | flag);
+			setWant((int) wantExt());
 			return true;
 		}
 	}
@@ -47,6 +49,7 @@ class FuseConnInfoImpl317 extends FuseConnInfoImpl {
 			FuseFunctions.fuse_unset_feature_flag(segment, flag);
 		} else {
 			setWantExt(wantExt() & ~flag);
+			setWant((int) wantExt());
 		}
 	}
 

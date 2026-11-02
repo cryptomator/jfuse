@@ -117,15 +117,12 @@ final class FuseImpl extends Fuse {
 		return MemorySegment.NULL;
 	}
 
-	// The capability check is required because since libfuse 3.17 do_init() aborts the session with EPROTO if a want flag is not present in capable_ext.
-	// fuse_set_feature_flag() already performs it internally, but is only available if the loaded library exports it (libfuse >= 3.17.3).
+	// The capability checks are required because since libfuse 3.17 do_init() aborts the session with EPROTO if a want flag is not present in capable_ext.
+	// Since libfuse 3.17 the flag has to be requested via setFeatureFlag(), which writes want_ext and keeps want in sync.
 	private void enableReaddirPlus(FuseConnInfo connInfo) {
-		if ((connInfo.capable() & FuseConnInfo.FUSE_CAP_READDIRPLUS) == 0) {
-			return;
-		}
-		if (FuseFunctions.hasFeatureFlagFunctions()) {
+		if (connInfo instanceof FuseConnInfoImpl317) {
 			connInfo.setFeatureFlag(FuseConnInfo.FUSE_CAP_READDIRPLUS);
-		} else {
+		} else if ((connInfo.capable() & FuseConnInfo.FUSE_CAP_READDIRPLUS) != 0) {
 			connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
 		}
 	}

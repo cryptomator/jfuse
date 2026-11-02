@@ -186,7 +186,6 @@ public class FuseImplTest {
 				var fuseConfig = fuse_config.allocate(arena);
 
 				fuseH.when(fuse_h::fuse_version).thenReturn(316);
-				fuseFunctionsClass.when(FuseFunctions::hasFeatureFlagFunctions).thenReturn(false);
 
 				fuseImpl.init(connInfo, fuseConfig);
 
@@ -195,7 +194,26 @@ public class FuseImplTest {
 			}
 		}
 
-		@DisplayName("init() sets fuse_conn_info.want |= FUSE_CAP_READDIRPLUS for libfuse >= 3.17 not exporting fuse_set_feature_flag")
+		@DisplayName("init() leaves fuse_conn_info.want untouched for libfuse < 3.17, if the kernel is not FUSE_CAP_READDIRPLUS capable")
+		@Test
+		public void testInit316NotCapable() {
+			try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
+				 var fuseH = Mockito.mockStatic(fuse_h.class);
+				 var arena = Arena.ofConfined()) {
+
+				var connInfo = fuse_conn_info.allocate(arena);
+				fuse_conn_info.capable(connInfo, 0);
+				var fuseConfig = fuse_config.allocate(arena);
+
+				fuseH.when(fuse_h::fuse_version).thenReturn(316);
+
+				fuseImpl.init(connInfo, fuseConfig);
+
+				Assertions.assertEquals(0, consumerReceivedConnInfo.get().want());
+			}
+		}
+
+		@DisplayName("init() sets fuse_conn_info.want_ext |= FUSE_CAP_READDIRPLUS for libfuse >= 3.17 not exporting fuse_set_feature_flag")
 		@Test
 		public void testInit317WithoutFeatureFlagFunctions() {
 			try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
@@ -203,7 +221,7 @@ public class FuseImplTest {
 				 var arena = Arena.ofConfined()) {
 
 				var connInfo = fuse_conn_info.allocate(arena);
-				fuse_conn_info.capable(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS);
+				fuse_conn_info.capable_ext(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS);
 				var fuseConfig = fuse_config.allocate(arena);
 
 				fuseH.when(fuse_h::fuse_version).thenReturn(317);
@@ -213,7 +231,7 @@ public class FuseImplTest {
 
 				fuseFunctionsClass.verify(() -> FuseFunctions.fuse_set_feature_flag(Mockito.any(), Mockito.anyLong()), Mockito.never());
 				Assertions.assertInstanceOf(FuseConnInfoImpl317.class, consumerReceivedConnInfo.get());
-				Assertions.assertEquals(FuseConnInfo.FUSE_CAP_READDIRPLUS, consumerReceivedConnInfo.get().want() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
+				Assertions.assertEquals(FuseConnInfo.FUSE_CAP_READDIRPLUS, consumerReceivedConnInfo.get().wantExt() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
 			}
 		}
 
@@ -225,7 +243,7 @@ public class FuseImplTest {
 				 var arena = Arena.ofConfined()) {
 
 				var connInfo = fuse_conn_info.allocate(arena);
-				fuse_conn_info.capable(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS);
+				fuse_conn_info.capable_ext(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS);
 				var fuseConfig = fuse_config.allocate(arena);
 
 				fuseH.when(fuse_h::fuse_version).thenReturn(317);
@@ -239,24 +257,25 @@ public class FuseImplTest {
 			}
 		}
 
-		@DisplayName("init() leaves fuse_conn_info.want untouched if the kernel is not FUSE_CAP_READDIRPLUS capable")
+		@DisplayName("init() does not request FUSE_CAP_READDIRPLUS via the deprecated want field for libfuse >= 3.17")
 		@Test
-		public void testInitNotCapable() {
+		public void testInit317KeepsWantInSyncWithWantExt() {
 			try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
 				 var fuseH = Mockito.mockStatic(fuse_h.class);
 				 var arena = Arena.ofConfined()) {
 
 				var connInfo = fuse_conn_info.allocate(arena);
-				fuse_conn_info.capable(connInfo, 0);
+				fuse_conn_info.capable_ext(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS);
 				var fuseConfig = fuse_config.allocate(arena);
 
 				fuseH.when(fuse_h::fuse_version).thenReturn(317);
-				fuseFunctionsClass.when(FuseFunctions::hasFeatureFlagFunctions).thenReturn(true);
+				fuseFunctionsClass.when(FuseFunctions::hasFeatureFlagFunctions).thenReturn(false);
 
 				fuseImpl.init(connInfo, fuseConfig);
 
-				fuseFunctionsClass.verify(() -> FuseFunctions.fuse_set_feature_flag(Mockito.any(), Mockito.anyLong()), Mockito.never());
-				Assertions.assertEquals(0, consumerReceivedConnInfo.get().want() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
+				// convert_to_conn_want_ext() fails with EINVAL, unless want is the lower 32 bits of want_ext
+				var received = consumerReceivedConnInfo.get();
+				Assertions.assertEquals((int) received.wantExt(), received.want());
 			}
 		}
 	}
