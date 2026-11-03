@@ -30,6 +30,7 @@ public class FuseConnInfoImpl317Test {
 			 var fuseFunctionsMock = Mockito.mockStatic(FuseFunctions.class)) {
 			var segment = fuse_conn_info.allocate(arena);
 			var connInfo = new FuseConnInfoImpl317(segment);
+			fuseFunctionsMock.when(FuseFunctions::hasFeatureFlagFunctions).thenReturn(true);
 			fuseFunctionsMock.when(() -> FuseFunctions.fuse_set_feature_flag(any(), anyLong())).thenReturn(true);
 			fuseFunctionsMock.when(() -> FuseFunctions.fuse_unset_feature_flag(any(), anyLong())).then(Answers.RETURNS_DEFAULTS);
 			fuseFunctionsMock.when(() -> FuseFunctions.fuse_get_feature_flag(any(), anyLong())).thenReturn(true);
@@ -41,6 +42,97 @@ public class FuseConnInfoImpl317Test {
 			fuseFunctionsMock.verify(() -> FuseFunctions.fuse_set_feature_flag(segment, 3003L));
 			fuseFunctionsMock.verify(() -> FuseFunctions.fuse_unset_feature_flag(segment, 3003L));
 			fuseFunctionsMock.verify(() -> FuseFunctions.fuse_get_feature_flag(segment, 3003L));
+		}
+	}
+
+	@DisplayName("setFeatureFlag() sets want_ext without FuseFunctions, if the flag is in capable_ext")
+	@Test
+	void testSetFeatureFlagFallback() {
+		try (var arena = Arena.ofConfined();
+			 var fuseFunctionsMock = Mockito.mockStatic(FuseFunctions.class)) {
+			var segment = fuse_conn_info.allocate(arena);
+			fuse_conn_info.capable_ext(segment, 0b0110L);
+			var connInfo = new FuseConnInfoImpl317(segment);
+			fuseFunctionsMock.when(FuseFunctions::hasFeatureFlagFunctions).thenReturn(false);
+
+			Assertions.assertTrue(connInfo.setFeatureFlag(0b0010L));
+			Assertions.assertEquals(0b0010L, connInfo.wantExt());
+			Assertions.assertEquals(0b0010, connInfo.want());
+
+			fuseFunctionsMock.verify(() -> FuseFunctions.fuse_set_feature_flag(any(), anyLong()), Mockito.never());
+		}
+	}
+
+	@DisplayName("setFeatureFlag() keeps want in sync with the lower 32 bits of want_ext without FuseFunctions")
+	@Test
+	void testSetFeatureFlagFallbackKeepsWantInSync() {
+		try (var arena = Arena.ofConfined();
+			 var fuseFunctionsMock = Mockito.mockStatic(FuseFunctions.class)) {
+			var segment = fuse_conn_info.allocate(arena);
+			fuse_conn_info.capable_ext(segment, 0x8000_0001_0000_0002L);
+			var connInfo = new FuseConnInfoImpl317(segment);
+			fuseFunctionsMock.when(FuseFunctions::hasFeatureFlagFunctions).thenReturn(false);
+
+			// a flag above bit 31 must not end up in the 32 bit want field
+			Assertions.assertTrue(connInfo.setFeatureFlag(0x8000_0000_0000_0000L));
+			Assertions.assertEquals(0x8000_0000_0000_0000L, connInfo.wantExt());
+			Assertions.assertEquals(0, connInfo.want());
+
+			Assertions.assertTrue(connInfo.setFeatureFlag(0b0010L));
+			Assertions.assertEquals(0x8000_0000_0000_0002L, connInfo.wantExt());
+			Assertions.assertEquals(0b0010, connInfo.want());
+		}
+	}
+
+	@DisplayName("setFeatureFlag() leaves want_ext untouched without FuseFunctions, if the flag is not in capable_ext")
+	@Test
+	void testSetFeatureFlagFallbackNotCapable() {
+		try (var arena = Arena.ofConfined();
+			 var fuseFunctionsMock = Mockito.mockStatic(FuseFunctions.class)) {
+			var segment = fuse_conn_info.allocate(arena);
+			fuse_conn_info.capable_ext(segment, 0b0110L);
+			var connInfo = new FuseConnInfoImpl317(segment);
+			fuseFunctionsMock.when(FuseFunctions::hasFeatureFlagFunctions).thenReturn(false);
+
+			Assertions.assertFalse(connInfo.setFeatureFlag(0b1000L));
+			Assertions.assertEquals(0L, connInfo.wantExt());
+			Assertions.assertEquals(0, connInfo.want());
+		}
+	}
+
+	@DisplayName("unsetFeatureFlag() clears want_ext without FuseFunctions")
+	@Test
+	void testUnsetFeatureFlagFallback() {
+		try (var arena = Arena.ofConfined();
+			 var fuseFunctionsMock = Mockito.mockStatic(FuseFunctions.class)) {
+			var segment = fuse_conn_info.allocate(arena);
+			fuse_conn_info.want_ext(segment, 0b0110L);
+			fuse_conn_info.want(segment, 0b0110);
+			var connInfo = new FuseConnInfoImpl317(segment);
+			fuseFunctionsMock.when(FuseFunctions::hasFeatureFlagFunctions).thenReturn(false);
+
+			connInfo.unsetFeatureFlag(0b0010L);
+
+			Assertions.assertEquals(0b0100L, connInfo.wantExt());
+			Assertions.assertEquals(0b0100, connInfo.want());
+			fuseFunctionsMock.verify(() -> FuseFunctions.fuse_unset_feature_flag(any(), anyLong()), Mockito.never());
+		}
+	}
+
+	@DisplayName("getFeatureFlag() reads capable_ext without FuseFunctions")
+	@Test
+	void testGetFeatureFlagFallback() {
+		try (var arena = Arena.ofConfined();
+			 var fuseFunctionsMock = Mockito.mockStatic(FuseFunctions.class)) {
+			var segment = fuse_conn_info.allocate(arena);
+			fuse_conn_info.capable_ext(segment, 0b0110L);
+			var connInfo = new FuseConnInfoImpl317(segment);
+			fuseFunctionsMock.when(FuseFunctions::hasFeatureFlagFunctions).thenReturn(false);
+
+			Assertions.assertTrue(connInfo.getFeatureFlag(0b0100L));
+			Assertions.assertFalse(connInfo.getFeatureFlag(0b1000L));
+
+			fuseFunctionsMock.verify(() -> FuseFunctions.fuse_get_feature_flag(any(), anyLong()), Mockito.never());
 		}
 	}
 

@@ -25,19 +25,41 @@ class FuseConnInfoImpl317 extends FuseConnInfoImpl {
 		fuse_conn_info.want_ext(segment, wantExt);
 	}
 
+	// libfuse 3.17.0 - 3.17.2 only provide the fuse_*_feature_flag functions as static inline functions in fuse_common.h,
+	// hence they are not available via symbol lookup. Their bodies are replicated below, so that this class works on every 3.17.x.
+	// Like libfuse 3.17.3 and newer, the fallbacks keep the deprecated want field in sync with the lower 32 bits of want_ext.
+	// If the native function is accessible, it is called instead of our manual code to also account for any changes
+
 	@Override
 	public boolean setFeatureFlag(long flag) {
-		return FuseFunctions.fuse_set_feature_flag(segment, flag);
+		if (FuseFunctions.hasFeatureFlagFunctions()) {
+			return FuseFunctions.fuse_set_feature_flag(segment, flag);
+		} else if ((capableExt() & flag) == 0) {
+			return false;
+		} else {
+			setWantExt(wantExt() | flag);
+			setWant((int) wantExt());
+			return true;
+		}
 	}
 
 	@Override
 	public void unsetFeatureFlag(long flag) {
-		FuseFunctions.fuse_unset_feature_flag(segment, flag);
+		if (FuseFunctions.hasFeatureFlagFunctions()) {
+			FuseFunctions.fuse_unset_feature_flag(segment, flag);
+		} else {
+			setWantExt(wantExt() & ~flag);
+			setWant((int) wantExt());
+		}
 	}
 
 	@Override
 	public boolean getFeatureFlag(long flag) {
-		return FuseFunctions.fuse_get_feature_flag(segment, flag);
+		if (FuseFunctions.hasFeatureFlagFunctions()) {
+			return FuseFunctions.fuse_get_feature_flag(segment, flag);
+		} else {
+			return (capableExt() & flag) != 0;
+		}
 	}
 
 }
