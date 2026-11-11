@@ -10,8 +10,8 @@ Changes to prior versions can be found on the [GitHub release page](https://gith
 ## [Unreleased](https://github.com/cryptomator/jfuse/compare/0.7.3...HEAD)
 
 ### Added
-* Maven wrapper script ([#146](https://github.com/cryptomator/jfuse/pull/103))
-* Support for libfuse 3.17.0 capable_ext and want_ext fields ([#122](https://github.com/cryptomator/jfuse/issues/122))
+* Maven wrapper script ([#146](https://github.com/cryptomator/jfuse/pull/146))
+* Support for libfuse 3.17.0 capable_ext and want_ext fields ([#135](https://github.com/cryptomator/jfuse/pull/135), [#179](https://github.com/cryptomator/jfuse/pull/179))
 
 ### Changed
 * Pin CI actions and attest build ([#149](https://github.com/cryptomator/jfuse/pull/149))
