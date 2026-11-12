@@ -21,6 +21,8 @@ import java.util.List;
 
 final class FuseImpl extends Fuse {
 
+	private static final int FUSE_3_17 = 317;
+
 	public FuseImpl(FuseOperations fuseOperations) {
 		super(fuseOperations, fuse_operations::allocate);
 	}
@@ -108,11 +110,21 @@ final class FuseImpl extends Fuse {
 
 	@VisibleForTesting
 	MemorySegment init(MemorySegment conn, MemorySegment cfg) {
-		var connInfo = new FuseConnInfoImpl(conn);
-		connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
+		var connInfo = fuse_h.fuse_version() >= FUSE_3_17 ? new FuseConnInfoImpl317(conn) : new FuseConnInfoImpl(conn);
+		enableReaddirPlus(connInfo);
 		var config = new FuseConfigImpl(cfg);
 		fuseOperations.init(connInfo, config);
 		return MemorySegment.NULL;
+	}
+
+	// The capability checks are required because since libfuse 3.17 do_init() aborts the session with EPROTO if a want flag is not present in capable_ext.
+	// Since libfuse 3.17 the flag has to be requested via setFeatureFlag(), which writes want_ext and keeps want in sync.
+	private void enableReaddirPlus(FuseConnInfo connInfo) {
+		if (connInfo instanceof FuseConnInfoImpl317) {
+			connInfo.setFeatureFlag(FuseConnInfo.FUSE_CAP_READDIRPLUS);
+		} else if ((connInfo.capable() & FuseConnInfo.FUSE_CAP_READDIRPLUS) != 0) {
+			connInfo.setWant(connInfo.want() | FuseConnInfo.FUSE_CAP_READDIRPLUS);
+		}
 	}
 
 	private int access(MemorySegment path, int mask) {

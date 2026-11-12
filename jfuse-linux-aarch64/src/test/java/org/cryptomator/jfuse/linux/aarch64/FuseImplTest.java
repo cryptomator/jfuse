@@ -4,13 +4,12 @@ import org.cryptomator.jfuse.api.FuseConnInfo;
 import org.cryptomator.jfuse.api.FuseMountFailedException;
 import org.cryptomator.jfuse.api.FuseOperations;
 import org.cryptomator.jfuse.api.TimeSpec;
-import org.cryptomator.jfuse.linux.aarch64.extr.fuse3_lowlevel.fuse_cmdline_opts;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_config;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_conn_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_file_info;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.fuse_h;
 import org.cryptomator.jfuse.linux.aarch64.extr.fuse3.timespec;
-import org.junit.jupiter.api.AfterEach;
+import org.cryptomator.jfuse.linux.aarch64.extr.fuse3_lowlevel.fuse_cmdline_opts;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,14 +19,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Answers;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.time.Instant;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FuseImplTest {
 
@@ -162,22 +160,123 @@ public class FuseImplTest {
 
 	}
 
-	@DisplayName("init() sets fuse_conn_info.wants |= FUSE_CAP_READDIRPLUS")
-	@Test
-	public void testInit() {
-		try (var arena = Arena.ofConfined()) {
-			var result = new AtomicInteger();
+	@Nested
+	@DisplayName("init")
+	public class Init {
+
+		private final AtomicReference<FuseConnInfo> consumerReceivedConnInfo = new AtomicReference<>();
+
+		@BeforeEach
+		public void setup() {
 			Mockito.doAnswer(invocation -> {
-				FuseConnInfo connInfo = invocation.getArgument(0);
-				result.set(connInfo.want());
+				consumerReceivedConnInfo.set(invocation.getArgument(0));
 				return null;
 			}).when(fuseOps).init(Mockito.any(), Mockito.any());
-			var connInfo = fuse_conn_info.allocate(arena);
-			var fuseConfig = fuse_config.allocate(arena);
+		}
 
-			fuseImpl.init(connInfo, fuseConfig);
+		@DisplayName("init() sets fuse_conn_info.want |= FUSE_CAP_READDIRPLUS for libfuse < 3.17")
+		@Test
+		public void testInit316() {
+			try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
+				 var fuseH = Mockito.mockStatic(fuse_h.class);
+				 var arena = Arena.ofConfined()) {
 
-			Assertions.assertEquals(FuseConnInfo.FUSE_CAP_READDIRPLUS, result.get() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
+				var connInfo = fuse_conn_info.allocate(arena);
+				fuse_conn_info.capable(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS);
+				var fuseConfig = fuse_config.allocate(arena);
+
+				fuseH.when(fuse_h::fuse_version).thenReturn(316);
+
+				fuseImpl.init(connInfo, fuseConfig);
+
+				Assertions.assertInstanceOf(FuseConnInfoImpl.class, consumerReceivedConnInfo.get());
+				Assertions.assertEquals(FuseConnInfo.FUSE_CAP_READDIRPLUS, consumerReceivedConnInfo.get().want() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
+			}
+		}
+
+		@DisplayName("init() leaves fuse_conn_info.want untouched for libfuse < 3.17, if the kernel is not FUSE_CAP_READDIRPLUS capable")
+		@Test
+		public void testInit316NotCapable() {
+			try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
+				 var fuseH = Mockito.mockStatic(fuse_h.class);
+				 var arena = Arena.ofConfined()) {
+
+				var connInfo = fuse_conn_info.allocate(arena);
+				fuse_conn_info.capable(connInfo, 0);
+				var fuseConfig = fuse_config.allocate(arena);
+
+				fuseH.when(fuse_h::fuse_version).thenReturn(316);
+
+				fuseImpl.init(connInfo, fuseConfig);
+
+				Assertions.assertEquals(0, consumerReceivedConnInfo.get().want());
+			}
+		}
+
+		@DisplayName("init() sets fuse_conn_info.want_ext |= FUSE_CAP_READDIRPLUS for libfuse >= 3.17 not exporting fuse_set_feature_flag")
+		@Test
+		public void testInit317WithoutFeatureFlagFunctions() {
+			try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
+				 var fuseH = Mockito.mockStatic(fuse_h.class);
+				 var arena = Arena.ofConfined()) {
+
+				var connInfo = fuse_conn_info.allocate(arena);
+				fuse_conn_info.capable_ext(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS);
+				var fuseConfig = fuse_config.allocate(arena);
+
+				fuseH.when(fuse_h::fuse_version).thenReturn(317);
+				fuseFunctionsClass.when(FuseFunctions::hasFeatureFlagFunctions).thenReturn(false);
+
+				fuseImpl.init(connInfo, fuseConfig);
+
+				fuseFunctionsClass.verify(() -> FuseFunctions.fuse_set_feature_flag(Mockito.any(), Mockito.anyLong()), Mockito.never());
+				Assertions.assertInstanceOf(FuseConnInfoImpl317.class, consumerReceivedConnInfo.get());
+				Assertions.assertEquals(FuseConnInfo.FUSE_CAP_READDIRPLUS, consumerReceivedConnInfo.get().wantExt() & FuseConnInfo.FUSE_CAP_READDIRPLUS);
+			}
+		}
+
+		@DisplayName("init() calls set_feature_flag(FUSE_CAP_READDIRPLUS) for libfuse >= 3.17 exporting fuse_set_feature_flag")
+		@Test
+		public void testInit317WithFeatureFlagFunctions() {
+			try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
+				 var fuseH = Mockito.mockStatic(fuse_h.class);
+				 var arena = Arena.ofConfined()) {
+
+				var connInfo = fuse_conn_info.allocate(arena);
+				fuse_conn_info.capable_ext(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS);
+				var fuseConfig = fuse_config.allocate(arena);
+
+				fuseH.when(fuse_h::fuse_version).thenReturn(317);
+				fuseFunctionsClass.when(FuseFunctions::hasFeatureFlagFunctions).thenReturn(true);
+				fuseFunctionsClass.when(() -> FuseFunctions.fuse_set_feature_flag(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS)).thenReturn(true);
+
+				fuseImpl.init(connInfo, fuseConfig);
+
+				fuseFunctionsClass.verify(() -> FuseFunctions.fuse_set_feature_flag(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS));
+				Assertions.assertInstanceOf(FuseConnInfoImpl317.class, consumerReceivedConnInfo.get());
+			}
+		}
+
+		@DisplayName("init() does not request FUSE_CAP_READDIRPLUS via the deprecated want field for libfuse >= 3.17")
+		@Test
+		public void testInit317KeepsWantInSyncWithWantExt() {
+			try (var fuseFunctionsClass = Mockito.mockStatic(FuseFunctions.class);
+				 var fuseH = Mockito.mockStatic(fuse_h.class);
+				 var arena = Arena.ofConfined()) {
+
+				var connInfo = fuse_conn_info.allocate(arena);
+				fuse_conn_info.capable_ext(connInfo, FuseConnInfo.FUSE_CAP_READDIRPLUS);
+				var fuseConfig = fuse_config.allocate(arena);
+
+				fuseH.when(fuse_h::fuse_version).thenReturn(317);
+				fuseFunctionsClass.when(FuseFunctions::hasFeatureFlagFunctions).thenReturn(false);
+
+				fuseImpl.init(connInfo, fuseConfig);
+
+				// convert_to_conn_want_ext() fails with EINVAL, unless want is the lower 32 bits of want_ext
+				var received = consumerReceivedConnInfo.get();
+				Assertions.assertEquals((int) received.wantExt(), received.want());
+			}
 		}
 	}
 

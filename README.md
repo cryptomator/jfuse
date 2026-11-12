@@ -10,8 +10,7 @@ Zero-Dependency Java bindings for FUSE using [JEP 454](https://openjdk.org/jeps/
 
 ## Status
 
-This lib makes use of the [Foreign Function & Memory API](https://openjdk.org/jeps/454), requiring at least JDK 22.
-Older JDK versions are *not supported*. Please refer to an older version of this lib, if you  are interested in using it with an older JDK (with `--enable-preview`). Older versions will not receive patches or any kind of support, though!
+This lib makes use of the [Foreign Function & Memory API](https://openjdk.org/jeps/454). Since version 0.8.0 it requires JDK 25.
 
 We attempt to support libfuse 3.x on Linux and Windows while also remaining compatible with libfuse 2.x on macOS, leading to some compromises in the API.
 
@@ -19,7 +18,7 @@ For libfuse 3 to ensure that the `readdir` operation runs in readdirplus mode, y
 
 ### Supported `fuse_operations`
 
-Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operations.html) are supported yet. 
+Not all [`fuse_operations`](https://libfuse.github.io/doxygen/structfuse__operations.html) are supported yet.
 
 |                 | Status                                  |
 |-----------------|-----------------------------------------|

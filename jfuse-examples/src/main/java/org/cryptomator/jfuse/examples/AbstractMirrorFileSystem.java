@@ -172,7 +172,7 @@ public abstract sealed class AbstractMirrorFileSystem implements FuseOperations 
 		try {
 			var target = Files.readSymbolicLink(node);
 			var tmp = StandardCharsets.UTF_8.encode(target.toString());
-			buf.put(tmp);
+			buf.put(tmp).put((byte) 0); //java strings are not null-terminated, hence add nullbyte at end to follow api doc
 			return 0;
 		} catch (BufferOverflowException e) {
 			return -errno.enomem();

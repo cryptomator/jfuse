@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.cryptomator</groupId>
 		<artifactId>jfuse-parent</artifactId>
-		<version>0.7.3</version>
+		<version>0.8.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jfuse-mac</artifactId>
@@ -81,7 +81,7 @@
 					<plugin>
 						<groupId>io.github.coffeelibs</groupId>
 						<artifactId>jextract-maven-plugin</artifactId>
-						<version>0.4.0</version>
+						<version>${jextract.version}</version>
 						<configuration>
 							<executable>${jextract.path}</executable>
 							<headerSearchPaths>${mac.headerSearchPath}</headerSearchPaths>
