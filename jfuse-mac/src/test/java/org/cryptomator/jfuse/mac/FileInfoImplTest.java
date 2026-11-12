@@ -1,7 +1,7 @@
 package org.cryptomator.jfuse.mac;
 
 import org.cryptomator.jfuse.mac.extr.fcntl.fcntl_h;
-import org.cryptomator.jfuse.mac.extr.fuse.fuse_file_info;
+import org.cryptomator.jfuse.mac.extr.fuse3.fuse_file_info;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
