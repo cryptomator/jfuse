@@ -576,12 +576,14 @@ public interface FuseConnInfo {
 	}
 
 	/**
-	 * Get the value of a feature flag in the want_ext field of fuse_conn_info.
+	 * Checks whether the kernel supports the given feature flag.
 	 *
 	 * @param flag feature flag to be checked
-	 * @return {@code true} if the flag is set, {@code false} otherwise
+	 * @return {@code true} if the flag is set in the capable_ext field of fuse_conn_info, {@code false} otherwise
 	 * @throws UnsupportedOperationException if the loaded fuse library does not implement the method
+	 * @apiNote Despite its name, this method reports capability, not what the filesystem wants. Read {@link #wantExt()} to check the latter.
 	 * @implSpec The default implementation throws {@link UnsupportedOperationException}
+	 * @see #capableExt()
 	 * @since libFUSE 3.17
 	 */
 	default boolean getFeatureFlag(long flag) throws UnsupportedOperationException {

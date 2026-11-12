@@ -21,12 +21,15 @@ record FuseMountImpl(MemorySegment fuse, FuseArgs fuseArgs) implements FuseMount
 
 	@Override
 	public void unmount() {
+		// Signalling the run loop is all we may do here: WinFsp's fuse3_unmount() does not unmount, it frees `struct fuse`
+		// (fsp_fuse3_unmount() -> fsp_fuse_destroy()), which the run loop still dereferences while it winds down.
+		// The volume is detached by the run loop itself, in fsp_fuse_loop_stop() -> FspFileSystemDelete(). See https://github.com/cryptomator/jfuse/issues/176
 		fuse_h.fuse3_exit(fuse);
-		fuse_h.fuse3_unmount(fuse);
 	}
 
 	@Override
 	public void destroy() {
+		fuse_h.fuse3_unmount(fuse);
 		fuse_h.fuse3_destroy(fuse);
 	}
 

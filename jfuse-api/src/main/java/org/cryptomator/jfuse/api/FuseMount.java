@@ -21,6 +21,8 @@ public interface FuseMount {
 	/**
 	 * Perform actions required to stop the {@link #loop() run loop}, e.g. <code>fuse_exit</code>
 	 * and to unmount the volume, e.g. <code>fuse_unmount</code>.
+	 * <p>
+	 * Implementations must not release anything the run loop may still access while winding down; that belongs in {@link #destroy()}.
 	 */
 	void unmount() ;
 
